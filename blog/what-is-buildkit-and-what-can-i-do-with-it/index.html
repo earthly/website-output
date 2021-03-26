@@ -241,7 +241,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from-if-we-have-an-image-locally-on-our-machine-can-we-use-it-in-afromto-build-something-based-on-it-lets-find-out-by-altering-ourfrom-to-use-a-local-image">Tangent: Where are FROM's from If we have an image locally on our machine, can we use it in aFROMto build something based on it? Let's find out by altering ourFROM` to use a local image:</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -363,7 +363,8 @@ CMD [&quot;/bin/sh&quot;]</code></pre>
 <pre><code>➜ docker run -it agbell/test
 / # cat file
 built with BuildKit!</code></pre>
-<h2 id="tangent-where-are-froms-from-if-we-have-an-image-locally-on-our-machine-can-we-use-it-in-afromto-build-something-based-on-it-lets-find-out-by-altering-ourfrom-to-use-a-local-image">Tangent: Where are <code>FROM's from If we have an image locally on our machine, can we use it in a</code>FROM<code>to build something based on it? Let's find out by altering our</code>FROM` to use a local image:</h2>
+<h2 id="tangent-where-are-froms-from">Tangent: Where are `FROM’s from</h2>
+<p>If we have an image locally on our machine, can we use it in a <code>FROM</code> to build something based on it? Let’s find out by altering our <code>FROM</code> to use a local image:</p>
 <pre><code>FROM agbell/test:local
 RUN echo &quot;BuildKit built&quot;&gt;  file
 CMD [&quot;/bin/sh&quot;] 
@@ -573,13 +574,13 @@ FROM scratch
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9da891af5.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+        <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="permalink">Compiling Containers - Dockerfiles, LLVM and BuildKit
 </a>
       
     </h2>
@@ -597,7 +598,7 @@ FROM scratch
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          13 minute read
         
       </span>
     
@@ -605,9 +606,10 @@ FROM scratch
 
 
     <p class="archive__item-excerpt" itemprop="description">
-This post is in the future, and won’t show up in the published site
+Intro
 
-</p>
+
+How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those...</p>
   </article>
 </div>
 
@@ -628,13 +630,13 @@ This post is in the future, and won’t show up in the published site
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/on-yaml-discussions/header-800-ab4352ade.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+        <a href="/blog/on-yaml-discussions/" rel="permalink">On YAML Discussions
 </a>
       
     </h2>
@@ -652,7 +654,7 @@ This post is in the future, and won’t show up in the published site
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          3 minute read
         
       </span>
     
@@ -660,7 +662,9 @@ This post is in the future, and won’t show up in the published site
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+Highlights From The Comments On The YAML Article
+
+</p>
   </article>
 </div>
 

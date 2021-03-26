@@ -241,7 +241,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#solving-reproducible-builds">Solving Reproducible Builds</a></li><li><a href="#a-scala-example">A Scala Example</a></li><li><a href="#setup">Setup</a></li><li><a href="#build-it">Build It</a></li><li><a href="#test-it">Test It</a></li><li><a href="#containerize-it">Containerize It</a></li><li><a href="#did-we-solve-it">Did we solve it?</a></li><li><a href="#but-wait-theres-more">But wait there’s more</a></li></ul>
+              <ul class="toc__menu"><li><a href="#solving-reproducible-builds">Solving Reproducible Builds</a></li><li><a href="#a-scala-example">A Scala Example</a><ul><li><a href="#setup">Setup</a></li><li><a href="#build-it">Build It</a></li><li><a href="#test-it">Test It</a></li><li><a href="#containerize-it">Containerize It</a></li><li><a href="#did-we-solve-it">Did we solve it?</a></li></ul></li><li><a href="#but-wait-theres-more">But wait there’s more</a></li></ul>
 
             </nav>
           </aside>
@@ -283,7 +283,7 @@ Test.scala
 <li>Containerizing</li>
 </ol>
 <p>Let’s encapsulate these into an Earthfile, so that I can run the exact same build process locally and eliminate any reproducibility issues.</p>
-<h2 id="setup">Setup</h2>
+<h3 id="setup">Setup</h3>
 <p>The first step is to create a new Earthfile and copy in our build files and dependencies:  </p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> hseeberger/scala-sbt:11.0.6_1.3.10_2.13.1</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /scala-example</span>
@@ -308,7 +308,7 @@ Earthfile
 <p>Running <code>earthly +deps</code></p>
 </figcaption>
 </figure>
-<h2 id="build-it">Build It</h2>
+<h3 id="build-it">Build It</h3>
 <p>Next, we create a <code>build</code> target. This is our Earthfile equivalent of <code>sbt compile</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>build:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +deps</span>
@@ -326,7 +326,7 @@ earthfile continued
 <p>Running <code>earthly +build</code></p>
 </figcaption>
 </figure>
-<h2 id="test-it">Test It</h2>
+<h3 id="test-it">Test It</h3>
 <p>We can similarly create a target for running tests:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +deps</span>
@@ -343,7 +343,7 @@ Earthfile continued
 <p>Running <code>earthly +test</code></p>
 </figcaption>
 </figure>
-<h2 id="containerize-it">Containerize It</h2>
+<h3 id="containerize-it">Containerize It</h3>
 <p>The final step in our build is to build a docker container, so we can send this application off to run in Kuberenetes or EKS or whatever production happens to look like.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>docker:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
@@ -363,7 +363,7 @@ Earthfile continued
 </figcaption>
 </figure>
 <p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example here</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
-<h2 id="did-we-solve-it">Did we solve it?</h2>
+<h3 id="did-we-solve-it">Did we solve it?</h3>
 <p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.</p>
 <figure class>
 <img src="/blog/assets/images/better-builds/diagram.png"
@@ -447,13 +447,13 @@ Earthfile continued
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9da891af5.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+        <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="permalink">Compiling Containers - Dockerfiles, LLVM and BuildKit
 </a>
       
     </h2>
@@ -471,7 +471,7 @@ Earthfile continued
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          13 minute read
         
       </span>
     
@@ -479,9 +479,10 @@ Earthfile continued
 
 
     <p class="archive__item-excerpt" itemprop="description">
-This post is in the future, and won’t show up in the published site
+Intro
 
-</p>
+
+How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those...</p>
   </article>
 </div>
 
@@ -502,13 +503,13 @@ This post is in the future, and won’t show up in the published site
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/on-yaml-discussions/header-800-ab4352ade.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+        <a href="/blog/on-yaml-discussions/" rel="permalink">On YAML Discussions
 </a>
       
     </h2>
@@ -526,7 +527,7 @@ This post is in the future, and won’t show up in the published site
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          3 minute read
         
       </span>
     
@@ -534,7 +535,9 @@ This post is in the future, and won’t show up in the published site
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+Highlights From The Comments On The YAML Article
+
+</p>
   </article>
 </div>
 

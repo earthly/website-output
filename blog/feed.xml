@@ -1,191 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-03-26T12:17:26-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly</title><subtitle>Build automation for the container era.</subtitle><author><name>Earthly</name></author><entry><title type="html">Example Overlay Headline</title><link href="https://earthly.dev/blog/example/" rel="alternate" type="text/html" title="Example Overlay Headline" /><published>2029-01-01T00:00:00-05:00</published><updated>2020-01-07T13:05:25-05:00</updated><id>https://earthly.dev/blog/example</id><content type="html" xml:base="https://earthly.dev/blog/example/">&lt;p&gt;This post is in the future, and won’t show up in the published site&lt;/p&gt;
-&lt;h2 id=&quot;image-without-figure&quot;&gt;Image without figure&lt;/h2&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;some alt text&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;some alt text&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h2 id=&quot;image-with-figure&quot;&gt;Image with figure&lt;/h2&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot;
-       alt=&quot;handddrawn cartoon for a person talking to a computer server&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Alex likes to draw and add a caption&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h3 id=&quot;graph-not-working&quot;&gt;graph (not working)&lt;/h3&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/site/_site/assets/images/7173789249490503306.svg&quot; /&gt;
-&lt;/figure&gt;
-&lt;h3 id=&quot;code-blocks-with-syntax-highlighting&quot;&gt;Code blocks (with syntax highlighting)&lt;/h3&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode go&quot;&gt;&lt;code class=&quot;sourceCode go&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    syntax &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;proto3&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;package&lt;/span&gt; simplekeyvalue&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    option go_package &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;kvapi&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// The key/value API contains two procedures for storing and retrieving data&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    service KeyValue &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Set &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Get &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;fensed-code-blocks&quot;&gt;Fensed code blocks:&lt;/h2&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;With Caption:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot; data-caption=&quot;Main.scala&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Might not work: https://stackoverflow.com/a/54025234/135202&lt;/p&gt;
-&lt;h4 id=&quot;code-with-captions&quot;&gt;Code with Captions:&lt;/h4&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;figcaption&gt;
-Main.scala
-&lt;/figcaption&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Notice&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Markdown here - one - two&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice--info&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;ℹ️ Notice Info&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Markdown here - one - two&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Markdown here - one - two&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice--success&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;Success&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Markdown here&lt;/p&gt;
-&lt;/div&gt;
-&lt;h2 id=&quot;more-example-usage&quot;&gt;More Example Usage&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&quot;&gt;Theme Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/year-archive/&quot;&gt;Sample Posts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/mmistakes/minimal-mistakes/tree/d6444412c63aea5e47241ef536509fb1bfef4830/docs/_posts&quot;&gt;Example Post Source&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Earthly</name></author><category term="News" /><category term="Tutorials" /><category term="Articles" /><category term="tag1" /><category term="tag2" /><category term="tag3" /><summary type="html">This post is in the future, and won’t show up in the published site</summary></entry><entry><title type="html">Understanding Bash</title><link href="https://earthly.dev/blog/understanding-bash/" rel="alternate" type="text/html" title="Understanding Bash" /><published>2021-04-01T00:00:00-04:00</published><updated>2021-04-01T00:00:00-04:00</updated><id>https://earthly.dev/blog/understanding-bash</id><content type="html" xml:base="https://earthly.dev/blog/understanding-bash/">&lt;p&gt;Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.&lt;/p&gt;
-&lt;p&gt;When you’re done with this article, you’ll not only be able to write bash scripts, but you’ll be able to write them using today’s accepted best practices.&lt;/p&gt;
-&lt;h2 id=&quot;use-the-right-shebang&quot;&gt;Use the Right Shebang&lt;/h2&gt;
-&lt;p&gt;The very first thing you’ll see at the top of every (well-written) bash script is what’s called a &lt;a href=&quot;https://www.in-ulm.de/~mascheck/various/shebang/&quot;&gt;&lt;em&gt;shebang&lt;/em&gt;&lt;/a&gt;. I’ll walk you through a couple of them here.&lt;/p&gt;
-&lt;h3 id=&quot;binbash&quot;&gt;#!/bin/bash&lt;/h3&gt;
-&lt;p&gt;The most common shebang is the one referring to the &lt;code&gt;bash&lt;/code&gt; executable:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Essentially it tells your terminal that when you run the script it should use &lt;code&gt;bash&lt;/code&gt; to execute it. It can be vital since you may be using a different shell in your machine (&lt;code&gt;zsh&lt;/code&gt;, &lt;code&gt;fish&lt;/code&gt;, &lt;code&gt;sh&lt;/code&gt;, etc.), but you designed the script to work specifically with bash. In many cases, it doesn’t matter what shell you’re using, but there can be some very noteworthy differences in how they work, leading a script to work in &lt;code&gt;bash&lt;/code&gt; but not &lt;code&gt;sh&lt;/code&gt;, for example.&lt;/p&gt;
-&lt;h3 id=&quot;userbinenv-bash&quot;&gt;#!/user/bin/env bash&lt;/h3&gt;
-&lt;p&gt;If you use the previous shebang, it’s crucial that you give the executable’s absolute path. You should be aware of this since there is an alternative where you use the &lt;code&gt;bash&lt;/code&gt; executable found in the &lt;code&gt;$PATH&lt;/code&gt;. You can do so by writing:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/user/bin/env bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h1 id=&quot;todo-rephrase&quot;&gt;ToDo: rephrase&lt;/h1&gt;
-&lt;p&gt;There are those who like to customize their systems, either their personal system or production servers, resulting in the &lt;code&gt;bash&lt;/code&gt; executable not being located in &lt;code&gt;/bin/bash&lt;/code&gt; every time. Use the above line if you can’t be sure that the &lt;code&gt;bash&lt;/code&gt; executable will be located in the same path when this script is run.&lt;/p&gt;
-&lt;h2 id=&quot;understand-common-sets&quot;&gt;Understand Common Sets&lt;/h2&gt;
-&lt;p&gt;When you run a bash script, it will always run in a new &lt;em&gt;subshell&lt;/em&gt;. This means that any unique configurations you have in your current setup will not be used within the script execution. It also means that you can customize the environment that the script is running in without worrying about how your terminal will be affected.&lt;/p&gt;
-&lt;p&gt;One way to change this environment is to use the &lt;code&gt;set&lt;/code&gt; command. I’ll go over the four most common ones and where they’re useful.&lt;/p&gt;
-&lt;h3 id=&quot;set--u&quot;&gt;set -u&lt;/h3&gt;
-&lt;p&gt;By default, bash doesn’t do a lot of error handling. That’s left up to you. So if you want to have your script exit at a certain point, you have to define it. For example, you may have the following script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;$TEST&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you run the script as shown above, it’ll give you the following output:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See how it doesn’t complain that the &lt;code&gt;$TEST&lt;/code&gt; variable is not set? You can change that. Setting the &lt;code&gt;set -u&lt;/code&gt; command initially, you’re telling bash that you want it to fail if a variable is not set.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-u&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;$TEST&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 3: TEST: unbound variable&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Without &lt;code&gt;set -u&lt;/code&gt;, bash will use an empty string instead of the unset variable. When running &lt;code&gt;echo $TEST&lt;/code&gt;, that isn’t too dangerous. However, you may be running a command like &lt;code&gt;rm -rf /$TEST&lt;/code&gt; to define a path you want to delete. In this case, without &lt;code&gt;set -u&lt;/code&gt;, you would end up deleting your entire file system (which there’s no way to recover by default).&lt;/p&gt;
-&lt;h3 id=&quot;set--x&quot;&gt;set -x&lt;/h3&gt;
-&lt;p&gt;You’ll likely at some point have a big script where it’s tough to keep track of not just which commands are running what, but also which commands are outputting what. This is where &lt;code&gt;set -x&lt;/code&gt; comes to the rescue.&lt;/p&gt;
-&lt;p&gt;When using &lt;code&gt;set -x&lt;/code&gt;, you get the following script and output.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-x&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hi&lt;/span&gt;
-&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;+&lt;/span&gt; echo Hi&lt;/span&gt;
-&lt;span id=&quot;cb8-2&quot;&gt;&lt;a href=&quot;#cb8-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hi&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-3&quot;&gt;&lt;a href=&quot;#cb8-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;+&lt;/span&gt; echo Hello World&lt;/span&gt;
-&lt;span id=&quot;cb8-4&quot;&gt;&lt;a href=&quot;#cb8-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;set--e&quot;&gt;set -e&lt;/h3&gt;
-&lt;p&gt;#Todo “Very clean” Sometimes you want to make sure that the entire script fails if one of the commands fails. This is not the default behavior in bash. You can see &lt;a href=&quot;https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html&quot;&gt;here&lt;/a&gt; that without any set options, bash is running in a very clean way, without much in terms of error handling.&lt;/p&gt;
-&lt;p&gt;To make sure the script fails, you should use &lt;code&gt;set -e&lt;/code&gt;, probably the most common one.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-2&quot;&gt;&lt;a href=&quot;#cb9-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-e&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-3&quot;&gt;&lt;a href=&quot;#cb9-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;foo&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-4&quot;&gt;&lt;a href=&quot;#cb9-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 3: foo: command not found&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;set--eo-pipefail&quot;&gt;set -eo pipefail&lt;/h3&gt;
-&lt;h1 id=&quot;todo-simplify&quot;&gt;todo simplify&lt;/h1&gt;
-&lt;p&gt;Finally, we have the ability to make the script fail if a command in a pipeline fails. Usually, bash only looks for the exit code from the last command in a pipeline. If that’s 0, it’ll continue just fine. Exit code 0 is what we want, since in bash that means success.&lt;/p&gt;
-&lt;p&gt;Let’s use the following script as an example:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;set -eo pipefail&lt;/code&gt; will turn the output from:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;
-&lt;span id=&quot;cb12-2&quot;&gt;&lt;a href=&quot;#cb12-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 2: foo: command not found&lt;/span&gt;
-&lt;span id=&quot;cb12-3&quot;&gt;&lt;a href=&quot;#cb12-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hi&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;into:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb13&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb13-1&quot;&gt;&lt;a href=&quot;#cb13-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;
-&lt;span id=&quot;cb13-2&quot;&gt;&lt;a href=&quot;#cb13-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 2: foo: command not found&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The reason you may want the script to fail if a pipeline fails is the same as earlier with &lt;code&gt;set -u&lt;/code&gt;. Let’s modify the scenario a bit. You have the following in your script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;va&quot;&gt;FILE_PATH&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; /tmp/path.txt &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sed&lt;/span&gt; ‘s/_/-/g&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-rf&lt;/span&gt; /&lt;span class=&quot;va&quot;&gt;$FILE_PATH&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Note: &lt;code&gt;sed&lt;/code&gt; is a search-and-replace command. In this case it replaces underscores with dashes.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;The intention is that &lt;code&gt;/tmp/path.txt&lt;/code&gt; contains &lt;code&gt;tmp_file.txt&lt;/code&gt;. Assume that the file &lt;code&gt;/tmp-file.txt&lt;/code&gt; exists on the system. In this case the script will work perfectly and delete &lt;code&gt;/tmp-file.txt&lt;/code&gt;. But what if &lt;code&gt;/tmp/path.txt&lt;/code&gt; doesn’t exist? &lt;code&gt;cat /tmp/path.txt&lt;/code&gt; will fail, but the script won’t. Now you’ve deleted your entire filesystem, but &lt;code&gt;set -eo pipefail&lt;/code&gt; will prevent this.&lt;/p&gt;
-&lt;h2 id=&quot;use-error-checking-tools&quot;&gt;Use Error Checking Tools&lt;/h2&gt;
-&lt;p&gt;As with anything, it would be nice to have someone verify that something is working before you even run it. While that may not be 100 percent possible, there are some tools available to help you check your bash script. One of these is &lt;a href=&quot;https://www.shellcheck.net/#&quot;&gt;ShellCheck&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Navigate to ShellCheck and paste in the contents of your script (or download the tool), and it will tell you whether there are improvements that can be made. These improvements can range from syntax improvements like linting to actual errors.&lt;/p&gt;
-&lt;p&gt;If you’re curious to see examples of how it can help, simply click &lt;em&gt;Load random example&lt;/em&gt; on &lt;a href=&quot;https://www.shellcheck.net/&quot;&gt;the home page&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;understand-variable-naming-and-declaration&quot;&gt;Understand Variable Naming and Declaration&lt;/h2&gt;
-&lt;p&gt;As you saw earlier, we tried to use the &lt;code&gt;$TEST&lt;/code&gt; variable. Variables can open up a whole world of opportunities, but they can also be tricky to work with. Let’s go over some of the common scenarios for working with variables.&lt;/p&gt;
-&lt;h3 id=&quot;assigning-variables&quot;&gt;Assigning Variables&lt;/h3&gt;
-&lt;p&gt;Assigning a variable in bash is reasonably straightforward, using the &lt;code&gt;=&lt;/code&gt; symbol. Here’s an example of assigning “Hello World” to a &lt;code&gt;$TEST&lt;/code&gt; variable:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; MSG=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello world!&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-2&quot;&gt;&lt;a href=&quot;#cb15-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;va&quot;&gt;$MSG&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-3&quot;&gt;&lt;a href=&quot;#cb15-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; world!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;using-variables-inside-strings&quot;&gt;Using Variables Inside Strings&lt;/h3&gt;
-&lt;p&gt;There are multiple ways to use a variable that you’ve assigned a value. As an example, we’ve assigned &lt;code&gt;foo=uname&lt;/code&gt;.&lt;/p&gt;
-&lt;h4 id=&quot;double-quotes&quot;&gt;Double Quotes&lt;/h4&gt;
-&lt;p&gt;If you want to echo the contents of a variable, then use double quotes. It will expand what’s inside the variable and print that to the screen.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb16-2&quot;&gt;&lt;a href=&quot;#cb16-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;uname&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id=&quot;single-quotes&quot;&gt;Single Quotes&lt;/h4&gt;
-&lt;p&gt;In some cases, you don’t want to output a variable’s contents, but maybe write an explanation of what that variable is used for. To avoid expansion, use single quotes:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb17&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb17-1&quot;&gt;&lt;a href=&quot;#cb17-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;#39;$foo&amp;#39;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-2&quot;&gt;&lt;a href=&quot;#cb17-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This also means that you don’t have to manually escape the &lt;code&gt;$&lt;/code&gt; symbol, which you otherwise would need to in the case of double quotes.&lt;/p&gt;
-&lt;h4 id=&quot;backticks&quot;&gt;Backticks&lt;/h4&gt;
-&lt;p&gt;The third option for using a variable is backticks. Use this when you want the contents of the variable to be run as a shell command:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;kw&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;`&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-2&quot;&gt;&lt;a href=&quot;#cb18-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Linux&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;using-curly-brackets&quot;&gt;Using Curly Brackets&lt;/h3&gt;
-&lt;p&gt;You can get away with merely referring to a variable by writing &lt;code&gt;$FOO&lt;/code&gt;. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb19&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb19-1&quot;&gt;&lt;a href=&quot;#cb19-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; FOO=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hel&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-2&quot;&gt;&lt;a href=&quot;#cb19-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$FOOlo&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; world&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In this case, bash would try to find the variable &lt;code&gt;$FOOlo&lt;/code&gt;, but we just wanted to print “Hello world.” To make this work, you will have to do the following:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb20&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb20-1&quot;&gt;&lt;a href=&quot;#cb20-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; FOO=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hel&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb20-2&quot;&gt;&lt;a href=&quot;#cb20-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;${FOO}&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;lo world&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This is most likely useful when you want to use a variable to define a path, like &lt;code&gt;/opt/${ENVIRONMENT}_build.txt&lt;/code&gt;. Without curly brackets, the script would try to look up &lt;code&gt;$ENVIRONMENT_build&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;properly-set-permissions&quot;&gt;Properly Set Permissions&lt;/h2&gt;
-&lt;p&gt;One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that &lt;a href=&quot;https://www.guru99.com/file-permissions.html&quot;&gt;permissions&lt;/a&gt; had to be set right. See, when you make a file with, for example, &lt;code&gt;touch&lt;/code&gt;, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a &lt;code&gt;permission denied&lt;/code&gt; error when you try to run the script.&lt;/p&gt;
-&lt;p&gt;Luckily this is easily fixed. Run &lt;code&gt;chmod +x script.sh&lt;/code&gt;, and now everyone is allowed to run the script.&lt;/p&gt;
-&lt;p&gt;However, do be aware that changing permissions can impose security risks. Read more about &lt;a href=&quot;https://www.linux.com/training-tutorials/understanding-linux-file-permissions/&quot;&gt;Linux file permissions&lt;/a&gt; before you start changing permissions blindly.&lt;/p&gt;
-&lt;h2 id=&quot;ensure-readability&quot;&gt;Ensure Readability&lt;/h2&gt;
-&lt;p&gt;One of the biggest pitfalls that newcomers run into is forgetting about readability. It’s easy to get caught up in wanting to have a working script, and maybe you’re even used to running everything manually in the terminal, where you want to type as little as possible.&lt;/p&gt;
-&lt;p&gt;When it comes to scripts, you want to make sure that you can still easily remember what’s happening six months down the line. An easy way to do this is by using more extended options (&lt;code&gt;--quiet&lt;/code&gt; instead of &lt;code&gt;-q&lt;/code&gt;), using longer variable names (&lt;code&gt;MESSAGE&lt;/code&gt; instead of &lt;code&gt;MSG&lt;/code&gt;), and writing comments.&lt;/p&gt;
-&lt;p&gt;You can write commands using a hashtag, after which you can write your comment, like so:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Below line will echo “Hello World!”
-echo “Hello World!”&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;understand-your-script-in-relation-to-cli&quot;&gt;Understand Your Script in Relation to CLI&lt;/h2&gt;
-&lt;p&gt;When reading this article, you may have noticed that many code examples are being run straight in the terminal rather than written as a bash script. There’s a good reason for that! You can write everything you write in a bash script directly in the terminal.&lt;/p&gt;
-&lt;p&gt;There is one significant difference between executing a script and typing the commands in your terminal. When you run a script, it’ll start up a new, clean shell in which the script will run. This means that no variables set in your terminal will interfere with your script.&lt;/p&gt;
-&lt;p&gt;For example, if you set &lt;code&gt;TEST=”hello”&lt;/code&gt; in your shell and run &lt;code&gt;echo $TEST&lt;/code&gt; inside a script, it will print nothing to your screen.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;At this point, you should be ready to venture into the exciting world of bash scripting. You’ve learned about common shebangs, what &lt;code&gt;set&lt;/code&gt; does, and how it can improve the error handling of your scripts, as well as understanding some general pitfalls developers run into with bash. ’ You can now go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repo you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.&lt;/p&gt;</content><author><name>Earthly</name></author><category term="Tutorials" /><summary type="html">Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.</summary></entry><entry><title type="html">Compiling Containers - Dockerfiles, LLVM and BuildKit</title><link href="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="alternate" type="text/html" title="Compiling Containers - Dockerfiles, LLVM and BuildKit" /><published>2021-03-17T12:00:00-04:00</published><updated>2021-03-17T12:00:00-04:00</updated><id>https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit</id><content type="html" xml:base="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">&lt;h1 id=&quot;intro&quot;&gt;Intro&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-03-26T17:43:54-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly</title><subtitle>Build automation for the container era.</subtitle><author><name>Earthly</name></author><entry><title type="html">Compiling Containers - Dockerfiles, LLVM and BuildKit</title><link href="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="alternate" type="text/html" title="Compiling Containers - Dockerfiles, LLVM and BuildKit" /><published>2021-03-17T12:00:00-04:00</published><updated>2021-03-17T12:00:00-04:00</updated><id>https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit</id><content type="html" xml:base="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">&lt;h1 id=&quot;intro&quot;&gt;Intro&lt;/h1&gt;
 &lt;p&gt;How are containers made? Usually, from a series of statements like &lt;code&gt;RUN&lt;/code&gt;, &lt;code&gt;FROM&lt;/code&gt;, and &lt;code&gt;COPY&lt;/code&gt;, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.&lt;/p&gt;
 &lt;h3 id=&quot;game-plan&quot;&gt;Game Plan:&lt;/h3&gt;
 &lt;ul&gt;
@@ -1587,7 +1400,8 @@ CMD [&amp;quot;/bin/sh&amp;quot;]&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;➜ docker run -it agbell/test
 / # cat file
 built with BuildKit!&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;tangent-where-are-froms-from-if-we-have-an-image-locally-on-our-machine-can-we-use-it-in-afromto-build-something-based-on-it-lets-find-out-by-altering-ourfrom-to-use-a-local-image&quot;&gt;Tangent: Where are &lt;code&gt;FROM's from If we have an image locally on our machine, can we use it in a&lt;/code&gt;FROM&lt;code&gt;to build something based on it? Let's find out by altering our&lt;/code&gt;FROM` to use a local image:&lt;/h2&gt;
+&lt;h2 id=&quot;tangent-where-are-froms-from&quot;&gt;Tangent: Where are `FROM’s from&lt;/h2&gt;
+&lt;p&gt;If we have an image locally on our machine, can we use it in a &lt;code&gt;FROM&lt;/code&gt; to build something based on it? Let’s find out by altering our &lt;code&gt;FROM&lt;/code&gt; to use a local image:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;FROM agbell/test:local
 RUN echo &amp;quot;BuildKit built&amp;quot;&amp;gt;  file
 CMD [&amp;quot;/bin/sh&amp;quot;] 
@@ -1725,4 +1539,435 @@ FROM scratch
 &lt;p&gt;Alright, we have now covered some ways to use BuildKit directly. BuildKit is used internally by &lt;code&gt;docker build&lt;/code&gt; in modern docker versions, but using it directly unlocks some extra options.&lt;/p&gt;
 &lt;p&gt;One use we covered was changing the output type. We can use BuildKit to export tars and local file systems. We also use &lt;code&gt;pstree&lt;/code&gt; and &lt;code&gt;mitmProxy&lt;/code&gt; to watch how buildkitd forks processes and make network requests.&lt;/p&gt;
 &lt;p&gt;There is much more to learn, though. BuildKit is behind the &lt;code&gt;docker buildx&lt;/code&gt; multiplatform build feature and supports the ability to have multiple workers execute builds in parallel. BuildKit also supports caching, different frontends, docker-compose builds, faster multi-stage builds, and several other features.&lt;/p&gt;
-&lt;p&gt;In a future article, we will cover creating a custom frontend and leaving the Dockerfile syntax behind.&lt;/p&gt;</content><author><name>Earthly</name></author><category term="Tutorials" /><summary type="html">There is an excellent open-source project that you have probably used without realizing it. It’s called BuildKit, and it is what turns a Dockerfile into a Docker image. And it doesn’t just build Docker images; it can build OCI images and several other output formats. OpenFasS uses it to turn functions into full containers, and here at Earthly, we use it to create complete continuous integration pipelines.</summary></entry></feed>
+&lt;p&gt;In a future article, we will cover creating a custom frontend and leaving the Dockerfile syntax behind.&lt;/p&gt;</content><author><name>Earthly</name></author><category term="Tutorials" /><summary type="html">There is an excellent open-source project that you have probably used without realizing it. It’s called BuildKit, and it is what turns a Dockerfile into a Docker image. And it doesn’t just build Docker images; it can build OCI images and several other output formats. OpenFasS uses it to turn functions into full containers, and here at Earthly, we use it to create complete continuous integration pipelines.</summary></entry><entry><title type="html">How to Man in the Middle HTTPS Using mitmproxy</title><link href="https://earthly.dev/blog/mitmproxy/" rel="alternate" type="text/html" title="How to Man in the Middle HTTPS Using mitmproxy" /><published>2021-02-11T13:30:00-05:00</published><updated>2021-02-11T13:30:00-05:00</updated><id>https://earthly.dev/blog/mitmproxy</id><content type="html" xml:base="https://earthly.dev/blog/mitmproxy/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Have you ever wanted to see what kinds of requests a service or application on your machine is making and what kind of responses it is getting back? Have you ever tried and failed to capture this traffic or modify it to investigate how something works (or doesn’t work). If you have, then mitmproxy might be what you need. Being able to scan through and observe HTTP protocol traffic easily is a great debugging aid.&lt;/p&gt;
+&lt;p&gt;This guide will walk you through installing and using mitmproxy to capture HTTPS requests. We will start with macOS traffic capture, then touch on Linux and Windows and then finally show how to capture docker daemon traffic and docker container traffic.&lt;/p&gt;
+&lt;h2 id=&quot;what-is-mitmproxy&quot;&gt;What is mitmproxy?&lt;/h2&gt;
+&lt;p&gt;mitmproxy is a command-line tool that acts as a HTTP and HTTPS proxy and records all the traffic. You can easily see what requests are being made and even replay them. It’s great for diagnosing problems.&lt;/p&gt;
+&lt;h2 id=&quot;installing-it&quot;&gt;Installing it&lt;/h2&gt;
+&lt;p&gt;On Mac, mitmproxy is easy to install with brew:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install mitmproxy&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;On Windows and Linux, &lt;a href=&quot;https://docs.mitmproxy.org/stable/overview-installation/&quot;&gt;download the binary release&lt;/a&gt; and place it somewhere in your path.&lt;/p&gt;
+&lt;h2 id=&quot;start-it-up&quot;&gt;#1 Start it up&lt;/h2&gt;
+&lt;p&gt;To start up mitmproxy, type &lt;code&gt;mitmproxy&lt;/code&gt;, and it will start up bound to port 8080.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;mitmproxy&lt;/code&gt;&lt;/pre&gt;
+The command-line interface (CLI) has VIM-like keybindings. &lt;code&gt;q&lt;/code&gt; will quit, and arrow keys or &lt;code&gt;h&lt;/code&gt;, &lt;code&gt;j&lt;/code&gt;, &lt;code&gt;k&lt;/code&gt;, &lt;code&gt;l&lt;/code&gt; will move you up and down through the request list. &lt;code&gt;?&lt;/code&gt; will load the help, and &lt;code&gt;&amp;lt;&amp;lt;enter&amp;gt;&amp;gt;&lt;/code&gt; will drill in on a specific request.
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/1.png&quot;
+       alt=&quot;Help menu for mitmproxy&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Help Menu for mitmproxy&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;mitmproxy also has a web interface if you prefer the mouse over VIM keybindings. The advanced functionality is a bit more discoverable in the web interface, but the CLI version is convenient for quick capture sessions.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/2.png&quot;
+       alt=&quot;mitmproxy starting up&quot;&gt;
+&lt;/figure&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/3.png&quot;
+       alt=&quot;mitmweb starting up&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;We will use both throughout the tutorial. Whichever you choose, start it up and leave it running.&lt;/p&gt;
+&lt;h2 id=&quot;proxy-our-connection&quot;&gt;#2 Proxy Our Connection&lt;/h2&gt;
+&lt;p&gt;Let’s set up our internet connection to use this proxy. On macOS, Under &lt;code&gt;Setting -&amp;gt; Network&lt;/code&gt;, select your connection and click advanced.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/4.png&quot;
+       alt=&quot;Setting -&gt; Network on macOS&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;&lt;code&gt;Setting -&amp;gt; Network&lt;/code&gt; on macOS&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Under proxies, enable both HTTP and HTTPS proxies and choose port 8080:&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/5.png&quot;
+       alt=&quot;Setup Proxy under Setting -&gt; Network-&gt; Advanced on macOS&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Setup Proxy under &lt;code&gt;Setting -&amp;gt; Network-&amp;gt; Advanced&lt;/code&gt; on macOS&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;&lt;em&gt;On Windows, &lt;a href=&quot;https://www.howtogeek.com/tips/how-to-set-your-proxy-settings-in-windows-8.1/&quot;&gt;follow these steps&lt;/a&gt; to set up a proxy.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;On Linux, MITM supports a &lt;a href=&quot;https://docs.mitmproxy.org/stable/howto-transparent/&quot;&gt;transparent proxying&lt;/a&gt; at the network layer.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;adding-mitmproxy-as-a-certificate-authority&quot;&gt;Adding mitmproxy as A Certificate Authority&lt;/h2&gt;
+&lt;p&gt;We now have our connection proxied to go through our instance of mitmproxy. However, if we attempt to make a HTTPS-based request in a web browser (loading twitter.com for example), something interesting happens.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/6.png&quot;
+       alt=&quot;Chrome does not recognize the certificate&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Chrome does not recognize the certificate&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Chrome is warning us that we might be subject to a man in the middle attack.&lt;/p&gt;
+&lt;h3 id=&quot;what-is-a-man-in-the-middle&quot;&gt;What is a man in the middle&lt;/h3&gt;
+&lt;p&gt;A man in middle attack (MITM) is a security threat where an attacker can get between incoming and outgoing requests. You think you are talking to Twitter.com, but you are talking to the man in the middle, who is talking to Twitter for you. This MITM can view everything you send and even change what you receive.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/7.png&quot;
+       alt=&quot;Diagram of Man in the middle&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;The HTTPS protocol prevents MITM attacks. The HTTPS protocol is pretty complex, but all we need to know is that HTTPS uses a trusted Certificate Authority (CA) to sign a certificate. Our browsers assume that if a trusted CA signs the certificate, we are talking directly to who we think we are.&lt;/p&gt;
+&lt;p&gt;You can view what CA signed the certificate of the website you are viewing in your browser.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/8.png&quot;
+       alt=&quot;Viewing a certificate in your browser&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Viewing a certificate in your browser&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;This is great for protecting online communication but problematic for our debugging purposes. We are trying to man in the middle our own requests. To help overcome this, mitmproxy has generated a certificate. All we need is to get our machine to trust it.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/9.png&quot;
+       alt=&quot;Getting a Certificate signed by an unknown certificate authority&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Getting a Certificate signed by an unknown certificate authority&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;how-to-add-a-trusted-certificate-authority-certificate&quot;&gt;How to add a Trusted Certificate Authority Certificate&lt;/h2&gt;
+&lt;p&gt;mitmproxy generated a certificate and private key the first time you ran it. The certificate generated is specific to your machine and is located in &lt;code&gt;~/.mitmproxy/mitmproxy-ca-cert.cer&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; cat ~/.mitmproxy/mitmproxy-ca-cert.cer 
+-----BEGIN CERTIFICATE-----
+MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
+MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
+4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
+AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
+H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
+Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
+utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
+BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
+i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
+KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
+48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
+4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
+K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
+QyVJfmCmjt2i
+-----END CERTIFICATE-----
+cat mitmproxy-ca.pem
+-----BEGIN PRIVATE KEY-----
+MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
+MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
+4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
+AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
+H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
+Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
+utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
+BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
+i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
+KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
+48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
+4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
+K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
+QyVJfmCmjt2i=
+-----END PRIVATE KEY-----&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Note: Once we instruct our machine to trust this certificate, someone with the private key who controlled your internet connection, like your ISP, could use it to MITM your connection. For this reason, don’t share your MITM private key, or any private key, with others.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;add-the-cert-on-macos&quot;&gt;Add the Cert On MacOS&lt;/h2&gt;
+&lt;p&gt;On macOS, the easiest way to add a new CA is to copy it to the desktop and then double-click it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cp ~/.mitmproxy/mitmproxy-ca-cert.cer ~/Desktop&lt;/code&gt;&lt;/pre&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/10.png&quot;
+       alt=&quot;Getting a Certificate signed by an unknown certificate authority&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;You will be prompted for your credentials, and the certificate will be added as ‘untrusted’.&lt;/p&gt;
+&lt;p&gt;Double-click on the certificate in the Keychain list and set the ‘Secure Sockets Layer’ drop down to ‘Always Trust’&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/11.png&quot;
+       alt=&quot;Setting certificate to Always Trust&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;You will then be prompted for your password again, and then your certificate will be trusted.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/13.png&quot;
+       alt=&quot;mitmproxy certificate proxy always trusted&quot;&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;installing-the-trusted-root-certificate-on-windows&quot;&gt;Installing The Trusted Root Certificate On Windows&lt;/h2&gt;
+&lt;p&gt;If you are on Windows, follow this guide &lt;a href=&quot;https://docs.microsoft.com/en-us/skype-sdk/sdn/articles/installing-the-trusted-root-certificate&quot;&gt;to add the MITM root certificate as a trusted root certificate authority&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;installing-the-cert-on-debian-based-linux-distributions&quot;&gt;Installing The Cert on Debian Based Linux Distributions&lt;/h2&gt;
+&lt;p&gt;On Debian-based Linux distributions, follow these steps:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; mkdir /usr/local/share/ca-certificates/extra
+&amp;gt; cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
+&amp;gt; update-ca-certificates&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;We will be using these steps later when we work with docker containers on macOS and Windows.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;great-success&quot;&gt;Great Success!&lt;/h2&gt;
+&lt;p&gt;At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through &lt;code&gt;localhost:8080&lt;/code&gt;, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.&lt;/p&gt;
+Here is Slack making requests:
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/14.png&quot;
+       alt=&quot;mitmweb has captured a request from the slack application&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;mitmweb has captured a request from the slack application&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;All HTTPS connections now have certificates signed by mitmproxy, which your machine trusts.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/15.png&quot;
+       alt=&quot;Google.com now shows a mitmproxy signed certificate&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Google.com now shows a mitmproxy signed certificate&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;mitm-the-docker-linux-container-host-on-macos-windows&quot;&gt;MITM The Docker Linux Container Host on macOS &amp;amp; Windows&lt;/h2&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/16.png&quot;
+       alt=&quot;Diagram of docker runtime on macOS and Windows&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Docker containers run differently on macOS and Windows&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.&lt;/p&gt;
+&lt;p&gt;On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.&lt;/p&gt;
+&lt;p&gt;To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM. &amp;gt; Before we proceed, we need to clear the proxy settings on the host network connection. We can leave mitmproxy (or MITMWeb running).&lt;/p&gt;
+&lt;p&gt;On Windows and macOS, the easiest way to configure a proxy is via &lt;code&gt;Docker Desktop.&lt;/code&gt; Configure the proxy settings under &lt;code&gt;Preferences -&amp;gt; Resources -&amp;gt; Proxies.&lt;/code&gt;&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/18.png&quot;
+       alt=&quot;Configure the proxy settings under Preferences -&gt; Resources -&gt; Proxies.&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Configure the proxy settings under &lt;code&gt;Preferences -&amp;gt; Resources -&amp;gt; Proxies.&lt;/code&gt;&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;With that done, the network interface will be proxied. All that is left to do is get our certificate trusted by the Linux container host. Thankfully, Docker Desktop takes care of this for us. On startup, Docker Desktop loads the trusted root certificates from the host machine into the Docker VM, so all we need to do is restart docker. (&lt;code&gt;Restart Docker&lt;/code&gt; in Docker Desktop).&lt;/p&gt;
+&lt;h2 id=&quot;docker-mitm-on-linux&quot;&gt;Docker MITM on Linux&lt;/h2&gt;
+&lt;p&gt;On Linux, we can add a proxy by editing the docker client config and then restarting.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; cat ~/.docker/config.json
+{
+ &amp;quot;proxies&amp;quot;:
+ {
+   &amp;quot;default&amp;quot;:
+   {
+     &amp;quot;httpProxy&amp;quot;: &amp;quot;http://127.0.0.1:8080&amp;quot;,
+     &amp;quot;httpsProxy&amp;quot;: &amp;quot;http://127.0.0.1:8080&amp;quot;
+   }
+ }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; sudo service docker restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;test-it&quot;&gt;Test it&lt;/h3&gt;
+&lt;p&gt;After restarting, we can test the proxying by performing a docker pull for a random image&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;➜  ~ docker pull couchbase:7.0.0-beta
+7.0.0-beta: Pulling from library/couchbase
+83ee3a23efb7: Pull complete
+db98fc6f11f0: Pull complete
+f611acd52c6c: Pull complete
+3aa2029a80db: Pull complete
+abe30feace46: Pull complete
+9b70018fbd54: Pull complete
+d9b67d157052: Pull complete
+212afe5e3a9c: Pull complete
+ff5e5d4b4f9c: Pull complete
+4df60b92878a: Pull complete
+eee5137af1d8: Pull complete
+c4ef83141448: Pull complete
+6a04071b6d8c: Pull complete
+f52d17d818b3: Pull complete
+Digest: sha256:290a7a0623b62e02438e6f0cd03adf116ac465f70fc4254a4059bcf51e8fa040
+Status: Downloaded newer image for couchbase:7.0.0-beta
+docker.io/library/couchbase:7.0.0-beta&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can then see the requests and responses in our proxy:&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/19.png&quot;
+       alt=&quot;mitmproxy request for docker.io&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;We can even see the binary payload of the layer requests and the fact that docker uses Cloudflare as a CDN.&lt;/p&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/20.png&quot;
+       alt=&quot;&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;mitmweb request for cloudflare.docker.com&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;## &lt;em&gt;Troubleshooting&lt;/em&gt; &lt;em&gt;If &lt;code&gt;docker pull&lt;/code&gt; fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;capturing-docker-container-traffic&quot;&gt;Capturing Docker Container Traffic&lt;/h2&gt;
+&lt;p&gt;We now know how to capture traffic on our host machine and the Linux container host. But what happens when we make requests from inside a running container?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it ubuntu
+root@ca43de1bb8b1:/# apt upgrade &amp;amp; apt update &amp;amp; apt install curl
+...
+root@167f5742c295:/# curl http://google.com
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;http://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+We are successfully capturing the requests and responses:
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/21.png&quot;
+       alt=&quot;&quot;&gt;
+&lt;figcaption&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;However, we hit problems when we try to use HTTPS:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;root@ca43de1bb8b1:/# curl https://google.com/
+curl: (60) server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none
+More details here: http://curl.haxx.se/docs/sslcerts.html
+
+curl performs SSL certificate verification by default, using a &amp;quot;bundle&amp;quot;
+ of Certificate Authority (CA) public keys (CA certs). If the default
+ bundle file isn&amp;#39;t adequate, you can specify an alternate file
+ using the --cacert option.
+If this HTTPS server uses a certificate signed by a CA represented in
+ the bundle, the certificate verification probably failed due to a
+ problem with the certificate (it might be expired, or the name might
+ not match the domain name in the URL).
+If you&amp;#39;d like to turn off curl&amp;#39;s verification of the certificate, use
+ the -k (or --insecure) option.
+ &amp;gt; exit&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;adding-the-ca-cert-to-our-linux-container&quot;&gt;Adding the CA Cert to our Linux Container&lt;/h2&gt;
+&lt;p&gt;The solution here is a familiar one. We need to follow the steps we used above for configuring Linux to trust a certificate authority, but we need to do it inside our container.&lt;/p&gt;
+&lt;p&gt;There are several ways to accomplish this.&lt;/p&gt;
+&lt;h2 id=&quot;solution-1-volume-mount-the-cert&quot;&gt;Solution #1: Volume Mount The Cert&lt;/h2&gt;
+&lt;p&gt;The simplest solution is to mount the certificate into the proper spot in our container and run &lt;code&gt;update-ca-certificates&lt;/code&gt;. ### Alpine:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Run container and mount in our CA Cert
+&amp;gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.cer alpine
+# Add ca-certificates (and curl for testing)
+root@167f5742c295:/# apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add ca-certificates &amp;amp;&amp;amp; apk add curl
+...
+
+# include trust our cert
+root@167f5742c295:/# update-ca-certificates
+Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+
+# Test https
+root@167f5742c295:/# curl https://google.com
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
+
+# Success!&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;ubuntu&quot;&gt;Ubuntu&lt;/h3&gt;
+&lt;p&gt;The general pattern with some small modifications works on Ubuntu-based images as well.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.crt ubuntu
+
+root@167f5742c295:/# apt update &amp;amp;&amp;amp; apt upgrade &amp;amp;&amp;amp; apt install ca-certificates curl
+
+root@167f5742c295:/# update-ca-certificates 
+Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+
+root@167f5742c295:/# curl https://google.com
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
+
+\&amp;gt; # Success!!&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;solution-2-extend-the-image&quot;&gt;Solution #2: Extend the Image&lt;/h2&gt;
+&lt;p&gt;Volume mounting the certificate and manually running &lt;code&gt;update-ca-certificates&lt;/code&gt; is an excellent proof of concept, but if you want to run a docker container in the background and have all traffic proxied, then interactive mode won’t cut it. In that case, extending the image is the way to go.&lt;/p&gt;
+&lt;h2 id=&quot;extending-an-alpine-image-to-add-a-certificate-authority&quot;&gt;Extending an Alpine Image to Add a Certificate Authority&lt;/h2&gt;
+&lt;p&gt;We can create a new Dockerfile that extends the image we want to proxy and add in the certificate.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;FROM alpine # or any alpine based image
+RUN apk update &amp;amp;&amp;amp; apk add curl
+WORKDIR /usr/local/share/ca-certificates
+COPY mitmproxy.crt mitmproxy.crt
+RUN update-ca-certificates&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can then build it and tag it with a &lt;code&gt;:mitm&lt;/code&gt; tag.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker build --tag alpine:mitm .
+[+] Building 1.9s (10/10) FINISHED                             
+ =&amp;gt; [internal] load build definition from Dockerfile      0.0s
+ =&amp;gt; =&amp;gt; transferring dockerfile: 200B                      0.0s
+ =&amp;gt; [internal] load .dockerignore                         0.0s
+ =&amp;gt; =&amp;gt; transferring context: 2B                           0.0s
+ =&amp;gt; [internal] load metadata for docker.io/library/alpin  0.0s
+ =&amp;gt; CACHED [1/5] FROM docker.io/library/alpine            0.0s
+ =&amp;gt; [internal] load build context                         0.2s
+ =&amp;gt; =&amp;gt; transferring context: 1.36kB                       0.2s
+ =&amp;gt; [2/5] RUN apk update &amp;amp;&amp;amp; apk add curl                  1.4s
+ =&amp;gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
+ =&amp;gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s 
+ =&amp;gt; [5/5] RUN /usr/sbin/update-ca-certificates            0.3s 
+ =&amp;gt; exporting to image                                    0.1s 
+ =&amp;gt; =&amp;gt; exporting layers                                   0.1s 
+ =&amp;gt; =&amp;gt; writing image sha256:ca5be16f3d19c34ea5e29ac1774b  0.0s 
+ =&amp;gt; =&amp;gt; naming to docker.io/library/alpine:mitm            0.0s&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now anytime we run this image, it will be ready to accept responses signed by our certificate authority. And because we didn’t change the entry point, we can use it wherever we would use the base image.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it alpine:mitm      
+\&amp;gt; curl https://google.com
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Any requests by anything running inside the container will be transparently proxied. If you are trying to debug what a service you depend on is doing this will come in handy.&lt;/p&gt;
+&lt;h2 id=&quot;extending-an-ubuntu-image-to-add-a-certificate-authority&quot;&gt;Extending an Ubuntu Image to Add a Certificate Authority&lt;/h2&gt;
+&lt;p&gt;A similar process will work with Ubuntu-based images:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;FROM ubuntu
+RUN apt update -y &amp;amp;&amp;amp; apt upgrade -y &amp;amp;&amp;amp; apt install ca-certificates curl -y
+WORKDIR /usr/local/share/ca-certificates
+COPY mitmproxy.crt mitmproxy.crt
+RUN update-ca-certificates &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker build --tag ubuntu:mitm .
+[+] Building 36.4s (10/10) FINISHED                            
+ =&amp;gt; [internal] load build definition from Dockerfile      0.0s
+ =&amp;gt; =&amp;gt; transferring dockerfile: 234B                      0.0s
+ =&amp;gt; [internal] load .dockerignore                         0.0s
+ =&amp;gt; =&amp;gt; transferring context: 2B                           0.0s
+ =&amp;gt; [internal] load metadata for docker.io/library/ubunt  0.0s
+ =&amp;gt; CACHED [1/5] FROM docker.io/library/ubuntu            0.0s
+ =&amp;gt; [internal] load build context                         0.0s
+ =&amp;gt; =&amp;gt; transferring context: 35B                          0.0s
+ =&amp;gt; [2/5] RUN apt update -y &amp;amp;&amp;amp; apt upgrade -y &amp;amp;&amp;amp; apt in  35.0s
+ =&amp;gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
+ =&amp;gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s
+ =&amp;gt; [5/5] RUN update-ca-certificates                      0.9s 
+ =&amp;gt; exporting to image                                    0.4s 
+ =&amp;gt; =&amp;gt; exporting layers                                   0.3s 
+ =&amp;gt; =&amp;gt; writing image sha256:06fbbeea728364e3bacef503f7c2  0.0s 
+ =&amp;gt; =&amp;gt; naming to docker.io/library/ubuntu:mitm            0.0s&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it ubuntu:mitm    
+root&amp;gt; curl https://google.com
+&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
+&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
+&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
+The document has moved
+&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
+&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
+# Success&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;but-wait-theres-more&quot;&gt;But wait, there’s more&lt;/h2&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/mitmproxy/22.png&quot;
+       alt=&quot;man in the middle diagram&quot;&gt;
+&lt;/figure&gt;
+&lt;p&gt;There we go. We can now capture HTTPS traffic made by any containers we run. Combined with the previous steps, we can now intercept and inspect HTTP and HTTPS protocol traffic on our host machine, on a Linux virtual machine running in a hypervisor, and in the actual running containers.&lt;/p&gt;
+&lt;p&gt;If you can get something running on your local machine, you can now capture and inspect its network requests. This can be very handy for debugging problems and building up an understanding of how something works without digging into the source code. The setup can be a bit complicated, but I hope you can see why mitmproxy is a great tool to keep in your toolkit.&lt;/p&gt;
+&lt;p&gt;The fun doesn’t stop here, though. &lt;a href=&quot;https://mitmproxy.org/&quot;&gt;mitmproxy&lt;/a&gt; can modify and replay requests and has an active ecosystem, including &lt;a href=&quot;https://github.com/ustwo/mastermind&quot;&gt;mastermind&lt;/a&gt; which lets you build mock services based on captured requests and &lt;a href=&quot;https://github.com/secretsquirrel/BDFProxy&quot;&gt;BDFProxy&lt;/a&gt;, which uses mitmproxy to modify common security updates for &lt;del&gt;nefarious reasons&lt;/del&gt; security research projects, and much more.&lt;/p&gt;</content><author><name>Earthly</name></author><category term="Tutorials" /><summary type="html">Introduction</summary></entry><entry><title type="html">Every open-core company should be a source-available company</title><link href="https://earthly.dev/blog/every-open-core-company-should-be-a-source-available-company/" rel="alternate" type="text/html" title="Every open-core company should be a source-available company" /><published>2021-02-02T00:12:00-05:00</published><updated>2021-02-02T00:12:00-05:00</updated><id>https://earthly.dev/blog/every-open-core-company-should-be-a-source-available-company</id><content type="html" xml:base="https://earthly.dev/blog/every-open-core-company-should-be-a-source-available-company/">&lt;p&gt;Earthly users and prospective users - today we are announcing our switch to Business Source License 1.1 (BSL).&lt;/p&gt;
+&lt;p&gt;We would like to provide Earthly to as &lt;em&gt;many&lt;/em&gt; engineers as possible for as &lt;em&gt;long&lt;/em&gt; as possible. In order to build a project that continues to evolve, to grow, to have strong community support, and to continue to offer most of the value for free, we need a sustainable business model. We are taking steps to prevent anyone from taking advantage of Earthly in a way that could jeopardize our business model. We believe that this changes nothing for the overwhelming majority of the Earthly user-base.&lt;/p&gt;
+&lt;h2 id=&quot;what-is-bsl&quot;&gt;What is BSL?&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://mariadb.com/bsl11/&quot;&gt;Business Source License&lt;/a&gt; is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Source-available_software&quot;&gt;source-available license&lt;/a&gt; created by MariaDB to “strike a balance between being able to run a financially viable software company while still supporting the original tenets of Open Source, such as empowering all software developers to be part of the innovation cycle”. Under BSL, the code is not open-source in the spirit of &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Open_Source_Definition&quot;&gt;The Open Source Definition&lt;/a&gt;, however, the code is available for free immediately and it becomes open-source after a set period of time. In Earthly’s case, the code automatically becomes open-source, under the Mozilla Public License Version 2.0, after three years.&lt;/p&gt;
+&lt;p&gt;Our intention is for the code to continue to be provided in the spirit of the pure open-source definition, with one key difference: you cannot create a commercial offering (like a CI) based on Earthly.&lt;/p&gt;
+&lt;h2 id=&quot;what-does-this-mean-for-me&quot;&gt;What does this mean for me?&lt;/h2&gt;
+&lt;p&gt;Unless you are intending to take the Earthly source code, turn it into a competing CI or a build-service product, which you sell as a service, then this change will not impact you in any way.&lt;/p&gt;
+&lt;p&gt;You can continue to use Earthly like you always have. You may build unrelated commercial products that are built with Earthly. And you may even build in-house build services or CIs, as long as those are not offered commercially to third parties. However, you cannot build a commercial Earthly offering.&lt;/p&gt;
+&lt;h2 id=&quot;what-is-earthlys-business-model&quot;&gt;What is Earthly’s business model?&lt;/h2&gt;
+&lt;p&gt;Our business model will be based on the &lt;a href=&quot;https://en.wikipedia.org/wiki/Open-core_model&quot;&gt;open-core model&lt;/a&gt;. An open-core model means that some amount of additional functionality is built around an open code-base. The core is free and the source is made available, while the additional functionality around the core is paid-for. Usually, the additional functionality is either targeted at large teams or enterprises, and/or is based on a managed service offering. Examples of open-core business models are &lt;a href=&quot;https://kafka.apache.org/&quot;&gt;Kafka&lt;/a&gt; (&lt;a href=&quot;https://www.confluent.io/&quot;&gt;Confluent&lt;/a&gt;), &lt;a href=&quot;https://cassandra.apache.org/&quot;&gt;Cassandra&lt;/a&gt; (&lt;a href=&quot;https://www.datastax.com/&quot;&gt;DataStax&lt;/a&gt;), the &lt;a href=&quot;https://www.elastic.co/what-is/elk-stack&quot;&gt;ELK stack&lt;/a&gt; (&lt;a href=&quot;https://www.elastic.co/&quot;&gt;Elastic&lt;/a&gt;), &lt;a href=&quot;https://redis.io/&quot;&gt;Redis&lt;/a&gt; (&lt;a href=&quot;https://redislabs.com/&quot;&gt;Redis Labs&lt;/a&gt;), &lt;a href=&quot;https://github.com/cockroachdb/cockroach&quot;&gt;CockroachDB&lt;/a&gt; (&lt;a href=&quot;https://www.cockroachlabs.com/&quot;&gt;Cockroach Labs&lt;/a&gt;) and many others.&lt;/p&gt;
+&lt;p&gt;We believe that this model has been battle-tested and is becoming the norm in the world of open developer tooling and cloud infrastructure.&lt;/p&gt;
+&lt;h2 id=&quot;why-is-a-license-change-needed&quot;&gt;Why is a license change needed?&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“We believe in a model where both the creator and the society can win.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We live in a world where the power of supporting innovation is concentrated within a handful of companies. These companies have many orders of magnitude more resources than the average entrepreneur, and have the upper hand when it comes to delivering new technology to large audiences.&lt;/p&gt;
+&lt;p&gt;However, innovative ideas come from everywhere - not just the giants. Not having the same resources as a large company means that many great ideas do not turn into products, especially for startups. Some tech giants abuse their power and tip the scales in their favor, which means that we, as a society, are losing by missing out on innovation.&lt;/p&gt;
+&lt;p&gt;We believe in a model where both the creator and the society can win.&lt;/p&gt;
+&lt;p&gt;Users of developer tools and cloud infrastructure have made their voices heard and they prefer free and open software. Non-free developer tools tend to be the exception rather than the norm. The bar has been set, and we as an industry have agreed that this approach reduces the risk of vendor lock-in and enables integration that will last for a long time. Tool authors have thus adapted, and more often than not the tool comes with the source code too. The investors who back these authors are also embracing this model.&lt;/p&gt;
+&lt;p&gt;However, certain large technology companies have abused the freedom of open-source and have launched competing products offered as-a-service based on the very same code base. These competing services come supercharged with a strong platform play and seemingly infinite technical resources to pull off the effort. They are not necessarily better products, but a large company can make the offering better known through its influence. This kind of offering starves the original authors of their resources: revenue and investors. Innovation will grind to a halt as a result.&lt;/p&gt;
+&lt;p&gt;Without stable revenue and an exciting-enough story to tell Wall Street, such creators are doomed to never reach their full potential. The talent that created the innovation in the first place can no longer be sustained. When the creators are losing, the community is losing, because they end up getting sub-par support from third-parties. Such companies end up being acquired for a modest sum by yet another tech giant, a transaction that may or may not hinder their growth. The balance of power is then concentrated even further towards the large and the vicious cycle starts again.&lt;/p&gt;
+&lt;h2 id=&quot;what-then&quot;&gt;What then?&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Those who cannot remember the past are condemned to repeat it” – George Santayana&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In response to this behavior, innovators have adapted by introducing limitations to their licenses. The licenses are no longer open-source in the purest form, however, the source code is made available (hence the name “source-available license”) to be used in wide applications, with certain limitations. Examples of notable switches include &lt;a href=&quot;https://techcrunch.com/2018/10/16/mongodb-switches-up-its-open-source-license/&quot;&gt;MongoDB&lt;/a&gt;, &lt;a href=&quot;https://www.cockroachlabs.com/blog/oss-relicensing-cockroachdb/&quot;&gt;CockroachDB&lt;/a&gt;, &lt;a href=&quot;https://blog.timescale.com/blog/how-we-are-building-an-open-source-business-a7701516a480/&quot;&gt;Timescale&lt;/a&gt;, &lt;a href=&quot;https://www.elastic.co/blog/why-license-change-AWS&quot;&gt;Elastic&lt;/a&gt;, &lt;a href=&quot;https://techcrunch.com/2019/05/30/lack-of-leadership-in-open-source-results-in-source-available-licenses/&quot;&gt;and many others&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As creators of developer tooling and cloud infrastructure, we are incentivized to create the biggest possible positive impact in our industry. To do that we need investor support to scale the creation from a basement project to a world-class offering. To get investor support, we need sustainable revenue and a shot at becoming the next exciting company on Wall Street. And to build sustainable revenue, we need tech giants to play fair. More success stories create more grass-root creators and more excitement in investor communities, which continue to fuel this positive feedback cycle. Innovation is thus democratized. At the end of the day, the user wins, and society wins.&lt;/p&gt;
+&lt;p&gt;If this delicate chain is broken, the end result is that innovation is hindered. Investors cannot safely bet on these companies, creators &lt;a href=&quot;https://stackoverflow.blog/2021/01/07/open-source-has-a-funding-problem/&quot;&gt;cannot sustain open-source as a side-hustle forever&lt;/a&gt; (at the end of the day they need to put food on the table) and startups cannot hire top talent to scale the innovation engine beyond a small Sunday project.&lt;/p&gt;
+&lt;p&gt;Preventing copy-cats from taking over the business model allows us as an industry to sustain this fly-wheel of innovation and continue to serve society. We believe that every open-core company should be a source-available company.&lt;/p&gt;
+&lt;p&gt;Starting with Earthly v0.5, we begin offering Earthly via BSL while continuing to provide Earthly’s code freely on &lt;a href=&quot;https://github.com/earthly/earthly&quot;&gt;GitHub&lt;/a&gt;. Furthermore, we pledge to forever do what we believe is in the best interest of the community and society as a whole.&lt;/p&gt;
+&lt;p&gt;Many thanks to everyone who has supported Earthly’s vision of bringing repeatable builds to the world!&lt;/p&gt;
+&lt;!--kg-card-end: markdown--&gt;</content><author><name>Earthly</name></author><category term="News" /><category term="license" /><category term="news" /><category term="bsl" /><summary type="html">Earthly users and prospective users - today we are announcing our switch to Business Source License 1.1 (BSL).</summary></entry></feed>

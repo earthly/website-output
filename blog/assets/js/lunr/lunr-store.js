@@ -202,16 +202,4 @@ var store = [{
         "tags": [],
         "url": "/blog/compiling-containers-dockerfiles-llvm-and-buildkit/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Understanding Bash",
-        "excerpt":"Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several...","categories": ["Tutorials"],
-        "tags": [],
-        "url": "/blog/understanding-bash/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Example Overlay Headline",
-        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure some alt text Image with figure Alex likes to draw and add a caption graph (not working) Code blocks (with syntax highlighting) syntax = &quot;proto3&quot;; package simplekeyvalue; option go_package = &quot;kvapi&quot;; // The...","categories": ["News","Tutorials","Articles"],
-        "tags": ["tag1","tag2","tag3"],
-        "url": "/blog/example/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
