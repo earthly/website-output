@@ -1,0 +1,604 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to Setup and Use Amazon’s Elastic Container Registry - Earthly</title>
+<meta name="description" content="A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="How to Setup and Use Amazon’s Elastic Container Registry">
+<meta property="og:url" content="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/">
+
+
+  <meta property="og:description" content="A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="How to Setup and Use Amazon’s Elastic Container Registry">
+  <meta name="twitter:description" content="A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-03-05T13:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-400-1af9981ae.webp 400w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-600-1af9981ae.webp 600w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-800-1af9981ae.webp 800w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-1000-1af9981ae.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-400-1af9981ae.jpg 400w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-600-1af9981ae.jpg 600w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-800-1af9981ae.jpg 800w, /blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-1000-1af9981ae.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-800-1af9981ae.jpg" alt="How to Setup and Use Amazon’s Elastic Container Registry"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to Setup and Use Amazon’s Elastic Container Registry">
+    <meta itemprop="description" content="A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.">
+    <meta itemprop="datePublished" content="2021-03-05T13:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to Setup and Use Amazon’s Elastic Container Registry
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a><ul><li><a href="#eks-manifest">EKS Manifest</a></li><li><a href="#ecs-task-definition">ECS Task Definition</a></li></ul></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming <a href="https://www.cio.com/article/3434010/more-enterprises-are-using-containers-here-s-why.html">a method of choice</a> for shipping modern applications.</p>
+<p>Containers are created from a read-only template called an <em>Image</em>. These images need to be stored somewhere so they can be retrieved by any machine authorized to use them. That’s where a container registry comes in.</p>
+<h2 id="docker-hub-where-many-start">Docker Hub: Where Many Start</h2>
+<p><a href="https://www.docker.com/">Docker</a> is one of the most well-known pieces of software for working with containerized applications. To help with the storage issue, Docker created <a href="https://hub.docker.com/">Docker Hub</a> - the world’s largest container registry - where developers can share and download pre-built images from others.</p>
+<p>While Docker Hub is still the most common option, it’s lost a bit of steam since the company started restricting free public repositories to just <a href="https://cloudonaut.io/amazon-ecr-vs-docker-hub-vs-github-container-registry/">a few hundred pulls every 6 hours</a>. Docker Hub also offers some of the same features that ECR does (image scanning, team access) to paid users, but it’s likely to be much more expensive than Amazon ECR is when you’re starting out.</p>
+<p>Finally, the free Docker Hub plan has added a restrictive retention policy. They will delete any container images that haven’t been accessed within the last six months, so if you’re using Docker Hub for your side project that you update only occasionally, you might be surprised to find it suddenly gone one day.</p>
+<h2 id="introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</h2>
+<p>Amazon ECR is a fully managed container registry offered as part of the AWS suite. Like Docker Hub, it makes storing, sharing, managing, and deploying your images easier, but it’s also likely to save you money - especially if you’re already using AWS. Simply push your images to ECR and pull the images using container management tool: <a href="https://kubernetes.io/">Kuberenetes</a>, <a href="https://docs.docker.com/compose/">Docker Compose</a>, <a href="https://aws.amazon.com/ecs">ECS</a>, <a href="https://aws.amazon.com/eks">EKS</a>, etc.</p>
+<h3 id="pricing">Pricing</h3>
+<p>Generally, public repositories are suitable for open-source developers sharing their work with the world for free. In contrast, private repositories are used by companies to share proprietary images of their internal software. Depending on the privacy level you need, here’s how AWS charges for ECR:</p>
+<ul>
+<li><strong>Private Repositories</strong>: As a part of the AWS free tier, you get 500 MB of storage for one year for private repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage for private repositories.</li>
+<li><strong>Public Repositories</strong>: ECR offers 50 GB-month of free storage and 500 GB to 5 TB (depending on whether you authenticate with AWS or not) for public repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage.</li>
+</ul>
+<p>There may be additional costs depending on your region and usage, so be sure to check the pricing <a href="https://aws.amazon.com/ecr/pricing/">here</a>.</p>
+<h3 id="why-ecr">Why ECR?</h3>
+<p>If you’re already bought into the Amazon ecosystem, ECR is an obvious choice for your container registry as you won’t have to add a new service to your budget. Besides saving you money, ECR integrates with other standard AWS services, which will hopefully improve developer experience as well.</p>
+<h3 id="iam-identity-and-access-management"><a href="https://aws.amazon.com/iam">IAM (Identity and Access Management)</a></h3>
+<p><a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html">ECR integrates with IAM</a> to configure policies and manage and control access to your images. This means you won’t have to share credentials or manage permissions individually for each repository.</p>
+<h3 id="eks-elastic-kubernetes-service"><a href="https://aws.amazon.com/eks">EKS (Elastic Kubernetes Service)</a></h3>
+<p>Kubernetes is a widely used container orchestration technology for automating deployments, networking, and scaling your application. Elastic Kubernetes Service is the AWS-managed Kubernetes platform.</p>
+<p>EKS allows you to run Kubernetes on AWS without maintaining your own <a href="https://kubernetes.io/docs/concepts/overview/components/#control-plane-components">Kubernetes control plane</a>. You define a manifest file, and the Kubernetes master node will schedule and run the deployments. As you’ll see later, you can use images hosted in ECR in this manifest file to easily deploy your workloads from your public or private repositories.</p>
+<h3 id="ecs-elastic-container-service"><a href="https://aws.amazon.com/ecs">ECS (Elastic Container Service)</a></h3>
+<p>Like EKS, ECS is a container orchestration service that makes running, stopping, and managing containers on AWS resources easy. Without getting into all of the specifics, ECS is typically better for teams that want a simple but powerful way to run their containers, while EKS adds the flexibility and security options available in Kubernetes. To learn more about each of AWS’s container orchestration tools, read <a href="https://aws.amazon.com/blogs/containers/amazon-ecs-vs-amazon-eks-making-sense-of-aws-container-services/">this article on picking the right one</a>.</p>
+<p>When integrating with ECR, ECS users simply have to <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html">add their images to a task definition</a>. Task definitions are JSON files that describe each container that forms the application. These definitions are similar to Kubernetes manifest files but require their own format and options.</p>
+<h2 id="using-elastic-container-registry">Using Elastic Container Registry</h2>
+<p>If you’ve decided that ECR is the right option for your application, you’re ready to set up and start using it. In the remainder of this tutorial, I’ll walk you through the steps required to get started with ECR. I’ll show you how to push and pull images from ECR and how you can use your ECR images in EKS and ECS.</p>
+<p>Typically these steps will be run as part of your continuous integration workflow, but you can also run them locally to get more familiar with the required tooling before you automate them.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">AWS Credentials</a> with permissions to interact with ECR.</li>
+<li><a href="https://docs.docker.com/get-docker/">Docker installed for your operating system</a>.</li>
+<li>The <a href="https://aws.amazon.com/cli/">AWS CLI installed locally</a>.</li>
+</ul>
+<h3 id="creating-a-new-repository">Creating a New Repository</h3>
+<p>Assuming you’ve already got an AWS account and permissions correctly configured, the easiest way to get started is to create a new ECR repository via the Amazon Web Services UI.</p>
+<p>Go to the <a href="http://console.aws.amazon.com/ecr/get-started">ECR homepage</a> and click the <em>Get Started</em> button.</p>
+<figure>
+<img src="/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/xX4GGwL.png" alt="ECR landing page" /><figcaption aria-hidden="true">ECR landing page</figcaption>
+</figure>
+<p>You will be taken to the <em>Create repository</em> page, where you can enter all the details for your new repository.</p>
+<h3 id="configuring-your-repository">Configuring Your Repository</h3>
+<figure>
+<img src="/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/SZrf8AQ.png" alt="Amazon ECR repository creation menu" /><figcaption aria-hidden="true">Amazon ECR repository creation menu</figcaption>
+</figure>
+<p>Choose a visibility (<em>Public</em> or <em>Private</em>), name the repository (ideally something short but self-explanatory), and below the name, select any of the other options you need:</p>
+<ul>
+<li><em>Tag immutability</em> - Prevents the same tag from being pushed twice and overwriting a previous version of the tag.</li>
+<li><em>Scan on push</em> - Your images will be scanned for security vulnerabilities each time a new tag is pushed.</li>
+<li><em>[KMS encryption}(https://medium.com/<span class="citation" data-cites="suprajaraman/aws-kms-all-about-keys-564245425ecc">@suprajaraman/aws-kms-all-about-keys-564245425ecc</span>)</em> - Allows you to use AWS Key Management Service (KMS) to encrypt the images in this repository.</li>
+</ul>
+<p><em>Note: your final repository URL structure will be something like this:</em></p>
+<pre><code>&lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;</code></pre>
+<p>Once your repository is configured, click <em>Create repository</em> to initialize your ECR repository. If you want to create a public repository, you can follow the same steps but select <code>Pubic</code> instead of <code>Private</code>.</p>
+<figure>
+<img src="/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/XCZe4vX.png" alt="Amazon ECR dashboard" /><figcaption aria-hidden="true">Amazon ECR dashboard</figcaption>
+</figure>
+<h3 id="pushing-an-image-to-the-repository">Pushing an Image to the Repository</h3>
+<p>Before publishing the Image to ECR, make sure you have Docker installed on your workstation and a project with a Dockerfile that’s ready to be built and pushed to ECR.</p>
+<p>If you don’t have a project ready, create a new file called <code>Dockerfile</code> and enter the following (this is based on the official <a href="https://hub.docker.com/_/alpine">Docker <code>alpine:3.7</code> image</a>):</p>
+<pre><code>FROM alpine:3.7
+CMD echo &#39;Hello world&#39;</code></pre>
+<p>Next, <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html">set up your AWS credentials on the CLI</a> if you haven’t already:</p>
+<pre><code>aws configure</code></pre>
+<p>Paste your <em>AWS Access Key ID</em> and <em>AWS Secret Access Key</em>. This will allow your CLI instance access to your AWS account.</p>
+<p>If you’re using the CLI as part of your continuous integration workflow, you also have the option <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html">to use environment variables</a> to securely store your credentials.</p>
+<h3 id="adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</h3>
+<p>Next, you need Docker to be able to push images to your ECR repository. The <a href="https://docs.docker.com/engine/reference/commandline/login/"><code>docker login</code> command</a> will allow you to do this, so using the AWS CLI, retrieve your ECR password and pipe it into the Docker command:</p>
+<pre><code>aws ecr get-login-password \
+    --region &lt;account-region&gt; \
+| docker login \
+    --username AWS \
+    --password-stdin &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;</code></pre>
+<p>After authentication, you will see <code>Login Succeeded</code> as a response. Now you’ll be able to push tagged images to your ECR repository.</p>
+<p>If you are pushing or pulling images from this machine regularly, you may not want to go through this login process every time. Instead of using <code>docker login</code>, you can configure the <a href="https://github.com/awslabs/amazon-ecr-credential-helper">Amazon ECR Docker Credential Helper</a> to give the Docker daemon direct access to your AWS credentials. This method is also convenient for CI environments because it automates the authentication process and caches tokens to minimize your risk of being throttled.</p>
+<h3 id="pushing-an-image-to-ecr">Pushing an Image to ECR</h3>
+<p>Next, build the image from your Dockerfile:</p>
+<pre><code>docker build -t &lt;image-name&gt;:&lt;image-version&gt; .</code></pre>
+<p>Then, tag the image with your ECR repository name:</p>
+<pre><code>docker tag &lt;image-name&gt;:&lt;image-version&gt; &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
+<p>Your image is now ready to push to ECR:</p>
+<pre><code>docker push &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
+<p>And just like that, you have pushed our first image to a repository on Elastic Container Registry. In the next section, you’ll see how you can use these images for local or remote deployments.</p>
+<h3 id="pulling-an-image-from-ecr">Pulling an Image from ECR</h3>
+<p>Whether you want to pull an image from a public ECR repository or your company has private images stored in ECR, pulling works in the same way it does in any container registry. After you’ve authenticated (using the same steps above), you can use <a href="https://docs.docker.com/engine/reference/commandline/pull/"><code>docker pull</code></a>:</p>
+<pre><code>docker pull &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
+<p>Now you can run this image locally.</p>
+<h3 id="using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</h3>
+<p>If you are building a new application from a base image stored in ECR, you can use the <code>FROM</code> command in your Dockerfile just as you would with any other Docker image. For example:</p>
+<pre><code>FROM: &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
+<p>Again, you’ll need to be authenticated if you want to build an image off a private image in ECR, but this allows you to share base images with your team or the public.</p>
+<h3 id="using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</h3>
+<p>To use your images from ECR in a container management platform like ECS or EKS, simply add the name and tag of the image you want to use to the relevant configuration file.</p>
+<h4 id="eks-manifest">EKS Manifest</h4>
+<p>For example, you can use the following EKS manifest to deploy a NodeJS image stored in ECR:</p>
+<pre><code>apiVersion: batch/v1 
+kind: Job 
+metadata: 
+    name: eks-iam-test-s3 
+spec: template: 
+    metadata: 
+      labels: 
+        app: eks-iam-test-s3 
+    spec: 
+      serviceAccountName: iam-test 
+      containers: 
+        - name: eks-iam-test 
+          image: 123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1 
+          args: [&quot;s3&quot;, &quot;ls&quot;] 
+      restartPolicy: Never</code></pre>
+<p>When deployed, it will create a job with the name <code>eks-iam-test-s3</code> using the <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code> image. To see the complete step-by-step process for deploying this job to EKS, see <a href="https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html">the AWS documentation here</a>.</p>
+<h4 id="ecs-task-definition">ECS Task Definition</h4>
+<p>ECR images can also be used in ECS task definition files to define your containers:</p>
+<pre><code>{
+  &quot;containerDefinitions&quot;: [
+    {
+      &quot;name&quot;: &quot;sample-app&quot;,
+      &quot;image&quot;: &quot;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&quot;,
+      &quot;memory&quot;: 200,
+      &quot;cpu&quot;: 10,
+      &quot;essential&quot;: true
+    }
+  ],
+  &quot;family&quot;: &quot;example_task_3&quot;,
+  &quot;taskRoleArn&quot;: &quot;arn:aws:iam::123456789012:role/AmazonECSTaskS3BucketRole&quot;
+}</code></pre>
+<p>This definition will deploy a container named <code>sample-app</code> using image <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code>. More detailed steps are <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition.html">available in the ECS documentation here</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this tutorial, you learned the basics of containers and container registries. You learned about the differences between Docker Hub and Amazon ECR for public and private repository hosting, and you saw how to set up and use ECR to store your images.</p>
+<p>Whether you’re using Docker images in production or not, ECR is a useful tool if you’re already embedded in the AWS ecosystem. It gives you the advantage of working well with other Amazon services like IAM for security and ECS or EKS for deployments.</p>
+<p>If you are pushing images to ECR as part of your build pipeline, check out Earthly’s support for <a href="https://docs.earthly.dev/guides/configuring-registries/aws-ecr#install-and-configure-the-ecr-credential-helper">ECR credentials</a>. Unlike other build tools, Earthly executes each CI build in an isolated containerized environment, and it can pull images from ECR or any other container registry you choose. It’s free to use, so <a href="https://earthly.dev/">check Earthly out today</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-05T13:00:00-05:00">March 5, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" class="pagination--pager" title="Using Apple Silicon (M1) as a cloud engineer, two months in
+">Previous</a>
+    
+    
+      <a href="/blog/understanding-docker-logging-and-log-files/" class="pagination--pager" title="Understanding Docker Logging and Log Files
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

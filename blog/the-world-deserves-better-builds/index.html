@@ -1,0 +1,495 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>The world deserves better builds - Earthly</title>
+<meta name="description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="The world deserves better builds">
+<meta property="og:url" content="https://earthly.dev/blog/the-world-deserves-better-builds/">
+
+
+  <meta property="og:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="The world deserves better builds">
+  <meta name="twitter:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/the-world-deserves-better-builds/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2020-10-08T16:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/the-world-deserves-better-builds/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/the-world-deserves-better-builds/header-400-49229c57b.webp 400w, /blog/generated/assets/images/the-world-deserves-better-builds/header-600-49229c57b.webp 600w, /blog/generated/assets/images/the-world-deserves-better-builds/header-800-49229c57b.webp 800w, /blog/generated/assets/images/the-world-deserves-better-builds/header-1000-49229c57b.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/the-world-deserves-better-builds/header-400-49229c57b.jpg 400w, /blog/generated/assets/images/the-world-deserves-better-builds/header-600-49229c57b.jpg 600w, /blog/generated/assets/images/the-world-deserves-better-builds/header-800-49229c57b.jpg 800w, /blog/generated/assets/images/the-world-deserves-better-builds/header-1000-49229c57b.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/the-world-deserves-better-builds/header-800-49229c57b.jpg" alt="The world deserves better builds"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="The world deserves better builds">
+    <meta itemprop="description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.">
+    <meta itemprop="datePublished" content="2020-10-08T16:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">The world deserves better builds
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.</p>
+<p>Today, we are pleased to announce that a number of well-respected industry veterans also share our vision and have joined Earthly’s seed round of funding to fuel our growth.</p>
+<p>We have partnered with <a href="https://www.ft.com/content/b93d120e-5c04-458b-bfbc-b147e2e399fa">468 Capital</a>, the fund of <a href="https://www.linkedin.com/in/florianleibert/">Florian Leibert</a> (Mesosphere), as well as a number of creators of large developer ecosystems, such as <a href="https://www.linkedin.com/in/spencerwkimball/">Spencer Kimball</a> (Cockroach Labs), <a href="https://www.linkedin.com/in/olivierpomel">Olivier Pomel</a> (DataDog), <a href="https://www.linkedin.com/in/mitchwainer/">Mitch Wainer</a> (DigitalOcean), <a href="https://www.linkedin.com/in/mattklein123/">Matt Klein</a> (Envoy proxy), <a href="https://www.linkedin.com/in/mirkonovakovic/">Mirko Novakovic</a> (Instana, <a href="https://newforge.de/">NewForge</a>), <a href="https://www.linkedin.com/in/dmcramer/">David Cramer</a> (Sentry.io), <a href="https://www.linkedin.com/in/cristiangeorgestrat/">Cristian Strat</a> (head of trading platform Coinbase) and <a href="https://www.davidaronchick.com/">David Aronchick</a> (Kubernetes, GKE). In addition, a number of institutional investors with deep experience in developer platforms have joined the round, including <a href="https://www.linkedin.com/in/salil/">Salil Deshpande</a> of Bain Capital-backed fund <a href="https://uncorrelated.com/">Uncorrelated Ventures</a>, <a href="https://www.linkedin.com/in/jeremyl/">Jeremy Levine</a> of <a href="https://www.bvp.com/">Bessemer Venture Partners</a> and <a href="https://www.linkedin.com/in/ed-roman-19686/">Ed Roman</a> of <a href="https://hack-vc.com/">Hack VC</a>.</p>
+<h2 id="the-general-sentiment-around-builds">The general sentiment around builds</h2>
+<p>Since our initial product launch, we’ve talked to several engineers, build gurus and industry experts about traditional build tooling, and we discovered that nobody likes their build process. Builds are always a source of frustration one way or another. They’re slow, brittle, too difficult to understand, inconsistent and difficult to iterate on.</p>
+<p>In contrast, we found out that the number one reason people love Earthly so much is its ability to reproduce failures. Reproducibility is key, because it allows people to iterate on builds quickly on their laptops without having to worry that they will break when they push to CI.</p>
+<p>Earthfiles represent a reproducibility guarantee, ensuring that your build will run the same way on all platforms - CI, your colleague’s laptop, Linux, Mac, Windows, etc. - regardless of any local specific toolchain.</p>
+<p>People who have sought out reproducibility before Earthly have developed their own docker-based build scripts that essentially run most of the build within makeshift containers. The common problem with this approach is that the build requires constant fiddling to get right, still breaks occasionally on a colleague’s computer, and is poorly understood across wider teams.</p>
+<p>Did you know that sed on a Mac is different from the sed on Linux distributions? So is find. And so is make. And a number of other tools we take for granted. Even on Linux alone, can you be sure that your colleagues are running the same version of Python or of Java? Is JDK even installed? If all of us were build gurus, experts in the likes of bash, makefile, and cross-system compatibility, maybe this wouldn’t be such a big issue. But we’re not.</p>
+<p>These incompatibilities lead to significant inefficiencies in the software development lifecycle. Too often, teams don’t even run integration tests, because they have no idea how to build the projects belonging to other teams. Beyond the typical build scripts, there are often too many unwritten assumptions, so they just give up and leave it to be caught down the pipeline, in CI, UAT… or perhaps in production.</p>
+<p>With Earthly, we believe we can make this process an order of magnitude better.</p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>Docker made containers friendlier to use and widely accessible, bringing container isolation into mainstream usage. In a similar spirit, Earthly follows in Docker’s footsteps, bringing together a number of important innovations into an easy-to-use package. We bring together Buildkit and OCI images and inspiration from Dockerfiles and Makefiles to make reproducible builds easier to get right and harder to get wrong.</p>
+<p>Earthly is somewhat like a Makefile, where each target is fully isolated from one another - and, more importantly, isolated from the host environment. As they’re isolated, there is no way to depend on anything you have installed locally. To bring in OS-level dependencies, you install them as part of the build, the same way you would install them in a Dockerfile. In fact, the entire Docker Hub ecosystem can be leveraged in the build process.</p>
+<p>In a way, Earthly completes Dockerfiles. While Dockerfiles allow you to define the make-up of Docker images, Earthfiles go beyond and also allow you to run unit tests, integration tests, or to output arbitrary files (eg binaries, artifacts, jars), not just images - all of which runs within a containerized environment, thus maintaining consistency of execution.</p>
+<figure class>
+<img src="/blog/assets/images/the-world-deserves-better-builds/glue-diagram.png"
+       alt="Diagram of how Earthly integrates as a distinct layer between build systems and CI. It replaces traditional glue scripts formed of Dockerfiles, Makefiles and Bash files. These traditional scripts are DIY, clunky and easy to get wrong.">
+<figcaption>
+<p>Earthly replaces the scripting glue layer</p>
+</figcaption>
+</figure>
+<p>There are lots of other goodies that Earthly does beyond this, such as automatically running everything in parallel, bringing a modern import system and having native secrets and SSH agent support.</p>
+<h2 id="whats-next">What’s next?</h2>
+<p>Having reproducible builds is the first step in our journey. We plan to build shared caching and highly parallel cloud-based builds next. We have a deep belief that builds can create bridges between engineering teams - not roadblocks. This has become our mission, and we will not stop until we’ve achieved it!<br />
+Since our launch, we’ve worked with our users to address their needs and make the experience as pleasant and friendly as possible. We love feedback - check out <a href="https://github.com/earthly/earthly">Earthly on GitHub</a>, drop by our <a href="https://gitter.im/earthly-room/community">Gitter channel</a> or open a GitHub <a href="https://github.com/earthly/earthly/issues/new">issue</a> - tell us what you’re building and how your experience can be improved. We’re excited to have you join us on our journey!</p>
+<blockquote>
+<p>“Reproducible and parallelizable build and continuous integration, as well as explicit dependency management, are critical to scaling any organization. I’m extremely excited about Earthly bringing this functionality to existing container based build systems without requiring an extremely expensive retooling effort on top of something like Bazel. Earthly is a pragmatic and incremental solution to a thorny problem that all organizations face.”</p>
+<p>– Matt Klein, creator of Envoy Proxy</p>
+</blockquote>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/news" class="page__taxonomy-item" rel="tag">News</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-08T16:00:00-04:00">October 8, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/hacktoberfest-2020/" class="pagination--pager" title="Hacktoberfest 2020
+">Previous</a>
+    
+    
+      <a href="/blog/grateful-for-hacktoberfest/" class="pagination--pager" title="Grateful for Hacktoberfest!
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

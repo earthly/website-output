@@ -1,0 +1,641 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>INTERCAL, YAML, And Other Horrible Programming Languages - Earthly</title>
+<meta name="description" content="PROGRAM REJECTED FOR MENTAL HEALTH REASONS">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="INTERCAL, YAML, And Other Horrible Programming Languages">
+<meta property="og:url" content="https://earthly.dev/blog/intercal-yaml-and-other-horrible-programming-languages/">
+
+
+  <meta property="og:description" content="PROGRAM REJECTED FOR MENTAL HEALTH REASONS">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="INTERCAL, YAML, And Other Horrible Programming Languages">
+  <meta name="twitter:description" content="PROGRAM REJECTED FOR MENTAL HEALTH REASONS">
+  <meta name="twitter:url" content="https://earthly.dev/blog/intercal-yaml-and-other-horrible-programming-languages/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-02-25T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/intercal-yaml-and-other-horrible-programming-languages/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="INTERCAL, YAML, And Other Horrible Programming Languages">
+    <meta itemprop="description" content="PROGRAM REJECTED FOR MENTAL HEALTH REASONS">
+    <meta itemprop="datePublished" content="2021-02-25T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">INTERCAL, YAML, And Other Horrible Programming Languages
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h2 id="program-rejected-for-mental-health-reasons">PROGRAM REJECTED FOR MENTAL HEALTH REASONS</h2>
+<p>In 1972, two students learning FORTRAN came up with a fantastic new programming language called INTERCAL. INTERCAL is a bit unusual. For example, single quotes are called <em>sparks</em>, and double quotes are called <em>rabbit ears</em>, less than (&lt;) is an <em>angle</em>, and a dash (-) is a <em>worm</em>. This makes the manual read like a word puzzle combined with an extended in-joke.</p>
+<blockquote>
+<p>One final comment about sparks and rabbit-ears; if the next character in the program is a spot, as often happens because onespot variables are common choices for operands, a spark and the following spot can be combined into a wow (!). - <a href="http://www.catb.org/~esr/intercal/ick.htm">INTERCAL Manual</a>.</p>
+</blockquote>
+<p>The compiler errors are where the authors got genuinely creative. Errors include <code>VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE</code> for accessing an array incorrectly, <code>IT CAME FROM BEYOND SPACE</code> for invalid control flow, <code>PROGRAM REJECTED FOR MENTAL HEALTH REASONS</code> for threading issues, <code>I HAVE NO FILE AND I MUST SCREAM</code> for file not found, and <a href="http://www.catb.org/~esr/intercal/ick.htm#Errors">many many more</a>.</p>
+<p>Yes, this is a parody language, and reading the manual, you get the sense that no one has yet had as much fun writing technical documentation as Lyon and Woods did writing this.</p>
+<p>The language itself looks less fun. Here is <a href="http://www.rosettacode.org/wiki/Category:Intercal">Hello World</a>:</p>
+<pre><code>       NOTE THIS IS INTERCAL
+       PLEASE ,1 &lt;- #5
+       DO ,1 SUB #1 &lt;- #54
+       DO ,1 SUB #2 &lt;- #192
+       DO ,1 SUB #3 &lt;- #136
+       PLEASE ,1 SUB #4 &lt;- #208
+       DO ,1 SUB #5 &lt;- #98
+       DO COME FROM (1)
+       DO READ OUT ,1
+(2)    DO ,1 SUB #1 &lt;- #134
+(1)    PLEASE ABSTAIN FROM (2)</code></pre>
+<p>One of the exciting innovations of INTERCAL is the <code>COMEFROM</code> <a href="https://en.wikipedia.org/wiki/COMEFROM#Examples">instruction</a>, seen here in a variant of BASIC.</p>
+<pre><code>10 COMEFROM 40
+20 INPUT &quot;WHAT IS YOUR NAME? &quot;; A$
+30 PRINT &quot;HELLO, &quot;; A$
+40 REM</code></pre>
+<p>A <code>COMEFROM</code> anywhere in a program can grab control flow from the line you are reading. And in some implementations, if many <code>COMEFROM</code>’s reference the same line, execution splits off in each direction.</p>
+<p>A <code>COMEFROM</code> is the inverse of a <code>GOTO</code> statement with multi-threading thrown in. It breaks the mental model of imperative execution where each line’s evaluation leads to the next line. The idea that you can simulate its execution in your head, line by line, is fundamental to imperative programming and <code>COMEFROM</code> attempts to break that model.</p>
+<h2 id="variables-may-not-be-stored-in-west-hyperspace">VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE</h2>
+<p>At Twitter, they have a giant monorepo with lots of services in it. And somebody at Twitter wanted to know which language was most prevalent. Which language does Twitter use the most?</p>
+<p>Java came in 3rd, and Scala came in 2nd. But 1st was a surprise. The number one programming language used at Twitter was YAML<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>YAML usually doesn’t feel like a programming language to me. The file I’m currently writing in is in markdown with some YAML at the top to set the title and associated fields.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> INTERCAL, YAML, And Other Horrible Programming Languages</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Adam</span></span></code></pre></div>
+<p>Nothing executes the YAML. It only offers some information to the blogging platform. But I don’t think that is the type of YAML that made up the volume of config at Twitter.</p>
+<p>I suspect a lot of it was build and deployment scripts in the form of YAML. It was the type of configuration that encoded the control flow of some external system. YAML like that lives in this grey zone between declarative configuration and a full-blown programming language.</p>
+<p>I’ll show you what I mean. Let’s look at an example from <a href="https://github.com/koalaman/shellcheck/blob/master/.travis.yml">shellcheck</a>’s build script.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> shell</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">os</span><span class="kw">:</span><span class="at"> linux</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> docker</span></span></code></pre></div>
+<p>That seems like straight-forward config.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">include</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">stage</span><span class="kw">:</span><span class="at"> Build</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">env</span><span class="kw">:</span><span class="at"> BUILD=linux</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">workspaces</span><span class="kw">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">create</span><span class="kw">:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ws-linux</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">paths</span><span class="kw">:</span><span class="at"> deploy</span></span></code></pre></div>
+<p><code>create</code>, in the above, is starting to seem a bit more like execution. Let’s continue.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">script</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> ls -la ${CASHER_DIR}/ || true</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> tar -xvf ${CASHER_DIR}/ws-osx-fetch.tgz --strip-components=5</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> ls -la deploy</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> ./.github_deploy</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span></code></pre></div>
+<p>Now the YAML has just devolved into specifying how to execute a grab bag of commands. We haven’t seen control-flow yet, but it’s coming.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">if</span><span class="kw">:</span><span class="at"> type = push</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">script</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> source ./.multi_arch_docker</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> set -ex; multi_arch_docker::main; set +x</span></span></code></pre></div>
+<p>There we go, branching. It’s an if statement in a YAML file!</p>
+<p>And this isn’t TravisCI, or CI specific. Here is a simple example from Ansible:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tasks</span><span class="kw">:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">include</span><span class="kw">:</span><span class="at"> foo.yml</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> something == &quot;foo&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">include</span><span class="kw">:</span><span class="at"> bar.yml</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">when</span><span class="kw">:</span><span class="at"> something == &quot;bar&quot;</span></span></code></pre></div>
+<p>Here is GitHub Actions:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Step 7</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">if</span><span class="kw">:</span><span class="at"> ${{ github.event_name == &#39;pull_request&#39; &amp;&amp; github.event.action == &#39;unassigned&#39; }}</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">run</span><span class="kw">:</span><span class="at"> echo This event is a pull request that had an assignee removed.</span></span></code></pre></div>
+<p>Here is part of a Grafana <a href="deployment.yaml">Helm Chart</a>:</p>
+<pre class="liquid"><code>  
+  {{ if (or (not .Values.persistence.enabled) (eq .Values.persistence.type &quot;pvc&quot;)) }}
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{ template &quot;grafana.fullname&quot; . }}
+    namespace: {{ template &quot;grafana.namespace&quot; . }}
+    labels:
+      {{- include &quot;grafana.labels&quot; . | nindent 4 }}
+  {{- if .Values.labels }}
+  {{ toYaml .Values.labels | indent 4 }}
+  {{- end }}
+  {{- with .Values.annotations }}
+    annotations:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  </code></pre>
+<p>I think this is a problem<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Writing control flow in a config file is like hammering in a screw. It’s a useful tool being used for the wrong job.</p>
+<p>How did we get to this world of little programming languages embedded into YAML? Is calling something configuration just less scary? And if so, is a c++ program just config you give to gcc?</p>
+<p>Did things ever get this complicated in XML times?</p>
+<p>It turns out they did:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">xsl:stylesheet</span><span class="ot"> version=</span><span class="st">&quot;1.0&quot;</span><span class="ot"> xmlns:xsl=</span><span class="st">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span>&gt;</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">xsl:output</span><span class="ot"> method=</span><span class="st">&quot;text&quot;</span><span class="ot"> omit-xml-declaration=</span><span class="st">&quot;yes&quot;</span> /&gt;</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">xsl:template</span><span class="ot"> match=</span><span class="st">&quot;/&quot;</span>&gt;</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">xsl:call-template</span><span class="ot"> name=</span><span class="st">&quot;FizzBuzz&quot;</span>&gt;</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:with-param</span><span class="ot"> name=</span><span class="st">&quot;i&quot;</span><span class="ot"> select=</span><span class="st">&quot;1&quot;</span> /&gt;</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">xsl:call-template</span>&gt;</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">xsl:template</span>&gt;</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">xsl:template</span><span class="ot"> name=</span><span class="st">&quot;FizzBuzz&quot;</span>&gt;</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">xsl:param</span><span class="ot"> name=</span><span class="st">&quot;i&quot;</span> /&gt;</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">xsl:choose</span>&gt;</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:when</span><span class="ot"> test=</span><span class="st">&quot;($i mod 3) = 0 and ($i mod 5) = 0&quot;</span>&gt;FizzBuzz<span class="dv">&amp;#xa;</span>&lt;/<span class="kw">xsl:when</span>&gt;</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:when</span><span class="ot"> test=</span><span class="st">&quot;$i mod 3 = 0&quot;</span>&gt;Fizz<span class="dv">&amp;#xa;</span>&lt;/<span class="kw">xsl:when</span>&gt;</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:when</span><span class="ot"> test=</span><span class="st">&quot;$i mod 5 = 0&quot;</span>&gt;Buzz<span class="dv">&amp;#xa;</span>&lt;/<span class="kw">xsl:when</span>&gt;</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:otherwise</span>&gt;&lt;<span class="kw">xsl:value-of</span><span class="ot"> select=</span><span class="st">&quot;$i&quot;</span> /&gt;&lt;<span class="kw">xsl:text</span>&gt;<span class="dv">&amp;#xa;</span>&lt;/<span class="kw">xsl:text</span>&gt;&lt;/<span class="kw">xsl:otherwise</span>&gt;</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">xsl:choose</span>&gt;</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">xsl:if</span><span class="ot"> test=</span><span class="st">&quot;$i </span><span class="dv">&amp;lt;</span><span class="st"> 100&quot;</span>&gt;</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>      &lt;<span class="kw">xsl:call-template</span><span class="ot"> name=</span><span class="st">&quot;FizzBuzz&quot;</span>&gt;</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        &lt;<span class="kw">xsl:with-param</span><span class="ot"> name=</span><span class="st">&quot;i&quot;</span><span class="ot"> select=</span><span class="st">&quot;$i + 1&quot;</span> /&gt;</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      &lt;/<span class="kw">xsl:call-template</span>&gt;</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">xsl:if</span>&gt;</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  &lt;/<span class="kw">xsl:template</span>&gt;</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">xsl:stylesheet</span>&gt;</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<p>That is <code>FizzBuzz</code> in <a href="https://gist.github.com/JustinPealing/6f619a23729720a9c14d9917201028c8">XSLT</a>. I assume it was written in jest, but in many ways, XML and XSLT are better than an ad-hoc YAML based scripting language. XSLT is a documented and standardized thing, not just some ad-hoc format for specifying execution.</p>
+<p>It burns my eyes to look at it, but at least XSLT was intended to be used as a programming language. That is something we can’t say about YAML or INTERCAL.</p>
+<p>The problem with these languages embedded into YAML is they are all one-off implementations. TravisCI conditionals have a TravisCI specific syntax, usage, and features. You can’t use Travis’s <code>concat</code> function or conditional regex in the YAML configuration for your ansible playbooks.</p>
+<p>In a vague way, this YAML problem is like the <code>COMEFROM</code> problem. If you know yaml, you can’t just open a .yml file and start reading file line by line. You need to understand how the configuration controls the execution of the specific system it’s for. And that is hard.</p>
+<!-- If it's `title: bla` that is easy enough, but once we hit conditionals and filters, it feels like we are using the wrong tool. -->
+<h2 id="i-have-no-file-and-i-must-scream">I HAVE NO FILE AND I MUST SCREAM</h2>
+<p>The line between configuration and programming languages is not some bright dividing line. It is easy to slowly drift into adding programming language constructs to a config file. Before you know it, you have a full unspecified programming language embedded in the interpretation of your config file.</p>
+<p>That is the worst of both worlds, and so much YAML seems to drift into this area.</p>
+<p>I like YAML more than XML, but for control flow, you know what would be better than YAML? Anything else! Maybe even INTERCAL? I mean, how bad could a joke programming language be?</p>
+<pre><code>(100)  PLEASE NOTE THIS IS THE FIZZBUZZ FUNCTION    
+
+    PLEASE NOTE: IS THE INPUT DIVISIBLE BY #15?
+    DO .1 &lt;- .100   
+    DO .2 &lt;- #15
+    DO (2030) NEXT
+    PLEASE NOTE: is .4 (remainder) == 0?
+    DO .4 &lt;- &#39;?&quot;&#39;.4~.4&#39;~#1&quot;$#1&#39;~#3
+    DO (130) NEXT
+    
+    PLEASE NOTE NUMBER IS NOT DIVISIBLE BY #15 =&gt; CHECK IF DIVISIBLE BY #3
+    DO .2 &lt;- #3
+    DO (2030) NEXT
+    PLEASE NOTE: is .4 (remainder) == 0?
+    DO .4 &lt;- &#39;?&quot;&#39;.4~.4&#39;~#1&quot;$#1&#39;~#3
+    DO (110) NEXT
+
+    PLEASE NOTE NUMBER IS NOT DIVISIBLE BY #3 =&gt; CHECK IF DIVISIBLE BY #5
+    DO .2 &lt;- #5
+    DO (2030) NEXT
+    PLEASE NOTE: is .4 (remainder) == 0?
+    DO .4 &lt;- &#39;?&quot;&#39;.4~.4&#39;~#1&quot;$#1&#39;~#3
+    DO (120) NEXT
+    
+    PLEASE NOTE NUMBER IS REGULAR =&gt; RETURN THE INPUT
+    DO .101 &lt;- .100
+    DO (199) NEXT
+
+(110)   DO (111) NEXT
+    DO FORGET #1
+    PLEASE NOTE NUMBER IS DIVISIBLE BY #3 =&gt; RETURN FIZZ
+    DO .101 &lt;- #61440
+    DO (199) NEXT
+
+
+(120)   DO (111) NEXT
+    DO FORGET #1
+    PLEASE NOTE NUMBER IS DIVISIBLE BY #5 =&gt; RETURN BUZZ
+    DO .101 &lt;- #45056
+    DO (199) NEXT
+
+(130)   DO (111) NEXT
+    DO FORGET #1
+    PLEASE NOTE NUMBER IS DIVISIBLE BY #15 =&gt; RETURN FIZZ-BUZZ
+    DO .101 &lt;- #64256
+    DO (199) NEXT
+
+(111)   DO RESUME .4
+    
+(199)   DO FORGET #1
+    DO RESUME #1</code></pre>
+<p>Oh God.</p>
+<p>Well, ok, maybe not INTERCAL but anything else. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>See my interview with <a href="https://www.se-radio.net/2019/08/episode-375-gabriel-gonzalez-on-configuration/">Gabriel Gonzalez on Configuration</a> at Software Engineering Radio.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Ansible and Helm are actually templating languages built on top of YAML, which is better than embedded control flow, but the point still stands.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>Practically, you may have to use tools that encode a DSL into config, but you can use them while recognizing that we can do better. I think something like <a href="https://dhall-lang.org/#">Dhall</a> for complicated config and something like <a href="https://www.pulumi.com/">pulumi</a> for complex configuration as code should be where we aim for as an industry.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-02-25T00:00:00-05:00">February 25, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/" class="pagination--pager" title="What is Buildkit?
+">Previous</a>
+    
+    
+      <a href="/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" class="pagination--pager" title="Using Apple Silicon (M1) as a cloud engineer, two months in
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

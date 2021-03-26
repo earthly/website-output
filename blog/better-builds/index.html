@@ -1,0 +1,603 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Can We Build Better? - Earthly</title>
+<meta name="description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Can We Build Better?">
+<meta property="og:url" content="https://earthly.dev/blog/better-builds/">
+
+
+  <meta property="og:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Can We Build Better?">
+  <meta name="twitter:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/better-builds/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2020-09-10T19:46:37-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/better-builds/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/better-builds/header-400-39b3274ec.webp 400w, /blog/generated/assets/images/better-builds/header-597-39b3274ec.webp 597w" type="image/webp"><source srcset="/blog/generated/assets/images/better-builds/header-400-39b3274ec.jpg 400w, /blog/generated/assets/images/better-builds/header-597-39b3274ec.jpg 597w" type="image/jpeg"><img src="/blog/generated/assets/images/better-builds/header-597-39b3274ec.jpg" alt="Can We Build Better?"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Can We Build Better?">
+    <meta itemprop="description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.">
+    <meta itemprop="datePublished" content="2020-09-10T19:46:37-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Can We Build Better?
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#solving-reproducible-builds">Solving Reproducible Builds</a></li><li><a href="#a-scala-example">A Scala Example</a></li><li><a href="#setup">Setup</a></li><li><a href="#build-it">Build It</a></li><li><a href="#test-it">Test It</a></li><li><a href="#containerize-it">Containerize It</a></li><li><a href="#did-we-solve-it">Did we solve it?</a></li><li><a href="#but-wait-theres-more">But wait there’s more</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.</p>
+<h2 id="solving-reproducible-builds">Solving Reproducible Builds</h2>
+<p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.</p>
+<p>Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.</p>
+<h2 id="a-scala-example">A Scala Example</h2>
+<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a makefile you wouldn’t be far off.  </p>
+<p>Let’s walk through creating an Earthfile for a scala project:</p>
+<pre><code>├── build.sbt 
+└── src/main
+    ├── Main.scala
+└── src/test
+    ├── Test.scala &lt;/code&gt;&lt;/pre&gt;</code></pre>
+<p>We have a main that we would like to run on startup:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">object</span> Main <span class="kw">extends</span> App <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">println</span><span class="op">(</span><span class="st">&quot;Hello, World!&quot;</span><span class="op">)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<figcaption>
+Main.scala
+</figcaption>
+<p>And some unit tests we would like to run as part of the build:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> org<span class="op">.</span>scalatest<span class="op">.</span>FlatSpec</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ListFlatSpec <span class="kw">extends</span> FlatSpec <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;An empty List&quot;</span> should <span class="st">&quot;have size 0&quot;</span> in <span class="op">{</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">assert</span><span class="op">(</span><span class="bu">List</span><span class="op">.</span>empty<span class="op">.</span>size <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<figcaption>
+Test.scala
+</figcaption>
+<p>There are several steps involved in the build process for this project:</p>
+<ol type="1">
+<li>Compiling</li>
+<li>Testing</li>
+<li>Containerizing</li>
+</ol>
+<p>Let’s encapsulate these into an Earthfile, so that I can run the exact same build process locally and eliminate any reproducibility issues.</p>
+<h2 id="setup">Setup</h2>
+<p>The first step is to create a new Earthfile and copy in our build files and dependencies:  </p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> hseeberger/scala-sbt:11.0.6_1.3.10_2.13.1</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /scala-example</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>deps:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> build.sbt ./</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> project project</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt update</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    SAVE IMAGE</span></code></pre></div>
+<figcaption>
+Earthfile
+</figcaption>
+<p>The first line is declaring the base docker image our build steps will run inside.  All earthly builds take place within the context of a docker container.  This is how we ensure reproducibility.  After that, we set a working directory and declare our first target <code>deps</code> and copy our project files into the build context.</p>
+<blockquote>
+<p>You may have noticed the first time you build an sbt project, it takes a while to pull down all the project dependencies.  This <code>deps</code> target is helping us avoid paying that cost every build.   Calling <code>sbt update</code> and then <code>SAVE IMAGE</code> ensures that these steps are cached and can be used in further build steps.  Earthly will only need to be rerun this step if our build files change.</p>
+</blockquote>
+<p>We can test out the deps step like this:</p>
+<figure class>
+<img src="/blog/assets/images/better-builds/run.gif"
+       alt="running earthly at command line">
+<figcaption>
+<p>Running <code>earthly +deps</code></p>
+</figcaption>
+</figure>
+<h2 id="build-it">Build It</h2>
+<p>Next, we create a <code>build</code> target. This is our Earthfile equivalent of <code>sbt compile</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>build:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +deps</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt compile</span></code></pre></div>
+<figcaption>
+earthfile continued
+</figcaption>
+<p>Inside the <code>build:</code> target we copy in our source files, and run our familiar <code>sbt compile</code>.  We use <code>FROM +deps</code> to tell earthly that this step is dependent upon the output of our <code>deps</code> step above.</p>
+<p>We can run the build like this:</p>
+<figure class>
+<img src="/blog/assets/images/better-builds/run2.gif"
+       alt="running earthly at command line">
+<figcaption>
+<p>Running <code>earthly +build</code></p>
+</figcaption>
+</figure>
+<h2 id="test-it">Test It</h2>
+<p>We can similarly create a target for running tests:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>test:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +deps</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt test&lt;/code&gt;&lt;/pre&gt;</span></code></pre></div>
+<figcaption>
+Earthfile continued
+</figcaption>
+<p>We can then run our tests like this:</p>
+<figure class>
+<img src="/blog/assets/images/better-builds/run3.gif"
+       alt="running earthly +test">
+<figcaption>
+<p>Running <code>earthly +test</code></p>
+</figcaption>
+</figure>
+<h2 id="containerize-it">Containerize It</h2>
+<p>The final step in our build is to build a docker container, so we can send this application off to run in Kuberenetes or EKS or whatever production happens to look like.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>docker:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt assembly</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ENTRYPOINT</span> [<span class="st">&quot;java&quot;</span>,<span class="st">&quot;-cp&quot;</span>,<span class="st">&quot;build/bin/scala-example-assembly-1.0.jar&quot;</span>,<span class="st">&quot;Main&quot;</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    SAVE IMAGE scala-example:latest</span></code></pre></div>
+<figcaption>
+Earthfile continued
+</figcaption>
+<p>Here we are using <code>sbt assembly</code> to create a fat jar that we run as our docker container’s entry point.</p>
+<p>We can test out our docker image as follows:</p>
+<figure class>
+<img src="/blog/assets/images/better-builds/run4.gif"
+       alt="building docker image using earthly">
+<figcaption>
+<p>Running <code>earthly +docker</code></p>
+</figcaption>
+</figure>
+<p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example here</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
+<h2 id="did-we-solve-it">Did we solve it?</h2>
+<p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.</p>
+<figure class>
+<img src="/blog/assets/images/better-builds/diagram.png"
+       alt="diagram of earthly usage">
+<figcaption>
+<p>Encapsulation build steps</p>
+</figcaption>
+</figure>
+<p>If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .</p>
+<h2 id="but-wait-theres-more">But wait there’s more</h2>
+<p>We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.  </p>
+<p>For now, you can find more details, such as how to install earthly and many more examples on <strong><a href="https://github.com/earthly/earthly/blob/master/README.md">github</a>.  </strong></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-09-10T19:46:37-04:00">September 10, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/v0-3-3-released/" class="pagination--pager" title="v0.3.3 Released
+">Previous</a>
+    
+    
+      <a href="/blog/earthly-0-3-6-released/" class="pagination--pager" title="Earthly 0.3.6 Released
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

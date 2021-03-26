@@ -1,0 +1,1130 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Earthly</title>
+<meta name="description" content="Build automation for the container era.">
+
+
+  <meta name="author" content="Earthly">
+  
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Earthly">
+<meta property="og:url" content="https://earthly.dev/blog/">
+
+
+  <meta property="og:description" content="Build automation for the container era.">
+
+
+
+  <meta property="og:image" content="https://earthly.dev/blog/assets/images/logo-header.png">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Earthly">
+  <meta name="twitter:description" content="Build automation for the container era.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/assets/images/logo-header.png">
+  
+
+  
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/">
+
+
+
+  <link rel="next" href="https://earthly.dev/blog/page2/">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--home">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <img src="/blog/assets/images/logo-header.png" alt="" class="page__hero-image">
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <div class="home-archive">
+    
+      <h1 id="page-title" class="page__title"></h1>
+    
+    
+
+<h3 class="archive__subtitle">Recent posts</h3>
+
+
+
+
+<div class="entries-grid">
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9da891af5.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="permalink">Compiling Containers - Dockerfiles, LLVM and BuildKit
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Intro
+
+
+How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/on-yaml-discussions/header-800-ab4352ade.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/on-yaml-discussions/" rel="permalink">On YAML Discussions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Highlights From The Comments On The YAML Article
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/build-your-own-ngrok-clone/header-245-128600489.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/build-your-own-ngrok-clone/header-245-128600489.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/build-your-own-ngrok-clone/header-800-128600489.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/build-your-own-ngrok-clone/" rel="permalink">Build Your Own Ngrok Clone With AWS
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Introduction
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-245-ada684c1b.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-245-ada684c1b.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-800-ada684c1b.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-docker-logging-and-log-files/" rel="permalink">Understanding Docker Logging and Log Files
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one o...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-245-ff7605f3b.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-245-ff7605f3b.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/header-800-ff7605f3b.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/how-to-setup-and-use-amazons-elastic-container-registry/" rel="permalink">How to Setup and Use Amazon’s Elastic Container Registry
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environmen...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/header-245-2ca2bf80a.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/header-245-2ca2bf80a.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/header-800-2ca2bf80a.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" rel="permalink">Using Apple Silicon (M1) as a cloud engineer, two months in
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+So I’ve been using my new M1-based MacBook Pro for a couple of months for a mix of development, email, and other things an open-source maintainer does day-t...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/intercal-yaml-and-other-horrible-programming-languages/" rel="permalink">INTERCAL, YAML, And Other Horrible Programming Languages
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+PROGRAM REJECTED FOR MENTAL HEALTH REASONS
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/what-is-buildkit-and-what-can-i-do-with-it/header-245-43e4ef098.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/what-is-buildkit-and-what-can-i-do-with-it/header-245-43e4ef098.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/what-is-buildkit-and-what-can-i-do-with-it/header-800-43e4ef098.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/" rel="permalink">What is Buildkit?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+There is an excellent open-source project that you have probably used without realizing it. It’s called BuildKit, and it is what turns a Dockerfile into a D...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/mitmproxy/header-245-790f8f92d.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/mitmproxy/header-245-790f8f92d.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/mitmproxy/header-800-790f8f92d.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/mitmproxy/" rel="permalink">How to Man in the Middle HTTPS Using mitmproxy
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Introduction
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/every-open-core-company-should-be-a-source-available-company/header-245-3b8354ec8.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/every-open-core-company-should-be-a-source-available-company/header-245-3b8354ec8.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/every-open-core-company-should-be-a-source-available-company/header-800-3b8354ec8.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/every-open-core-company-should-be-a-source-available-company/" rel="permalink">Every open-core company should be a source-available company
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Earthly users and prospective users - today we are announcing our switch to Business Source License 1.1 (BSL).
+
+</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/monorepo-vs-polyrepo/header-245-7661d2c71.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/monorepo-vs-polyrepo/header-245-7661d2c71.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/monorepo-vs-polyrepo/header-800-7661d2c71.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/monorepo-vs-polyrepo/" rel="permalink">Monorepo vs Polyrepo
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          20 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+The decision of whether to use a monorepo or a polyrepo structure for your source code can be a very emotional (maybe even religious!) battle. On its surfac...</p>
+  </article>
+</div>
+
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture>
+  <source srcset="/blog/generated/assets/images/top-5-scala-blogs/header-245-ba169b9d5.webp 245w" type="image/webp">
+  <source srcset="/blog/generated/assets/images/top-5-scala-blogs/header-245-ba169b9d5.jpg 245w" type="image/jpeg">
+  <img src="/blog/generated/assets/images/top-5-scala-blogs/header-694-ba169b9d5.jpg">
+</picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/top-5-scala-blogs/" rel="permalink">5 Blogs for Scala’s Birthday
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+The public release of Scala was 17 years ago today.  The language and its community are certainly not standing still, so I’ve put together a list of my favo...</p>
+  </article>
+</div>
+
+  
+</div>
+
+
+<nav class="pagination">
+  
+  <ul>
+    
+    
+    <li><a href="#" class="disabled"><span aria-hidden="true">Previous</span></a></li>
+    
+
+    
+    
+      <li><a href="#" class="disabled current">1</a></li>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+      
+        
+        
+        
+        <li><a href="/blog/page2/">2</a></li>
+      
+    
+
+    
+    
+
+    
+      <li><a href="/blog/page3/">3</a></li>
+    
+
+    
+    
+      <li><a href="/blog/page2/">Next</a></li>
+    
+  </ul>
+</nav>
+
+
+
+  </div>
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

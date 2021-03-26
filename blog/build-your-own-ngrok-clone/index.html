@@ -1,0 +1,656 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Build Your Own Ngrok Clone With AWS - Earthly</title>
+<meta name="description" content="Introduction">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Build Your Own Ngrok Clone With AWS">
+<meta property="og:url" content="https://earthly.dev/blog/build-your-own-ngrok-clone/">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Build Your Own Ngrok Clone With AWS">
+  <meta name="twitter:description" content="Introduction">
+  <meta name="twitter:url" content="https://earthly.dev/blog/build-your-own-ngrok-clone/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-03-11T13:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/build-your-own-ngrok-clone/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/build-your-own-ngrok-clone/header-400-2fc0a7c6f.webp 400w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-600-2fc0a7c6f.webp 600w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-800-2fc0a7c6f.webp 800w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-1000-2fc0a7c6f.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/build-your-own-ngrok-clone/header-400-2fc0a7c6f.jpg 400w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-600-2fc0a7c6f.jpg 600w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-800-2fc0a7c6f.jpg 800w, /blog/generated/assets/images/build-your-own-ngrok-clone/header-1000-2fc0a7c6f.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/build-your-own-ngrok-clone/header-800-2fc0a7c6f.jpg" alt="Build Your Own Ngrok Clone With AWS"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Build Your Own Ngrok Clone With AWS">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="2021-03-11T13:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Build Your Own Ngrok Clone With AWS
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a><ul><li><a href="#so-how-does-ngrok-work">So, How Does ngrok Work?</a></li><li><a href="#lets-build-it">Lets Build It</a><ul><li><a href="#where-will-the-instance-live">Where will the instance live?</a></li><li><a href="#ssh-keypair">SSH Keypair</a></li><li><a href="#security-group">Security Group</a></li><li><a href="#ec2-instance">EC2 Instance</a></li><li><a href="#using-the-proxy">Using the Proxy</a></li></ul></li><li><a href="#teardown">Teardown</a></li><li><a href="#create-using-earthly">Create using Earthly</a></li><li><a href="#shortcomings">Shortcomings</a></li><li><a href="#conclusion">Conclusion</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="introduction">Introduction</h1>
+<p><a href="https://ngrok.com/">Ngrok</a> is a tool that allows you to create secure, publically accessible URLs for your locally running code. Just a simple <code>./ngrok http 3000</code>, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for a stable domain it costs <em>at least</em> $5/month, and it only goes up from there. Additionally, you’re limited in the number of connections and tunnels that you can make.</p>
+<p>However, it can be hard to trust fancy tools like <code>ngrok</code> until you experience how the sausage is made; at least once. It may also be hard to explan yet <em>another</em> recurring charge on the credit card to your partner. So, here is a tutorial to build yourself a DIY <code>ngrok</code> for free (at least 12 months, after that its very cheap), using the <a href="https://aws.amazon.com/free/">AWS Free Tier</a>, <a href="https://www.nginx.com/">NGINX</a>, and (of course) <a href="https://earthly.dev/">Earthly</a>. The result is a decent approximation that won’t break the bank.</p>
+<h2 id="so-how-does-ngrok-work">So, How Does <code>ngrok</code> Work?</h2>
+<p>To understand why <code>ngrok</code> is so cool, you’ll need to first understand how you would normally get traffic from the broader internet into your local machine. A typical flow would be something like this:</p>
+<div class="wide" data-markdown="1">
+<figure>
+<img src="/blog/assets/images/build-your-own-ngrok-clone/without_ngrok.png" alt="Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine." /><figcaption aria-hidden="true">Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine.</figcaption>
+</figure>
+</div>
+<p>This flow is normal for most of the machines on the internet today, but it has its downsides for local development. For instance, most home and non-commerical internet connections do not have a <a href="https://whatismyipaddress.com/dynamic-static">Static IP</a> - which means you need to double-check your IP address before sending it out, or (more often) install and configure additional software to keep your DNS records up to date.</p>
+<p>Additionally, you’ll need to configure your router to forward that traffic to your machine. This configuration is typically fairly annoying to set up, and should also be turned off each time you arent using it, otherwise you are keeping your computer exposed to the internet at large! Its like putting a giant welcome mat out for hackers during their automated scans.</p>
+With this foundation, you can now understand why <code>ngrok</code> (and our DIY one) is so cool! It removes the need for all this additional configuration, while also providing better security. All you need to do is add an extra computer into the mix, like this:
+<div class="wide" data-markdown="1">
+<figure>
+<img src="/blog/assets/images/build-your-own-ngrok-clone/with_ngrok.png" alt="Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine." /><figcaption aria-hidden="true">Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine.</figcaption>
+</figure>
+</div>
+<p>Because you are using a <a href="https://en.wikipedia.org/wiki/Reverse_proxy">Reverse Proxy</a> to get the traffic from the extra computer to yours, no additional configuration is required on your end. And, when you are done, you can simply shut down the extra machine, and there are no loose ends or open ports left to close!</p>
+<p>As mentioned above, this tutorial uses AWS to create the proxy. Other cloud providers will work just as well, but the commands and samples in this document will be for AWS only. <a href="https://github.com/earthly/example-diy-ngrok">Pull requests are welcome</a>, if you want to contribute specific scripts for your cloud provider of choice!</p>
+<p>One elephant in the room to address before moving on is the inevitable “Why not (Terraform/Pulumi/Cloud Formation/My Favorite IAAS tool…)?” question. These tools are, in fact, made for setting up and tearing down insfrastructure exactly like this! However, using fewer tools helps keep this tutorial simple and accessible, so only the AWS CLI will be used throughout.</p>
+<h2 id="lets-build-it">Lets Build It</h2>
+<p>You will need the following to complete the rest of this tutorial:</p>
+<ul>
+<li>An active AWS account <a href="https://portal.aws.amazon.com/billing/signup#/start">(If you don’t have one, you can sign up here)</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html">Installed the AWS CLI</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html">Configured AWS credentials</a></li>
+</ul>
+<p>Optionally, you may also want to install:</p>
+<ul>
+<li><a href="https://stedolan.github.io/jq/">jq</a></li>
+</ul>
+<p>With those in hand, it’s time to get started!</p>
+<h3 id="where-will-the-instance-live">Where will the instance live?</h3>
+<p>Before creating anything in the cloud, you’ll need to make sure that you have some information about the VPC and subnet the instance will be assigned to. This information can be found in the console, or on the command-line via <code>aws ec2 describe-subnets</code>. It will list all your subnets, and the VPCs they belong to.</p>
+<p>If your cloud is like most peoples, you likely have quite a few of these lying around, which makes it difficult to find the one you want to place your proxy in. I like to add <code>jq</code> into the mix to make it easier to parse, like this:</p>
+<pre><code>❯ aws ec2 describe-subnets \
+    | jq -r &#39;.Subnets[] \
+    | &quot;\(.AvailabilityZone)\t\(.CidrBlock)\t\(.SubnetId)\t\(.VpcId)&quot;&#39; \
+    | sort</code></pre>
+<p>When selecting a subnet, ensure that the one you choose assigns public IP addresses, as you will need to accept traffic from the general internet later.</p>
+<h3 id="ssh-keypair">SSH Keypair</h3>
+<p>The first thing to create is your EC2 SSH keypair. This is simple to do, especially because the <code>aws</code> tool can generate on for you.</p>
+<pre><code>❯ aws ec2 create-key-pair \
+    --key-name proxy-key-pair \
+    &gt; key-output.json</code></pre>
+<div class="notice" data-markdown="1">
+<p><strong>ℹ️ About the AWS CLI output</strong></p>
+<p>Note the <code>&gt; key-output.json</code> at the end. The <code>aws</code> CLI tool will always <a href="https://docs.aws.amazon.com/cli/latest/userguide/cliv2-migration.html#cliv2-migration-output-pager">invoke your system pager with some kind of JSON output as the result of any calls</a>. Because you don’t want to lose the key generated by <code>aws</code> for our yet-to-be-created instance, capture it here. It’s a running trend that you will see throughout this tutorial.</p>
+</div>
+<p>You can get the key directly with <code>jq</code> by <code>jq -r .KeyPairId key-output.json</code>, or via your preferred means.</p>
+<h3 id="security-group">Security Group</h3>
+<p>Now that you have a key pair, you will also need to create a security group for the instance to reside in. To oversimplify, a security group is essentially a firewall for your instance, constraining what ports traffic is allowed to enter or leave on. <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html#VPCSecurityGroups">You can read more about security groups here, for a longer and more complete explanation.</a> Getting this right is important, so your proxy is less likely to be compromised.</p>
+<pre><code>❯ aws ec2 create-security-group \
+    --group-name reverse-proxy \
+    --description reverse-proxy \
+    --vpc-id $VPC_ID \
+    &gt; sg-output.json</code></pre>
+<div class="notice" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Make sure you replace <code>$VPC_ID</code> with the ID for the <a href="#where-will-the-instance-live">VPC you identified earlier</a>.</p>
+</div>
+<p>By default, AWS security groups are configured to disallow all traffic coming in (ingress), and to allow all traffic out (egress). While an instance that doesn’t allow traffic in is fairly secure, it also doesn’t do you much good. You will need to open up port 22 (ssh) for traffic from our current IP only, and port 80 (http) for traffic from the internet at large. By restricting SSH to your current IP address, you prevent external entities from attempting to SSH into your proxy.</p>
+<pre><code>❯ aws ec2 authorize-security-group-ingress \
+    --group-id $SG_ID \
+    --protocol tcp \
+    --port 22 \
+    --cidr $IP/32 \
+    --no-cli-pager
+
+❯ aws ec2 authorize-security-group-ingress \
+    --group-id $SG_ID \
+    --protocol tcp \
+    --port 80 \
+    --cidr 0.0.0.0/0 \
+    --no-cli-pager</code></pre>
+<div class="notice" data-markdown="1">
+<p><strong>ℹ️ Find your public IP from the command line</strong></p>
+<p>AWS has a public service that returns your IP to you. It’s super handy for scripting, because its much clearer to read than the most popular <code>dig</code>-based examples passed around on the internet. You can use it like this: <code>curl -s https://checkip.amazonaws.com</code></p>
+</div>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Make sure you replace <code>$SG_ID</code> with the ID for the security group you created earlier. If you saved the output like the sample earlier, you can get it by running <code>jq -r .GroupId sg-output.json</code>. Also, make sure you replace <code>$IP</code> with your <em>public</em> IP address.</p>
+</div>
+<h3 id="ec2-instance">EC2 Instance</h3>
+<p>Now that you have keys, and a security group configured in AWS, you’re finally ready to create your EC2 instance! Its easiest for this kind of work to use a <code>t2.micro</code>, since that is available on AWS’ free tier. If your account is older than 1 year, this instance is still among the cheapest to provision. If a <code>t2.micro</code> is too expensive, you may want to size down to a <code>t2.nano</code>, or consider <a href="https://aws.amazon.com/ec2/spot/">spot instances</a>, which are beyond the scope of this tutorial. The instance will be provisioned with an AMI using Amazon Linux 2, to keep things as simple as possible.</p>
+<pre><code>❯ aws ec2 run-instances \
+    --image-id resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 \
+    --count 1 \
+    --instance-type t2.micro \
+    --key-name $KEY_NAME \
+    --security-group-ids $SG_ID \
+    --subnet-id $SUBNET_ID \
+    &gt; ec2-output.json</code></pre>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Make sure you replace <code>$KEY_NAME</code> with the name (<em>not id</em>) of the keypair you created earlier (<code>proxy-key-pair</code>). Also make sure you replace <code>$SG_ID</code> with the ID for the security group you created earlier, and <code>$SUBNET_ID</code> with the subnet you identified before you began.</p>
+</div>
+<div class="notice" data-markdown="1">
+<p><strong>ℹ️ EC2 is fast, but not instant</strong></p>
+<p>Although AWS can provision instances very quickly, it can <em>still</em> take a couple minutes for the instance to come up, so be patient! You can wait for the instance on the CLI (if desired) by running the following command: <code>aws ec2 wait instance-status-ok --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the instance ID from the prior step.</p>
+</div>
+<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, SSH into the box and install NGINX.</p>
+<pre><code>❯ sudo amazon-linux-extras install nginx1</code></pre>
+<p>NGINX needs to be configured to use the AWS-assigned public DNS name, and proxy traffic from port 80 to you. Heres a sample config you can use:</p>
+<pre><code>upstream tunnel {
+  server 127.0.0.1:8080;
+}
+
+server {
+  server_name PUBLIC_DNS;
+  
+  location / {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    
+    proxy_pass http://tunnel;
+  }
+}</code></pre>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Be sure to replace <code>PUBLIC_DNS</code> with the AWS public DNS name. This is <em>not</em> in the initial output from AWS, because the DNS name is not granted until the machine enters a running state. You can find itby running <code>aws ec2 describe-instances --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the ID of the machine you provisioned earlier. This ID <em>can</em> be found in the outputwhen you created the instance by running <code>jq -r '.Instances[0].InstanceId' ec2-output.json</code></p>
+</div>
+<p>Save the completed configuration as <code>/etc/nginx/conf.d/server.conf</code>.</p>
+<p>Additionally, NGINX doesn’t quite handle the lengthy public DNS names that AWS hands out, so you’ll need to increase <code>server_names_hash_bucket_size</code> to the next power of 2, which is <code>128</code>. To do this, add <code>server_names_hash_bucket_size 128</code> to <code>/etc/nginx/nginx.conf</code>, in the <code>http</code> section.</p>
+<p>Now that NGINX is configured, start it, and exit your SSH session.</p>
+<pre><code>❯ sudo service nginx start
+
+...
+
+❯ exit</code></pre>
+<h3 id="using-the-proxy">Using the Proxy</h3>
+<p>Now that the instance is configured, all you will need to do to allow the internet at large to connect to a service running on your local box is to use an <code>ssh</code> reverse proxy to get data from AWS to your local machine! Start one up like this:</p>
+<pre><code>❯ ssh -i key.pem -R 8080:localhost:$LOCAL_PORT ec2-user@$PUBLIC_DNS</code></pre>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Replace <code>$LOCAL_PORT</code> with the port your application is running on, and <code>$PUBLIC_DNS</code> with the AWS-assigned public DNS name, like you did for the NGINX config.</p>
+</div>
+<p>Once that is up, all you need to do is simply share the AWS public DNS name with anybody you want to allow into your locally-hosted website!</p>
+<h2 id="teardown">Teardown</h2>
+<p>Although you can leave the proxy up for as long as you like, you’ll likely need to tear it down eventually. If you have AWS console access, simply terminate the instance, delete the security group, and delete the keypair. If you saved the IDs of these resources (they are in the JSON responses from earlier), you can also do it via the command line:</p>
+<pre><code>❯ aws ec2 terminate-instances --no-cli-pager --instance-ids $EC2_ID &gt; /dev/null
+
+❯ aws ec2 delete-key-pair --no-cli-pager --key-pair-id $KEY_ID &amp;&amp; \
+  aws ec2 delete-security-group --no-cli-pager --group-id $SG_ID</code></pre>
+<p>Note that the instance could take a couple minutes to finish terminating. You will not be able to remove the key or security group before the instance has been terminated.</p>
+<h2 id="create-using-earthly">Create using Earthly</h2>
+<p>If you don’t want to deal with manual setup or teardown, we’ve created an <code>Earthfile</code> that should automate all of this for you. It can create a proxy just like this, from scratch, in under five minutes! To start up a proxy using <code>earthly</code>, execute this <em>single</em> command.</p>
+<pre><code>❯ earthly \
+  --secret-file config=/home/user/.aws/config \
+  --secret-file credentials=/home/dchw/.aws/credentials \
+  --build-arg AWS_REGION=my_region \
+  --build-arg SUBNET_ID=my_subnet \
+  github.com/earthly/example-diy-ngrok:main+build-proxy</code></pre>
+<div class="notice" data-markdown="1">
+<p><strong>ℹ️ AWS Credentials</strong></p>
+<p>The reason you’ll need to pass the credentials, is so that our scripts can use them to construct the proxy. If you are uncomfortable passing credentials to a remote target, feel free to clone and inspect the repository before using it. You could also simplify this by trying out Earthly’s experimental <a href="https://docs.earthly.dev/guides/cloud-secrets">cloud-based secrets.</a></p>
+</div>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Don’t Forget</strong></p>
+<p>Replace the following:</p>
+<p><code>/home/user</code> with the directory of the AWS configuration directory (<code>.aws</code>)<br />
+<code>my-region</code> with the AWS region you use.<br />
+<code>my-subnet</code> with the ID of the subnet you would like to use.</p>
+<p>If you need to use temporary role-based credentials, add <code>--build-arg AWS_PROFILE=my_profile</code>, where the profile is the one to assume when creating the resources.</p>
+</div>
+<p>Building this container will construct a proxy in the same manner detailed earlier, but with a few extra benefits:</p>
+<ul>
+<li>Allows you to retrieve the generated SSH key</li>
+<li>Automated teardown of the constructed proxy</li>
+<li>Sample SSH Command for proxying</li>
+<li>A list of all IDs for all resources created</li>
+</ul>
+<p>To see everything it can do, run <code>docker run proxy:latest</code> for a list.</p>
+<h2 id="shortcomings">Shortcomings</h2>
+<p>This approach to a free, simple ngrok alternative isn’t without its shortcomings. For instance, it can’t do <code>https</code> without a self-signed certificate, because issuers like Let’s Encrypt won’t issue certificates for AWS public DNS names. Also, it can’t handle a ton of traffic since its a small <code>t2.micro</code> capped at low bandwidth.</p>
+<p>It also requires non-trivial IAM permissions in AWS to setup and teardown. If you don’t have that kind of access to an account, you may end up waiting on others to set it up for you.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Turns out it’s pretty simple to get something basic up and running, just like <code>ngrok</code> does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.</p>
+<p>Thanks for following along with us! <a href="https://github.com/earthly/example-diy-ngrok">Visit the example repository, with all scripts avaliable here.</a></p>
+<!--kg-card-end: markdown-->
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-11T13:00:00-05:00">March 11, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/understanding-docker-logging-and-log-files/" class="pagination--pager" title="Understanding Docker Logging and Log Files
+">Previous</a>
+    
+    
+      <a href="/blog/on-yaml-discussions/" class="pagination--pager" title="On YAML Discussions
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

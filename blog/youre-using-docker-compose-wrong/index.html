@@ -1,0 +1,510 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>You’re using docker-compose wrong - Earthly</title>
+<meta name="description" content="Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="You’re using docker-compose wrong">
+<meta property="og:url" content="https://earthly.dev/blog/youre-using-docker-compose-wrong/">
+
+
+  <meta property="og:description" content="Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="You’re using docker-compose wrong">
+  <meta name="twitter:description" content="Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/youre-using-docker-compose-wrong/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2020-11-27T17:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/youre-using-docker-compose-wrong/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/youre-using-docker-compose-wrong/header-400-1f41c3e19.webp 400w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-600-1f41c3e19.webp 600w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-800-1f41c3e19.webp 800w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-1000-1f41c3e19.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/youre-using-docker-compose-wrong/header-400-1f41c3e19.jpg 400w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-600-1f41c3e19.jpg 600w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-800-1f41c3e19.jpg 800w, /blog/generated/assets/images/youre-using-docker-compose-wrong/header-1000-1f41c3e19.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/youre-using-docker-compose-wrong/header-800-1f41c3e19.jpg" alt="You’re using docker-compose wrong"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="You’re using docker-compose wrong">
+    <meta itemprop="description" content="Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.">
+    <meta itemprop="datePublished" content="2020-11-27T17:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">You’re using docker-compose wrong
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.</p>
+<p>Ok, that might be an exaggeration. I don’t think there’s actually a 100% right or wrong way to use it: home-grown build and dev setups tend to have all kinds of weird requirements and so the standard doesn’t always match the needs. Please take the article with the appropriate skepticism if your situation doesn’t quite fit.</p>
+<p>I, myself, have been guilty of each of these in the past and I might be in the future as well!!</p>
+<p>In any case, here is a rundown of some of the cardinal sins that I found myself making while using docker-compose.</p>
+<p>In this article, I’ll be focusing on use-cases related to <strong>integration testing</strong> and using docker-compose as a <strong>development environment</strong>. For production use, I think docker-compose is usually ill-suited.</p>
+<h2 id="problem-1-youre-using-the-host-network">Problem #1: You’re using the host network</h2>
+<p>One of the first things new-comers find cumbersome is the use of Docker networks. It’s yet another layer of knowledge to add to your repertoire after you get used to the basics of <strong>docker build</strong> and <strong>docker run</strong> … and frankly, why do you even need to understand these Docker networks? Everything works fine via the host network, right? Wrong!</p>
+<p>Using the host network means that you have to reserve specific ports for the various microservices that you use. If you happen to bring up two stacks that collide on ports, tough luck. If you want to bring up two versions of the same stack, tough luck. You want to test the behavior of a certain service when it has multiple replicas? Tough… luck!</p>
+<p>By default, docker-compose spins up its containers on a separate network called <strong>&lt;project-name&gt;_default</strong> (where <strong>&lt;project-name&gt;</strong> is by default the name of the directory). So really, you don’t need to do anything special in order to take advantage of Docker networks.</p>
+<p>This network gives you a number of benefits right off the bat:</p>
+<ul>
+<li>It’s a network more isolated from your host network - so it’s less likely that the specifics of your system environment will cause the compose setup to behave differently. You have access to the internet, but any ports that you wish to be accessible from the host need to be declared with a port bind.</li>
+<li>If a service starts listening on 0.0.0.0 (the way containers should), then a host network setup will open up that port on your WLAN. If you use a Docker network, it’ll only expose that port to that network.</li>
+<li>You can talk between services by using their compose names as host names. So if you have a service called <strong>db</strong> and within it there’s a service listening on port <strong>5432</strong> , then you can access it from any other service via <strong>db:5432</strong>. This is typically more intuitive than <strong>localhost:5432</strong>. And because there is no risk of localhost port clashing, it has a greater chance to be more consistent when used across different projects.</li>
+<li>Most ports don’t need to be opened up to the host too - which means that they are not competing on global resources, should you need to increase the replication via <a href="https://docs.docker.com/compose/reference/up/"><strong>–scale</strong></a>.</li>
+</ul>
+<h2 id="problem-2-youre-binding-ports-on-the-hosts-0.0.0.0">Problem #2: You’re binding ports on the host’s 0.0.0.0</h2>
+<p>I’ve seen it everywhere, you’ve seen it everywhere, everybody saw it everywhere: binding ports as <strong>8080:8080</strong>. At first glance, this looks innocuous. But the devil is in the details. This extremely common port bind is not just forwarding a container port to the localhost - it forwards it to be accessible on every network interface on your system - including whatever you use to connect to the internet.</p>
+<p>This means that it’s very likely that your development containers are constantly listening on your WLAN - when you’re home, when you’re in the office, or when you’re at McDonald’s. It’s always accessible. This can be dangerous. Don’t do that.</p>
+<p>“But Vlad, I use <strong>ufw</strong> , my ports aren’t accessible by default”.</p>
+<p>That may be true - but if you use this docker-compose setup as a team, one of your teammates might not have a firewall on their laptop.</p>
+<p>The fix is very easy: Just add <strong>127.0.0.1:</strong> in front. So for example <strong>127.0.0.1:8080:8080</strong>. This simply tells docker to only expose the port to the loopback network interface and nothing else.</p>
+<h2 id="problem-3-youre-using-sleep-to-coordinate-service-startup">Problem #3: You’re using sleep to coordinate service startup</h2>
+<p>I have a confession to make. I’m 100% guilty of this.</p>
+<p>The main reason this is such a complicated issue is that there is no support from Docker or Docker Compose to address this. Version 2.1 of the docker-compose format used to have a <strong>depends_on</strong> option called <strong>condition</strong> which could be set to <strong>service_healthy</strong>. And also, each service could have a <strong>healthcheck</strong> command which could tell docker-compose what “healthy” means. Well, this is <a href="https://docs.docker.com/compose/compose-file/#depends_on">no longer available in Version 3.0</a> and <a href="https://stackoverflow.com/questions/47710767/what-is-the-alternative-to-condition-form-of-depends-on-in-docker-compose-versio">no replacement</a> is offered for it.</p>
+<p>Docker’s docs basically <a href="https://docs.docker.com/compose/startup-order/">recommend</a> that your service is made resilient to other services not being around for a while because that’s what might happen in production anyway, if there’s a short network bleep, or if a service restarts. Can’t argue with that logic.</p>
+<p>Where it gets a bit more cumbersome is when you run an integration test and the routines meant for initializing the test environment (eg pre-populating the database with some test data) end up not being resilient to starting before the other service is ready. So the argument about “it should be resilient in production anyway” doesn’t quite apply here, because the code to populate the DB with test data is never used in production.</p>
+<p>For such cases, you need something that waits for services to be ready. Docker recommends using <a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a>, <a href="https://github.com/jwilder/dockerize">Dockerize</a> or <a href="https://github.com/Eficode/wait-for">wait-for</a>. Note, however, that a port being ready isn’t always a sign that the service is ready to be used. For example, in an integration test using a certain SQL DB with a certain schema, the port becomes available when the DB is initialized, however, the test might only work after a certain schema migration has been applied. You may need application-specific checks on top.</p>
+<h2 id="problem-4-youre-running-the-db-in-docker-compose-but-the-test-on-the-host">Problem #4: You’re running the DB in docker-compose, but the test on the host</h2>
+<p>Here is a situation: you want to run some unit tests but those tests depend on some external services. Maybe a database, maybe a Redis, maybe another API. Easy: let’s put those dependencies in a docker-compose and have the unit test connect to those.</p>
+<p>That’s great - but note that your tests aren’t exactly just unit tests anymore. They are now integration tests. Besides the nomenclature, there is an important distinction to take into account now: you’ll need to account for a setup of the test environment and a teardown. Usually, it’s best for the setup/teardown to be performed outside of the test code - main reason being that there may be multiple distinct packages depending on these external services. But YMMV.</p>
+<p>If you do end up separating test setup and teardown, you could go the extra mile and containerize your integration test. Hear me out!</p>
+<p>Containerized tests mean:</p>
+<ul>
+<li>You are on the same Docker network, so the connectivity setup is the same you would use for running your service in compose anyway. Configuration becomes cleaner.</li>
+<li>You may be able to reuse the code used to wait for other services to be ready in your setup/teardown.</li>
+<li>The integration test does not depend on any other local system configuration or environment setup, such as say… your JFrog credentials, or any build dependencies. A container is isolated.</li>
+<li>If another team needs to run your tests against an updated version of a service the tests depend on, you can just share the integration testing image - no need for them to compile or to setup a build toolchain.</li>
+<li>If you end up with multiple separate integration test containers, you can typically run all of them at the same time in parallel.</li>
+</ul>
+<p>A tip for using containerized integration tests is to use a separate docker-compose definition for them. For example, if most of your services exist in <strong>docker-compose.yml</strong> , you could add <strong>docker-compose.test.yml</strong> with integration test definitions. This means that <strong>docker-compose up</strong> brings up your usual services, while <strong>docker-compose -f docker-compose.yml -f docker-compose.test.yml up</strong> starts your integration tests. For a full example on how to achieve this, see this excellent <a href="https://github.com/george-e-shaw-iv/integration-tests-example">docker-compose integration testing</a> repository from Ardan Labs.</p>
+<p>Ok, ok - calling this out as being wrong isn’t entirely fair. There are many situations where not containerizing is preferable. As a simple example, many languages have deep IDE integrations which make inserting a container between the language and the IDE pretty much impossible. There are many valid productivity reasons not to do this.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Docker Compose can be an amazing tool for local development purposes. Although it has a few gotchas, it usually brings a lot of productivity benefits to many engineering teams, especially when used in conjunction with integration tests.</p>
+<p>If you’re looking for more flexibility in defining containerized tests than docker-compose alone can provide, take a <a href="https://github.com/earthly/earthly/blob/0f48f14/examples/integration-test/Earthfile#L38-L44">look</a> at <a href="https://docs.earthly.dev/guides/integration">integration test support</a> in <a href="https://earthly.dev/">Earthly</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-11-27T17:00:00-05:00">November 27, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/protobufs-and-grpc/" class="pagination--pager" title="Using gRPC with Golang, Python, and Ruby
+">Previous</a>
+    
+    
+      <a href="/blog/unit-vs-integration/" class="pagination--pager" title="Unit Testing vs Integration Testing
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,874 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to Man in the Middle HTTPS Using mitmproxy - Earthly</title>
+<meta name="description" content="Introduction">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="How to Man in the Middle HTTPS Using mitmproxy">
+<meta property="og:url" content="https://earthly.dev/blog/mitmproxy/">
+
+
+  <meta property="og:description" content="Introduction">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="How to Man in the Middle HTTPS Using mitmproxy">
+  <meta name="twitter:description" content="Introduction">
+  <meta name="twitter:url" content="https://earthly.dev/blog/mitmproxy/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-02-11T13:30:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/mitmproxy/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/mitmproxy/header-400-e56a14fa3.webp 400w, /blog/generated/assets/images/mitmproxy/header-600-e56a14fa3.webp 600w, /blog/generated/assets/images/mitmproxy/header-800-e56a14fa3.webp 800w, /blog/generated/assets/images/mitmproxy/header-1000-e56a14fa3.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/mitmproxy/header-400-e56a14fa3.jpg 400w, /blog/generated/assets/images/mitmproxy/header-600-e56a14fa3.jpg 600w, /blog/generated/assets/images/mitmproxy/header-800-e56a14fa3.jpg 800w, /blog/generated/assets/images/mitmproxy/header-1000-e56a14fa3.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/mitmproxy/header-800-e56a14fa3.jpg" alt="How to Man in the Middle HTTPS Using mitmproxy"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to Man in the Middle HTTPS Using mitmproxy">
+    <meta itemprop="description" content="Introduction">
+    <meta itemprop="datePublished" content="2021-02-11T13:30:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to Man in the Middle HTTPS Using mitmproxy
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-is-mitmproxy">What is mitmproxy</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a><ul><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success!</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li></ul></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a><ul><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h1 id="introduction">Introduction</h1>
+<p>Have you ever wanted to see what kinds of requests a service or application on your machine is making and what kind of responses it is getting back? Have you ever tried and failed to capture this traffic or modify it to investigate how something works (or doesn’t work). If you have, then mitmproxy might be what you need. Being able to scan through and observe HTTP protocol traffic easily is a great debugging aid.</p>
+<p>This guide will walk you through installing and using mitmproxy to capture HTTPS requests. We will start with macOS traffic capture, then touch on Linux and Windows and then finally show how to capture docker daemon traffic and docker container traffic.</p>
+<h2 id="what-is-mitmproxy">What is mitmproxy</h2>
+<p>mitmproxy is a command-line tool that acts as a HTTP and HTTPS proxy and records all the traffic. You can easily see what requests are being made and even replay them. It’s great for diagnosing problems.</p>
+<h2 id="installing-it">Installing it</h2>
+<p>On Mac, mitmproxy is easy to install with brew:</p>
+<pre><code>brew install mitmproxy</code></pre>
+<p>On Windows and Linux, <a href="https://docs.mitmproxy.org/stable/overview-installation/">download the binary release</a> and place it somewhere in your path.</p>
+<h2 id="start-it-up">#1 Start it up</h2>
+<p>To start up mitmproxy, type <code>mitmproxy</code>, and it will start up bound to port 8080.</p>
+<pre><code>&gt;mitmproxy</code></pre>
+The command-line interface (CLI) has VIM-like keybindings. <code>q</code> will quit, and arrow keys or <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> will move you up and down through the request list. <code>?</code> will load the help, and <code>&lt;&lt;enter&gt;&gt;</code> will drill in on a specific request.
+<figure class>
+<img src="/blog/assets/images/mitmproxy/1.png"
+       alt="Help menu for mitmproxy">
+<figcaption>
+<p>Help Menu for mitmproxy</p>
+</figcaption>
+</figure>
+<p>mitmproxy also has a web interface if you prefer the mouse over VIM keybindings. The advanced functionality is a bit more discoverable in the web interface, but the CLI version is convenient for quick capture sessions.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/2.png"
+       alt="mitmproxy starting up">
+</figure>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/3.png"
+       alt="mitmweb starting up">
+</figure>
+<p>We will use both throughout the tutorial. Whichever you choose, start it up and leave it running.</p>
+<h2 id="proxy-our-connection">#2 Proxy Our Connection</h2>
+<p>Let’s set up our internet connection to use this proxy. On macOS, Under <code>Setting -&gt; Network</code>, select your connection and click advanced.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/4.png"
+       alt="Setting -> Network on macOS">
+<figcaption>
+<p><code>Setting -&gt; Network</code> on macOS</p>
+</figcaption>
+</figure>
+<p>Under proxies, enable both HTTP and HTTPS proxies and choose port 8080:</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/5.png"
+       alt="Setup Proxy under Setting -> Network-> Advanced on macOS">
+<figcaption>
+<p>Setup Proxy under <code>Setting -&gt; Network-&gt; Advanced</code> on macOS</p>
+</figcaption>
+</figure>
+<p><em>On Windows, <a href="https://www.howtogeek.com/tips/how-to-set-your-proxy-settings-in-windows-8.1/">follow these steps</a> to set up a proxy.</em></p>
+<p><em>On Linux, MITM supports a <a href="https://docs.mitmproxy.org/stable/howto-transparent/">transparent proxying</a> at the network layer.</em></p>
+<h2 id="adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</h2>
+<p>We now have our connection proxied to go through our instance of mitmproxy. However, if we attempt to make a HTTPS-based request in a web browser (loading twitter.com for example), something interesting happens.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/6.png"
+       alt="Chrome does not recognize the certificate">
+<figcaption>
+<p>Chrome does not recognize the certificate</p>
+</figcaption>
+</figure>
+<p>Chrome is warning us that we might be subject to a man in the middle attack.</p>
+<h3 id="what-is-a-man-in-the-middle">What is a man in the middle</h3>
+<p>A man in middle attack (MITM) is a security threat where an attacker can get between incoming and outgoing requests. You think you are talking to Twitter.com, but you are talking to the man in the middle, who is talking to Twitter for you. This MITM can view everything you send and even change what you receive.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/7.png"
+       alt="Diagram of Man in the middle">
+</figure>
+<p>The HTTPS protocol prevents MITM attacks. The HTTPS protocol is pretty complex, but all we need to know is that HTTPS uses a trusted Certificate Authority (CA) to sign a certificate. Our browsers assume that if a trusted CA signs the certificate, we are talking directly to who we think we are.</p>
+<p>You can view what CA signed the certificate of the website you are viewing in your browser.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/8.png"
+       alt="Viewing a certificate in your browser">
+<figcaption>
+<p>Viewing a certificate in your browser</p>
+</figcaption>
+</figure>
+<p>This is great for protecting online communication but problematic for our debugging purposes. We are trying to man in the middle our own requests. To help overcome this, mitmproxy has generated a certificate. All we need is to get our machine to trust it.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/9.png"
+       alt="Getting a Certificate signed by an unknown certificate authority">
+<figcaption>
+<p>Getting a Certificate signed by an unknown certificate authority</p>
+</figcaption>
+</figure>
+<h1 id="how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</h1>
+<p>mitmproxy generated a certificate and private key the first time you ran it. The certificate generated is specific to your machine and is located in <code>~/.mitmproxy/mitmproxy-ca-cert.cer</code></p>
+<pre><code>&gt; cat ~/.mitmproxy/mitmproxy-ca-cert.cer 
+-----BEGIN CERTIFICATE-----
+MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
+MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
+4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
+AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
+H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
+Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
+utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
+BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
+i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
+KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
+48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
+4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
+K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
+QyVJfmCmjt2i
+-----END CERTIFICATE-----
+cat mitmproxy-ca.pem
+-----BEGIN PRIVATE KEY-----
+MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
+MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
+4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
+AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
+H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
+Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
+utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
+BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
+i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
+KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
+48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
+4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
+K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
+QyVJfmCmjt2i=
+-----END PRIVATE KEY-----</code></pre>
+<p><em>Note: Once we instruct our machine to trust this certificate, someone with the private key who controlled your internet connection, like your ISP, could use it to MITM your connection. For this reason, don’t share your MITM private key, or any private key, with others.</em></p>
+<h1 id="add-the-cert-on-macos">Add the Cert On MacOS</h1>
+<p>On macOS, the easiest way to add a new CA is to copy it to the desktop and then double-click it.</p>
+<pre><code>cp ~/.mitmproxy/mitmproxy-ca-cert.cer ~/Desktop</code></pre>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/10.png"
+       alt="Getting a Certificate signed by an unknown certificate authority">
+</figure>
+<p>You will be prompted for your credentials, and the certificate will be added as ‘untrusted’.</p>
+<p>Double-click on the certificate in the Keychain list and set the ‘Secure Sockets Layer’ drop down to ‘Always Trust’</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/11.png"
+       alt="Setting certificate to Always Trust">
+</figure>
+<p>You will then be prompted for your password again, and then your certificate will be trusted.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/13.png"
+       alt="mitmproxy certificate proxy always trusted">
+</figure>
+<h2 id="installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</h2>
+<p>If you are on Windows, follow this guide <a href="https://docs.microsoft.com/en-us/skype-sdk/sdn/articles/installing-the-trusted-root-certificate">to add the MITM root certificate as a trusted root certificate authority</a>.</p>
+<h2 id="installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</h2>
+<p>On Debian-based Linux distributions, follow these steps:</p>
+<pre><code>&gt; mkdir /usr/local/share/ca-certificates/extra
+&gt; cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
+&gt; update-ca-certificates</code></pre>
+<p><em>We will be using these steps later when we work with docker containers on macOS and Windows.</em></p>
+<h2 id="great-success">Great Success!</h2>
+<p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.</p>
+Here is Slack making requests:
+<figure class>
+<img src="/blog/assets/images/mitmproxy/14.png"
+       alt="mitmweb has captured a request from the slack application">
+<figcaption>
+<p>mitmweb has captured a request from the slack application</p>
+</figcaption>
+</figure>
+<p>All HTTPS connections now have certificates signed by mitmproxy, which your machine trusts.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/15.png"
+       alt="Google.com now shows a mitmproxy signed certificate">
+<figcaption>
+<p>Google.com now shows a mitmproxy signed certificate</p>
+</figcaption>
+</figure>
+<h2 id="mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</h2>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/16.png"
+       alt="Diagram of docker runtime on macOS and Windows">
+<figcaption>
+<p>Docker containers run differently on macOS and Windows</p>
+</figcaption>
+</figure>
+<p>At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.</p>
+<p>On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.</p>
+<p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM. &gt; Before we proceed, we need to clear the proxy settings on the host network connection. We can leave mitmproxy (or MITMWeb running).</p>
+<p>On Windows and macOS, the easiest way to configure a proxy is via <code>Docker Desktop.</code> Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/18.png"
+       alt="Configure the proxy settings under Preferences -> Resources -> Proxies.">
+<figcaption>
+<p>Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
+</figcaption>
+</figure>
+<p>With that done, the network interface will be proxied. All that is left to do is get our certificate trusted by the Linux container host. Thankfully, Docker Desktop takes care of this for us. On startup, Docker Desktop loads the trusted root certificates from the host machine into the Docker VM, so all we need to do is restart docker. (<code>Restart Docker</code> in Docker Desktop).</p>
+<h2 id="docker-mitm-on-linux">Docker MITM on Linux</h2>
+<p>On Linux, we can add a proxy by editing the docker client config and then restarting.</p>
+<pre><code>&gt; cat ~/.docker/config.json
+{
+ &quot;proxies&quot;:
+ {
+   &quot;default&quot;:
+   {
+     &quot;httpProxy&quot;: &quot;http://127.0.0.1:8080&quot;,
+     &quot;httpsProxy&quot;: &quot;http://127.0.0.1:8080&quot;
+   }
+ }
+}</code></pre>
+<pre><code>&gt; sudo service docker restart
+</code></pre>
+<h3 id="test-it">Test it</h3>
+<p>After restarting, we can test the proxying by performing a docker pull for a random image</p>
+<pre><code>➜  ~ docker pull couchbase:7.0.0-beta
+7.0.0-beta: Pulling from library/couchbase
+83ee3a23efb7: Pull complete
+db98fc6f11f0: Pull complete
+f611acd52c6c: Pull complete
+3aa2029a80db: Pull complete
+abe30feace46: Pull complete
+9b70018fbd54: Pull complete
+d9b67d157052: Pull complete
+212afe5e3a9c: Pull complete
+ff5e5d4b4f9c: Pull complete
+4df60b92878a: Pull complete
+eee5137af1d8: Pull complete
+c4ef83141448: Pull complete
+6a04071b6d8c: Pull complete
+f52d17d818b3: Pull complete
+Digest: sha256:290a7a0623b62e02438e6f0cd03adf116ac465f70fc4254a4059bcf51e8fa040
+Status: Downloaded newer image for couchbase:7.0.0-beta
+docker.io/library/couchbase:7.0.0-beta</code></pre>
+<p>We can then see the requests and responses in our proxy:</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/19.png"
+       alt="mitmproxy request for docker.io">
+</figure>
+<p>We can even see the binary payload of the layer requests and the fact that docker uses Cloudflare as a CDN.</p>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/20.png"
+       alt="">
+<figcaption>
+<p>mitmweb request for cloudflare.docker.com</p>
+</figcaption>
+</figure>
+<p>## <em>Troubleshooting</em> <em>If <code>docker pull</code> fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.</em></p>
+<h1 id="capturing-docker-container-traffic">Capturing Docker Container Traffic</h1>
+<p>We now know how to capture traffic on our host machine and the Linux container host. But what happens when we make requests from inside a running container?</p>
+<pre><code>&gt; docker run -it ubuntu
+root@ca43de1bb8b1:/# apt upgrade &amp; apt update &amp; apt install curl
+...
+root@167f5742c295:/# curl http://google.com
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;301 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF=&quot;http://www.google.com/&quot;&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;</code></pre>
+We are successfully capturing the requests and responses:
+<figure class>
+<img src="/blog/assets/images/mitmproxy/21.png"
+       alt="">
+<figcaption>
+</figcaption>
+</figure>
+<p>However, we hit problems when we try to use HTTPS:</p>
+<pre><code>root@ca43de1bb8b1:/# curl https://google.com/
+curl: (60) server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none
+More details here: http://curl.haxx.se/docs/sslcerts.html
+
+curl performs SSL certificate verification by default, using a &quot;bundle&quot;
+ of Certificate Authority (CA) public keys (CA certs). If the default
+ bundle file isn&#39;t adequate, you can specify an alternate file
+ using the --cacert option.
+If this HTTPS server uses a certificate signed by a CA represented in
+ the bundle, the certificate verification probably failed due to a
+ problem with the certificate (it might be expired, or the name might
+ not match the domain name in the URL).
+If you&#39;d like to turn off curl&#39;s verification of the certificate, use
+ the -k (or --insecure) option.
+ &gt; exit</code></pre>
+<h2 id="adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</h2>
+<p>The solution here is a familiar one. We need to follow the steps we used above for configuring Linux to trust a certificate authority, but we need to do it inside our container.</p>
+<p>There are several ways to accomplish this.</p>
+<h2 id="solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</h2>
+<p>The simplest solution is to mount the certificate into the proper spot in our container and run <code>update-ca-certificates</code>. ### Alpine:</p>
+<pre><code># Run container and mount in our CA Cert
+&gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.cer alpine
+# Add ca-certificates (and curl for testing)
+root@167f5742c295:/# apk update &amp;&amp; apk upgrade &amp;&amp; apk add ca-certificates &amp;&amp; apk add curl
+...
+
+# include trust our cert
+root@167f5742c295:/# update-ca-certificates
+Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+
+# Test https
+root@167f5742c295:/# curl https://google.com
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;301 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF=&quot;https://www.google.com/&quot;&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;
+
+# Success!</code></pre>
+<h3 id="ubuntu">Ubuntu</h3>
+<p>The general pattern with some small modifications works on Ubuntu-based images as well.</p>
+<pre><code>&gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.crt ubuntu
+
+root@167f5742c295:/# apt update &amp;&amp; apt upgrade &amp;&amp; apt install ca-certificates curl
+
+root@167f5742c295:/# update-ca-certificates 
+Updating certificates in /etc/ssl/certs...
+1 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+
+root@167f5742c295:/# curl https://google.com
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;301 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF=&quot;https://www.google.com/&quot;&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;
+
+\&gt; # Success!!</code></pre>
+<h2 id="solution-2-extend-the-image">Solution #2: Extend the Image</h2>
+<p>Volume mounting the certificate and manually running <code>update-ca-certificates</code> is an excellent proof of concept, but if you want to run a docker container in the background and have all traffic proxied, then interactive mode won’t cut it. In that case, extending the image is the way to go.</p>
+<h2 id="extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</h2>
+<p>We can create a new Dockerfile that extends the image we want to proxy and add in the certificate.</p>
+<pre><code>FROM alpine # or any alpine based image
+RUN apk update &amp;&amp; apk add curl
+WORKDIR /usr/local/share/ca-certificates
+COPY mitmproxy.crt mitmproxy.crt
+RUN update-ca-certificates</code></pre>
+<p>We can then build it and tag it with a <code>:mitm</code> tag.</p>
+<pre><code>&gt; docker build --tag alpine:mitm .
+[+] Building 1.9s (10/10) FINISHED                             
+ =&gt; [internal] load build definition from Dockerfile      0.0s
+ =&gt; =&gt; transferring dockerfile: 200B                      0.0s
+ =&gt; [internal] load .dockerignore                         0.0s
+ =&gt; =&gt; transferring context: 2B                           0.0s
+ =&gt; [internal] load metadata for docker.io/library/alpin  0.0s
+ =&gt; CACHED [1/5] FROM docker.io/library/alpine            0.0s
+ =&gt; [internal] load build context                         0.2s
+ =&gt; =&gt; transferring context: 1.36kB                       0.2s
+ =&gt; [2/5] RUN apk update &amp;&amp; apk add curl                  1.4s
+ =&gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
+ =&gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s 
+ =&gt; [5/5] RUN /usr/sbin/update-ca-certificates            0.3s 
+ =&gt; exporting to image                                    0.1s 
+ =&gt; =&gt; exporting layers                                   0.1s 
+ =&gt; =&gt; writing image sha256:ca5be16f3d19c34ea5e29ac1774b  0.0s 
+ =&gt; =&gt; naming to docker.io/library/alpine:mitm            0.0s</code></pre>
+<p>Now anytime we run this image, it will be ready to accept responses signed by our certificate authority. And because we didn’t change the entry point, we can use it wherever we would use the base image.</p>
+<pre><code>&gt; docker run -it alpine:mitm      
+\&gt; curl https://google.com
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;301 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF=&quot;https://www.google.com/&quot;&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;</code></pre>
+<p>Any requests by anything running inside the container will be transparently proxied. If you are trying to debug what a service you depend on is doing this will come in handy.</p>
+<h2 id="extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</h2>
+<p>A similar process will work with Ubuntu-based images:</p>
+<pre><code>FROM ubuntu
+RUN apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt install ca-certificates curl -y
+WORKDIR /usr/local/share/ca-certificates
+COPY mitmproxy.crt mitmproxy.crt
+RUN update-ca-certificates </code></pre>
+<pre><code>&gt; docker build --tag ubuntu:mitm .
+[+] Building 36.4s (10/10) FINISHED                            
+ =&gt; [internal] load build definition from Dockerfile      0.0s
+ =&gt; =&gt; transferring dockerfile: 234B                      0.0s
+ =&gt; [internal] load .dockerignore                         0.0s
+ =&gt; =&gt; transferring context: 2B                           0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubunt  0.0s
+ =&gt; CACHED [1/5] FROM docker.io/library/ubuntu            0.0s
+ =&gt; [internal] load build context                         0.0s
+ =&gt; =&gt; transferring context: 35B                          0.0s
+ =&gt; [2/5] RUN apt update -y &amp;&amp; apt upgrade -y &amp;&amp; apt in  35.0s
+ =&gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
+ =&gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s
+ =&gt; [5/5] RUN update-ca-certificates                      0.9s 
+ =&gt; exporting to image                                    0.4s 
+ =&gt; =&gt; exporting layers                                   0.3s 
+ =&gt; =&gt; writing image sha256:06fbbeea728364e3bacef503f7c2  0.0s 
+ =&gt; =&gt; naming to docker.io/library/ubuntu:mitm            0.0s</code></pre>
+<pre><code>&gt; docker run -it ubuntu:mitm    
+root&gt; curl https://google.com
+&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+&lt;H1&gt;301 Moved&lt;/H1&gt;
+The document has moved
+&lt;A HREF=&quot;https://www.google.com/&quot;&gt;here&lt;/A&gt;.
+&lt;/BODY&gt;&lt;/HTML&gt;
+# Success</code></pre>
+<h2 id="but-wait-theres-more">But wait, there’s more</h2>
+<figure class>
+<img src="/blog/assets/images/mitmproxy/22.png"
+       alt="man in the middle diagram">
+</figure>
+<p>There we go. We can now capture HTTPS traffic made by any containers we run. Combined with the previous steps, we can now intercept and inspect HTTP and HTTPS protocol traffic on our host machine, on a Linux virtual machine running in a hypervisor, and in the actual running containers.</p>
+<p>If you can get something running on your local machine, you can now capture and inspect its network requests. This can be very handy for debugging problems and building up an understanding of how something works without digging into the source code. The setup can be a bit complicated, but I hope you can see why mitmproxy is a great tool to keep in your toolkit.</p>
+<p>The fun doesn’t stop here, though. <a href="https://mitmproxy.org/">mitmproxy</a> can modify and replay requests and has an active ecosystem, including <a href="https://github.com/ustwo/mastermind">mastermind</a> which lets you build mock services based on captured requests and <a href="https://github.com/secretsquirrel/BDFProxy">BDFProxy</a>, which uses mitmproxy to modify common security updates for <del>nefarious reasons</del> security research projects, and much more.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-02-11T13:30:00-05:00">February 11, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/every-open-core-company-should-be-a-source-available-company/" class="pagination--pager" title="Every open-core company should be a source-available company
+">Previous</a>
+    
+    
+      <a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/" class="pagination--pager" title="What is Buildkit?
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

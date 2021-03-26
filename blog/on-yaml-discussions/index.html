@@ -1,0 +1,526 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>On YAML Discussions - Earthly</title>
+<meta name="description" content="Highlights From The Comments On The YAML Article">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="On YAML Discussions">
+<meta property="og:url" content="https://earthly.dev/blog/on-yaml-discussions/">
+
+
+  <meta property="og:description" content="Highlights From The Comments On The YAML Article">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="On YAML Discussions">
+  <meta name="twitter:description" content="Highlights From The Comments On The YAML Article">
+  <meta name="twitter:url" content="https://earthly.dev/blog/on-yaml-discussions/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-03-12T00:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/on-yaml-discussions/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-400-ec3eba316.webp 400w, /blog/generated/assets/images/on-yaml-discussions/header-600-ec3eba316.webp 600w, /blog/generated/assets/images/on-yaml-discussions/header-800-ec3eba316.webp 800w, /blog/generated/assets/images/on-yaml-discussions/header-1000-ec3eba316.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-400-ec3eba316.jpg 400w, /blog/generated/assets/images/on-yaml-discussions/header-600-ec3eba316.jpg 600w, /blog/generated/assets/images/on-yaml-discussions/header-800-ec3eba316.jpg 800w, /blog/generated/assets/images/on-yaml-discussions/header-1000-ec3eba316.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/on-yaml-discussions/header-800-ec3eba316.jpg" alt="On YAML Discussions"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="On YAML Discussions">
+    <meta itemprop="description" content="Highlights From The Comments On The YAML Article">
+    <meta itemprop="datePublished" content="2021-03-12T00:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">On YAML Discussions
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h2 id="highlights-from-the-comments-on-the-yaml-article">Highlights From The Comments On The YAML Article</h2>
+<p>My article about how <a href="https://blog.earthly.dev/intercal-yaml-and-other-horrible-programming-languages/">YAML makes a bad programming language</a> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> generated a lot of great discussions online.</p>
+<p>Here are some highlights, lightly edited:</p>
+<h2 id="config-traps">Config Traps</h2>
+<p><a href="https://news.ycombinator.com/item?id=26276420">dkarl</a> pointed out that putting things in config files that shouldn’t be there happens for many reasons:</p>
+<blockquote>
+<p><strong>Reason:</strong> Pride in creating a “generic” system that can be configured to do all kinds of new things “without touching the code.”</p>
+<p><strong>Reality check:</strong> only one or two programmers understand how to modify the config file, and changes have to go through the same life cycle as a code change, so you haven’t gained anything. You’ve only made it harder to onboard new programmers to the project.</p>
+<p><strong>Reason:</strong> Hope that if certain logic is encoded in config files, then it can never get complicated.</p>
+<p><strong>Reality check:</strong> Product requirements do not magically become simpler because of your implementation decisions.</p>
+<p><strong>Reason:</strong> Hope that you can get non-programmers to code review your business logic.</p>
+<p><strong>Reality check:</strong> the DSL you embedded in your config file isn’t as “human readable” as you think it is.</p>
+</blockquote>
+<h2 id="dhall-is-strange">DHALL is Strange</h2>
+<p><a href="https://lobste.rs/s/1nxt6g/intercal_yaml_other_horrible#c_pc0dt6">AndyC</a> thought that Dhall was not the right answer to the YAML problem:</p>
+<blockquote>
+<p>I agree with the problem, but disagree with the solution. Total languages don’t give you any useful engineering properties, but lack of side effects do (and Dhall also offers that).</p>
+<p>From the surface, it seems like HCL, jsonnet, and Cue, are just as suitable as Dhall, and probably more familiar (to varying degrees).</p>
+</blockquote>
+<p>This is an excellent point. <a href="https://github.com/hashicorp/hcl">HCL</a> does look a bit less strange to outsiders, and Hashicorp already has mindshare in the DevOps community, and it certainly beats config templates.</p>
+<h2 id="dsl-creation-story">DSL Creation Story</h2>
+<p>Reddit user <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopf8fj/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">XANi_</a> explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; * We don’t want config to be turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.</p>
+<h2 id="rake-webpack-and-groovy">Rake, Webpack, and Groovy</h2>
+<p>Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:</p>
+<blockquote>
+<p>I always thought it was weird that a lot of web technologies take config files that are executable javascript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopq0uv/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">Bunny</a></p>
+</blockquote>
+<blockquote>
+<p>It’s fairly common in Pythonland [ to just use Python] …</p>
+<p>It’s an ideal solution for technically-savvy users in non-security sensitive contexts. - <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopy30z/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3"><strong>crakers</strong></a></p>
+</blockquote>
+<blockquote>
+<p>I’m not convinced that just using programming language for your configuration files is actually that bad. For instance, with node, if you just use JS files that export an object instead of. JSON files, you end up with a lot more programmable and flexible thing. I don’t actually see the problem. - <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/goqm3z0/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">light24bulbs</a></p>
+</blockquote>
+<h2 id="writing-a-parser">Writing a Parser</h2>
+<p>Hillel Wayne wrote a <a href="https://buttondown.email/hillelwayne/archive/a3fe2688-464d-4f98-ae6b-207e7b5a1255">great newsletter</a> on YAML, and the ways it’s abused. He pointed out that the main competition for embedding your DSL into YAML is writing a parser, and using YAML is just easier.</p>
+<blockquote>
+<p>[YAML] preparses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language</p>
+</blockquote>
+<p>You can see the full commentary on the orginal article on <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/">Reddit</a>, on <a href="https://news.ycombinator.com/item?id=26271582">Hacker News</a> and on <a href="https://lobste.rs/s/1nxt6g/intercal_yaml_other_horrible">Lobste.rs</a>.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#news" class="page__taxonomy-item" rel="tag">news</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-12T00:00:00-05:00">March 12, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/build-your-own-ngrok-clone/" class="pagination--pager" title="Build Your Own Ngrok Clone With AWS
+">Previous</a>
+    
+    
+      <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" class="pagination--pager" title="Compiling Containers - Dockerfiles, LLVM and BuildKit
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

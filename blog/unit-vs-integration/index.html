@@ -1,0 +1,618 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Unit Testing vs Integration Testing - Earthly</title>
+<meta name="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Unit Testing vs Integration Testing">
+<meta property="og:url" content="https://earthly.dev/blog/unit-vs-integration/">
+
+
+  <meta property="og:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Unit Testing vs Integration Testing">
+  <meta name="twitter:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/unit-vs-integration/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2020-12-04T17:16:14-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/unit-vs-integration/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/unit-vs-integration/header-400-937efe79d.webp 400w, /blog/generated/assets/images/unit-vs-integration/header-600-937efe79d.webp 600w, /blog/generated/assets/images/unit-vs-integration/header-800-937efe79d.webp 800w, /blog/generated/assets/images/unit-vs-integration/header-1000-937efe79d.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/unit-vs-integration/header-400-937efe79d.jpg 400w, /blog/generated/assets/images/unit-vs-integration/header-600-937efe79d.jpg 600w, /blog/generated/assets/images/unit-vs-integration/header-800-937efe79d.jpg 800w, /blog/generated/assets/images/unit-vs-integration/header-1000-937efe79d.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/unit-vs-integration/header-800-937efe79d.jpg" alt="Unit Testing vs Integration Testing"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Unit Testing vs Integration Testing">
+    <meta itemprop="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
+    <meta itemprop="datePublished" content="2020-12-04T17:16:14-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Unit Testing vs Integration Testing
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-is-a-unit">What Is a Unit?</a></li><li><a href="#retroactive-unit-testing">Retroactive Unit Testing</a></li><li><a href="#what-is-an-integration-test">What Is an Integration Test?</a></li><li><a href="#when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</a><ul><li><a href="#unit-testing">Unit Testing:</a></li><li><a href="#integration-testing">Integration Testing:</a></li></ul></li><li><a href="#working-software-over-idealized-testing">Working Software Over Idealized Testing</a></li><li><a href="#see-also">See Also</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.</p>
+<p>But unit testing is not the only game in town.  There are also integration tests and performance tests and much more.  In my mind, though, Integration tests and unit tests are the foundations of resilient software. So today let’s look at the differences between the two and when you might prefer one or the other.</p>
+<h2 id="what-is-a-unit">What Is a Unit?</h2>
+<figure class>
+<img src="/blog/assets/images/unit-vs-integration/unit.png"
+       alt="A unit is the smallest piece of code that is logically separate">
+<figcaption>
+<p>A unit is the smallest piece of code that is logically separate</p>
+</figcaption>
+</figure>
+<p>A unit test is a test that is testing the smallest possible pieces of code in isolation. What then is a unit?  </p>
+<p>The term unit comes from mathematics.  The number 1 is considered the unit as it is the smallest natural number.  It is the smallest positive yet whole number.  By analogy, a unit of your source code is the smallest piece of code that is logically separate from the rest of the code.  It is a whole piece, a logically distinct area code, and it is the smallest possible such piece.</p>
+<p>In most programming languages your unit is going to be a function or method call.</p>
+<p>The great thing about unit testing is that if your code is structured in small independent pieces then writing tests for them can be quite easy.   This ease of writing means that unit testing can be done as you develop features.</p>
+<p>In comparison to other forms of testing, the execution time of unit tests is quite small. This means that you can run unit tests very frequently.  As software matures a suite of unit tests is a powerful tool for preventing regressions and easing maintenance costs.</p>
+<h2 id="retroactive-unit-testing">Retroactive Unit Testing</h2>
+<blockquote>
+<p>When considering an effort to add unit tests to existing software, costs, as well as benefits, need to be considered.</p>
+</blockquote>
+<p>A key assumption of unit testing is that the software under test easily separates into distinct units.  In software written without unit testing in mind, this assumption rarely holds.  Adding unit tests to existing software is often a great way to stabilize it and prevent future regressions, but refactoring the code to support easy unit testing may require substantial effort and could even introduce new defects.  When considering an effort to add unit tests to existing software, costs, as well as benefits, need to be considered.  If you have working code, and if the code rarely needs to change, and if the code is not easily unit-testable the benefits may not warrant the costs. In such cases, consider leaning on integration tests to prevent defects in that area.</p>
+<h2 id="what-is-an-integration-test">What Is an Integration Test?</h2>
+<figure class>
+<img src="/blog/assets/images/unit-vs-integration/integration.png"
+       alt="Integration tests focus on the whole of the software stack">
+<figcaption>
+<p>Integration tests focus on the whole of the software stack</p>
+</figcaption>
+</figure>
+<p>If the philosophy of unit testing is based on the insight that testing small independent pieces of code is a great way to prevent regressions then integration tests are based on the understanding that things often go wrong at the edges.  The outside world is a messy place, and where it interacts with your code is usually where surprises happen.</p>
+<p>You can achieve 100% code coverage with your unit tests but still, find your software fails.  You might be trying to read a file from the wrong location, or your software might get unexpected output from a service that calls it or it might call a database in an invalid way.</p>
+<p>Whereas unit tests should be quick to run and numerous, a great integration testing strategy should focus on a lesser number of high impact tests.</p>
+<p>Those tests should cross all the lines that unit tests won’t, writing to the file system, reaching out to external resources, and so on.</p>
+<h2 id="when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</h2>
+<p>Certain truly external systems may be difficult to integrate into tests.  This is because they have side effects in the real world that cannot be undone:  A financial transaction, an email send, physically moving a paint robot. Before you give up and sidestep them in your testing, look around for solutions.  </p>
+<p>Many external systems will have a documented way to use them in an integration test. Payment processors often have test credit card numbers, and test users with test email accounts can be set up for testing delivery.  </p>
+<p>The closer integration tests are to real-world interactions the more likely they are to catch problems and provide real value.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Service</th>
+<th>Integration Test Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Amazon SES</td>
+<td><a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-simulator.html">Test email addresses</a></td>
+</tr>
+<tr class="even">
+<td>Paypal</td>
+<td><a href="https://developer.paypal.com/docs/payflow/payflow-pro/payflow-pro-testing/">Test credit card numbers</a></td>
+</tr>
+<tr class="odd">
+<td>UPS</td>
+<td><a href="https://www.ups.com/us/en/help-center/sri/developer-instruct.page">Test api mode</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="an-e-commerce-example">An E-commerce Example</h1>
+<p>Imagine you are coding a simple e-commerce site, a simple miniature amazon.com. The details matter here so let’s assume that you are going to use PostgreSQL as your datastore, PayPal for payments, UPS for shipping, and Amazon Simple Email Service for emailing invoices.  </p>
+<h3 id="unit-testing">Unit Testing:</h3>
+<p>Your unit testing strategy will be testing the logic of your application, in an isolated fashion.  This may include:</p>
+<ul>
+<li>Testing that the tax calculating logic correctly calculates the taxes for various jurisdictions.  </li>
+<li>Testing that items placed into a cart data structure are correctly added up.</li>
+<li>Testing that discount codes are properly applied.</li>
+</ul>
+<p>Each of these areas will likely have several tests. Each test will verify a small piece of functionality. Unit testing power comes from their number, simplicity, and their speed and ease of execution.</p>
+<h3 id="integration-testing">Integration Testing:</h3>
+<p>Your integration testing on the other hand will focus on testing where your e-commerce code interacts with other systems.  This means testing not just the integration with the data store but also with email sending services, payment services and more. These may include:</p>
+<ul>
+<li>Testing that the shipping rates can be retrieved from the external shipping service.</li>
+<li>Testing that the invoices can be generated and properly sent out.</li>
+<li>Testing that the order information can be persisted and properly retrieved from the datastore.</li>
+<li>Testing that the transactions can be sent and properly processed from the payment processor.</li>
+</ul>
+<p>Each of these will likely be verified by one or two integration tests. These tests will be slower to run and probably involve some setup and teardown steps.  The payoff is that the code coverage of each test will be quite large.  These tests will generate value by catching problems that unit tests could never catch.  However, the maintenance cost and execution time will be likely higher.</p>
+<h1 id="integration-tests-vs-unit-tests">Integration Tests vs Unit Tests</h1>
+<figure class>
+<img src="/blog/assets/images/unit-vs-integration/unit-vs-integration.png"
+       alt="comparing unit tests to integrations tests">
+<figcaption>
+<p>Time for a head to head comparison</p>
+</figcaption>
+</figure>
+<p>So which type of test should be preferred? Neither alone is sufficient.   Both are parts of a comprehensive testing plan. Let’s compare them directly:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Unit Tests</th>
+<th>Integration Tests</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The goal is to make sure a peice of code works as expected</td>
+<td>The goal is to make sure pieces of code, including external interfaces work together, as expected</td>
+</tr>
+<tr class="even">
+<td>Isolated</td>
+<td>Integrated</td>
+</tr>
+<tr class="odd">
+<td>Quick to run</td>
+<td>Slower to run</td>
+</tr>
+<tr class="even">
+<td>Many in number</td>
+<td>Fewer in number</td>
+</tr>
+<tr class="odd">
+<td>No access to file system, database or external services</td>
+<td>Directly testing areas where software interacts with external systems</td>
+</tr>
+<tr class="even">
+<td>Tests a single piece of functionality</td>
+<td>Tests the interaction of several peices of functionality</td>
+</tr>
+<tr class="odd">
+<td>Minimal setup and teardown</td>
+<td>May involve extensive setup and teardown of external resources like file systems of database state</td>
+</tr>
+<tr class="even">
+<td>Stateless</td>
+<td>Possibly Stateful</td>
+</tr>
+</tbody>
+</table>
+<h2 id="working-software-over-idealized-testing">Working Software Over Idealized Testing</h2>
+<blockquote>
+<p>Each situation is unique and advice that is written based on what works in other contexts should be not followed blindly.</p>
+</blockquote>
+<p>Now we understand that unit tests should not touch the file system and that integration tests should only integrate across loose components. But really, splitting testing into two clear-cut categories is a bit reductionist and if we focus only on the definition we lose sight of the goal, which is correct working software.</p>
+<p>Some very thoughtful developers think <a href="https://dhh.dk/2014/tdd-is-dead-long-live-testing.html">unit tests can and should round trip to the database</a>. Others claim that unit tests are a wasted effort and coarse grain integration tests offer the most value.</p>
+<p>The thing is that each situation is unique and advice that is written based on what works in other contexts should be not followed blindly. A question to keep in mind is what kind of defects would this test catch. If each test is written thoughtfully to improve software reliability, and if tests are removed when they no longer have value then the specific testing approach that delivers the most value for a particular project will be discovered over time.</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="/youre-using-docker-compose-wrong/">You are using Docker Compose wrong</a></li>
+<li><a href="https://docs.earthly.dev/guides/integration">Integration testing guide</a></li>
+<li><a href="https://dev.to/adamgordonbell/how-to-make-integration-tests-less-flaky-bel">Making Integration tests less flaky</a></li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-12-04T17:16:14-05:00">December 4, 2020</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/youre-using-docker-compose-wrong/" class="pagination--pager" title="You’re using docker-compose wrong
+">Previous</a>
+    
+    
+      <a href="/blog/the-next-iteration/" class="pagination--pager" title="The Next Iteration of Earthly
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

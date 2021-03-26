@@ -1,0 +1,699 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Understanding Docker Logging and Log Files - Earthly</title>
+<meta name="description" content="Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.">
+
+
+  <meta name="author" content="Earthly">
+  
+  <meta property="article:author" content="Earthly">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Understanding Docker Logging and Log Files">
+<meta property="og:url" content="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">
+
+
+  <meta property="og:description" content="Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Understanding Docker Logging and Log Files">
+  <meta name="twitter:description" content="Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-03-10T13:00:00-05:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-400-951560bb2.webp 400w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-600-951560bb2.webp 600w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-800-951560bb2.webp 800w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-1000-951560bb2.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-400-951560bb2.jpg 400w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-600-951560bb2.jpg 600w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-800-951560bb2.jpg 800w, /blog/generated/assets/images/understanding-docker-logging-and-log-files/header-1000-951560bb2.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/understanding-docker-logging-and-log-files/header-800-951560bb2.jpg" alt="Understanding Docker Logging and Log Files"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Understanding Docker Logging and Log Files">
+    <meta itemprop="description" content="Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.">
+    <meta itemprop="datePublished" content="2021-03-10T13:00:00-05:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Understanding Docker Logging and Log Files
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introduction-to-docker-logging">Introduction to Docker Logging</a></li><li><a href="#docker-logging-commands">Docker Logging Commands</a></li><li><a href="#logging-drivers-supported-by-docker">Logging Drivers Supported by Docker</a><ul><li><a href="#configuring-the-logging-driver">Configuring the Logging Driver</a></li><li><a href="#choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver">Choosing the Delivery Mode of Log Messages From Container to Log Driver</a></li></ul></li><li><a href="#understanding-logging-strategies">Understanding Logging Strategies</a><ul><li><a href="#application-logging">1. Application Logging</a></li><li><a href="#data-volumes">2. Data Volumes</a></li><li><a href="#docker-logging-driver">3. Docker Logging Driver</a></li><li><a href="#dedicated-logging-container">4. Dedicated Logging Container</a></li><li><a href="#sidecar-logging-container">5. Sidecar Logging Container</a></li><li><a href="#third-party-logging-services">6. Third-party Logging Services</a></li></ul></li><li><a href="#limitations-and-challenges-of-docker-logging">Limitations and Challenges of Docker Logging</a><ul><li><a href="#the-only-compatible-driver-is-json-file">The Only Compatible Driver Is json-file</a></li><li><a href="#docker-syslog-impacts-container-deployment">Docker Syslog Impacts Container Deployment</a></li><li><a href="#potential-loss-of-logs-with-docker-syslog-driver">Potential Loss of Logs with Docker Syslog Driver</a></li><li><a href="#multiline-logs-not-supported">Multiline Logs Not Supported</a></li><li><a href="#logs-can-miss-or-skip">Logs Can Miss or Skip</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.</p>
+<p>With that in mind, let’s dive into Docker logging and its log files.</p>
+<h2 id="introduction-to-docker-logging">Introduction to Docker Logging</h2>
+<p>Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A <a href="https://www.sumologic.com/glossary/log-analysis/">log analysis</a> then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.</p>
+<p>In <a href="https://www.docker.com/">Docker</a>, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:</p>
+<p><strong>1. Containers are transient.</strong> When a Docker container broadcasts logs, it sends them to the application’s <code>stdout</code> and <code>stderr</code> output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (<a href="https://docs.docker.com/config/containers/logging/json-file/"><code>json-file</code> is the default logging driver used by Docker</a>). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.</p>
+<p><strong>2. Containers are multileveled.</strong> There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in <code>/var/log</code>. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.</p>
+<p>In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.</p>
+<h2 id="docker-logging-commands">Docker Logging Commands</h2>
+<p><code>docker logs</code> is a command that shows all the information logged by a running container. The <code>docker service logs</code> command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: STDIN, STDOUT, and STDERR. And the default is set to show only STDOUT and STDERR.</p>
+<ul>
+<li>STDIN is the command’s input stream, which may include input from the keyboard or input from another command.</li>
+<li>STDOUT is usually a command’s normal output.</li>
+<li>STDERR is typically used to output error messages.</li>
+</ul>
+<p>The <code>docker logs</code> command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of STDOUT and STDERR. With <code>docker logs &lt;CONTAINER_ID&gt;</code>, you can see all the logs broadcasted by a specific container identified by a unique ID.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--name</span> test <span class="at">-d</span> busybox sh <span class="at">-c</span> <span class="st">&quot;while true; do </span><span class="va">$(</span><span class="bu">echo</span> date<span class="va">)</span><span class="st">; sleep 1; done&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> date</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Tue</span> 06 Feb 2020 00:00:00 UTC</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="at">-f</span> <span class="at">--until</span><span class="op">=</span>2s test</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Tue</span> 06 Feb 2020 00:00:00 UTC</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Tue</span> 06 Feb 2020 00:00:01 UTC</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Tue</span> 06 Feb 2020 00:00:02 UTC</span></code></pre></div>
+<p><code>docker logs</code> works a bit differently in community and enterprise versions. In Docker Enterprise, <code>docker logs</code> read logs created by any logging driver, but in Docker CE, it can only read logs created by the json-file, local, and journald drivers.</p>
+<p>For example, here’s the JSON log created by the <a href="https://hub.docker.com/_/hello-world">hello-world</a> Docker image using the json-file driver:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="dt">{</span><span class="st">&quot;log&quot;</span><span class="dt">:</span><span class="st">&quot;Hello from Docker!\n&quot;</span><span class="op">,</span><span class="st">&quot;stream&quot;</span><span class="dt">:</span><span class="st">&quot;stdout&quot;</span><span class="op">,</span><span class="st">&quot;time&quot;</span><span class="dt">:</span><span class="st">&quot;2021-02-10T00:00:00.000000000Z&quot;</span><span class="dt">}</span></span></code></pre></div>
+<p>As you can see, the log follows a pattern of printing:</p>
+<ul>
+<li>Log’s origin</li>
+<li>Either <code>stdout</code> or <code>stderr</code></li>
+<li>A timestamp</li>
+</ul>
+<p>You can find this log in your Docker host at:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> /var/lib/docker/containers/<span class="op">&lt;</span>container id<span class="op">&gt;</span>/<span class="op">&lt;</span>container id<span class="op">&gt;</span>-json.log  </span></code></pre></div>
+<p>These Docker logs are stored in a host container and will build up over time. To address that, you can implement log rotation, which will remove a chunk of logs at specified intervals, and a log aggregator, which can be used to push them into a centralized location for a permanent log repository. You can use this repository for further analysis and improvements in the system down the road.</p>
+<p>To find <code>container_id</code>, run the <code>docker ps</code> command. It’ll list all the running containers.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker ps</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE       COMMAND             CREATED             STATUS              PORTS     NAMES</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cg95e1yqk810</span>   bar_image  <span class="st">&quot;node index.js&quot;</span>     Y min ago           Up Y min            80/tcp     bar_app</span></code></pre></div>
+<p>Then, the <code>docker logs container_id</code> lists the logs for a particular container.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span></span></code></pre></div>
+<p>If you want to follow the Docker container logs:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span> -f</span></code></pre></div>
+<p>If you want to see the last N log lines:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span> --tail N</span></code></pre></div>
+<p>If you only want to see any specific logs, use <code>grep</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> node</span></code></pre></div>
+<p>If you want to check errors:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker logs <span class="op">&lt;</span>container_id<span class="op">&gt;</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> error</span></code></pre></div>
+<h2 id="logging-drivers-supported-by-docker">Logging Drivers Supported by Docker</h2>
+<p>Logging drivers, or log-drivers, are mechanisms for getting information from running containers and services, and Docker has lots of them available for you. Every Docker daemon has a default logging driver, which each container uses. Docker uses the json-file logging driver as its default driver.</p>
+<p>Currently, Docker supports the following logging drivers:</p>
+<table>
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Driver</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>none</strong></td>
+<td style="text-align: center;">No logs are available for the container and Docker logs do not return any output.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/local/">local</a></strong></td>
+<td style="text-align: center;">Logs are stored in a custom format designed for minimal overhead.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/json-file/">json-file</a></strong></td>
+<td style="text-align: center;">Logs are formatted as JSON. The default logging driver for Docker.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/syslog/">syslog</a></strong></td>
+<td style="text-align: center;">Writes logging messages to the Syslog facility. The Syslog daemon must be running on the host machine.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/journald/">journald</a></strong></td>
+<td style="text-align: center;">Writes log messages to journald. The journald daemon must be running on the host machine.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/gcplogs/">gcplogs</a></strong></td>
+<td style="text-align: center;">Writes log messages to Google Cloud Platform (GCP) logging.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/awslogs/">awslogs</a></strong></td>
+<td style="text-align: center;">Writes log messages to Amazon CloudWatch logs.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/splunk/">splunk</a></strong></td>
+<td style="text-align: center;">Writes log messages to Splunk using the HTTP Event Collector.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/gelf/">gelf</a></strong></td>
+<td style="text-align: center;">Writes log messages to a Graylog Extended Log Format (GELF) endpoint, such as Graylog or Logstash.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/fluentd/">fluentd</a></strong></td>
+<td style="text-align: center;">Writes log messages to fluentd (forward input). The fluentd daemon must be running on the host machine.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/etwlogs/">etwlogs</a></strong></td>
+<td style="text-align: center;">Writes log messages as Event Tracing for Windows (ETW) events. Only available on Windows platforms.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong><a href="https://docs.docker.com/config/containers/logging/logentries/">logentries</a></strong></td>
+<td style="text-align: center;">Writes log messages to Rapid7 Logentries.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuring-the-logging-driver">Configuring the Logging Driver</h3>
+<p>To configure the Docker daemon to a logging driver, you need to set the value of <code>log-driver</code> to the name of the logging driver in the daemon.json configuration file. Then you need to restart Docker for the changes to take effect for all the newly created containers. All the existing containers will remain as they are.</p>
+<p>For example, let’s set up a default logging driver with some additional options.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;log-driver&quot;</span><span class="fu">:</span> <span class="st">&quot;json-file&quot;</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;log-opts&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;max-size&quot;</span><span class="fu">:</span> <span class="st">&quot;25m&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;max-file&quot;</span><span class="fu">:</span> <span class="st">&quot;10&quot;</span><span class="fu">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;labels&quot;</span><span class="fu">:</span> <span class="st">&quot;production_bind&quot;</span><span class="fu">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;env&quot;</span><span class="fu">:</span> <span class="st">&quot;os,customer&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>To find the current logging driver for the Docker daemon:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker info <span class="at">--format</span> <span class="st">&#39;{{.LoggingDriver}}&#39;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">json-file</span></span></code></pre></div>
+<p>You can override the default driver by adding the <code>--log-driver</code> option to the docker run command that creates a container.</p>
+<p>The following command will start using the Splunk driver:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--log-driver</span> splunk httpd</span></code></pre></div>
+<p>Modify the <code>daemon.json</code> file, to pass the address of the splunk host to the driver:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-driver&quot;</span><span class="fu">:</span> <span class="st">&quot;splunk&quot;</span><span class="fu">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-opts&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;splunk-url&quot;</span><span class="fu">:</span> <span class="st">&quot;172.1.1.1:11111&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker inspect <span class="at">-f</span> <span class="st">&#39;{{.HostConfig.LogConfig.Type}}&#39;</span> <span class="op">&lt;</span>CONTAINER<span class="op">&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">splunk</span></span></code></pre></div>
+<h3 id="choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver">Choosing the Delivery Mode of Log Messages From Container to Log Driver</h3>
+<p>Docker provides two modes for delivering log messages:</p>
+<ul>
+<li><p><strong>Blocking (default):</strong> The container interrupts the application every time it needs to deliver a message to the driver. This will add latency in the performance of your application (for some drivers), but it’ll guarantee that all the messages will be sent to the driver. Case in point, the json-file driver writes logs very quickly, therefore it’s unlikely to cause latency. But drivers like <code>gcplogs</code> and <code>awslogs</code> open a connection to a remote server and so are more likely to block and cause latency.</p></li>
+<li><p><strong>Non-Blocking:</strong> The container writes and stores its logs to an in-memory ring buffer until the logging driver is available to process them. This ensures that a high rate of logging will not affect application performance. It does not guarantee that all the messages will be sent to the driver. In cases where log broadcasts are faster than the driver processor, the ring buffer will soon run out of space. As a result, buffered logs are deleted to make space for the next set of incoming logs. The default value for <code>max-buffer-size</code> is 1 MB.</p></li>
+</ul>
+<p>To change the mode:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-driver&quot;</span><span class="fu">:</span> <span class="st">&quot;splunk&quot;</span><span class="fu">,</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-opts&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;splunk-url&quot;</span><span class="fu">:</span> <span class="st">&quot;172.1.1.1:11111&quot;</span><span class="fu">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;mode&quot;</span><span class="fu">:</span> <span class="st">&quot;non-blocking&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="understanding-logging-strategies">Understanding Logging Strategies</h2>
+<p>Docker logging effectively means logging the events of an application, host OS, and the respective Docker service. There are a few defined logging strategies you should keep in mind when working with containerized apps.</p>
+<h3 id="application-logging">1. Application Logging</h3>
+<p>In this logging strategy, the application running in the containers will have its own logging framework. For example, a Node.js app could use a <a href="https://www.npmjs.com/package/winston"><code>winston</code></a> library to format and send the logs. With this approach, you have complete control over the logging event.</p>
+<p>If you have multiple containers, you need to add an identifier at each container level, so you can uniquely determine the container and its respective logs. But as the size of the logs increases, this will start creating a load on the application process. Due to the transient nature of containers, the logs will be wiped out when a container is terminated or shut down.</p>
+<p>To address this, you have two options: - Configure steady storage to hold these logs, i.e. disks/data volumes. - Forward these logs to a log management solution.</p>
+<h3 id="data-volumes">2. Data Volumes</h3>
+<p>In this logging strategy, your container’s directory gets links to one of the host machine directories that will hold all the data for you. Containers can now be terminated or shut down, and access logs from multiple containers.</p>
+<p>A regular backup is a good idea in order to prevent data corruption or loss in case of a failure. But if you want to shift the containers on different hosts without loss of data, then the data volumes strategy will make that difficult.</p>
+<h3 id="docker-logging-driver">3. Docker Logging Driver</h3>
+<p>Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s <code>stdout</code> or <code>stderr</code> streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like fluentd, Splunk, and awslogs.</p>
+<p>Note that the <code>docker log</code> command will not work if you use anything other than the <code>json-file</code> driver. And if log forwarding over a TCP connection fails or becomes unreachable, the containers will shut down.</p>
+<h3 id="dedicated-logging-container">4. Dedicated Logging Container</h3>
+<p>Here, you need to set up a dedicated container whose only job is to collect and manage logs within a Docker ecosystem. It’ll aggregate, monitor, and analyze logs from containers and forward them to a central repository. The log dependency on the host machine is no longer an issue, and it’s best suited for microservices architecture.</p>
+<p>This strategy gives you the freedom to:</p>
+<ul>
+<li>Move containers between the hosts.</li>
+<li>Scale up by just adding a new container.</li>
+<li>Tie up all the various streams of log events.</li>
+</ul>
+<h3 id="sidecar-logging-container">5. Sidecar Logging Container</h3>
+<p>This logging strategy is similar to dedicated logging in that you have a container to hold logs, but here, each application has its own dedicated logging container (note that the application and its log container can be considered as a single unit). This opens up the flexibility of app-level logging customization. By adding custom identifiers, you can identify the specific container that broadcasts the log.</p>
+<p>This is best suited for a complex system where each entity customizes the logs, making it popular in microservices deployment. Maintaining a container per application level will require additional resources for management and setup, so it’s complex to implement. Also, you may end up losing data when a container from the unit becomes unserviceable.</p>
+<h3 id="third-party-logging-services">6. Third-party Logging Services</h3>
+<p>There are a lot of third-party logging services you can use according to your infrastructure and application needs, enabling you to aggregate, manage, and analyze logs and take proactive preventative actions as a result.</p>
+<ul>
+<li><strong><a href="http://www.splunk.com/">Splunk</a>:</strong> Splunk is built to scale from a single server to multiple data centers. It has built-in alerting and reporting, real-time search, analysis, and visualization, which helps you take action against malfunctions faster. It comes with a Splunk Enterprise on-premise deployment and Splunk Cloud. The free plan comes with 500 MB data per day, and the paid plan starts from $150 a month for a GB.</li>
+<li><strong><a href="https://github.com/elastic/logstash">Logstash</a>:</strong> Logstash is part of the <a href="https://www.elastic.co/products">Elastic Stack</a> along with Beats, Elasticsearch, and Kibana. It’s a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favourite “stash.” Logstash has over 200 plugins for input, filter/transform, and output. It’s free and open source.</li>
+<li><strong><a href="http://www.fluentd.org/">Fluentd</a>:</strong> Fluentd is an open-source data collector. Its performance has been well proven, handling 5 TB of daily data, 50,000 messages/sec at peak time. The main reason to use it would be performance. It’s free and open source.</li>
+<li><strong><a href="https://www.papertrail.com/">PaperTrail</a>:</strong> PaperTrail is a simple and user-friendly service that provides a terminal-like experience. Once the data is sent over the syslog, you can perform tail and search operations with the PaperTrail UI. It’s affordable for low volumes but becomes expensive for higher volume. It comes with a free 50 MB/month plan, and paid plans start at $7/month for 1 GB per month.</li>
+<li><strong><a href="https://www.loggly.com/">Loggly</a>:</strong> Loggly focuses on simplicity and ease of use for a DevOps audience. It’s one of the more robust log analyzers. Primary use cases are for troubleshooting and customer support scenarios, and it provides richer visualizations and more parsing functionality than PaperTrail. It comes with a free 200 MB/day, and paid plans start at $79 a month for 1 GB per day ingestion with a 2 weeks retention.</li>
+</ul>
+<h2 id="limitations-and-challenges-of-docker-logging">Limitations and Challenges of Docker Logging</h2>
+<p>Docker makes containerized application deployment easier, faster, and streamlines it with limited resources. Log management and analysis are handled differently with Docker as compared to a traditional system, which introduces a new set of challenges and limitations. From storing logs in a file system to forwarding them to a central repository, Docker logging has some pain points you’ll need to overcome with a deeper understanding of Docker capability.</p>
+<h3 id="the-only-compatible-driver-is-json-file">The Only Compatible Driver Is json-file</h3>
+<p>The json-file driver is the only one that works with the <code>docker logs</code> command, a limitation of Docker logs. When you start using any other logging drivers, such as Fluentd or Splunk, the <code>docker logs</code> command shows an error and the Docker logs API calls will fail. Also, you won’t be able to check the container logs in this situation.</p>
+<h3 id="docker-syslog-impacts-container-deployment">Docker Syslog Impacts Container Deployment</h3>
+<p>The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail ife a connection is not made.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker: Error response from daemon: Failed to initialize logging driver: dial tcp</span></code></pre></div>
+<p>Your container deployment will be affected if you face network problems or latency issues. And it’s not recommended that you restart the Syslog server because this will drop all the connections from the containers to a central Syslog server.</p>
+<h3 id="potential-loss-of-logs-with-docker-syslog-driver">Potential Loss of Logs with Docker Syslog Driver</h3>
+<p>The Docker syslog driver needs an established TCP or TLS connection to deliver logs. Note that when the connection is down or not reachable, you’ll start losing the logs until the connection reestablished.</p>
+<h3 id="multiline-logs-not-supported">Multiline Logs Not Supported</h3>
+<p>Generally, either of two patterns is followed for logging: single-line per log or multiple lines with extended information per log, like stack traces or exceptions. But with Docker logging, this is a moot point, because containers always broadcast logs to the same output: <code>stdout</code>. ### Multiple Logging Drivers Not Supported It’s mandatory that you use only a single driver for all of your logging needs. Scenarios where you can store logs locally and push it to remote servers are not supported.</p>
+<h3 id="logs-can-miss-or-skip">Logs Can Miss or Skip</h3>
+<p>There’s a rate limitation setting at the Docker end for journald drivers that takes care of the rate that logs get pushed. If it exceeds, then the driver might skip some logs. To prevent such issues, increase the rate limitation settings according to your logging needs.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>While Docker containerization allows developers to encapsulate a program and its file system into a single portable package, that certainly doesn’t mean containerization is free of maintenance. Docker Logging is a bit more complex than traditional methods, so teams using Docker must familiarize themselves with the Docker logging to support full-stack visibility, troubleshooting, performance improvements, root cause analysis, etc.</p>
+<p>As we have seen in this post, to facilitate logging, Docker offers logging drivers and commands in the platform which gives you the mechanisms for accessing the performance data and also provides plugins to integrate with third-party logging tools as well. To maximize the logging capabilities there are several methods and strategies which help in designing your logging infrastructure, but each comes with its advantages and disadvantages.</p>
+<p>With this understanding of logging, containerization can be a powerful tool. Earthly is a containerized <a href="http://earthly.dev/">continuous integration tool</a>. If you’ve ever had to deal with flaky builds you should <a href="http://earthly.dev/">check it out</a>.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#docker" class="page__taxonomy-item" rel="tag">docker</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#tutorials" class="page__taxonomy-item" rel="tag">tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-10T13:00:00-05:00">March 10, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/how-to-setup-and-use-amazons-elastic-container-registry/" class="pagination--pager" title="How to Setup and Use Amazon’s Elastic Container Registry
+">Previous</a>
+    
+    
+      <a href="/blog/build-your-own-ngrok-clone/" class="pagination--pager" title="Build Your Own Ngrok Clone With AWS
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-245-b511dc5fb.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-b511dc5fb.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Overlay Headline
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/understanding-bash/" rel="permalink">Understanding Bash
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like u...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Earthly. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/blog/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
