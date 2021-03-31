@@ -1,21 +1,15 @@
 <!doctype html>
-<!--
-  Minimal Mistakes Jekyll Theme 4.22.0 by Michael Rose
-  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
-  Free for personal and commercial use under the MIT license
-  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
--->
 <html lang="en" class="no-js">
   <head>
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Building on Kubernetes: Ingress - Earthly</title>
-<meta name="description" content="What is an internal platform?">
+<meta name="description" content="Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
 
-  <meta name="author" content="Earthly">
+  <meta name="author" content="Cory Larson">
   
-  <meta property="article:author" content="Earthly">
+  <meta property="article:author" content="Cory Larson">
   
 
 
@@ -26,7 +20,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/building-on-kubernetes-ingress/">
 
 
-  <meta property="og:description" content="What is an internal platform?">
+  <meta property="og:description" content="Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
 
 
@@ -34,7 +28,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Building on Kubernetes: Ingress">
-  <meta name="twitter:description" content="What is an internal platform?">
+  <meta name="twitter:description" content="Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
   <meta name="twitter:url" content="https://earthly.dev/blog/building-on-kubernetes-ingress/">
 
   
@@ -49,6 +43,8 @@
   <meta property="article:published_time" content="2020-10-22T18:40:39-04:00">
 
 
+
+  <meta property="article:modified_time" content="2021-03-29T00:00:00-04:00">
 
 
 
@@ -113,11 +109,54 @@
 <![endif]-->
 
 
-    <!-- start custom head snippets -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-<!-- insert favicons. use https://realfavicongenerator.net/ -->
-
-<!-- end custom head snippets -->
+  gtag('config', 'UA-161831101-4');
+  gtag('config', 'UA-161831101-5', {
+    'linker': {
+      'domains': ['blog.earthly.dev']
+    },
+  });
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.13.1";
+  analytics.load("ZNzktfRyL0ihBWdbb6JjGv5L06hA9izj");
+  analytics.page();
+  }}();
+</script>
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
 
   </head>
 
@@ -199,13 +238,18 @@
 
 <div id="main" role="main">
   
+  <div class="sidebar sticky">
+
+  
+  </div>
+
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Building on Kubernetes: Ingress">
-    <meta itemprop="description" content="What is an internal platform?">
+    <meta itemprop="description" content="Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
     <meta itemprop="datePublished" content="2020-10-22T18:40:39-04:00">
-    
+    <meta itemprop="dateModified" content="2021-03-29T00:00:00-04:00">
 
     <div class="page__inner-wrap">
       
@@ -228,8 +272,22 @@
         
           7 minute read
         
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time>
+        
+
       </span>
     
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <img src="/blog/assets/images/authors/corylarson.jpg" alt="Cory Larson" itemprop="image">&nbsp;	&nbsp;
+          Cory Larson
+      </div>
+      
+    </span>
   </p>
 
 
@@ -238,7 +296,8 @@
 
       <section class="page__content" itemprop="text">
         
-        <p><strong>What is an internal platform?</strong></p>
+        <p><em>Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.</em></p>
+<p><strong>What is an internal platform?</strong></p>
 <p>The internal platform is really the phrase I’ve always used in other places.  It’s the product that’s not really the product that you’re shipping.</p>
 <p>A way to think of it is your own company’s internal cloud. What is the set of resources, toolings, workflows that you use to ship software to your company, which itself should really be a product that you ship to yourselves. So for Earthly, that means a whole stack of technology.</p>
 <p>We’re using AWS, we’re using Kubernetes. We’re hiding some parts of Kubernetes that we don’t want to use from everyday usage, so we don’t go there. We’re making some trade-offs as to where we choose platform lock-in and where we’re not.  It’s things like that. And as we add more services the platform should develop to accommodate those things in the way we choose to work.</p>
@@ -275,9 +334,102 @@ Ingress is the networking layer of how you get requests to your services from th
         
       </section>
 
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <h5>About The Author</h5>
+
+  
+    <div class="author__avatar">
+      
+        <img src="/blog/assets/images/authors/corylarson.jpg" alt="Cory Larson" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Cory Larson</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Eats, runs, and codes. Dad. Engineer. Progressive. LDS. DisneyLand fanatic.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
       <footer class="page__meta">
         
         
+
   
 
 
@@ -310,8 +462,9 @@ Ingress is the networking layer of how you get requests to your services from th
   </p>
 
 
+
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-22T18:40:39-04:00">October 22, 2020</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time></p>
 
 
       </footer>
@@ -331,8 +484,6 @@ Ingress is the networking layer of how you get requests to your services from th
   </nav>
 
     </div>
-
-    
   </article>
 
   
@@ -464,9 +615,6 @@ Highlights From The Comments On The YAML Article
 
     <div id="footer" class="page__footer">
       <footer>
-        <!-- start custom footer snippets -->
-
-<!-- end custom footer snippets -->
         <div class="page__footer-follow">
   <ul class="social-icons">
     
@@ -500,14 +648,11 @@ Highlights From The Comments On The YAML Article
       </footer>
     </div>
 
-    
-  <script src="/blog/assets/js/main.min.js"></script>
+    <script src="/blog/assets/js/main.min.js"></script>
 
-
-
-
-
-
+  <script> // minified version of http://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
 
 
 

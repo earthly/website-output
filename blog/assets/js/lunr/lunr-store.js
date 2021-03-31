@@ -78,7 +78,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Building on Kubernetes: Ingress",
-        "excerpt":"What is an internal platform? The internal platform is really the phrase I’ve always used in other places.  It’s the product that’s not really the product that you’re shipping. A way to think of it is your own company’s internal cloud. What is the set of resources, toolings, workflows that...","categories": ["Articles"],
+        "excerpt":"Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform. What is an internal platform? The internal platform is really the phrase I’ve always used...","categories": ["Articles"],
         "tags": ["Interview"],
         "url": "/blog/building-on-kubernetes-ingress/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
