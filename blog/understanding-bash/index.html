@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html --><title>Understanding Bash - Earthly</title>
+<meta name="description" content="Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.">
+
+
+  <meta name="author" content="Kasper Siig">
+  
+  <meta property="article:author" content="Kasper Siig">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly">
+<meta property="og:title" content="Understanding Bash">
+<meta property="og:url" content="https://earthly.dev/blog/understanding-bash/">
+
+
+  <meta property="og:description" content="Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.">
+
+
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Understanding Bash">
+  <meta name="twitter:description" content="Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/understanding-bash/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-04-01T00:00:00-04:00">
+
+
+
+  <meta property="article:modified_time" content="2021-03-29T00:00:00-04:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/understanding-bash/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Earthly",
+      "url": "https://earthly.dev/blog/",
+      "sameAs": ["https://twitter.com/mmistakes","https://www.facebook.com/michaelrose"]
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-4');
+  gtag('config', 'UA-161831101-5', {
+    'linker': {
+      'domains': ['blog.earthly.dev']
+    },
+  });
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.13.1";
+  analytics.load("ZNzktfRyL0ihBWdbb6JjGv5L06hA9izj");
+  analytics.page();
+  }}();
+</script>
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/blog/"><img src="/blog/assets/images/logo.png" alt="Earthly"></a>
+        
+        <a class="site-title" href="/blog/">
+          Earthly
+          <span class="site-subtitle">Better Builds.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Understanding Bash">
+    <meta itemprop="description" content="Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.">
+    <meta itemprop="datePublished" content="2021-04-01T00:00:00-04:00">
+    <meta itemprop="dateModified" content="2021-03-29T00:00:00-04:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Understanding Bash
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#use-the-right-shebang">Use the Right Shebang</a><ul><li><a href="#binbash">#!/bin/bash</a></li><li><a href="#userbinenv-bash">#!/user/bin/env bash</a></li></ul></li><li><a href="#understand-common-sets">Understand Common Sets</a><ul><li><a href="#set--u">set -u</a></li><li><a href="#set--x">set -x</a></li><li><a href="#set--e">set -e</a></li><li><a href="#set--eo-pipefail">set -eo pipefail</a></li></ul></li><li><a href="#use-error-checking-tools">Use Error Checking Tools</a></li><li><a href="#understand-variable-naming-and-declaration">Understand Variable Naming and Declaration</a><ul><li><a href="#assigning-variables">Assigning Variables</a></li><li><a href="#using-variables-inside-strings">Using Variables Inside Strings</a><ul><li><a href="#double-quotes">Double Quotes</a></li><li><a href="#single-quotes">Single Quotes</a></li><li><a href="#backticks">Backticks</a></li></ul></li><li><a href="#using-curly-brackets">Using Curly Brackets</a></li></ul></li><li><a href="#properly-set-permissions">Properly Set Permissions</a></li><li><a href="#ensure-readability">Ensure Readability</a></li><li><a href="#understand-your-script-in-relation-to-cli">Understand Your Script in Relation to CLI</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.</p>
+<p>When you’re done with this article, you’ll not only be able to write bash scripts, but you’ll be able to write them using today’s accepted best practices.</p>
+<h2 id="use-the-right-shebang">Use the Right Shebang</h2>
+<p>The very first thing you’ll see at the top of every (well-written) bash script is what’s called a <a href="https://www.in-ulm.de/~mascheck/various/shebang/"><em>shebang</em></a>. I’ll walk you through a couple of them here.</p>
+<h3 id="binbash">#!/bin/bash</h3>
+<p>The most common shebang is the one referring to the <code>bash</code> executable:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
+<p>Essentially it tells your terminal that when you run the script it should use <code>bash</code> to execute it. It can be vital since you may be using a different shell in your machine (<code>zsh</code>, <code>fish</code>, <code>sh</code>, etc.), but you designed the script to work specifically with bash. In many cases, it doesn’t matter what shell you’re using, but there can be some very noteworthy differences in how they work, leading a script to work in <code>bash</code> but not <code>sh</code>, for example.</p>
+<h3 id="userbinenv-bash">#!/user/bin/env bash</h3>
+<p>If you use the previous shebang, it’s crucial that you give the executable’s absolute path. You should be aware of this since there is an alternative where you use the <code>bash</code> executable found in the <code>$PATH</code>. You can do so by writing:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/user/bin/env bash</span></span></code></pre></div>
+<h1 id="todo-rephrase">ToDo: rephrase</h1>
+<p>There are those who like to customize their systems, either their personal system or production servers, resulting in the <code>bash</code> executable not being located in <code>/bin/bash</code> every time. Use the above line if you can’t be sure that the <code>bash</code> executable will be located in the same path when this script is run.</p>
+<h2 id="understand-common-sets">Understand Common Sets</h2>
+<p>When you run a bash script, it will always run in a new <em>subshell</em>. This means that any unique configurations you have in your current setup will not be used within the script execution. It also means that you can customize the environment that the script is running in without worrying about how your terminal will be affected.</p>
+<p>One way to change this environment is to use the <code>set</code> command. I’ll go over the four most common ones and where they’re useful.</p>
+<h3 id="set--u">set -u</h3>
+<p>By default, bash doesn’t do a lot of error handling. That’s left up to you. So if you want to have your script exit at a certain point, you have to define it. For example, you may have the following script:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$TEST</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello World</span></code></pre></div>
+<p>If you run the script as shown above, it’ll give you the following output:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
+<p>See how it doesn’t complain that the <code>$TEST</code> variable is not set? You can change that. Setting the <code>set -u</code> command initially, you’re telling bash that you want it to fail if a variable is not set.</p>
+<p><strong>Script:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-u</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$TEST</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello World</span></code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 3: TEST: unbound variable</span></code></pre></div>
+<p>Without <code>set -u</code>, bash will use an empty string instead of the unset variable. When running <code>echo $TEST</code>, that isn’t too dangerous. However, you may be running a command like <code>rm -rf /$TEST</code> to define a path you want to delete. In this case, without <code>set -u</code>, you would end up deleting your entire file system (which there’s no way to recover by default).</p>
+<h3 id="set--x">set -x</h3>
+<p>You’ll likely at some point have a big script where it’s tough to keep track of not just which commands are running what, but also which commands are outputting what. This is where <code>set -x</code> comes to the rescue.</p>
+<p>When using <code>set -x</code>, you get the following script and output.</p>
+<p><strong>Script:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-x</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hi</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello World</span></code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> echo Hi</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hi</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> echo Hello World</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
+<h3 id="set--e">set -e</h3>
+<p>#Todo “Very clean” Sometimes you want to make sure that the entire script fails if one of the commands fails. This is not the default behavior in bash. You can see <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">here</a> that without any set options, bash is running in a very clean way, without much in terms of error handling.</p>
+<p>To make sure the script fails, you should use <code>set -e</code>, probably the most common one.</p>
+<p><strong>Script:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">foo</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello World</span></code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 3: foo: command not found</span></code></pre></div>
+<h3 id="set--eo-pipefail">set -eo pipefail</h3>
+<h1 id="todo-simplify">todo simplify</h1>
+<p>Finally, we have the ability to make the script fail if a command in a pipeline fails. Usually, bash only looks for the exit code from the last command in a pipeline. If that’s 0, it’ll continue just fine. Exit code 0 is what we want, since in bash that means success.</p>
+<p>Let’s use the following script as an example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">foo</span> <span class="kw">|</span> <span class="bu">echo</span> Hello World</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hi</span></code></pre></div>
+<p><code>set -eo pipefail</code> will turn the output from:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 2: foo: command not found</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hi</span></span></code></pre></div>
+<p>into:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 2: foo: command not found</span></code></pre></div>
+<p>The reason you may want the script to fail if a pipeline fails is the same as earlier with <code>set -u</code>. Let’s modify the scenario a bit. You have the following in your script:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">FILE_PATH</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> /tmp/path.txt <span class="kw">|</span> <span class="fu">sed</span> ‘s/_/-/g<span class="va">)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> /<span class="va">$FILE_PATH</span></span></code></pre></div>
+<p><em>Note: <code>sed</code> is a search-and-replace command. In this case it replaces underscores with dashes.</em></p>
+<p>The intention is that <code>/tmp/path.txt</code> contains <code>tmp_file.txt</code>. Assume that the file <code>/tmp-file.txt</code> exists on the system. In this case the script will work perfectly and delete <code>/tmp-file.txt</code>. But what if <code>/tmp/path.txt</code> doesn’t exist? <code>cat /tmp/path.txt</code> will fail, but the script won’t. Now you’ve deleted your entire filesystem, but <code>set -eo pipefail</code> will prevent this.</p>
+<h2 id="use-error-checking-tools">Use Error Checking Tools</h2>
+<p>As with anything, it would be nice to have someone verify that something is working before you even run it. While that may not be 100 percent possible, there are some tools available to help you check your bash script. One of these is <a href="https://www.shellcheck.net/#">ShellCheck</a>.</p>
+<p>Navigate to ShellCheck and paste in the contents of your script (or download the tool), and it will tell you whether there are improvements that can be made. These improvements can range from syntax improvements like linting to actual errors.</p>
+<p>If you’re curious to see examples of how it can help, simply click <em>Load random example</em> on <a href="https://www.shellcheck.net/">the home page</a>.</p>
+<h2 id="understand-variable-naming-and-declaration">Understand Variable Naming and Declaration</h2>
+<p>As you saw earlier, we tried to use the <code>$TEST</code> variable. Variables can open up a whole world of opportunities, but they can also be tricky to work with. Let’s go over some of the common scenarios for working with variables.</p>
+<h3 id="assigning-variables">Assigning Variables</h3>
+<p>Assigning a variable in bash is reasonably straightforward, using the <code>=</code> symbol. Here’s an example of assigning “Hello World” to a <code>$TEST</code> variable:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> MSG=<span class="st">&quot;Hello world!&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$MSG</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> world!</span></code></pre></div>
+<h3 id="using-variables-inside-strings">Using Variables Inside Strings</h3>
+<p>There are multiple ways to use a variable that you’ve assigned a value. As an example, we’ve assigned <code>foo=uname</code>.</p>
+<h4 id="double-quotes">Double Quotes</h4>
+<p>If you want to echo the contents of a variable, then use double quotes. It will expand what’s inside the variable and print that to the screen.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">uname</span></span></code></pre></div>
+<h4 id="single-quotes">Single Quotes</h4>
+<p>In some cases, you don’t want to output a variable’s contents, but maybe write an explanation of what that variable is used for. To avoid expansion, use single quotes:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;$foo&#39;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="va">$foo</span></span></code></pre></div>
+<p>This also means that you don’t have to manually escape the <code>$</code> symbol, which you otherwise would need to in the case of double quotes.</p>
+<h4 id="backticks">Backticks</h4>
+<p>The third option for using a variable is backticks. Use this when you want the contents of the variable to be run as a shell command:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="kw">`</span><span class="va">$foo</span><span class="kw">`</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span></span></code></pre></div>
+<h3 id="using-curly-brackets">Using Curly Brackets</h3>
+<p>You can get away with merely referring to a variable by writing <code>$FOO</code>. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> world&quot;</span></span></code></pre></div>
+<p>In this case, bash would try to find the variable <code>$FOOlo</code>, but we just wanted to print “Hello world.” To make this work, you will have to do the following:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo world&quot;</span></span></code></pre></div>
+<p>This is most likely useful when you want to use a variable to define a path, like <code>/opt/${ENVIRONMENT}_build.txt</code>. Without curly brackets, the script would try to look up <code>$ENVIRONMENT_build</code>.</p>
+<h2 id="properly-set-permissions">Properly Set Permissions</h2>
+<p>One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that <a href="https://www.guru99.com/file-permissions.html">permissions</a> had to be set right. See, when you make a file with, for example, <code>touch</code>, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a <code>permission denied</code> error when you try to run the script.</p>
+<p>Luckily this is easily fixed. Run <code>chmod +x script.sh</code>, and now everyone is allowed to run the script.</p>
+<p>However, do be aware that changing permissions can impose security risks. Read more about <a href="https://www.linux.com/training-tutorials/understanding-linux-file-permissions/">Linux file permissions</a> before you start changing permissions blindly.</p>
+<h2 id="ensure-readability">Ensure Readability</h2>
+<p>One of the biggest pitfalls that newcomers run into is forgetting about readability. It’s easy to get caught up in wanting to have a working script, and maybe you’re even used to running everything manually in the terminal, where you want to type as little as possible.</p>
+<p>When it comes to scripts, you want to make sure that you can still easily remember what’s happening six months down the line. An easy way to do this is by using more extended options (<code>--quiet</code> instead of <code>-q</code>), using longer variable names (<code>MESSAGE</code> instead of <code>MSG</code>), and writing comments.</p>
+<p>You can write commands using a hashtag, after which you can write your comment, like so:</p>
+<pre><code># Below line will echo “Hello World!”
+echo “Hello World!”</code></pre>
+<h2 id="understand-your-script-in-relation-to-cli">Understand Your Script in Relation to CLI</h2>
+<p>When reading this article, you may have noticed that many code examples are being run straight in the terminal rather than written as a bash script. There’s a good reason for that! You can write everything you write in a bash script directly in the terminal.</p>
+<p>There is one significant difference between executing a script and typing the commands in your terminal. When you run a script, it’ll start up a new, clean shell in which the script will run. This means that no variables set in your terminal will interfere with your script.</p>
+<p>For example, if you set <code>TEST=”hello”</code> in your shell and run <code>echo $TEST</code> inside a script, it will print nothing to your screen.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At this point, you should be ready to venture into the exciting world of bash scripting. You’ve learned about common shebangs, what <code>set</code> does, and how it can improve the error handling of your scripts, as well as understanding some general pitfalls developers run into with bash. ’ You can now go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repo you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <h5>About The Author</h5>
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kasper Siig</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>As a DevOps engineer, Kasper Siig is used to working with a variety of exciting technologies, from automating simple tasks to CI/CD to Docker.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" class="pagination--pager" title="Compiling Containers - Dockerfiles, LLVM and BuildKit
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-245-9da891af5.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9da891af5.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/" rel="permalink">Compiling Containers - Dockerfiles, LLVM and BuildKit
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Intro
+
+
+How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/on-yaml-discussions/header-245-ab4352ade.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/on-yaml-discussions/header-800-ab4352ade.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/on-yaml-discussions/" rel="permalink">On YAML Discussions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Highlights From The Comments On The YAML Article
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="http://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of http://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

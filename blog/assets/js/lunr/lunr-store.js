@@ -202,4 +202,10 @@ var store = [{
         "tags": [],
         "url": "/blog/compiling-containers-dockerfiles-llvm-and-buildkit/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding Bash",
+        "excerpt":"Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/understanding-bash/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
