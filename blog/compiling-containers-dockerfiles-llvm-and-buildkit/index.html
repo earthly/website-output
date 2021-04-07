@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
 <link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
-<!-- begin _includes/seo.html --><title>Compiling Containers - Dockerfiles, LLVM and BuildKit - Earthly</title>
-<meta name="description" content="Intro   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
+<!-- begin _includes/seo.html --><title>Compiling Containers - Dockerfiles, LLVM, and BuildKit - Earthly</title>
+<meta name="description" content="Introduction   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -16,19 +16,19 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Earthly">
-<meta property="og:title" content="Compiling Containers - Dockerfiles, LLVM and BuildKit">
+<meta property="og:title" content="Compiling Containers - Dockerfiles, LLVM, and BuildKit">
 <meta property="og:url" content="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">
 
 
-  <meta property="og:description" content="Intro   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
+  <meta property="og:description" content="Introduction   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
 
 
 
 
 
   <meta name="twitter:site" content="@EarthlyTech">
-  <meta name="twitter:title" content="Compiling Containers - Dockerfiles, LLVM and BuildKit">
-  <meta name="twitter:description" content="Intro   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
+  <meta name="twitter:title" content="Compiling Containers - Dockerfiles, LLVM, and BuildKit">
+  <meta name="twitter:description" content="Introduction   How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
   <meta name="twitter:url" content="https://earthly.dev/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">
 
   
@@ -43,8 +43,6 @@
   <meta property="article:published_time" content="2021-03-17T00:00:00-04:00">
 
 
-
-  <meta property="article:modified_time" content="2021-03-29T00:00:00-04:00">
 
 
 
@@ -228,7 +226,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-400-9818bd829.webp 400w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-600-9818bd829.webp 600w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.webp 800w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-1000-9818bd829.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-400-9818bd829.jpg 400w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-600-9818bd829.jpg 600w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.jpg 800w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-1000-9818bd829.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.jpg" alt="Compiling Containers - Dockerfiles, LLVM and BuildKit"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-400-9818bd829.webp 400w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-600-9818bd829.webp 600w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.webp 800w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-1000-9818bd829.webp 1000w" type="image/webp"><source srcset="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-400-9818bd829.jpg 400w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-600-9818bd829.jpg 600w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.jpg 800w, /blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-1000-9818bd829.jpg 1000w" type="image/jpeg"><img src="/blog/generated/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/header-800-9818bd829.jpg" alt="Compiling Containers - Dockerfiles, LLVM, and BuildKit"></picture>
 
   
   
@@ -248,15 +246,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Compiling Containers - Dockerfiles, LLVM and BuildKit">
-    <meta itemprop="description" content="IntroHow are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
+    <meta itemprop="headline" content="Compiling Containers - Dockerfiles, LLVM, and BuildKit">
+    <meta itemprop="description" content="IntroductionHow are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.">
     <meta itemprop="datePublished" content="2021-03-17T00:00:00-04:00">
-    <meta itemprop="dateModified" content="2021-03-29T00:00:00-04:00">
+    
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Compiling Containers - Dockerfiles, LLVM and BuildKit
+          <h1 id="page-title" class="page__title" itemprop="headline">Compiling Containers - Dockerfiles, LLVM, and BuildKit
 </h1>
           
 
@@ -275,7 +273,7 @@
           13 minute read
         
         
-        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time>
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-17T00:00:00-04:00">March 17, 2021</time>
         
 
       </span>
@@ -301,14 +299,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#intro">Intro</a><ul><li><a href="#game-plan">Game Plan:</a></li></ul></li><li><a href="#on-docker-build">On Docker Build</a></li><li><a href="#background">Background</a></li><li><a href="#how-do-compilers-work">How Do Compilers Work?</a></li><li><a href="#there-is-a-catch">There Is a Catch</a></li><li><a href="#intermediate-representations">Intermediate Representations</a></li><li><a href="#buidkit">BuidKit</a></li><li><a href="#programmatically-making-an-image">Programmatically Making An Image</a><ul><li><a href="#building-our-llb">Building Our LLB</a></li></ul></li><li><a href="#a-true-frontend-for-buildkit">A True Frontend for BuildKit</a></li><li><a href="#building-our-own-example-frontend-for-docker-build">Building Our Own Example Frontend for Docker build</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a><ul><li><a href="#game-plan">Game Plan</a></li></ul></li><li><a href="#on-docker-build">On Docker Build</a></li><li><a href="#background">Background</a></li><li><a href="#how-do-compilers-work">How Do Compilers Work?</a></li><li><a href="#there-is-a-catch">There Is a Catch</a></li><li><a href="#intermediate-representations">Intermediate Representations</a></li><li><a href="#buidkit">BuidKit</a></li><li><a href="#programmatically-making-an-image">Programmatically Making An Image</a><ul><li><a href="#building-our-llb">Building Our LLB</a></li></ul></li><li><a href="#a-true-frontend-for-buildkit">A True Frontend for BuildKit</a></li><li><a href="#building-our-own-example-frontend-for-docker-build">Building Our Own Example Frontend for Docker build</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
         
-        <h2 id="intro">Intro</h2>
+        <h2 id="introduction">Introduction</h2>
 <p>How are containers made? Usually, from a series of statements like <code>RUN</code>, <code>FROM</code>, and <code>COPY</code>, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by understanding the phases involved and creating a container image ourselves. We will create an image programmatically and then develop a trivial syntactic frontend and use it to build an image.</p>
-<h3 id="game-plan">Game Plan:</h3>
+<h3 id="game-plan">Game Plan</h3>
 <ul>
 <li>☑️ Intro</li>
 <li>☐️ Background</li>
@@ -749,7 +747,7 @@ README.md</code></pre>
 
 
 <div itemscope itemtype="https://schema.org/Person">
-  <h5>About The Author</h5>
+  <!-- <h5>About The Author</h5> -->
 
   
     <div class="author__avatar">
@@ -761,7 +759,7 @@ README.md</code></pre>
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Adam Gordon Bell</h3>
+      <h4 class="author__name" itemprop="name">Adam Gordon Bell</h3>
     
     
       <div class="author__bio" itemprop="description">
@@ -860,7 +858,7 @@ README.md</code></pre>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-17T00:00:00-04:00">March 17, 2021</time></p>
 
 
       </footer>
@@ -928,7 +926,7 @@ README.md</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          8 minute read
         
       </span>
     
@@ -957,7 +955,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/understanding-bash/header-800-59f545b2b.jpg"></picture>
 
       </div>
     
@@ -981,7 +979,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          10 minute read
         
       </span>
     

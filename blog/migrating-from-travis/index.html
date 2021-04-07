@@ -44,8 +44,6 @@
 
 
 
-  <meta property="article:modified_time" content="2021-03-29T00:00:00-04:00">
-
 
 
   
@@ -251,7 +249,7 @@
     <meta itemprop="headline" content="Migrating Your Open Source Builds Off Of Travis CI">
     <meta itemprop="description" content="Starting in early December, a mad dash has been underway to migrate open-source projects off of Travis CI. What happened and where should you move your project to?">
     <meta itemprop="datePublished" content="2021-01-07T00:00:00-05:00">
-    <meta itemprop="dateModified" content="2021-03-29T00:00:00-04:00">
+    
 
     <div class="page__inner-wrap">
       
@@ -275,7 +273,7 @@
           6 minute read
         
         
-        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time>
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-07T00:00:00-05:00">January 7, 2021</time>
         
 
       </span>
@@ -335,9 +333,8 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 </blockquote>
 <p>Many open-source projects are still using Travis and open-source maintainers are notoriously overworked.  Time spent migrating builds is time not spent on other things.  Large well-maintained projects will likely quickly transition but for many smaller projects, an abrupt change in a service they depend on is a huge challenge.</p>
 <h2 id="where-to-move-to">Where To Move To</h2>
-<figure>
-<img src="/blog/assets/images/migrating-from-travis/dartboard.png" alt="Pins on a Map" /><figcaption aria-hidden="true">Pins on a Map</figcaption>
-</figure>
+<p><img src="/blog/assets/images/migrating-from-travis/dartboard.png" alt="Pins on a Map" /><br />
+</p>
 <p>If you maintain an open-source project that uses TravisCI and are hoping to get off it, then assuming you have the time to migrate, there are actually many viable options.</p>
 <h3 id="option-run-your-own-builds">Option: Run Your Own Builds</h3>
 <p>You can find some <a href="https://medium.com/google-developers/how-to-run-travisci-locally-on-docker-822fc6b2db2e">scattered</a> <a href="https://stackoverflow.com/a/35972902">instructions</a> <a href="https://stackoverflow.com/a/35972902">online</a> for running Travis builds yourself. There are mixed reports on the stability and feasibility of this approach, but if your adventurous you could try to setup your own Travis CI build executor on your own hardware.</p>
@@ -347,9 +344,8 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
 <h3 id="best-option-github-actions">Best Option: Github Actions</h3>
-<figure>
-<img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><figcaption aria-hidden="true">First place trophy</figcaption>
-</figure>
+<p><img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><br />
+</p>
 <p>An even better option is Github Actions, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
 <p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
@@ -380,7 +376,8 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <h2 id="dont-let-this-happen-again">Don’t Let This Happen Again</h2>
 <p>So GitHub has a generous build plan, but moving your CI process is not easy or free.  The more complex your build, the harder porting from one cloud CI to another is going to be.  If you move to GHA and then GHA stops being a viable option in the future then this whole effort will have to be repeated.  </p>
 <h2 id="neutral-build-specifications">Neutral Build Specifications</h2>
-<p><img src="/blog/assets/images/migrating-from-travis/opensign.png" alt="Open Sign" /> How can you minimize the effort of moving from build platform to another?</p>
+<p><img src="/blog/assets/images/migrating-from-travis/opensign.png" alt="Open Sign" /><br />
+How can you minimize the effort of moving from build platform to another?</p>
 <p>My suggestion is to keep as much logic as possible out of the proprietary build definition. Instead, define it in an open-source format that you can execute anywhere.</p>
 <h3 id="makefiles-and-dockerfiles">Makefiles and Dockerfiles</h3>
 <p>One way to build a CI neutral build definition is to use a makefile and a dockerfile.  The makefile contains the various steps of your build pipeline and you run it inside a docker container which installs any needed dependencies.  <a href="https://github.com/qmk/qmk_firmware">QMK</a> is a popular open-source project that uses this approach.</p>
@@ -424,7 +421,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 
 
 <div itemscope itemtype="https://schema.org/Person">
-  <h5>About The Author</h5>
+  <!-- <h5>About The Author</h5> -->
 
   
     <div class="author__avatar">
@@ -436,7 +433,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Adam Gordon Bell</h3>
+      <h4 class="author__name" itemprop="name">Adam Gordon Bell</h3>
     
     
       <div class="author__bio" itemprop="description">
@@ -535,7 +532,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-07T00:00:00-05:00">January 7, 2021</time></p>
 
 
       </footer>
@@ -603,7 +600,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          8 minute read
         
       </span>
     
@@ -632,7 +629,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/understanding-bash/header-800-59f545b2b.jpg"></picture>
 
       </div>
     
@@ -656,7 +653,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          10 minute read
         
       </span>
     

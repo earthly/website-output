@@ -192,13 +192,13 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "On YAML Discussions",
-        "excerpt":"Highlights From The Comments On The YAML Article My article about how YAML makes a bad programming language 1 generated a lot of great discussions online. Here are some highlights, lightly edited: Config Traps dkarl pointed out that putting things in config files that shouldn’t be there happens for many...","categories": ["Articles"],
+        "excerpt":"My article about how YAML makes a bad programming language 1 generated a lot of great discussions online. Here are some highlights, lightly edited: Config Traps dkarl pointed out that putting things in config files that shouldn’t be there happens for many reasons: Reason: Pride in creating a “generic” system...","categories": ["Articles"],
         "tags": ["news"],
         "url": "/blog/on-yaml-discussions/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Compiling Containers - Dockerfiles, LLVM and BuildKit",
-        "excerpt":"Intro How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by...","categories": ["Tutorials"],
+        "title": "Compiling Containers - Dockerfiles, LLVM, and BuildKit",
+        "excerpt":"Introduction How are containers made? Usually, from a series of statements like RUN, FROM, and COPY, which are put into a Dockerfile and built. But how are those commands turned into a container image and then a running container? We can build up an intuition for how this works by...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/compiling-containers-dockerfiles-llvm-and-buildkit/",
         "teaser": "/blog/assets/images/default-teaser.jpg"

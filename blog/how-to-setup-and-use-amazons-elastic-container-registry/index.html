@@ -44,8 +44,6 @@
 
 
 
-  <meta property="article:modified_time" content="2021-03-29T00:00:00-04:00">
-
 
 
   
@@ -251,7 +249,7 @@
     <meta itemprop="headline" content="How to Setup and Use Amazon’s Elastic Container Registry">
     <meta itemprop="description" content="A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.">
     <meta itemprop="datePublished" content="2021-03-05T00:00:00-05:00">
-    <meta itemprop="dateModified" content="2021-03-29T00:00:00-04:00">
+    
 
     <div class="page__inner-wrap">
       
@@ -275,7 +273,7 @@
           9 minute read
         
         
-        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time>
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-05T00:00:00-05:00">March 5, 2021</time>
         
 
       </span>
@@ -301,7 +299,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a><ul><li><a href="#eks-manifest">EKS Manifest</a></li><li><a href="#ecs-task-definition">ECS Task Definition</a></li></ul></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -399,7 +397,7 @@ CMD echo &#39;Hello world&#39;</code></pre>
 <p>Again, you’ll need to be authenticated if you want to build an image off a private image in ECR, but this allows you to share base images with your team or the public.</p>
 <h3 id="using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</h3>
 <p>To use your images from ECR in a container management platform like ECS or EKS, simply add the name and tag of the image you want to use to the relevant configuration file.</p>
-<h4 id="eks-manifest">EKS Manifest</h4>
+<h5 id="eks-manifest">EKS Manifest</h5>
 <p>For example, you can use the following EKS manifest to deploy a NodeJS image stored in ECR:</p>
 <pre><code>apiVersion: batch/v1 
 kind: Job 
@@ -417,7 +415,7 @@ spec: template:
           args: [&quot;s3&quot;, &quot;ls&quot;] 
       restartPolicy: Never</code></pre>
 <p>When deployed, it will create a job with the name <code>eks-iam-test-s3</code> using the <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code> image. To see the complete step-by-step process for deploying this job to EKS, see <a href="https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html">the AWS documentation here</a>.</p>
-<h4 id="ecs-task-definition">ECS Task Definition</h4>
+<h5 id="ecs-task-definition">ECS Task Definition</h5>
 <p>ECR images can also be used in ECS task definition files to define your containers:</p>
 <pre><code>{
   &quot;containerDefinitions&quot;: [
@@ -445,7 +443,7 @@ spec: template:
 
 
 <div itemscope itemtype="https://schema.org/Person">
-  <h5>About The Author</h5>
+  <!-- <h5>About The Author</h5> -->
 
   
     <div class="author__avatar">
@@ -457,7 +455,7 @@ spec: template:
 
   <div class="author__content">
     
-      <h3 class="author__name" itemprop="name">Vivek Sonar</h3>
+      <h4 class="author__name" itemprop="name">Vivek Sonar</h3>
     
     
       <div class="author__bio" itemprop="description">
@@ -556,7 +554,7 @@ spec: template:
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-29">March 29, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-05T00:00:00-05:00">March 5, 2021</time></p>
 
 
       </footer>
@@ -624,7 +622,7 @@ spec: template:
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          8 minute read
         
       </span>
     
@@ -653,7 +651,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-245-f6e40bbee.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-f6e40bbee.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.webp 245w" type="image/webp"><source srcset="/blog/generated/assets/images/understanding-bash/header-245-59f545b2b.jpg 245w" type="image/jpeg"><img src="/blog/generated/assets/images/understanding-bash/header-800-59f545b2b.jpg"></picture>
 
       </div>
     
@@ -677,7 +675,7 @@ There’s nothing more frustrating than a sluggish continuous integration system
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          10 minute read
         
       </span>
     
