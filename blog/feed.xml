@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-04-05T18:58:29-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Understanding Bash</title><link href="https://earthly.dev/blog/understanding-bash/" rel="alternate" type="text/html" title="Understanding Bash" /><published>2021-04-01T00:00:00-04:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/understanding-bash</id><content type="html" xml:base="https://earthly.dev/blog/understanding-bash/">&lt;p&gt;Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-04-07T10:38:10-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Addressing Slow Performance in Jenkins</title><link href="https://earthly.dev/blog/slow-performance-in-jenkins/" rel="alternate" type="text/html" title="Addressing Slow Performance in Jenkins" /><published>2021-04-07T00:00:00-04:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/slow-performance-in-jenkins</id><content type="html" xml:base="https://earthly.dev/blog/slow-performance-in-jenkins/">&lt;p&gt;There’s nothing more frustrating than a sluggish continuous integration system. It slows down feedback loops and prevents code from reaching production quickly. While quick fixes like using a bigger CI server can buy you time, you ultimately have to invest in maintaining the performance of your continuous integration workflow.&lt;/p&gt;
+&lt;p&gt;Jenkins is one of the most popular CI/CD tools out there, but its users often &lt;a href=&quot;https://issues.jenkins.io/browse/JENKINS-56243?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel&quot;&gt;experience lagging and responsiveness issues over time&lt;/a&gt;. In this guide, I’ll share an overview of some of the biggest Jenkins performance issues and some tips for significantly improving performance without necessarily upgrading your hardware.&lt;/p&gt;
+&lt;h2 id=&quot;why-is-jenkins-such-a-popular-option-for-cicd&quot;&gt;Why Is Jenkins Such a Popular Option for CI/CD?&lt;/h2&gt;
+&lt;p&gt;Jenkins is a Java-based, open-source tool that is leveraged by &lt;a href=&quot;https://www.businesswire.com/news/home/20181024005509/en/Jenkins-Community-Achieves-Record-Growth-Driven-by-Major-Innovation&quot;&gt;tens of thousands&lt;/a&gt; of developers on hundreds of thousands of installations, making it the most popular automation server. This widespread use means that it’s easy to find support and tips for Jenkins, but that’s not the only reason it’s so widely used.&lt;/p&gt;
+&lt;p&gt;Jenkins brought a lot of interesting paradigms to CI workflows, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Faster deployment.&lt;/strong&gt; Gone are the days when a build was tested and deployed once after all the developers committed their code. With Jenkins’ automated CI/CD pipeline, whenever a developer commits code, it’s built and tested throughout the day across multiple cycles.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.jenkins.io/doc/book/scaling/architecting-for-scale/&quot;&gt;Scalable master-agent architecture&lt;/a&gt;.&lt;/strong&gt; When it comes to managing distributed builds at scale, Jenkins can be a good choice. Jenkins’ primary server is the master that schedules build jobs and assigns them to agents (formerly, slaves) for execution. This pattern allows you to run Jenkins on one or hundreds of servers to speed up your builds.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Thousands of plugins:&lt;/strong&gt; Being an open-source platform, Jenkins provides a plethora of plugins for continuous integration built by other developers. This allows you to extend the base functionality without writing or maintaining much extra code in-house.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;overcoming-common-jenkins-performance-issues&quot;&gt;Overcoming Common Jenkins Performance Issues&lt;/h2&gt;
+&lt;p&gt;Over time, increased build frequency, multiple jobs running in parallel, and increasing build complexity can lead to performance issues in Jenkins. Your experience will likely vary based on your use case, but some common issues include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;“Hangups” where the build seems “stuck” on a specific step each time it runs.&lt;/li&gt;
+&lt;li&gt;Hitting memory limits on individual machines or the master node.&lt;/li&gt;
+&lt;li&gt;CPU bottlenecks that slow down specific parts of a build.&lt;/li&gt;
+&lt;li&gt;Bugs or inefficient code in plugins or scripts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since these issues can be caused by a wide variety of root causes, it’s hard to generalize the solutions, but there are a few things that Jenkins users might want to look into. Here are some of the most universal ways you can improve your Jenkins build performance and limit the frequency of issues like those above.&lt;/p&gt;
+&lt;h3 id=&quot;avoid-complex-groovy-script-in-your-pipelines&quot;&gt;1. Avoid Complex Groovy Script In Your Pipelines&lt;/h3&gt;
+&lt;p&gt;The &lt;a href=&quot;https://www.jenkins.io/doc/book/managing/script-console/&quot;&gt;Jenkins Groovy script console&lt;/a&gt; is executed on the master node and directly uses master resources such as CPU and memory. Therefore, it’s recommended that you reduce the number as well as the complexity of Groovy scripts in your pipelines and instead favor plugins that can be run on each agent directly.&lt;/p&gt;
+&lt;p&gt;The most common Groovy methods to avoid in Jenkins are JsonSlurper, Jenkins.getInstance, and HttpRequest. Jenkins has more suggestions for &lt;a href=&quot;https://www.jenkins.io/blog/2017/02/01/pipeline-scalability-best-practice/&quot;&gt;scalable pipeline code and the operations to avoid on its blog&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;keep-builds-minimal-at-the-master-node&quot;&gt;2. Keep Builds Minimal at the Master Node&lt;/h3&gt;
+&lt;p&gt;Jenkins’ master node sits at the epicenter of the whole CI/CD process, where the application runs. Hence, the number of builds on the master node significantly affects resource usage. Keeping fewer builds at the master will leave enough CPU and memory for agent nodes to schedule and trigger jobs.&lt;/p&gt;
+&lt;p&gt;You can use the following command to set or update the build number:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Jenkins.instance.getItemByFullName(&amp;quot;YourJobName&amp;quot;).updateNextBuildNumber(45)&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;dont-bloat-the-jenkins-master-installation&quot;&gt;3. Don’t Bloat the Jenkins Master Installation&lt;/h3&gt;
+&lt;p&gt;DevOps professionals often work across multiple teams and projects for CI/CD-related tasks. If that’s your situation, take care not to burden a single Jenkins master. Instead, create multiple masters. Multiple masters will ensure project-specific resource allocation to masters, and you’ll also avoid plugin collision.&lt;/p&gt;
+&lt;p&gt;Moreover, rather than setting up a long build that might fail anywhere in the cycle, remember to break your build into multiple smaller jobs.&lt;/p&gt;
+&lt;h3 id=&quot;make-agent-management-effortless&quot;&gt;4. Make Agent Management Effortless&lt;/h3&gt;
+&lt;p&gt;While setting up Jenkins, it’s important to set up agents correctly. You want to make sure that when the time comes, you can add new agents or replace existing ones without hassle. To achieve this, consider creating virtual images to install directly. You might also put agents in the cloud and &lt;a href=&quot;https://devopscube.com/docker-containers-as-build-slaves-jenkins/&quot;&gt;activate them with a Docker container&lt;/a&gt; to ensure automatic scaling.&lt;/p&gt;
+&lt;p&gt;It’s also a good idea to make agents generic and versatile; an agent should run multiple different jobs and utilize resources to the fullest extent.&lt;/p&gt;
+&lt;h3 id=&quot;remove-older-builds&quot;&gt;5. Remove Older Builds&lt;/h3&gt;
+&lt;p&gt;After a while, Jenkins builds can pile up, and disk consumption may get out of hand. Developers often overlook the Jenkins’ &lt;a href=&quot;https://plugins.jenkins.io/discard-old-build/&quot;&gt;Discard Old Builds&lt;/a&gt; option. Set metrics, such as the number of builds and days to keep builds and artifacts under the Jenkins Log Rotation menu.&lt;/p&gt;
+&lt;p&gt;Rather than letting old builds accumulate and consume a file system, developers can enable &lt;em&gt;Discard Old Builds&lt;/em&gt; and enjoy automated resource usage cleanup once a Jenkins job finishes. You can also use the &lt;a href=&quot;https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html&quot;&gt;G1 garbage collector&lt;/a&gt; instead of Java 8’s default &lt;a href=&quot;https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html&quot;&gt;Parallel GC&lt;/a&gt; since the former is a server-style garbage collector with a lower GC pause time.&lt;/p&gt;
+&lt;p&gt;To remove older builds, use the command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;rm -rf jobs/${JOB_NAME}/builds/${BUILD_NUM}*&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;prevent-resource-collision-in-parallel-jobs&quot;&gt;Prevent Resource Collision in Parallel Jobs&lt;/h3&gt;
+&lt;p&gt;Jobs running in parallel might want exclusive access to ports or resources. This may cause a collision and further bleed out your Jenkins pipeline. For example, if you run multiple builds in parallel, there’s a high chance they might collide while accessing a resource, say, Postgres’s database port 5432.&lt;/p&gt;
+&lt;p&gt;Jenkins offers the &lt;a href=&quot;https://plugins.jenkins.io/throttle-concurrents/&quot;&gt;Throttle Concurrent Builds&lt;/a&gt; plugin to help regulate the number of concurrent builds on Jenkins nodes:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Throttle a single operation
+throttle([&amp;#39;test_1&amp;#39;]) {
+    node() {
+        sh &amp;quot;sleep 100&amp;quot;
+        echo &amp;quot;Done&amp;quot;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You’ll need to do some testing to see how many parallel builds your system can handle, but knowing how to set this limit and modify it will help you get started.&lt;/p&gt;
+&lt;h3 id=&quot;lower-heap-size&quot;&gt;6. Lower Heap Size&lt;/h3&gt;
+&lt;p&gt;Do you want to create CI/CD pipelines that are performance-oriented and never fail with a memory leak or out-of-memory errors? Pay attention to the &lt;em&gt;heap size&lt;/em&gt;. As the number of Jenkins builds grows, the default heap size can slow down the whole pipeline and throw an out-of-memory error if not attended to.&lt;/p&gt;
+&lt;p&gt;A majority of modern Java applications start with the maximum heap size configuration during startup. For Jenkins to run smoothly, lower the maximum heap size property to a maximum of &lt;a href=&quot;https://docs.cloudbees.com/docs/admin-resources/latest/jvm-troubleshooting/#_heap_size&quot;&gt;4 GB&lt;/a&gt; for starters. You can increase the heap size over time, depending on the Jenkins builds.&lt;/p&gt;
+&lt;p&gt;To set the heap size to 4 GB:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Refer to &lt;code&gt;/etc/default/jenkins&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Pass &lt;code&gt;JAVA_ARGS=&quot;-Xmx4096m&quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;avoid-plugin-overload&quot;&gt;7. Avoid Plugin Overload&lt;/h3&gt;
+&lt;p&gt;With over a thousand plugins available, Jenkins offers its users many capabilities for empowering their CI/CD pipelines. However, keep performance in mind when adding plugins and external services to your pipeline. Integrating Jenkins with external services will often slow down the Jenkins UI and lead to adverse effects, like dropped agents or disconnections.&lt;/p&gt;
+&lt;p&gt;The key here is to divide the workload by increasing the number of masters through horizontal scaling. You might consider using the Jenkins Helm chart through &lt;code&gt;helm repo add jenkins https://charts.jenkins.io&lt;/code&gt;. The &lt;a href=&quot;https://github.com/jenkinsci/helm-charts&quot;&gt;Jenkins Helm chart&lt;/a&gt; provides configurations to scale up by distributing the load, automatically spinning up agents, and running multiple build plans in parallel.&lt;/p&gt;
+&lt;h2 id=&quot;tracking-jenkins-performance&quot;&gt;Tracking Jenkins Performance&lt;/h2&gt;
+&lt;p&gt;As you start tuning your Jenkins performance, you might be interested in adding a plugin to help monitor and improve performance. For example, you can leverage the &lt;a href=&quot;https://plugins.jenkins.io/monitoring/&quot;&gt;Jenkins Monitoring plugin&lt;/a&gt; to get deep insights into your CI/CD pipeline, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Errors and logs&lt;/li&gt;
+&lt;li&gt;Charts for CPU, memory, and average system load&lt;/li&gt;
+&lt;li&gt;Reports on HTTP sessions and HTTP response time&lt;/li&gt;
+&lt;li&gt;Detailed statistics for build time and build steps&lt;/li&gt;
+&lt;li&gt;Aggregated heap histogram for all nodes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;
+&lt;img src=&quot;https://i.imgur.com/mE6fSdy.png&quot; alt=&quot;Jenkins Performance Monitoring Tool&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Jenkins Performance Monitoring Tool&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;This can help you assess the effectiveness of your performance tweaks and guide you as you continue to improve your Jenkins installation.&lt;/p&gt;
+&lt;h2 id=&quot;wrapping-it-up&quot;&gt;Wrapping It Up&lt;/h2&gt;
+&lt;p&gt;Jenkins’ responsiveness issues are common, especially when dealing with heavier builds. Broken Jenkins CI/CD pipelines can stall your development teams and create unnecessary dependencies. The tips discussed in this article should help you boost the performance of your Jenkins CI/CD pipeline significantly.&lt;/p&gt;
+&lt;p&gt;Looking to make your builds more repeatable? &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; replaces clunky bash scripts and makefiles by giving you a single understandable, consistent definition for your CI/CD builds and it works great with Jekyll. Learn more &lt;a href=&quot;https://earthly.dev/&quot;&gt;at Earthly.dev&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You might also consider running Jenkins inside a &lt;a href=&quot;https://devopscube.com/docker-containers-as-build-slaves-jenkins/&quot;&gt;docker container&lt;/a&gt; in a compute cluster like Kubernetes or Rancher where scaling agents is simple.&lt;/p&gt;</content><author><name>Milan Bhardwaj</name></author><category term="Tutorials" /><summary type="html">There’s nothing more frustrating than a sluggish continuous integration system. It slows down feedback loops and prevents code from reaching production quickly. While quick fixes like using a bigger CI server can buy you time, you ultimately have to invest in maintaining the performance of your continuous integration workflow.</summary></entry><entry><title type="html">Understanding Bash</title><link href="https://earthly.dev/blog/understanding-bash/" rel="alternate" type="text/html" title="Understanding Bash" /><published>2021-04-01T00:00:00-04:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/understanding-bash</id><content type="html" xml:base="https://earthly.dev/blog/understanding-bash/">&lt;p&gt;Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.&lt;/p&gt;
 &lt;p&gt;When you’re done with this article, you’ll not only be able to write bash scripts, but you’ll be able to write them using today’s accepted best practices.&lt;/p&gt;
 &lt;h2 id=&quot;use-the-right-shebang&quot;&gt;Use the Right Shebang&lt;/h2&gt;
 &lt;p&gt;The very first thing you’ll see at the top of every (well-written) bash script is what’s called a &lt;a href=&quot;https://www.in-ulm.de/~mascheck/various/shebang/&quot;&gt;&lt;em&gt;shebang&lt;/em&gt;&lt;/a&gt;. I’ll walk you through a couple of them here.&lt;/p&gt;
@@ -1118,7 +1193,7 @@ spec: template:
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;In this tutorial, you learned the basics of containers and container registries. You learned about the differences between Docker Hub and Amazon ECR for public and private repository hosting, and you saw how to set up and use ECR to store your images.&lt;/p&gt;
 &lt;p&gt;Whether you’re using Docker images in production or not, ECR is a useful tool if you’re already embedded in the AWS ecosystem. It gives you the advantage of working well with other Amazon services like IAM for security and ECS or EKS for deployments.&lt;/p&gt;
-&lt;p&gt;If you are pushing images to ECR as part of your build pipeline, check out Earthly’s support for &lt;a href=&quot;https://docs.earthly.dev/docs/guides/configuring-registries/aws-ecr&quot;&gt;ECR credentials&lt;/a&gt;. Unlike other build tools, Earthly executes each CI build in an isolated containerized environment, and it can pull images from ECR or any other container registry you choose. It’s free to use, so &lt;a href=&quot;https://earthly.dev/&quot;&gt;check Earthly out today&lt;/a&gt;.&lt;/p&gt;</content><author><name>Vivek Sonar</name></author><category term="Tutorials" /><summary type="html">A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.</summary></entry><entry><title type="html">Using Apple Silicon (M1) as a cloud engineer, two months in</title><link href="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" rel="alternate" type="text/html" title="Using Apple Silicon (M1) as a cloud engineer, two months in" /><published>2021-03-03T00:00:00-05:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in</id><content type="html" xml:base="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/">&lt;p&gt;So I’ve been using my new M1-based MacBook Pro for a couple of months for a mix of development, email, and other things an &lt;a href=&quot;https://github.com/earthly/earthly&quot;&gt;open-source maintainer&lt;/a&gt; does day-to-day.&lt;/p&gt;
+&lt;p&gt;If you are pushing images to ECR as part of your build pipeline, check out Earthly’s support for &lt;a href=&quot;https://docs.earthly.dev/guides/configuring-registries/aws-ecr#install-and-configure-the-ecr-credential-helper&quot;&gt;ECR credentials&lt;/a&gt;. Unlike other build tools, Earthly executes each CI build in an isolated containerized environment, and it can pull images from ECR or any other container registry you choose. It’s free to use, so &lt;a href=&quot;https://earthly.dev/&quot;&gt;check Earthly out today&lt;/a&gt;.&lt;/p&gt;</content><author><name>Vivek Sonar</name></author><category term="Tutorials" /><summary type="html">A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.</summary></entry><entry><title type="html">Using Apple Silicon (M1) as a cloud engineer, two months in</title><link href="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" rel="alternate" type="text/html" title="Using Apple Silicon (M1) as a cloud engineer, two months in" /><published>2021-03-03T00:00:00-05:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in</id><content type="html" xml:base="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/">&lt;p&gt;So I’ve been using my new M1-based MacBook Pro for a couple of months for a mix of development, email, and other things an &lt;a href=&quot;https://github.com/earthly/earthly&quot;&gt;open-source maintainer&lt;/a&gt; does day-to-day.&lt;/p&gt;
 &lt;p&gt;The typical first reaction that you get when using this is “it runs my Docker stack without sounding like a plane taking off??”.&lt;/p&gt;
 &lt;p&gt;It’s a pretty amazing piece of engineering, and in many ways, I think that the ARM architecture is the future. A number of fast-growing tech giants (besides Apple) are pouring a ton of money into making ARM work for a ton of use-cases: Nvidia (trying to &lt;a href=&quot;https://www.cnbc.com/2020/09/14/nvidia-to-buy-arm-holdings-from-softbank-for-40-billion.html&quot;&gt;buy ARM Holdings from SoftBank&lt;/a&gt;) and Amazon (deep investment in the new &lt;a href=&quot;https://aws.amazon.com/ec2/graviton/&quot;&gt;Graviton processors&lt;/a&gt;) are the two that primarily come to mind.&lt;/p&gt;
 &lt;p&gt;As you might know, in processors low energy consumption (and low heat dissipation) often equates to the ability to scale processing efficiently for large workloads. It also means longer battery cycles for non-cloud use-cases (less waste, more bang for the buck). This is why I think ARM is the future, even if it might take a decade for the mainstream cloud to migrate over.&lt;/p&gt;
@@ -1660,404 +1735,4 @@ FROM scratch
 &lt;p&gt;Alright, we have now covered some ways to use BuildKit directly. BuildKit is used internally by &lt;code&gt;docker build&lt;/code&gt; in modern docker versions, but using it directly unlocks some extra options.&lt;/p&gt;
 &lt;p&gt;One use we covered was changing the output type. We can use BuildKit to export tars and local file systems. We also use &lt;code&gt;pstree&lt;/code&gt; and &lt;code&gt;mitmProxy&lt;/code&gt; to watch how buildkitd forks processes and make network requests.&lt;/p&gt;
 &lt;p&gt;There is much more to learn, though. BuildKit is behind the &lt;code&gt;docker buildx&lt;/code&gt; multiplatform build feature and supports the ability to have multiple workers execute builds in parallel. BuildKit also supports caching, different frontends, docker-compose builds, faster multi-stage builds, and several other features.&lt;/p&gt;
-&lt;p&gt;In a future article, we will cover creating a custom frontend and leaving the Dockerfile syntax behind.&lt;/p&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorials" /><summary type="html">There is an excellent open-source project that you have probably used without realizing it. It’s called BuildKit, and it is what turns a Dockerfile into a Docker image. And it doesn’t just build Docker images; it can build OCI images and several other output formats. OpenFasS uses it to turn functions into full containers, and here at Earthly, we use it to create complete continuous integration pipelines.</summary></entry><entry><title type="html">How to Man in the Middle HTTPS Using mitmproxy</title><link href="https://earthly.dev/blog/mitmproxy/" rel="alternate" type="text/html" title="How to Man in the Middle HTTPS Using mitmproxy" /><published>2021-02-11T00:00:00-05:00</published><updated>2021-03-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/mitmproxy</id><content type="html" xml:base="https://earthly.dev/blog/mitmproxy/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;Have you ever wanted to see what kinds of requests a service or application on your machine is making and what kind of responses it is getting back? Have you ever tried and failed to capture this traffic or modify it to investigate how something works (or doesn’t work). If you have, then mitmproxy might be what you need. Being able to scan through and observe HTTP protocol traffic easily is a great debugging aid.&lt;/p&gt;
-&lt;p&gt;This guide will walk you through installing and using mitmproxy to capture HTTPS requests. We will start with macOS traffic capture, then touch on Linux and Windows and then finally show how to capture docker daemon traffic and docker container traffic.&lt;/p&gt;
-&lt;h2 id=&quot;what-is-mitmproxy&quot;&gt;What is mitmproxy?&lt;/h2&gt;
-&lt;p&gt;mitmproxy is a command-line tool that acts as a HTTP and HTTPS proxy and records all the traffic. You can easily see what requests are being made and even replay them. It’s great for diagnosing problems.&lt;/p&gt;
-&lt;h2 id=&quot;installing-it&quot;&gt;Installing it&lt;/h2&gt;
-&lt;p&gt;On Mac, mitmproxy is easy to install with brew:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;brew install mitmproxy&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;On Windows and Linux, &lt;a href=&quot;https://docs.mitmproxy.org/stable/overview-installation/&quot;&gt;download the binary release&lt;/a&gt; and place it somewhere in your path.&lt;/p&gt;
-&lt;h2 id=&quot;start-it-up&quot;&gt;#1 Start it up&lt;/h2&gt;
-&lt;p&gt;To start up mitmproxy, type &lt;code&gt;mitmproxy&lt;/code&gt;, and it will start up bound to port 8080.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt;mitmproxy&lt;/code&gt;&lt;/pre&gt;
-The command-line interface (CLI) has VIM-like keybindings. &lt;code&gt;q&lt;/code&gt; will quit, and arrow keys or &lt;code&gt;h&lt;/code&gt;, &lt;code&gt;j&lt;/code&gt;, &lt;code&gt;k&lt;/code&gt;, &lt;code&gt;l&lt;/code&gt; will move you up and down through the request list. &lt;code&gt;?&lt;/code&gt; will load the help, and &lt;code&gt;&amp;lt;&amp;lt;enter&amp;gt;&amp;gt;&lt;/code&gt; will drill in on a specific request.
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/1.png&quot;
-       alt=&quot;Help menu for mitmproxy&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Help Menu for mitmproxy&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;mitmproxy also has a web interface if you prefer the mouse over VIM keybindings. The advanced functionality is a bit more discoverable in the web interface, but the CLI version is convenient for quick capture sessions.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/2.png&quot;
-       alt=&quot;mitmproxy starting up&quot;&gt;
-&lt;/figure&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/3.png&quot;
-       alt=&quot;mitmweb starting up&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;We will use both throughout the tutorial. Whichever you choose, start it up and leave it running.&lt;/p&gt;
-&lt;h2 id=&quot;proxy-our-connection&quot;&gt;#2 Proxy Our Connection&lt;/h2&gt;
-&lt;p&gt;Let’s set up our internet connection to use this proxy. On macOS, Under &lt;code&gt;Setting -&amp;gt; Network&lt;/code&gt;, select your connection and click advanced.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/4.png&quot;
-       alt=&quot;Setting -&gt; Network on macOS&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;&lt;code&gt;Setting -&amp;gt; Network&lt;/code&gt; on macOS&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Under proxies, enable both HTTP and HTTPS proxies and choose port 8080:&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/5.png&quot;
-       alt=&quot;Setup Proxy under Setting -&gt; Network-&gt; Advanced on macOS&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Setup Proxy under &lt;code&gt;Setting -&amp;gt; Network-&amp;gt; Advanced&lt;/code&gt; on macOS&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;&lt;em&gt;On Windows, &lt;a href=&quot;https://www.howtogeek.com/tips/how-to-set-your-proxy-settings-in-windows-8.1/&quot;&gt;follow these steps&lt;/a&gt; to set up a proxy.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;On Linux, MITM supports a &lt;a href=&quot;https://docs.mitmproxy.org/stable/howto-transparent/&quot;&gt;transparent proxying&lt;/a&gt; at the network layer.&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&quot;adding-mitmproxy-as-a-certificate-authority&quot;&gt;Adding mitmproxy as A Certificate Authority&lt;/h2&gt;
-&lt;p&gt;We now have our connection proxied to go through our instance of mitmproxy. However, if we attempt to make a HTTPS-based request in a web browser (loading twitter.com for example), something interesting happens.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/6.png&quot;
-       alt=&quot;Chrome does not recognize the certificate&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Chrome does not recognize the certificate&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Chrome is warning us that we might be subject to a man in the middle attack.&lt;/p&gt;
-&lt;h3 id=&quot;what-is-a-man-in-the-middle&quot;&gt;What is a man in the middle&lt;/h3&gt;
-&lt;p&gt;A man in middle attack (MITM) is a security threat where an attacker can get between incoming and outgoing requests. You think you are talking to Twitter.com, but you are talking to the man in the middle, who is talking to Twitter for you. This MITM can view everything you send and even change what you receive.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/7.png&quot;
-       alt=&quot;Diagram of Man in the middle&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;The HTTPS protocol prevents MITM attacks. The HTTPS protocol is pretty complex, but all we need to know is that HTTPS uses a trusted Certificate Authority (CA) to sign a certificate. Our browsers assume that if a trusted CA signs the certificate, we are talking directly to who we think we are.&lt;/p&gt;
-&lt;p&gt;You can view what CA signed the certificate of the website you are viewing in your browser.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/8.png&quot;
-       alt=&quot;Viewing a certificate in your browser&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Viewing a certificate in your browser&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;This is great for protecting online communication but problematic for our debugging purposes. We are trying to man in the middle our own requests. To help overcome this, mitmproxy has generated a certificate. All we need is to get our machine to trust it.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/9.png&quot;
-       alt=&quot;Getting a Certificate signed by an unknown certificate authority&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Getting a Certificate signed by an unknown certificate authority&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h2 id=&quot;how-to-add-a-trusted-certificate-authority-certificate&quot;&gt;How to add a Trusted Certificate Authority Certificate&lt;/h2&gt;
-&lt;p&gt;mitmproxy generated a certificate and private key the first time you ran it. The certificate generated is specific to your machine and is located in &lt;code&gt;~/.mitmproxy/mitmproxy-ca-cert.cer&lt;/code&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; cat ~/.mitmproxy/mitmproxy-ca-cert.cer 
------BEGIN CERTIFICATE-----
-MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
-BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
-MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
-BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
-4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
-AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
-H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
-Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
-utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
-BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
-i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
-KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
-48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
-4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
-K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
-QyVJfmCmjt2i
------END CERTIFICATE-----
-cat mitmproxy-ca.pem
------BEGIN PRIVATE KEY-----
-MIIC1TCCAb2gAwIBAgIJAOY7y/7Qrqr3MA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
-BAMTD3d3dy5leGFtcGxlLmNvbTAeFw0yMTAxMjYxNTQyMjhaFw0zMTAxMjQxNTQy
-MjhaMBoxGDAWBgNVBAMTD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
-BQADggEPADCCAQoCggEBAMLImmAMUg1zz6GnpoOA7Ln9p53o7v1M4+1O6lYmGtAK
-4zetlcMF3mjtNr+AszBFYBpkhd1ef7rDSOc5YxCQ52SZlJc2l2vVtkn5bL1Xa2/W
-AdzQcNq2meX6Pdm+YBC7KsmM8+uo8pXy3+gj7avWLXQ3BG+WaWRnRtgVoke53a0s
-H+KFwR077XkrIYpOccsrX6+bMrjcnKkEbxb6Q8wdk664c+yf9F+WBC4zcnU43va/
-Vl9ETGVOofab6YMk7CICFWEYj/1OJFIMNcEwWpm1eBDXvzt13d1xkiRTDYq+aRKb
-utuFiYo7pngGjSEttQKl1nVUcDgkFhPE7Kz3mTBn2T8CAwEAAaMeMBwwGgYDVR0R
-BBMwEYIPd3d3LmV4YW1wbGUuY29tMA0GCSqGSIb3DQEBBQUAA4IBAQAxT8EIJUAN
-i842v+CoAOnRTO2jDtjIsxgg6WYlpHu1VL+Mh/ye4hfPz6DyyemM4Df64tEc7Mw8
-KlhNqXfomY2trZHuxfeyMjg9GItmYaoeV+xg5SDYjGmgE2n8nc5FH5TlhimE9gd1
-48NNMFRPXm2cYRz3T4i0HqesBrAmdpWBOQmCqzqF5SR08xqlS8X9ELzkRGTRDiJ5
-4j5m1uI0rHyzSVlBK1DKy1LdkGNtes/OuTSZsnQ6PqZBzIZDhbzS0pz7GP9IqHkK
-K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
-QyVJfmCmjt2i=
------END PRIVATE KEY-----&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;Note: Once we instruct our machine to trust this certificate, someone with the private key who controlled your internet connection, like your ISP, could use it to MITM your connection. For this reason, don’t share your MITM private key, or any private key, with others.&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&quot;add-the-cert-on-macos&quot;&gt;Add the Cert On MacOS&lt;/h2&gt;
-&lt;p&gt;On macOS, the easiest way to add a new CA is to copy it to the desktop and then double-click it.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cp ~/.mitmproxy/mitmproxy-ca-cert.cer ~/Desktop&lt;/code&gt;&lt;/pre&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/10.png&quot;
-       alt=&quot;Getting a Certificate signed by an unknown certificate authority&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;You will be prompted for your credentials, and the certificate will be added as ‘untrusted’.&lt;/p&gt;
-&lt;p&gt;Double-click on the certificate in the Keychain list and set the ‘Secure Sockets Layer’ drop down to ‘Always Trust’&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/11.png&quot;
-       alt=&quot;Setting certificate to Always Trust&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;You will then be prompted for your password again, and then your certificate will be trusted.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/13.png&quot;
-       alt=&quot;mitmproxy certificate proxy always trusted&quot;&gt;
-&lt;/figure&gt;
-&lt;h2 id=&quot;installing-the-trusted-root-certificate-on-windows&quot;&gt;Installing The Trusted Root Certificate On Windows&lt;/h2&gt;
-&lt;p&gt;If you are on Windows, follow this guide &lt;a href=&quot;https://docs.microsoft.com/en-us/skype-sdk/sdn/articles/installing-the-trusted-root-certificate&quot;&gt;to add the MITM root certificate as a trusted root certificate authority&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;installing-the-cert-on-debian-based-linux-distributions&quot;&gt;Installing The Cert on Debian Based Linux Distributions&lt;/h2&gt;
-&lt;p&gt;On Debian-based Linux distributions, follow these steps:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; mkdir /usr/local/share/ca-certificates/extra
-&amp;gt; cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
-&amp;gt; update-ca-certificates&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;em&gt;We will be using these steps later when we work with docker containers on macOS and Windows.&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&quot;great-success&quot;&gt;Great Success!&lt;/h2&gt;
-&lt;p&gt;At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through &lt;code&gt;localhost:8080&lt;/code&gt;, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.&lt;/p&gt;
-Here is Slack making requests:
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/14.png&quot;
-       alt=&quot;mitmweb has captured a request from the slack application&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;mitmweb has captured a request from the slack application&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;All HTTPS connections now have certificates signed by mitmproxy, which your machine trusts.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/15.png&quot;
-       alt=&quot;Google.com now shows a mitmproxy signed certificate&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Google.com now shows a mitmproxy signed certificate&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h2 id=&quot;mitm-the-docker-linux-container-host-on-macos-windows&quot;&gt;MITM The Docker Linux Container Host on macOS &amp;amp; Windows&lt;/h2&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/16.png&quot;
-       alt=&quot;Diagram of docker runtime on macOS and Windows&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Docker containers run differently on macOS and Windows&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.&lt;/p&gt;
-&lt;p&gt;On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.&lt;/p&gt;
-&lt;p&gt;To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM. &amp;gt; Before we proceed, we need to clear the proxy settings on the host network connection. We can leave mitmproxy (or MITMWeb running).&lt;/p&gt;
-&lt;p&gt;On Windows and macOS, the easiest way to configure a proxy is via &lt;code&gt;Docker Desktop.&lt;/code&gt; Configure the proxy settings under &lt;code&gt;Preferences -&amp;gt; Resources -&amp;gt; Proxies.&lt;/code&gt;&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/18.png&quot;
-       alt=&quot;Configure the proxy settings under Preferences -&gt; Resources -&gt; Proxies.&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;Configure the proxy settings under &lt;code&gt;Preferences -&amp;gt; Resources -&amp;gt; Proxies.&lt;/code&gt;&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;With that done, the network interface will be proxied. All that is left to do is get our certificate trusted by the Linux container host. Thankfully, Docker Desktop takes care of this for us. On startup, Docker Desktop loads the trusted root certificates from the host machine into the Docker VM, so all we need to do is restart docker. (&lt;code&gt;Restart Docker&lt;/code&gt; in Docker Desktop).&lt;/p&gt;
-&lt;h2 id=&quot;docker-mitm-on-linux&quot;&gt;Docker MITM on Linux&lt;/h2&gt;
-&lt;p&gt;On Linux, we can add a proxy by editing the docker client config and then restarting.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; cat ~/.docker/config.json
-{
- &amp;quot;proxies&amp;quot;:
- {
-   &amp;quot;default&amp;quot;:
-   {
-     &amp;quot;httpProxy&amp;quot;: &amp;quot;http://127.0.0.1:8080&amp;quot;,
-     &amp;quot;httpsProxy&amp;quot;: &amp;quot;http://127.0.0.1:8080&amp;quot;
-   }
- }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; sudo service docker restart
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;test-it&quot;&gt;Test it&lt;/h3&gt;
-&lt;p&gt;After restarting, we can test the proxying by performing a docker pull for a random image&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;➜  ~ docker pull couchbase:7.0.0-beta
-7.0.0-beta: Pulling from library/couchbase
-83ee3a23efb7: Pull complete
-db98fc6f11f0: Pull complete
-f611acd52c6c: Pull complete
-3aa2029a80db: Pull complete
-abe30feace46: Pull complete
-9b70018fbd54: Pull complete
-d9b67d157052: Pull complete
-212afe5e3a9c: Pull complete
-ff5e5d4b4f9c: Pull complete
-4df60b92878a: Pull complete
-eee5137af1d8: Pull complete
-c4ef83141448: Pull complete
-6a04071b6d8c: Pull complete
-f52d17d818b3: Pull complete
-Digest: sha256:290a7a0623b62e02438e6f0cd03adf116ac465f70fc4254a4059bcf51e8fa040
-Status: Downloaded newer image for couchbase:7.0.0-beta
-docker.io/library/couchbase:7.0.0-beta&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We can then see the requests and responses in our proxy:&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/19.png&quot;
-       alt=&quot;mitmproxy request for docker.io&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;We can even see the binary payload of the layer requests and the fact that docker uses Cloudflare as a CDN.&lt;/p&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/20.png&quot;
-       alt=&quot;&quot;&gt;
-&lt;figcaption&gt;
-&lt;p&gt;mitmweb request for cloudflare.docker.com&lt;/p&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;## &lt;em&gt;Troubleshooting&lt;/em&gt; &lt;em&gt;If &lt;code&gt;docker pull&lt;/code&gt; fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&quot;capturing-docker-container-traffic&quot;&gt;Capturing Docker Container Traffic&lt;/h2&gt;
-&lt;p&gt;We now know how to capture traffic on our host machine and the Linux container host. But what happens when we make requests from inside a running container?&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it ubuntu
-root@ca43de1bb8b1:/# apt upgrade &amp;amp; apt update &amp;amp; apt install curl
-...
-root@167f5742c295:/# curl http://google.com
-&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
-&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
-&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
-The document has moved
-&amp;lt;A HREF=&amp;quot;http://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
-&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-We are successfully capturing the requests and responses:
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/21.png&quot;
-       alt=&quot;&quot;&gt;
-&lt;figcaption&gt;
-&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;However, we hit problems when we try to use HTTPS:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;root@ca43de1bb8b1:/# curl https://google.com/
-curl: (60) server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none
-More details here: http://curl.haxx.se/docs/sslcerts.html
-
-curl performs SSL certificate verification by default, using a &amp;quot;bundle&amp;quot;
- of Certificate Authority (CA) public keys (CA certs). If the default
- bundle file isn&amp;#39;t adequate, you can specify an alternate file
- using the --cacert option.
-If this HTTPS server uses a certificate signed by a CA represented in
- the bundle, the certificate verification probably failed due to a
- problem with the certificate (it might be expired, or the name might
- not match the domain name in the URL).
-If you&amp;#39;d like to turn off curl&amp;#39;s verification of the certificate, use
- the -k (or --insecure) option.
- &amp;gt; exit&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;adding-the-ca-cert-to-our-linux-container&quot;&gt;Adding the CA Cert to our Linux Container&lt;/h2&gt;
-&lt;p&gt;The solution here is a familiar one. We need to follow the steps we used above for configuring Linux to trust a certificate authority, but we need to do it inside our container.&lt;/p&gt;
-&lt;p&gt;There are several ways to accomplish this.&lt;/p&gt;
-&lt;h2 id=&quot;solution-1-volume-mount-the-cert&quot;&gt;Solution #1: Volume Mount The Cert&lt;/h2&gt;
-&lt;p&gt;The simplest solution is to mount the certificate into the proper spot in our container and run &lt;code&gt;update-ca-certificates&lt;/code&gt;. ### Alpine:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Run container and mount in our CA Cert
-&amp;gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.cer alpine
-# Add ca-certificates (and curl for testing)
-root@167f5742c295:/# apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add ca-certificates &amp;amp;&amp;amp; apk add curl
-...
-
-# include trust our cert
-root@167f5742c295:/# update-ca-certificates
-Updating certificates in /etc/ssl/certs...
-1 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
-done.
-
-# Test https
-root@167f5742c295:/# curl https://google.com
-&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
-&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
-&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
-The document has moved
-&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
-&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
-
-# Success!&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;ubuntu&quot;&gt;Ubuntu&lt;/h3&gt;
-&lt;p&gt;The general pattern with some small modifications works on Ubuntu-based images as well.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.crt ubuntu
-
-root@167f5742c295:/# apt update &amp;amp;&amp;amp; apt upgrade &amp;amp;&amp;amp; apt install ca-certificates curl
-
-root@167f5742c295:/# update-ca-certificates 
-Updating certificates in /etc/ssl/certs...
-1 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d...
-done.
-
-root@167f5742c295:/# curl https://google.com
-&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
-&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
-&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
-The document has moved
-&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
-&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
-
-\&amp;gt; # Success!!&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;solution-2-extend-the-image&quot;&gt;Solution #2: Extend the Image&lt;/h2&gt;
-&lt;p&gt;Volume mounting the certificate and manually running &lt;code&gt;update-ca-certificates&lt;/code&gt; is an excellent proof of concept, but if you want to run a docker container in the background and have all traffic proxied, then interactive mode won’t cut it. In that case, extending the image is the way to go.&lt;/p&gt;
-&lt;h2 id=&quot;extending-an-alpine-image-to-add-a-certificate-authority&quot;&gt;Extending an Alpine Image to Add a Certificate Authority&lt;/h2&gt;
-&lt;p&gt;We can create a new Dockerfile that extends the image we want to proxy and add in the certificate.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM alpine # or any alpine based image
-RUN apk update &amp;amp;&amp;amp; apk add curl
-WORKDIR /usr/local/share/ca-certificates
-COPY mitmproxy.crt mitmproxy.crt
-RUN update-ca-certificates&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;We can then build it and tag it with a &lt;code&gt;:mitm&lt;/code&gt; tag.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker build --tag alpine:mitm .
-[+] Building 1.9s (10/10) FINISHED                             
- =&amp;gt; [internal] load build definition from Dockerfile      0.0s
- =&amp;gt; =&amp;gt; transferring dockerfile: 200B                      0.0s
- =&amp;gt; [internal] load .dockerignore                         0.0s
- =&amp;gt; =&amp;gt; transferring context: 2B                           0.0s
- =&amp;gt; [internal] load metadata for docker.io/library/alpin  0.0s
- =&amp;gt; CACHED [1/5] FROM docker.io/library/alpine            0.0s
- =&amp;gt; [internal] load build context                         0.2s
- =&amp;gt; =&amp;gt; transferring context: 1.36kB                       0.2s
- =&amp;gt; [2/5] RUN apk update &amp;amp;&amp;amp; apk add curl                  1.4s
- =&amp;gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
- =&amp;gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s 
- =&amp;gt; [5/5] RUN /usr/sbin/update-ca-certificates            0.3s 
- =&amp;gt; exporting to image                                    0.1s 
- =&amp;gt; =&amp;gt; exporting layers                                   0.1s 
- =&amp;gt; =&amp;gt; writing image sha256:ca5be16f3d19c34ea5e29ac1774b  0.0s 
- =&amp;gt; =&amp;gt; naming to docker.io/library/alpine:mitm            0.0s&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now anytime we run this image, it will be ready to accept responses signed by our certificate authority. And because we didn’t change the entry point, we can use it wherever we would use the base image.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it alpine:mitm      
-\&amp;gt; curl https://google.com
-&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
-&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
-&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
-The document has moved
-&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
-&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Any requests by anything running inside the container will be transparently proxied. If you are trying to debug what a service you depend on is doing this will come in handy.&lt;/p&gt;
-&lt;h2 id=&quot;extending-an-ubuntu-image-to-add-a-certificate-authority&quot;&gt;Extending an Ubuntu Image to Add a Certificate Authority&lt;/h2&gt;
-&lt;p&gt;A similar process will work with Ubuntu-based images:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM ubuntu
-RUN apt update -y &amp;amp;&amp;amp; apt upgrade -y &amp;amp;&amp;amp; apt install ca-certificates curl -y
-WORKDIR /usr/local/share/ca-certificates
-COPY mitmproxy.crt mitmproxy.crt
-RUN update-ca-certificates &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker build --tag ubuntu:mitm .
-[+] Building 36.4s (10/10) FINISHED                            
- =&amp;gt; [internal] load build definition from Dockerfile      0.0s
- =&amp;gt; =&amp;gt; transferring dockerfile: 234B                      0.0s
- =&amp;gt; [internal] load .dockerignore                         0.0s
- =&amp;gt; =&amp;gt; transferring context: 2B                           0.0s
- =&amp;gt; [internal] load metadata for docker.io/library/ubunt  0.0s
- =&amp;gt; CACHED [1/5] FROM docker.io/library/ubuntu            0.0s
- =&amp;gt; [internal] load build context                         0.0s
- =&amp;gt; =&amp;gt; transferring context: 35B                          0.0s
- =&amp;gt; [2/5] RUN apt update -y &amp;amp;&amp;amp; apt upgrade -y &amp;amp;&amp;amp; apt in  35.0s
- =&amp;gt; [3/5] WORKDIR /usr/local/share/ca-certificates        0.0s
- =&amp;gt; [4/5] COPY mitmproxy.crt mitmproxy.crt                0.0s
- =&amp;gt; [5/5] RUN update-ca-certificates                      0.9s 
- =&amp;gt; exporting to image                                    0.4s 
- =&amp;gt; =&amp;gt; exporting layers                                   0.3s 
- =&amp;gt; =&amp;gt; writing image sha256:06fbbeea728364e3bacef503f7c2  0.0s 
- =&amp;gt; =&amp;gt; naming to docker.io/library/ubuntu:mitm            0.0s&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; docker run -it ubuntu:mitm    
-root&amp;gt; curl https://google.com
-&amp;lt;HTML&amp;gt;&amp;lt;HEAD&amp;gt;&amp;lt;meta http-equiv=&amp;quot;content-type&amp;quot; content=&amp;quot;text/html;charset=utf-8&amp;quot;&amp;gt;
-&amp;lt;TITLE&amp;gt;301 Moved&amp;lt;/TITLE&amp;gt;&amp;lt;/HEAD&amp;gt;&amp;lt;BODY&amp;gt;
-&amp;lt;H1&amp;gt;301 Moved&amp;lt;/H1&amp;gt;
-The document has moved
-&amp;lt;A HREF=&amp;quot;https://www.google.com/&amp;quot;&amp;gt;here&amp;lt;/A&amp;gt;.
-&amp;lt;/BODY&amp;gt;&amp;lt;/HTML&amp;gt;
-# Success&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;but-wait-theres-more&quot;&gt;But wait, there’s more&lt;/h2&gt;
-&lt;figure class&gt;
-&lt;img src=&quot;/blog/assets/images/mitmproxy/22.png&quot;
-       alt=&quot;man in the middle diagram&quot;&gt;
-&lt;/figure&gt;
-&lt;p&gt;There we go. We can now capture HTTPS traffic made by any containers we run. Combined with the previous steps, we can now intercept and inspect HTTP and HTTPS protocol traffic on our host machine, on a Linux virtual machine running in a hypervisor, and in the actual running containers.&lt;/p&gt;
-&lt;p&gt;If you can get something running on your local machine, you can now capture and inspect its network requests. This can be very handy for debugging problems and building up an understanding of how something works without digging into the source code. The setup can be a bit complicated, but I hope you can see why mitmproxy is a great tool to keep in your toolkit.&lt;/p&gt;
-&lt;p&gt;The fun doesn’t stop here, though. &lt;a href=&quot;https://mitmproxy.org/&quot;&gt;mitmproxy&lt;/a&gt; can modify and replay requests and has an active ecosystem, including &lt;a href=&quot;https://github.com/ustwo/mastermind&quot;&gt;mastermind&lt;/a&gt; which lets you build mock services based on captured requests and &lt;a href=&quot;https://github.com/secretsquirrel/BDFProxy&quot;&gt;BDFProxy&lt;/a&gt;, which uses mitmproxy to modify common security updates for &lt;del&gt;nefarious reasons&lt;/del&gt; security research projects, and much more.&lt;/p&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorials" /><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;In a future article, we will cover creating a custom frontend and leaving the Dockerfile syntax behind.&lt;/p&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorials" /><summary type="html">There is an excellent open-source project that you have probably used without realizing it. It’s called BuildKit, and it is what turns a Dockerfile into a Docker image. And it doesn’t just build Docker images; it can build OCI images and several other output formats. OpenFasS uses it to turn functions into full containers, and here at Earthly, we use it to create complete continuous integration pipelines.</summary></entry></feed>
