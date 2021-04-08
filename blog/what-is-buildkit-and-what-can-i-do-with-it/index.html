@@ -356,7 +356,7 @@ GLOBAL OPTIONS:
    --timeout value        timeout backend connection after value seconds (default: 5)
    --help, -h             show help
    --version, -v          print the version</code></pre>
-<p><em><strong>Other Tools</strong>: In this guide, we will use <a href="https://linux.die.net/man/1/pstree">pstree</a>, <a href="https://github.com/Canop/broot">br</a>, and <a href="blog.earthly.dev/mitmproxy/">mitmproxy</a>. They are not required to use BuildKit or to follow this guide, but they help us demonstrate how BuildKit works.</em></p>
+<p><em><strong>Other Tools</strong>: In this guide, we will use <a href="https://linux.die.net/man/1/pstree">pstree</a>, <a href="https://github.com/Canop/broot">br</a>, and <a href="earthly.dev/blog/mitmproxy/">mitmproxy</a>. They are not required to use BuildKit or to follow this guide, but they help us demonstrate how BuildKit works.</em></p>
 <h4 id="buildkitd">buildkitd</h4>
 <p>buildkitd does the actual work of transforming a build definition into some output. It is designed to be a long-running process. It also isn’t possible to run it on macOS or Windows. For this tutorial, we will run it as a docker container. That will work regardless of your host OS.</p>
 <pre><code>➜ docker run --rm --privileged -d --name buildkit moby/buildkit
@@ -438,7 +438,7 @@ CMD [&quot;/bin/sh&quot;]
 error: failed to solve: rpc error: code = Unknown desc = failed to solve with frontend dockerfile.v0: failed to create LLB definition: docker.io/agbell/test:local: not found
 </code></pre>
 <p>It doesn’t work. It looks like it is trying to fetch the image from docker.io, the default docker hub registry.</p>
-<p>We can verify this by quickly <a href="blog.earthly.dev/mitmproxy/">capturing requests</a> from buildkitd:</p>
+<p>We can verify this by quickly <a href="earthly.dev/blog/mitmproxy/">capturing requests</a> from buildkitd:</p>
 <pre><code>➜ cat ~\Dockerfile
 FROM moby/buildkit 
 RUN apk update &amp;&amp; apk add curl
