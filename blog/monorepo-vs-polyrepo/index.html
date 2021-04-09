@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
 <link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
-<!-- begin _includes/seo.html --><title>Monorepo vs Polyrepo - Earthly Blog</title>
+<!-- begin _includes/seo.html --><title>Monorepo vs Polyrepo -</title>
 <meta name="description" content="The decision of whether to use a monorepo or a polyrepo structure for your source code can be a very emotional (maybe even religious!) battle. On its surface, it’s not much different than “tabs vs spaces” or “vim vs emacs”. Or is it?">
 
 
-  <meta name="author" content="Vlad A. Ionescu">
+  <meta name="author" content="Vlad A Ionescu">
   
-  <meta property="article:author" content="Vlad A. Ionescu">
+  <meta property="article:author" content="Vlad A Ionescu">
   
 
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
-<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:site_name" content="">
 <meta property="og:title" content="Monorepo vs Polyrepo">
 <meta property="og:url" content="https://earthly.dev/blog/monorepo-vs-polyrepo/">
 
@@ -77,7 +77,7 @@
 
 
 
-  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
 
 
 <!-- https://t.co/dKP3o1e -->
@@ -156,7 +156,6 @@
   </script>
   <!-- End Twitter universal website tag code -->
 
-
   </head>
 
   <body class="layout--single">
@@ -180,10 +179,14 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+          <a class="site-logo" href="/blog/"><img src="/blog/assets/images/white-logo.png" alt=""></a>
         
+        <a class="site-title" href="/blog/">
+          
+          <span class="site-subtitle"></span>
+        </a>
         <ul class="visible-links"><li class="masthead__menu-item">
-              <a href="/blog/">Blog home</a>
+              <a href="/blog/">Home</a>
             </li><li class="masthead__menu-item">
               <a href="/blog/categories/articles/">Articles</a>
             </li><li class="masthead__menu-item">
@@ -280,8 +283,8 @@
       
       
       <div class="author__avatar_top">
-          <img src="/blog/assets/images/authors/vladaionescu.jpg" alt="Vlad A. Ionescu" itemprop="image">&nbsp;	&nbsp;
-          Vlad A. Ionescu
+          <img src="/blog/assets/images/authors/vladaionescu.jpg" alt="Vlad A Ionescu" itemprop="image">&nbsp;	&nbsp;
+          Vlad A Ionescu
       </div>
       
     </span>
@@ -411,7 +414,7 @@ github.com/myorg/lib1
 <p>A third possibility also exists, which I call the <em>hybrid layout</em>. Because monorepo builds are difficult to scale, some development teams reach a compromise in the middle: keep some projects grouped together in a single repository and others separately. Criteria for grouping together repositories may include language, level of inter-dependencies, team ownership, and others. As a distinct example, if a group of projects evolves closely together and there is high interoperability between them (for example, they use a set of common routines or data structures), it might make sense to group them in a single repository, while keeping everything else separately. If the monorepo does not grow to an endless number of projects, then traditional build tools meant for polyrepo setups could still fair well enough.</p>
 <p><strong>Verdict</strong>: If you are a very large organization, systems like Bazel and others can offer a platform for very advanced build features in a monorepo setup - assuming that the entire engineering team adopts it. Small and medium organizations, or large organizations with fragmented builds generally benefit from polyrepo setups more, due to the existing build ecosystem available as open-source or commercial-off-the-shelf (COTS). Hybrid setups could also be used as a compromise, assuming the monorepo(s) are not too large to require special build considerations.</p>
 <h4 id="a-note-on-earthly">A note on Earthly</h4>
-<p><a href="https://earthly.dev">Earthly</a> supports cross-project builds for either monorepo and polyrepo layouts. It solves for some of the challenges outlined above. In fact, these challenges were the main <a href="https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/">source of inspiration</a> when Earthly was started.</p>
+<p><a href="https://earthly.dev">Earthly</a> supports cross-project builds for either monorepo and polyrepo layouts. It solves for some of the challenges outlined above. In fact, these challenges were the main <a href="https://blog.earthly.dev/introducing-earthly-build-automation-for-the-container-era/">source of inspiration</a> when Earthly was started.</p>
 <h3 id="code-ownership">Code ownership</h3>
 <blockquote>
 <p>“Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization’s communication structure.” — <a href="https://en.wikipedia.org/wiki/Conway%27s_law">Melvin E. Conway</a></p>
@@ -463,18 +466,18 @@ github.com/myorg/lib1
   
     <div class="author__avatar">
       
-        <img src="/blog/assets/images/authors/vladaionescu.jpg" alt="Vlad A. Ionescu" itemprop="image">
+        <img src="/blog/assets/images/authors/vladaionescu.jpg" alt="Vlad A Ionescu" itemprop="image">
       
     </div>
   
 
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">Vlad A. Ionescu</h3>
+      <h4 class="author__name" itemprop="name">Vlad A Ionescu</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>Founder of Earthly. Founder of ShiftLeft. Ex Google. Ex VMware. Co-author RabbitMQ Erlang Client.</p>
+        <p>Founder of Earthly. Founder of ShiftLeft Inc. Ex Google. Ex VMware.</p>
 
       </div>
     
@@ -759,14 +762,14 @@ Bash scripts give you the ability to turn a tedious series of commands into an e
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+<div class="page__footer-copyright">&copy; 2021 <a href="http://earthly.dev/">Earthly</a>. </div>
 
       </footer>
     </div>
 
     <script src="/blog/assets/js/main.min.js"></script>
 
-  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+  <script> // minified version of http://earthly.dev/assets/js/analytics.js
     function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
 </script>
 
