@@ -160,7 +160,7 @@ h1 { font-family: noto-sans, sans-serif; font-weight: 900; line-height: 1.35; fo
 
 @media screen and (min-width: 768px) { h1 { max-width: 90%; margin-bottom: 64px; } }
 
-h2 { font-family: attribute-text, sans-serif; font-variant-ligatures: none; font-size: 32px; line-height: 40px; font-weight: 300; letter-spacing: 0; margin-bottom: 32px; color: #24626D; }
+h2 { font-family: attribute-text, sans-serif; font-variant-ligatures: none; font-size: 32px; line-height: 40px; font-weight: 300; letter-spacing: 0; margin-top: 32px; color: #24626D; }
 
 @media screen and (max-width: 768px) { h2 { font-size: 28px; line-height: 35px; } }
 
