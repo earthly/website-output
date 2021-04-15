@@ -214,4 +214,10 @@ var store = [{
         "tags": [],
         "url": "/blog/slow-performance-in-jenkins/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Welcoming Wes McKinney as an advisor to Earthly",
+        "excerpt":"In our journey to bring repeatable builds to the world, we have had the pleasure to talk to a number of industry veterans about the challenges surrounding CIs today. One person that was particularly excited about our mission is Wes McKinney, the author of Python for Data Analysis, the creator...","categories": ["News"],
+        "tags": ["advisor","data-engineering"],
+        "url": "/blog/wes-mckinney/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
