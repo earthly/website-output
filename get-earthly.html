@@ -267,6 +267,14 @@
     <code class="Home-product-Earthfile-code on-download-listen">sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly &amp;&amp; chmod +x /usr/local/bin/earthly &amp;&amp; /usr/local/bin/earthly bootstrap'</code>
 </div>
 
+<div class="Home-product-note">
+  <p><code class="language-plaintext highlighter-rouge">sudo</code> is used for:</p>
+  <ul>
+    <li>placing the <code class="language-plaintext highlighter-rouge">earthly</code> binary in <code class="language-plaintext highlighter-rouge">/usr/local/bin/</code> and marking it as executable</li>
+    <li>installing auto-completion for your shell</li>
+  </ul>
+</div>
+
             </div>
             
         
@@ -291,8 +299,13 @@
         </div>
         Terminal
     </header>
-    <code class="Home-product-Earthfile-code on-download-listen">brew install earthly
-sudo earthly bootstrap</code>
+    <code class="Home-product-Earthfile-code on-download-listen">brew install earthly &amp;&amp; sudo earthly bootstrap</code>
+</div>
+
+<div class="Home-product-note">
+  <p><code class="language-plaintext highlighter-rouge">sudo</code> is needed for setting up auto-completion for your shell.</p>
+  <div>
+</div>
 </div>
 
             </div>
@@ -323,6 +336,14 @@ sudo earthly bootstrap</code>
         Terminal
     </header>
     <code class="Home-product-Earthfile-code on-download-listen">sudo /bin/sh -c 'wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly &amp;&amp; chmod +x /usr/local/bin/earthly &amp;&amp; /usr/local/bin/earthly bootstrap'</code>
+</div>
+
+<div class="Home-product-note">
+  <p><code class="language-plaintext highlighter-rouge">sudo</code> is used for:</p>
+  <ul>
+    <li>placing the <code class="language-plaintext highlighter-rouge">earthly</code> binary in <code class="language-plaintext highlighter-rouge">/usr/local/bin/</code> and marking it as executable</li>
+    <li>installing auto-completion for your shell</li>
+  </ul>
 </div>
 
             </div>
@@ -389,6 +410,8 @@ sudo earthly bootstrap</code>
         <code class="Home-product-Earthfile-code">earthly github.com/earthly/hello-world:main+hello</code>
     </div>
 </p>
+
+<p>This command executes the target <code class="language-plaintext highlighter-rouge">hello</code> from the repository <a href="https://github.com/earthly/hello-world"><code class="language-plaintext highlighter-rouge">github.com/earthly/hello-world</code></a> on the branch <code class="language-plaintext highlighter-rouge">main</code>.</p>
 
 <h2 id="syntax-highlighting">Syntax highlighting</h2>
 

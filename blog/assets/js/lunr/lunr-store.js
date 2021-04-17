@@ -220,4 +220,22 @@ var store = [{
         "tags": ["advisor","data-engineering"],
         "url": "/blog/wes-mckinney/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building a Real-Time Application in the Phoenix Framework with Elixir",
+        "excerpt":"The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available. If you’re currently working with a web framework like...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/real-time-phoenix-elixir/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News","Tutorials","Articles"],
+        "tags": ["tag1","tag2","tag3"],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
