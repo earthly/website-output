@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+<title>Building a Real-Time Application in the Phoenix Framework with Elixir - Earthly Blog</title>
+<meta name="description" content="The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available.">
+
+
+  <meta name="author" content="Allan MacGregor">
+  
+  <meta property="article:author" content="Allan MacGregor">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Building a Real-Time Application in the Phoenix Framework with Elixir">
+<meta property="og:url" content="https://earthly.dev/blog/real-time-phoenix-elixir/">
+
+
+  <meta property="og:description" content="The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/real-time-phoenix-elixir/header-800-1c5ac8fae.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Building a Real-Time Application in the Phoenix Framework with Elixir">
+  <meta name="twitter:description" content="The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/real-time-phoenix-elixir/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/real-time-phoenix-elixir/header-800-1c5ac8fae.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-04-21T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/real-time-phoenix-elixir/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-4');
+  gtag('config', 'UA-161831101-5', {
+    'linker': {
+      'domains': ['blog.earthly.dev']
+    },
+  });
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.13.1";
+  analytics.load("ZNzktfRyL0ihBWdbb6JjGv5L06hA9izj");
+  analytics.page();
+  }}();
+</script>
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/real-time-phoenix-elixir/header-400-fc232647c.webp 400w, /blog/generated/assets/images/real-time-phoenix-elixir/header-600-fc232647c.webp 600w, /blog/generated/assets/images/real-time-phoenix-elixir/header-800-fc232647c.webp 800w, /blog/generated/assets/images/real-time-phoenix-elixir/header-1000-fc232647c.webp 1000w, /blog/generated/assets/images/real-time-phoenix-elixir/header-1200-fc232647c.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/real-time-phoenix-elixir/header-400-79c0dd09e.png 400w, /blog/generated/assets/images/real-time-phoenix-elixir/header-600-79c0dd09e.png 600w, /blog/generated/assets/images/real-time-phoenix-elixir/header-800-79c0dd09e.png 800w, /blog/generated/assets/images/real-time-phoenix-elixir/header-1000-79c0dd09e.png 1000w, /blog/generated/assets/images/real-time-phoenix-elixir/header-1200-79c0dd09e.png 1200w" type="image/png"><img src="/blog/generated/assets/images/real-time-phoenix-elixir/header-800-79c0dd09e.jpg" alt="Building a Real-Time Application in the Phoenix Framework with Elixir"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Building a Real-Time Application in the Phoenix Framework with Elixir">
+    <meta itemprop="description" content="The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available.">
+    <meta itemprop="datePublished" content="2021-04-21T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Building a Real-Time Application in the Phoenix Framework with Elixir
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          14 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-04-21T00:00:00-04:00">April 21, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#introducing-phoenix-liveview">Introducing Phoenix LiveView</a></li><li><a href="#explaining-todays-tutorial">Explaining Today’s Tutorial</a></li><li><a href="#prebuild-setup">Prebuild Setup</a><ul><li><a href="#npm">npm</a></li><li><a href="#postgres">Postgres</a></li></ul></li><li><a href="#setting-up-phoenix">Setting Up Phoenix</a><ul><li><a href="#mix-archives">Mix Archives</a></li><li><a href="#creating-a-new-project">Creating a New Project</a></li></ul></li><li><a href="#adding-your-auction-route">Adding Your Auction Route</a></li><li><a href="#handling-events">Handling Events</a></li><li><a href="#understanding-the-liveview-life-cycle">Understanding the LiveView Life Cycle</a></li><li><a href="#broadcasting-with-pubsub">Broadcasting with PubSub</a><ul><li><a href="#configure-phoenix-pubsub">Configure Phoenix PubSub</a></li><li><a href="#subscribing-to-a-topic">Subscribing to a Topic</a></li><li><a href="#broadcasting-to-all-subscribers">Broadcasting to All Subscribers</a></li></ul></li><li><a href="#in-summary">In Summary</a><ul><li><a href="#additional-resources">Additional Resources</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>The Elixir language, along with the <a href="https://phoenixframework.org/">Phoenix framework</a>, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the <a href="https://github.com/mroth/phoenix-showdown/blob/master/RESULTS_v3.md">fastest web frameworks</a> available.</p>
+<p>If you’re currently working with a web framework like Ruby on Rails or even Laravel, you should definitely give Phoenix some attention due to the performance gains it promises. Additionally, Phoenix also has the capability to build highly responsive real-time applications.</p>
+<h2 id="introducing-phoenix-liveview">Introducing Phoenix LiveView</h2>
+<p><a href="https://github.com/phoenixframework/phoenix_live_view">Phoenix LiveView</a> is a relatively new library added to the Phoenix stack. Developers can build rich, real-time user experience with purely server-rendered HTML.</p>
+<p>Phoenix LiveView adds bi-directional communication via WebSockets between the server and the client, without needing dedicated JavaScript code on the frontend. This allows you to implement real-time functionality on your applications with ease.</p>
+<h2 id="explaining-todays-tutorial">Explaining Today’s Tutorial</h2>
+<p>For this tutorial, we are going to be building a crowdfunding application that will leverage the real-time capabilities of Phoenix LiveView. Our application will allow users to support a funding goal in real-time and see the funding goal update as other users also commit to a specific amount. We’ll call it Phoenix Fund.</p>
+<p>The goal of this application is not to build a fully-featured crowdfunding platform but to get your feet wet with LiveView:</p>
+<ul>
+<li>How LiveView views works and renders</li>
+<li>How Phoenix leverages WebSockets for communication</li>
+<li>How to implement real-time updates on your application</li>
+<li>How the LiveView life cycle works</li>
+</ul>
+<p>Here’s a sample of how the final application will work:</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/q0L1xth.gif" alt="The Crowdfunding App" /><figcaption aria-hidden="true">The Crowdfunding App</figcaption>
+</figure>
+<h2 id="prebuild-setup">Prebuild Setup</h2>
+<p>For this tutorial, make sure you have a good working Elixir environment. The easiest way to do this is to follow the <a href="https://elixir-lang.org/install.html">official Elixir instructions</a>, which will give you a couple of options for:</p>
+<ul>
+<li>Local installation on Linux, Windows, and macOS</li>
+<li>Dockerized versions of Elixir</li>
+<li>Package manager versions setups</li>
+</ul>
+<p>I would recommend focusing on the local install for this tutorial, as it might be the easiest one to get started. Additionally, you will need to have <a href="https://www.npmjs.com/">npm</a> installed locally and a running version of PostgreSQL.</p>
+<h3 id="npm">npm</h3>
+<p>You can easily install Node.js from their <a href="https://nodejs.org/en/">official instructions</a>, but in most cases, it’s possible your system might already have Node preinstalled.</p>
+<h3 id="postgres">Postgres</h3>
+<p><a href="https://www.postgresql.org/">Postgres</a> can be a little tricky to install depending on the operating system you’re using. For this tutorial, you can leverage Docker and get a local version running by taking the following steps:</p>
+<ol type="1">
+<li>Create a folder to persist the DB data.</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> mkdir <span class="va">${HOME}</span><span class="ex">/phoenix-postgres-data/</span></span></code></pre></div>
+<ol start="2" type="1">
+<li>Run a Docker container with the Postgres image.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">-d</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--name</span> phoenix-psql <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> POSTGRES_PASSWORD=Phoenix1234 <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> <span class="va">${HOME}</span>/phoenix-postgres-data/:/var/lib/postgresql/data <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    postgres</span></code></pre></div>
+<ol start="3" type="1">
+<li>Validate that the container is running.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> docker <span class="fu">ps</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTAINER</span> ID   IMAGE      COMMAND                  CREATED         STATUS        PORTS                                  NAMES</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">11cbe1d2bc2f</span>   postgres   <span class="st">&quot;docker-entrypoint.s…&quot;</span>   6 seconds ago   Up 5 seconds  5432/tcp, 0.0.0.0:5432-<span class="op">&gt;</span>5432/tcp       phoenix-psql</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">I</span> can</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">that</span> was</span></code></pre></div>
+<ol start="4" type="1">
+<li>Validate PostgreSQL is up and running.</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> docker <span class="bu">exec</span> <span class="at">-it</span> phoenix-psql bash</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">root@11cbe1d2bc2f:/#</span> psql <span class="at">-h</span> localhost <span class="at">-U</span> postgres</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="er">(</span><span class="ex">13.2</span> <span class="er">(</span><span class="ex">Debian</span> 13.2-1.pgdg100+1<span class="kw">))</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">&quot;help&quot;</span> for help.</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="va">postgres</span><span class="op">=</span># <span class="ex">\l</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="ex">List</span> of databases</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Name</span>    <span class="kw">|</span>  <span class="ex">Owner</span>   <span class="kw">|</span> <span class="ex">Encoding</span> <span class="kw">|</span>  <span class="ex">Collate</span>   <span class="kw">|</span>   <span class="ex">Ctype</span>    <span class="kw">|</span>   <span class="ex">Access</span> privileges   </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------+----------+----------+------------+------------+-----------------------</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">postgres</span>  <span class="kw">|</span> <span class="ex">postgres</span> <span class="kw">|</span> <span class="ex">UTF8</span>     <span class="kw">|</span> <span class="ex">en_US.utf8</span> <span class="kw">|</span> <span class="ex">en_US.utf8</span> <span class="kw">|</span> <span class="ex">...</span></span></code></pre></div>
+<h2 id="setting-up-phoenix">Setting Up Phoenix</h2>
+<p>Now that you have the necessary dependencies, go ahead and install the Phoenix application generator and create your first Phoenix app. The Phoenix generator is distributed as a <code>mix archive</code> and can be installed by running the following command:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> mix <span class="ex">archive.</span> install hex phx_new 1.5.8</span></code></pre></div>
+<h3 id="mix-archives">Mix Archives</h3>
+<p>Mix archives are essentially <code>.zip</code> files of an Elixir project following the <a href="http://erlang.org/doc/man/code.html">Erlang Archive Format</a>. Simply put, archives give us a way to distribute projects and use them as a regular command tool.</p>
+<h3 id="creating-a-new-project">Creating a New Project</h3>
+<p>Now that the Phoenix archive is installed locally if you run <code>mix help</code>, you should see a new set of mix commands available in your system:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx                   <span class="co"># Prints Phoenix help information</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.digest            <span class="co"># Digests and compresses static files</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.digest.clean      <span class="co"># Removes old versions of static assets</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.cert          <span class="co"># Generates a self-signed certificate for HTTPS testing</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.channel       <span class="co"># Generates a Phoenix channel</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.context       <span class="co"># Generates a context with functions around an Ecto schema</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.embedded      <span class="co"># Generates an embedded Ecto schema file</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.html          <span class="co"># Generates controller, views, and context for an HTML resource</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.json          <span class="co"># Generates controller, views, and context for a JSON resource</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.live          <span class="co"># Generates LiveView, templates, and context for a resource</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.presence      <span class="co"># Generates a Presence tracker</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.schema        <span class="co"># Generates an Ecto schema and migration file</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.gen.secret        <span class="co"># Generates a secret</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.new               <span class="co"># Creates a new Phoenix v1.5.4 application</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.new.ecto          <span class="co"># Creates a new Ecto project within an umbrella project</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.new.web           <span class="co"># Creates a new Phoenix web project within an umbrella project</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.routes            <span class="co"># Prints all routes</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">mix</span> phx.server            <span class="co"># Starts applications and their servers</span></span></code></pre></div>
+<p>Running <code>mix phx.new</code> from any directory will create a new Phoenix application. But before you dive in, it’s crucial that you understand the options available when making a Phoenix project. Let’s take a look by running the following command:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> mix <span class="bu">help</span> phx.new</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--live</span> <span class="at">-</span> include Phoenix.LiveView to make it easier than ever to build</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">interactive,</span> real-time applications</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--umbrella</span> <span class="at">-</span> generate an umbrella project, with one application for</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">your</span> domain and a second application for the web interface</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--app</span> <span class="at">-</span> the name of the OTP application</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--module</span> <span class="at">-</span> the name of the base module in the generated skeleton</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--database</span> <span class="at">-</span> specify the database adapter for Ecto. One of:</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">•</span> postgres <span class="at">-</span> via https://github.com/elixir-ecto/postgrex</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">•</span> mysql <span class="at">-</span> via https://github.com/elixir-ecto/myxql</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">•</span> mssql <span class="at">-</span> via https://github.com/livehelpnow/tds</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Please</span> check the driver docs for more information and requirements.</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Defaults</span> to <span class="st">&quot;postgres&quot;</span>.</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--no-webpack</span> <span class="at">-</span> do not generate webpack files for static asset building.</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="ex">When</span> choosing this option, you will need to manually handle JavaScript</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dependencies</span> if building HTML apps</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--no-ecto</span> <span class="at">-</span> do not generate Ecto files</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--no-html</span> <span class="at">-</span> do not generate HTML views</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--no-gettext</span> <span class="at">-</span> do not generate gettext files</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--no-dashboard</span> <span class="at">-</span> do not include Phoenix.LiveDashboard</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--binary-id</span> <span class="at">-</span> use binary_id as primary key type in Ecto schemas</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="ex">•</span> <span class="at">--verbose</span> <span class="at">-</span> use verbose output</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
+<p>Let’s pay attention to the first option, <code>--live</code>. As mentioned at the beginning of this tutorial, you’ll be building a fundraising application, so make sure to set up your Phoenix application to allow for real-time functionality from the get-go:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> mix <span class="ex">phx.new</span> <span class="at">--live</span> phoenix_fund</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/lib/phoenix_fund_web/router.ex</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/lib/phoenix_fund_web/telemetry.ex</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/lib/phoenix_fund_web.ex</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/mix.exs</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/README.md</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> creating phoenix_fund/assets/static/robots.txt</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Fetch</span> and install dependencies<span class="pp">?</span> [Yn] </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> running mix deps.get</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> running mix deps.compile</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> running cd assets <span class="kw">&amp;&amp;</span> <span class="ex">npm</span> install <span class="kw">&amp;&amp;</span> <span class="ex">node</span> node_modules/webpack/bin/webpack.js <span class="at">--mode</span> development</span></code></pre></div>
+<p><code>mix phx.new</code> will create the basic skeleton for your new Phoenix LiveView app and download all the dependencies on the Elixir and Node.js side of things.</p>
+<p>Next, provision your database and start the local Phoenix server:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> mix <span class="ex">ecto.create</span> <span class="kw">&amp;&amp;</span> <span class="ex">mix</span> phx.server</span></code></pre></div>
+<p>If everything is working correctly, you should be able to visit <a href="http://localhost:4000">localhost:4000</a> and see the default Phoenix livewire homepage:</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/0N5VpNv.png" alt="Out of the box installation" /><figcaption aria-hidden="true">Out of the box installation</figcaption>
+</figure>
+<p>Now the app generated has the default Phoenix styling and setup, but let’s add a little polish for this exercise. You’re going to add <a href="https://tailwindcss.com/">TailwindCSS</a> and some premade boilerplate CSS.</p>
+<ol type="1">
+<li>First, add the following dependencies to your <code>assets/package.json</code> file, to install Tailwind and the necessary node libraries:</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="er">&quot;devDependencies&quot;:</span> <span class="fu">{</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postcss&quot;</span><span class="fu">:</span> <span class="st">&quot;^8.1.10&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postcss-import&quot;</span><span class="fu">:</span> <span class="st">&quot;^13.0.0&quot;</span><span class="fu">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postcss-loader&quot;</span><span class="fu">:</span> <span class="st">&quot;^4.1.0&quot;</span><span class="fu">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postcss-nested&quot;</span><span class="fu">:</span> <span class="st">&quot;^4.2.1&quot;</span><span class="fu">,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tailwindcss&quot;</span><span class="fu">:</span> <span class="st">&quot;^2.0.1&quot;</span><span class="fu">,</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span></code></pre></div>
+<ol start="2" type="1">
+<li>Next, make sure to install your new dependencies:</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span></code></pre></div>
+<ol start="3" type="1">
+<li>Copy <a href="https://gist.github.com/amacgregor/1369927cb4555803fa359c5ad9104fa9">the webpack and Tailwind configuration from here</a> into your assets directory:</li>
+</ol>
+<pre><code>assets/tailwind.config.js
+assets/webpack.config.js
+assets/postcss.config.js</code></pre>
+<ol start="4" type="1">
+<li>Copy <a href="https://gist.github.com/amacgregor/66c7fd76b55332c77bbdb21c5f62940b">these CSS files</a> into the following locations:</li>
+</ol>
+<pre><code>assets/css/app.css
+assets/csss/custom.css</code></pre>
+<ol start="5" type="1">
+<li>Finally change your application to use regular CSS instead of Sass by updating the <code>assets/js/app.js</code> to:</li>
+</ol>
+<pre><code>import &quot;../css/app.css&quot;</code></pre>
+<h2 id="adding-your-auction-route">Adding Your Auction Route</h2>
+<p>Now that you have a project up with the base styling, you can start working on adding the routes and logic to show the auctions. Open your <code>lib/phoenix_fund_web/router.ex</code> file and look for the following chunk of code:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>  scope <span class="st">&quot;/&quot;</span>, <span class="cn">PhoenixFundWeb</span> <span class="kw">do</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    pipe_through <span class="va">:browser</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    live <span class="st">&quot;/&quot;</span>, <span class="cn">PageLive</span>, <span class="va">:index</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span></code></pre></div>
+<p>This is the scaffold code that was generated when you generated the application. You want to add a new route for your actions, and you can do that easily by using the <code>live</code> macro:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    live <span class="st">&quot;/auction&quot;</span>, <span class="cn">AuctionLive</span></span></code></pre></div>
+<p>It’s important to highlight that <code>AuctionLive</code> is not a Phoenix controller. Rather, it’s a long-running LiveView process in charge of managing and tracking the state for that particular route.</p>
+<p>Go ahead and define your new module under <code>lib/phoenix_fund_web/live/auction_live.ex</code>. By convention, the LiveView modules are placed under the <code>live</code> directory.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">use</span> <span class="cn">PhoenixFundWeb</span>, <span class="va">:live_view</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mount(params, session, socket) <span class="kw">do</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        {<span class="va">:ok</span>, assign(socket, <span class="va">:raised</span>, <span class="dv">0</span>)}</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>This is the core of a LiveView module. <code>mount/3</code> is the entry point for each LiveView, and it will be invoked twice:</p>
+<ul>
+<li>Once on the initial page load</li>
+<li>Once to establish a live socket</li>
+</ul>
+<p>It expects three parameters:</p>
+<ul>
+<li><code>params</code>: A map of string keys with the query params</li>
+<li><code>session</code>: The connection session</li>
+<li><code>socket</code>: The LiveView socket struct</li>
+</ul>
+<p>In your <code>mount/3</code> function, assign the initial status for your LiveView so it can be rendered. Next, define a <code>render/1</code> function that will render your LiveView HTML.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> render(assigns) <span class="kw">do</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>L<span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;div id=&quot;auction&quot;&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;div class=&quot;meter&quot;&gt;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">                  $&lt;%= @raised %&gt; USD</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;/span&gt;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;/div&gt;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;/div&gt;</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>For now, you’ll provide the HTML directly on your function. Note that the <code>~L</code> is a special syntax called a sigil; it’s used to represent Live EEx content.</p>
+<p>Start your Phoenix server and let’s try to load <a href="http://localhost:4000/auction">/auction</a>. If everything was set up correctly, you should see the following:</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/6gnnM9k.png" alt="Auction View" /><figcaption aria-hidden="true">Auction View</figcaption>
+</figure>
+<p>Excellent! Your new route is now being rendered by your LiveView. Now it’s time to make it do something useful by adding a couple of buttons to allow people to donate.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>```elixir </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> render(assigns) <span class="kw">do</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>L<span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;div id=&quot;auction&quot;&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;div class=&quot;meter&quot;&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">                  $&lt;%= @raised %&gt; USD</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;/span&gt;</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;/div&gt;</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">              </span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-1&quot;&gt; $1 &lt;/button&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-5&quot;&gt; $5 &lt;/button&gt;</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-10&quot;&gt; $10 &lt;/button&gt;</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-100&quot;&gt; $100 &lt;/button&gt;</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;/div&gt;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>The page should look as follows:</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/kI2Zchu.png" alt="Buttons added" /><figcaption aria-hidden="true">Buttons added</figcaption>
+</figure>
+<p>However, if you try to click any of your new buttons, you’re going to get an error like so:</p>
+<pre><code>
+[error] GenServer #PID&lt;0.935.0&gt; terminating
+** (FunctionClauseError) no function clause matching in PhoenixFundWeb.AuctionLive.handle_event/3
+    (phoenix_fund 0.1.0) lib/phoenix_fund_web/live/auction_live.ex:26: PhoenixFundWeb.AuctionLive.handle_event(&quot;donate-5&quot;, %{&quot;value&quot; =&gt; &quot;&quot;}, #Phoenix.LiveView.Socket&lt;assigns: %{flash: %{}, live_action: nil, live_module: PhoenixFundWeb.AuctionLive, raised: 34}, changed: %{}, endpoint: PhoenixFundWeb.Endpoint, id: &quot;phx-FmnbLK6vHaXG9gIk&quot;, parent_pid: nil, root_pid: #PID&lt;0.935.0&gt;, router: PhoenixFundWeb.Router, view: PhoenixFundWeb.AuctionLive, ...&gt;)
+    (phoenix_live_view 0.13.0) lib/phoenix_live_view/channel.ex:102: Phoenix.LiveView.Channel.handle_info/2
+    (stdlib 3.14) gen_server.erl:689: :gen_server.try_dispatch/4
+    (stdlib 3.14) gen_server.erl:765: :gen_server.handle_msg/6
+    (stdlib 3.14) proc_lib.erl:226: :proc_lib.init_p_do_apply/3
+Last message: %Phoenix.Socket.Message{event: &quot;event&quot;, join_ref: &quot;4&quot;, payload: %{&quot;event&quot; =&gt; &quot;donate-5&quot;, &quot;type&quot; =&gt; &quot;click&quot;, &quot;value&quot; =&gt; %{&quot;value&quot; =&gt; &quot;&quot;}}, ref: &quot;39&quot;, topic: &quot;lv:phx-FmnbLK6vHaXG9gIk&quot;}
+State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix.Socket.V2.JSONSerializer, socket: #Phoenix.LiveView.Socket&lt;assigns: %{flash: %{}, live_action: nil, live_module: PhoenixFundWeb.AuctionLive, raised: 34}, changed: %{}, endpoint: PhoenixFundWeb.Endpoint, id: &quot;phx-FmnbLK6vHaXG9gIk&quot;, parent_pid: nil, root_pid: #PID&lt;0.935.0&gt;, router: PhoenixFundWeb.Router, view: PhoenixFundWeb.AuctionLive, ...&gt;, topic: &quot;lv:phx-FmnbLK6vHaXG9gIk&quot;, transport_pid: #PID&lt;0.929.0&gt;}
+</code></pre>
+<h2 id="handling-events">Handling Events</h2>
+<p>As you can see from the error, the Auction LiveView doesn’t currently know how to handle an event. As part of your button code, you added <code>phx-click</code>; this is a <strong>binding</strong> that sends a particular event like <code>donate-1</code> back to your LiveView.</p>
+<p>Your next step is adding a new definition of <code>handle_event/3</code> for each one of your events. Go ahead and add the first function definition to the handle of the $1 donation button event:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-1&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>The <code>handle_event/3</code> function takes three parameters:</p>
+<ul>
+<li>The name of the event, in this case <code>donate-1</code></li>
+<li>The <code>metadata</code> about the event, that you can safely ignore for now</li>
+<li>The <code>socket</code>, which, if you remember, holds the state of your LiveView process</li>
+</ul>
+<p>Inside your <code>handle_event/3</code>, you’re doing two things:</p>
+<ul>
+<li>Retrieving the current <code>raised</code> value from the <code>socket.assigns</code> and increment it by <code>1</code></li>
+<li>Assigning the new value back to the socket</li>
+</ul>
+<p>If you reload your page and click on the $1 donation button, you should see the value correctly incrementing.</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/WA1gHtv.gif" alt="Button working" /><figcaption aria-hidden="true">Button working</figcaption>
+</figure>
+<p>Make sure to add the following code to handle the remaining events:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-5&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-10&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-100&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">100</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span>  </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<h2 id="understanding-the-liveview-life-cycle">Understanding the LiveView Life Cycle</h2>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/rk4dJHg.png" alt="LiveView Life Cycle" /><figcaption aria-hidden="true">LiveView Life Cycle</figcaption>
+</figure>
+<p>Let’s recap what you’ve done so far to better understand the LiveView life cycle:</p>
+<ol type="1">
+<li>Your application receives a request for a LiveView route.</li>
+<li>Your app will invoke that view <code>mount/2</code> function and set the initial socket state.</li>
+<li>Next, it will call <code>render/1</code> to render the static HTML to send back to the client.</li>
+<li>Opening a LiveView socket will pass the rendered HTML.</li>
+<li>The socket will remain open to receive events and handle updates on the LiveView process state.</li>
+</ol>
+<p>It is in this life cycle where one of the more powerful and interesting features of LiveView lies. As mentioned, LiveView is listening to your socket for updates but <em>it will only rerender the portions of the page that needed updating</em>. In the case of this tutorial, the meter is the only piece that gets an update.</p>
+<p>This is one of the key features that makes Phoenix and LiveView extremely well suited for real-time applications.</p>
+<h2 id="broadcasting-with-pubsub">Broadcasting with PubSub</h2>
+<p>So far, you’ve built an app that can leverage Phoenix LiveView to allow users to donate in real time, but so far, there’s a caveat: updates are not shared across users or even tabs. Wouldn’t it be nice to get the donations to show in real time for everyone who has the page open?</p>
+<p>Next, you’ll leverage <a href="https://github.com/phoenixframework/phoenix_pubsub">PubSub</a> to broadcast real-time updates to all LiveView clients, not just the one that triggers the event.</p>
+<blockquote>
+<p>“Publish-subscribe is a messaging pattern where senders of messages, called publishers, do not program the messages to be sent directly to specific receivers, called subscribers, but instead categorize published messages into classes without knowledge of which subscribers, if any, there may be. Similarly, subscribers express interest in one or more classes and only receive messages that are of interest, without knowledge of which publishers, if any, there are.” –<a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Wikipedia</a></p>
+</blockquote>
+<p>In short, PubSub is a messaging pattern that will allow us to implement real-time asynchronous communication with any clients listening for events in our application. In the case of this tutorial, that will be every user with a fundraising page open.</p>
+<h3 id="configure-phoenix-pubsub">Configure Phoenix PubSub</h3>
+<p>First, you need to configure your app endpoint to use the <code>Phoenix.PubSub.PG2</code> adapter. Add the following configuration to your <code>lib/phoenix_fund/application.ex</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>{<span class="cn">Phoenix</span><span class="op">.</span><span class="cn">PubSub</span>, [<span class="va">name:</span> <span class="cn">PhoenixFund</span><span class="op">.</span><span class="cn">PubSub</span>, <span class="va">adapter:</span> <span class="cn">Phoenix</span><span class="op">.</span><span class="cn">PubSub</span><span class="op">.</span><span class="cn">PG2</span>]},</span></code></pre></div>
+<h3 id="subscribing-to-a-topic">Subscribing to a Topic</h3>
+<p>Next, tell your LiveView process to subscribe to a specific topic when the LiveView mounts. You can leverage <code>Phoenix.PubSub.subscribe/3</code> for that:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">use</span> <span class="cn">PhoenixFundWeb</span>, <span class="va">:live_view</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="ot">@topic</span> <span class="st">&quot;auction&quot;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> mount(params, session, socket) <span class="kw">do</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>subscribe(<span class="ot">@topic</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:ok</span>, assign(socket, <span class="va">:raised</span>, <span class="dv">0</span>)}</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<p>You’ll use a generic <code>auction</code> topic, as you’re only dealing with a single auction.</p>
+<h3 id="broadcasting-to-all-subscribers">Broadcasting to All Subscribers</h3>
+<p>Your next step is to modify each of your <code>handle_event/3</code> definitions to broadcast. The updated code looks like:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-1&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>broadcast_from(self(), <span class="ot">@topic</span>, <span class="st">&quot;donate_event&quot;</span>, raised)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-5&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>broadcast_from(self(), <span class="ot">@topic</span>, <span class="st">&quot;donate_event&quot;</span>, raised)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-10&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>broadcast_from(self(), <span class="ot">@topic</span>, <span class="st">&quot;donate_event&quot;</span>, raised)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_event(<span class="st">&quot;donate-100&quot;</span>, _, socket) <span class="kw">do</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    raised <span class="op">=</span> socket<span class="op">.</span>assigns<span class="op">.</span>raised <span class="op">+</span> <span class="dv">100</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>broadcast_from(self(), <span class="ot">@topic</span>, <span class="st">&quot;donate_event&quot;</span>, raised)</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span></code></pre></div>
+<p>You’re using the <code>Phoenix.PubSub.broadcast_from/4</code> function, which allows you to broadcast a message describing a new socket state to all the LiveView clients that are subscribed to a topic. Notice that you’re not triggering the click event on the other clients, just letting them know that the socket state has changed.</p>
+<p>Finally, now that you’re broadcasting the socket updates, you need to tell your LiveView process how to handle the incoming broadcasts. For this, add a <code>handle_info/2</code> that will pattern match against the broadcast struct:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> handle_info(%{<span class="va">topic:</span> <span class="ot">@topic</span>, <span class="va">payload:</span> raised}, socket) <span class="kw">do</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:noreply</span>, assign(socket, <span class="va">:raised</span>, raised)}</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span></code></pre></div>
+<p>If you start up your application and open two browser windows side by side, you should see the donation meter updating on all windows as soon anyone clicks any of the donation buttons.</p>
+<figure>
+<img src="/blog/assets/images/real-time-phoenix-elixir/tiqB8O5.gif" alt="Broadcast in real time" /><figcaption aria-hidden="true">Broadcast in real time</figcaption>
+</figure>
+<h2 id="in-summary">In Summary</h2>
+<p>As you’ve learned, Phoenix offers a powerful set of libraries, making it relatively easy to create real-time applications with very little code and, even more surprisingly, no JavaScript at all. With LiveView, you can create fully fledged real-time features using only server-side code, and when you add Phoenix PubSub, you can open those same features to all app users in real time.</p>
+<p>Of course, we’ve only begun to scratch the surface here of what you can do with Phoenix, LiveView, and PubSub. If you want to keep going with this project, I would recommend tackling adding persistence next, and the ability to create multiple auctions with <a href="https://hexdocs.pm/ecto/getting-started.html">Ecto</a>.</p>
+<h3 id="additional-resources">Additional Resources</h3>
+<ul>
+<li><a href="https://pragmaticstudio.com/phoenix-liveview">The Pragmatic Studio: Phoenix LiveView Course</a></li>
+<li><a href="https://pragprog.com/titles/liveview/programming-phoenix-liveview/"><em>Programming Phoenix LiveView</em></a></li>
+<li><a href="https://github.com/amacgregor/phoenix_fund">Full source code</a></li>
+</ul>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Allan MacGregor</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Allan MacGregor is a software engineer and entrepreneur based in Toronto, with experience in building projects and developing innovative solutions.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-04-21T00:00:00-04:00">April 21, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/wes-mckinney/" class="pagination--pager" title="Welcoming Wes McKinney as an advisor to Earthly
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/wes-mckinney/tim-mossholder-8FBTtjCZ9oM-unsplash-600-55b86003a.webp 600w, /blog/generated/assets/images/wes-mckinney/tim-mossholder-8FBTtjCZ9oM-unsplash-800-55b86003a.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/wes-mckinney/tim-mossholder-8FBTtjCZ9oM-unsplash-600-d043486db.jpg 600w, /blog/generated/assets/images/wes-mckinney/tim-mossholder-8FBTtjCZ9oM-unsplash-800-d043486db.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/wes-mckinney/tim-mossholder-8FBTtjCZ9oM-unsplash-800-d043486db.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/wes-mckinney/" rel="permalink">Welcoming Wes McKinney as an advisor to Earthly
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">“When I learned about Earthly, I was excited to see innovative work happening in containerized build and testing automation.”
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/slow-performance-in-jenkins/header-600-dae0ba376.webp 600w, /blog/generated/assets/images/slow-performance-in-jenkins/header-800-dae0ba376.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/slow-performance-in-jenkins/header-600-173ad3a08.jpg 600w, /blog/generated/assets/images/slow-performance-in-jenkins/header-800-173ad3a08.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/slow-performance-in-jenkins/header-800-173ad3a08.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/slow-performance-in-jenkins/" rel="permalink">Addressing Slow Performance in Jenkins
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+There’s nothing more frustrating than a sluggish continuous integration system. It slows down feedback loops and prevents code from reaching production quic...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

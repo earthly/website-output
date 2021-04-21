@@ -220,4 +220,10 @@ var store = [{
         "tags": ["advisor","data-engineering"],
         "url": "/blog/wes-mckinney/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building a Real-Time Application in the Phoenix Framework with Elixir",
+        "excerpt":"The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available. If you’re currently working with a web framework like...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/real-time-phoenix-elixir/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
