@@ -226,4 +226,22 @@ var store = [{
         "tags": [],
         "url": "/blog/real-time-phoenix-elixir/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Green Vs. Brown Programming Languages",
+        "excerpt":"The Data The Stack Overflow Developer Survey1 results are a great source of information about how developers work. I was looking at the 2020 results for some ideas on what programming languages we should add to our documentation on containerized builds, and I noticed something interesting about the types of...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/brown-green-language/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News","Tutorials","Articles"],
+        "tags": ["tag1","tag2","tag3"],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

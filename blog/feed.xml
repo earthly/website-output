@@ -1,4 +1,269 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-04-21T15:44:01-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Building a Real-Time Application in the Phoenix Framework with Elixir</title><link href="https://earthly.dev/blog/real-time-phoenix-elixir/" rel="alternate" type="text/html" title="Building a Real-Time Application in the Phoenix Framework with Elixir" /><published>2021-04-21T00:00:00-04:00</published><updated>2021-04-21T00:00:00-04:00</updated><id>https://earthly.dev/blog/real-time-phoenix-elixir</id><content type="html" xml:base="https://earthly.dev/blog/real-time-phoenix-elixir/">&lt;p&gt;The Elixir language, along with the &lt;a href=&quot;https://phoenixframework.org/&quot;&gt;Phoenix framework&lt;/a&gt;, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the &lt;a href=&quot;https://github.com/mroth/phoenix-showdown/blob/master/RESULTS_v3.md&quot;&gt;fastest web frameworks&lt;/a&gt; available.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-04-22T09:04:50-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Example Graphs</title><link href="https://earthly.dev/blog/example-plot/" rel="alternate" type="text/html" title="Example Graphs" /><published>2029-01-01T00:00:00-05:00</published><updated>2020-01-07T00:00:00-05:00</updated><id>https://earthly.dev/blog/example-plot</id><content type="html" xml:base="https://earthly.dev/blog/example-plot/">&lt;p&gt;You can embedded graphs into the markdown like this:&lt;/p&gt;
+&lt;h3 id=&quot;simple-graph&quot;&gt;Simple Graph&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/814682798287101234.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h3 id=&quot;more-complex&quot;&gt;More Complex&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/7822399007724819225.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;how-to-install-pandoc-plot&quot;&gt;How to install pandoc-plot&lt;/h2&gt;
+&lt;p&gt;If you are using the docker container and jekyll, it should just work.&lt;/p&gt;
+&lt;p&gt;Manual Mac setup:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;brew install pandoc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;brew install pandoc-plot&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;install specific libs: &lt;code&gt;pandoc-plot toolkits&lt;/code&gt; to list
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pip3 install matplotlib&lt;/code&gt; for matplotlib&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;how-to-run-pandoc-plot&quot;&gt;How to run pandoc-plot&lt;/h2&gt;
+&lt;p&gt;The site will run pandoc-plot itself, but if you want to run it manually here is how:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; pandoc blog/_posts/2029-01-01-example-plot.md --filter pandoc-plot -f markdown -t html -s -o plot.html&lt;/code&gt;&lt;/pre&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorials" /><summary type="html">You can embedded graphs into the markdown like this:</summary></entry><entry><title type="html">Example Post</title><link href="https://earthly.dev/blog/example/" rel="alternate" type="text/html" title="Example Post" /><published>2029-01-01T00:00:00-05:00</published><updated>2020-01-07T00:00:00-05:00</updated><id>https://earthly.dev/blog/example</id><content type="html" xml:base="https://earthly.dev/blog/example/">&lt;p&gt;This post is in the future, and won’t show up in the published site&lt;/p&gt;
+&lt;h2 id=&quot;image-without-figure&quot;&gt;Image without figure&lt;/h2&gt;
+&lt;p&gt;An image with the alt text hidden.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;some alt text&quot; /&gt;&lt;br /&gt;
+&lt;/p&gt;
+&lt;p&gt;An image with alt text printed below.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;some alt text&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;some alt text&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-with-explicit-figure&quot;&gt;Image with explicit figure&lt;/h2&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot;
+       alt=&quot;handddrawn cartoon for a person talking to a computer server&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Alex likes to draw and add a caption&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-with-implicit-figure&quot;&gt;Image with implicit figure&lt;/h2&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;This is my alt text and my figure. The alt text is used as the default figure if not specified.&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;This is my alt text and my figure. The alt text is used as the default figure if not specified.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-wide&quot;&gt;Image Wide&lt;/h2&gt;
+&lt;div class=&quot;wide&quot;&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;This should be wide&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;This should be wide&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;graph-using-matplotlib&quot;&gt;graph using matplotlib&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/814682798287101234.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h3 id=&quot;code-blocks-with-syntax-highlighting&quot;&gt;Code blocks (with syntax highlighting)&lt;/h3&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode go&quot;&gt;&lt;code class=&quot;sourceCode go&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    syntax &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;proto3&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;package&lt;/span&gt; simplekeyvalue&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    option go_package &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;kvapi&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// The key/value API contains two procedures for storing and retrieving data&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    service KeyValue &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Set &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Get &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;raw-code-blocks&quot;&gt;Raw code blocks&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+{{ raw template code}}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figcaption&gt;
+Use &lt;code&gt;raw&lt;/code&gt; and &lt;code&gt;endraw&lt;/code&gt; for code that overlaps with the liquid templates
+&lt;/figcaption&gt;
+&lt;h2 id=&quot;fensed-code-blocks&quot;&gt;Fensed code blocks&lt;/h2&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&quot;code-with-captions&quot;&gt;Code with Captions&lt;/h4&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figcaption&gt;
+Main.scala
+&lt;/figcaption&gt;
+&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Notice&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;ℹ️ Notice Info&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--success&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Success&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here&lt;/p&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;more-example-usage&quot;&gt;More Example Usage&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&quot;&gt;Theme Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sample &lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/year-archive/&quot;&gt;Rendered Posts&lt;/a&gt; and &lt;a href=&quot;https://github.com/mmistakes/minimal-mistakes/tree/d6444412c63aea5e47241ef536509fb1bfef4830/docs/_posts&quot;&gt;Raw mardown&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Markdown stuff (pandoc): &lt;a href=&quot;https://laurentrdc.github.io/pandoc-plot/&quot;&gt;Graphs&lt;/a&gt; and &lt;a href=&quot;https://pandoc.org/MANUAL.html#pandocs-markdown&quot;&gt;markdown&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Adam Gordon Bell</name></author><category term="News" /><category term="Tutorials" /><category term="Articles" /><category term="tag1" /><category term="tag2" /><category term="tag3" /><summary type="html">Here you can specify a description, if you don't like the default.</summary></entry><entry><title type="html">Green Vs. Brown Programming Languages</title><link href="https://earthly.dev/blog/brown-green-language/" rel="alternate" type="text/html" title="Green Vs. Brown Programming Languages" /><published>2021-04-22T00:00:00-04:00</published><updated>2021-04-22T00:00:00-04:00</updated><id>https://earthly.dev/blog/brown-green-language</id><content type="html" xml:base="https://earthly.dev/blog/brown-green-language/">&lt;h2 id=&quot;the-data&quot;&gt;The Data&lt;/h2&gt;
+&lt;p&gt;The Stack Overflow Developer Survey&lt;a href=&quot;#fn1&quot; class=&quot;footnote-ref&quot; id=&quot;fnref1&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; results are a great source of information about how developers work. I was looking at the 2020 results for some ideas on what programming languages we should add to our &lt;a href=&quot;https://docs.earthly.dev/basics/part-1-a-simple-earthfile&quot;&gt;documentation&lt;/a&gt; on containerized builds, and I noticed something interesting about the types of programming languages people like. It’s something that doesn’t seem to come up in various discussions of programming language preferences.&lt;/p&gt;
+&lt;p&gt;The survey results have rankings for &lt;strong&gt;The Most Dreaded Programming Languages&lt;/strong&gt; and &lt;strong&gt;The Most Loved Programming Langauge&lt;/strong&gt;. Both rankings come from this question:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Which programming, scripting, and markup languages have you done extensive development work in over the past year, and which do you want to work in over the next year? (If you both worked with the language and want to continue to do so, please check both boxes in that row.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;A dreaded language is one you work with extensively in the current year but don’t want to continue to use. A loved language you use extensively and wish to continue using. The results are interesting because they reflect the opinions of people who are using the languages extensively. There should be no I-heard-X-is-cool effect, where people rank highly things they don’t use because they heard it is the new hotness. The inverse should also be true: People who put something on the &lt;strong&gt;Dreaded&lt;/strong&gt; list are using it. They are not dreading a language because they heard it was complex, but because they have to work it and feel real pain.&lt;/p&gt;
+&lt;div class=&quot;notice--warning notice--big&quot;&gt;
+&lt;p&gt;&lt;strong&gt;The TOP 15 Dreaded Programming Languages:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;VBA, Objective-C, Perl, Assembly, C, PHP, Ruby, C++, Java, R, Haskell, Scala, HTML, Shell, and SQL.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--success notice--big&quot;&gt;
+&lt;p&gt;&lt;strong&gt;The TOP 15 Loved Programming Languages:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Rust, TypeScript, Python, Kotlin, Go, Julia, Dart, C#, Swift, JavaScript, SQL, Shell, HTML, Scala, and Haskell.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;There is a pattern in this list. Can you see what it is?&lt;/p&gt;
+&lt;h2 id=&quot;code-written-before-i-joined-is-the-worst&quot;&gt;Code Written Before I Joined Is the Worst&lt;/h2&gt;
+&lt;p&gt;Old code is the worst. Find me a file in a codebase that has been under active development for more than three years, and it will be hard to follow. What starts as a straightforward file access layer develops special cases and performance optimizations and various branches controlled by configuration options. Real-world code evolves to fits its niche, and as it does so, it becomes more complex and harder to understand. The reason for this is simple, and I first heard about it from Joel Spolsky.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The reason that [ developers ] think the old code is a mess is because of a cardinal, fundamental law of programming: &lt;strong&gt;It’s harder to read code than to write it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Joel Spolsky - &lt;a href=&quot;https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/&quot;&gt;Things you should never do&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Let’s call this Joel’s Law. A lot of things follow from this premise. Why do most developers think the code they inherited is a mess and want to throw it out and start again? It’s because writing something new is cognitively less demanding than starting from scratch, at least initially. Why are many rewrites doomed to fail? Because much of what makes the code seem messy are vital little improvements that accreted over time. Without some plan for simplifying them, you will end up back where you started.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/brown-green-language/dt140812.gif&quot; alt=&quot;Scott Adams Understood&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Scott Adams Understood&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;It’s easy to understand code as you are writing it. You are executing it and refining it as you go. But it’s hard to understand code just by reading it after the fact. If you return to old code you wrote and find it hard to follow, it could be because you have grown as a developer and would write it better today. But its also possible that the code is inherently complex, and you are interpreting the pain of understanding that complexity as a code quality problem. Could this be why growing PR backlogs are a persistent problem? PR Reviews are a read-only activity, and they are hard to do well if you don’t already have a working model of the code in your head.&lt;/p&gt;
+&lt;h2 id=&quot;this-is-why-you-dread-it&quot;&gt;This is Why You Dread It&lt;/h2&gt;
+&lt;p&gt;If much real-world code is unfairly considered a mess, could programming languages also be unfairly judged? If you build new things in Go but have to maintain a sprawling 20-year-old C++ codebase, can you rank them fairly? I think this is actually what the survey question is measuring: dreaded languages are likely to be used in existing brown-field projects. Loved languages are more often used in new green-field projects. Let’s test this.&lt;a href=&quot;#fn2&quot; class=&quot;footnote-ref&quot; id=&quot;fnref2&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;measuring-brown-vs.-green-languages&quot;&gt;Measuring Brown vs. Green Languages&lt;/h2&gt;
+&lt;p&gt;The TIOBE index claims to measure “the number of skilled engineers, courses and jobs worldwide” for programming languages. There are probably some problems with how they measure this, but it’s accurate enough for our purposes. We use the July 2016 TIOBE &lt;a href=&quot;https://web.archive.org/web/20160801213334/https://www.tiobe.com/tiobe-index/&quot;&gt;index&lt;/a&gt;, the oldest available in way back machine, as a proxy for a language having accumulated lots of code to maintain. If something was big in 2016, it’s more likely people are maintaining code written in it than if it wasn’t popular in 2016.&lt;/p&gt;
+&lt;p&gt;The top 20 programming languages on their list as of July 2016 are Java, C, C++, Python, C#, PHP, JavaScript, VB.NET, Perl, Assembly, Ruby, Pascal, Swift, Objective-C, MATLAB, R, SQL, COBOL, and Groovy. We can use this as our list of languages more likely to be used in maintenance work. Let’s call them brown languages. Languages not in the top 20 in 2016 are more likely to be used in new projects. We will refer to these as green languages.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/assets/images/brown-green-language/graph1.svg&quot; alt=&quot;Out of 22 Languages in the combined dreaded/loved list, 63% are Brown&quot; /&gt; &lt;!-- ```
+import matplotlib.pyplot as plt
+
+labels = 'Brown', 'Green'
+dreaded_sizes = [10, 2]
+overall_languages = [14, 8]
+overall_total = 22
+dreaded_total = 12
+loved_sizes = [6, 7]
+loved_total = 13
+explode = (0.1, 0)
+colors = [&quot;burlywood&quot;, &quot;green&quot;]
+
+fig, ax1 = plt.subplots()
+ax1.set_title('Green Vs Brown')
+ax1.pie(overall_languages, explode=explode, labels=labels, 
+        autopct=lambda p: '{:.0f}'.format(p * overall_total / 100),
+        shadow=True, 
+        startangle=90, 
+        colors=colors)
+ax1.axis('equal') 
+
+``` --&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+Out of 22 Languages in the combined dreaded/loved list, 63% are Brown
+&lt;/figcaption&gt;
+&lt;div class=&quot;notice--warning notice--big&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Brown Language:&lt;/strong&gt; A language that you are more likely to use in existing software maintenance (i.e. brown-field projects).&lt;/p&gt;
+&lt;p&gt;Java, C, C++, C#, Python, PHP, JavaScript, Swift, Perl, Ruby, Assembly, R, Objective-C, SQL&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--success notice--big&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Green Language:&lt;/strong&gt; A language that you are more likely to use in a new project (i.e. a green-field project).&lt;/p&gt;
+&lt;p&gt;Go, Rust, TypeScript, Kotlin, Julia, Dart, Scala, and Haskell&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;TIOBE and StackOverflow have different ideas of what a programming language is. To overcome this, we have to normalize the two lists by removing HTML/CSS, Shell Scripts, and VBA.&lt;a href=&quot;#fn3&quot; class=&quot;footnote-ref&quot; id=&quot;fnref3&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Removed Language:&lt;/strong&gt; Not measured the same by TIOBE and StackOverflow&lt;/p&gt;
+&lt;p&gt;VBA, Shell, HTML/CSS&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;There are many nuances that a simple green / brown split misses - I expect that more green-field projects start with Swift than with Objective-C, but it does seem sufficient to capture what we need. There are far more brown languages in this list than green, but that is what I would expect given that year-on-year turn-over in programming languages is relatively low.&lt;/p&gt;
+&lt;p&gt;Now we can answer the question: Do people love and dread the languages they state or are they just dreading legacy code? Or to put it another way: If Java and Ruby appeared today, without piles of old rails apps and old enterprise Java applications to maintain, would they still be dreaded or would they be more likely to show up on the loved list?&lt;/p&gt;
+&lt;h2 id=&quot;the-dreaded-brown-programming-languages&quot;&gt;The Dreaded Brown Programming Languages&lt;/h2&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/brown-green-language/graph2.svg&quot; alt=&quot;Dreaded Languages: 83% Brown&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Dreaded Languages: 83% Brown&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- ```
+import matplotlib.pyplot as plt
+
+labels = 'Brown', 'Green'
+dreaded_sizes = [10, 2]
+overall_languages = [14, 8]
+overall_total = 22
+dreaded_total = 12
+loved_sizes = [6, 7]
+loved_total = 13
+explode = (0.1, 0)
+colors = [&quot;burlywood&quot;, &quot;green&quot;]
+
+# Graph one
+fig, ax1 = plt.subplots()
+ax1.set_title('Dreaded Languages')
+ax1.pie(dreaded_sizes, explode=explode, labels=labels, 
+        autopct=lambda p: '{:.0f}'.format(p * dreaded_total / 100),
+        shadow=True, 
+        startangle=90, 
+        colors=colors)
+ax1.axis('equal') 
+
+```
+&lt;figcaption&gt;
+Dreaded Languages: 83% Brown
+&lt;/figcaption&gt; --&gt;
+&lt;p&gt;The Top Dreaded languages are almost all are brown languages. 68% of the languages in our complete list are brown, while 83% of the dreaded languages are brown, which is higher than we would expect by chance.&lt;/p&gt;
+&lt;h2 id=&quot;the-loved-green-programming-languages&quot;&gt;The Loved Green Programming Languages&lt;/h2&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/brown-green-language/graph3.svg&quot; alt=&quot;Loved Languages 54% Green&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Loved Languages 54% Green&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;!-- ```
+import matplotlib.pyplot as plt
+
+labels = 'Brown', 'Green'
+dreaded_sizes = [10, 2]
+loved_sizes = [5, 8]
+explode = (0.1, 0)
+colors = [&quot;burlywood&quot;, &quot;green&quot;]
+total = 13
+
+
+# Graph two
+fig, ax2 = plt.subplots()
+ax2.set_title('Loved Languages')
+ax2.pie(loved_sizes, explode=explode, labels=labels, 
+        autopct=lambda p: '{:.0f}'.format(p * total / 100),
+        shadow=True, 
+        startangle=90, 
+        colors=colors)
+ax2.axis('equal') 
+
+```
+&lt;figcaption&gt;
+Loved Languages 54% Green
+&lt;/figcaption&gt; --&gt;
+&lt;p&gt;In the top loved languages, 54% are green. Only 36% of the languages in our list are green, and every single green language showed up somewhere in the loved list.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Another flaw in the human character is that everybody wants to build and nobody wants to do maintenance.&lt;/p&gt;
+&lt;p&gt;― Kurt Vonnegut&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This probably isn’t quite enough evidence to say for sure that having to use a language in a maintenance project causes dread, but it certainly looks like it is a factor. Many of the languages people love are too new or too historically unpopular to have many big big-ball-of-mud projects to maintain.&lt;/p&gt;
+&lt;p&gt;In other words, Rust, Kotlin, and the other green languages may still be in a honeymoon phase. People’s love for working with them may have as much to do with not working in 20-year-old codebases as it does with the particular languages.&lt;/p&gt;
+&lt;h2 id=&quot;overcoming-bias&quot;&gt;Overcoming Bias&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/generated/assets/images/brown-green-language/angel-devil-wide-600-402d4be31.png&quot; srcset=&quot;/blog/generated/assets/images/brown-green-language/angel-devil-wide-400-402d4be31.png 400w, /blog/generated/assets/images/brown-green-language/angel-devil-wide-600-402d4be31.png 600w&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Some newer or historically less popular programming languages might be better than older or more mainstream languages, but our ability to judge seems quite biased. In particular, developers are giving a halo to languages that are newer or were not used commonly in the past, and they are giving horns to languages that have been around longer. I think this is because nobody likes maintaining someone else’s code. And also, because of Joel’s Law: reading real-world is code hard. Building something new is fun, and new languages are used for that more often.&lt;/p&gt;
+&lt;h2 id=&quot;the-lifecycle-of-programming-language-hype&quot;&gt;The Lifecycle of Programming Language Hype&lt;/h2&gt;
+&lt;p&gt;I originally started digging into these numbers to establish a ranking for what languages were most used and loved by software developers. I was going to use this to guide adding more examples to our &lt;a href=&quot;https://docs.earthly.dev/&quot;&gt;docs&lt;/a&gt; and our &lt;a href=&quot;https://github.com/earthly/earthly/tree/main/examples&quot;&gt;build examples&lt;/a&gt;. What I came away with instead was the idea of a programming language life cycle: loved programming languages get used a lot, which leads to code maintenance, which causes people to dislike them, which leads to people looking for greener pastures and trying out a newer language. Popular frameworks probably follow this lifecycle as well.&lt;/p&gt;
+&lt;div class=&quot;wide&quot;&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/generated/assets/images/brown-green-language/hype-wide-800-83ae14a13.png&quot; alt=&quot;A graph showing hype decreasing overtime for a langauge&quot; srcset=&quot;/blog/generated/assets/images/brown-green-language/hype-wide-400-83ae14a13.png 400w, /blog/generated/assets/images/brown-green-language/hype-wide-600-83ae14a13.png 600w, /blog/generated/assets/images/brown-green-language/hype-wide-800-83ae14a13.png 800w, /blog/generated/assets/images/brown-green-language/hype-wide-900-83ae14a13.png 900w&quot;&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+The lifecycle of programming language hype
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;I don’t have data for this, but I distinctly remember Ruby being the hottest language back in 2007, and although it does have more competition today, Ruby is a better language now than it was then. Yet now it is dreaded. Part of the difference, it seems to me, is that now people have 14 years’ worth of rails apps to maintain. That makes Ruby is a lot less fun than when it was all new projects. So watch out Rust and Kotlin and Julia and Go: you too will eventually lose your halo.&lt;a href=&quot;#fn4&quot; class=&quot;footnote-ref&quot; id=&quot;fnref4&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn1&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;2020 &lt;a href=&quot;https://insights.stackoverflow.com/survey/2020&quot;&gt;Graphical&lt;/a&gt; and &lt;a href=&quot;https://drive.google.com/file/d/1dfGerWeWkcyQ9GX9x20rdSGj7WtEpzBB/view&quot;&gt;Raw&lt;/a&gt; results.&lt;a href=&quot;#fnref1&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn2&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;I came up with the criteria first. I didn’t hunt for data to back up my original idea.&lt;/p&gt;
+&lt;p&gt;I did consider using language creation date to determine green vs. brown status, but some languages have been around for some time but only found usage relatively recently.&lt;/p&gt;
+&lt;p&gt;TIOBE is measured like &lt;a href=&quot;https://www.tiobe.com/tiobe-index/programming-languages-definition/&quot;&gt;this&lt;/a&gt; and their historical data is only available if you pay, so I am using the Wayback Machine.&lt;a href=&quot;#fnref2&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn3&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;TIOBE doesn’t include HTML/CSS because it doesn’t consider them turning complete and therefore not a programming language. Shell scripts are measured separately by TIOBE, and VBA is not in the list of languages measured at all, as far as I can see.&lt;a href=&quot;#fnref3&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn4&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;Not all brown languages are dreaded however: Python, C#, Swift, JavaScript and SQL remain loved and I would love to hear if anyone has theories on why. Also Scala and Haskell, two languages I have a soft spot for, are the only green languages on the dreaded list. Is this just noise or is there something else going on there?&lt;a href=&quot;#fnref4&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Articles" /><summary type="html">The Data The Stack Overflow Developer Survey1 results are a great source of information about how developers work. I was looking at the 2020 results for some ideas on what programming languages we should add to our documentation on containerized builds, and I noticed something interesting about the types of programming languages people like. It’s something that doesn’t seem to come up in various discussions of programming language preferences. 2020 Graphical and Raw results.↩︎</summary></entry><entry><title type="html">Building a Real-Time Application in the Phoenix Framework with Elixir</title><link href="https://earthly.dev/blog/real-time-phoenix-elixir/" rel="alternate" type="text/html" title="Building a Real-Time Application in the Phoenix Framework with Elixir" /><published>2021-04-21T00:00:00-04:00</published><updated>2021-04-21T00:00:00-04:00</updated><id>https://earthly.dev/blog/real-time-phoenix-elixir</id><content type="html" xml:base="https://earthly.dev/blog/real-time-phoenix-elixir/">&lt;p&gt;The Elixir language, along with the &lt;a href=&quot;https://phoenixframework.org/&quot;&gt;Phoenix framework&lt;/a&gt;, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the &lt;a href=&quot;https://github.com/mroth/phoenix-showdown/blob/master/RESULTS_v3.md&quot;&gt;fastest web frameworks&lt;/a&gt; available.&lt;/p&gt;
 &lt;p&gt;If you’re currently working with a web framework like Ruby on Rails or even Laravel, you should definitely give Phoenix some attention due to the performance gains it promises. Additionally, Phoenix also has the capability to build highly responsive real-time applications.&lt;/p&gt;
 &lt;h2 id=&quot;introducing-phoenix-liveview&quot;&gt;Introducing Phoenix LiveView&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/phoenixframework/phoenix_live_view&quot;&gt;Phoenix LiveView&lt;/a&gt; is a relatively new library added to the Phoenix stack. Developers can build rich, real-time user experience with purely server-rendered HTML.&lt;/p&gt;
@@ -1295,434 +1560,4 @@ server {
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Turns out it’s pretty simple to get something basic up and running, just like &lt;code&gt;ngrok&lt;/code&gt; does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.&lt;/p&gt;
 &lt;p&gt;Thanks for following along with us! &lt;a href=&quot;https://github.com/earthly/example-diy-ngrok&quot;&gt;Visit the example repository, with all scripts avaliable here.&lt;/a&gt;&lt;/p&gt;
-&lt;!--kg-card-end: markdown--&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.</summary></entry><entry><title type="html">Understanding Docker Logging and Log Files</title><link href="https://earthly.dev/blog/understanding-docker-logging-and-log-files/" rel="alternate" type="text/html" title="Understanding Docker Logging and Log Files" /><published>2021-03-10T00:00:00-05:00</published><updated>2021-03-10T00:00:00-05:00</updated><id>https://earthly.dev/blog/understanding-docker-logging-and-log-files</id><content type="html" xml:base="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">&lt;p&gt;Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.&lt;/p&gt;
-&lt;p&gt;With that in mind, let’s dive into Docker logging and its log files.&lt;/p&gt;
-&lt;h2 id=&quot;introduction-to-docker-logging&quot;&gt;Introduction to Docker Logging&lt;/h2&gt;
-&lt;p&gt;Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A &lt;a href=&quot;https://www.sumologic.com/glossary/log-analysis/&quot;&gt;log analysis&lt;/a&gt; then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;1. Containers are transient.&lt;/strong&gt; When a Docker container broadcasts logs, it sends them to the application’s &lt;code&gt;stdout&lt;/code&gt; and &lt;code&gt;stderr&lt;/code&gt; output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;&lt;code&gt;json-file&lt;/code&gt; is the default logging driver used by Docker&lt;/a&gt;). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;2. Containers are multileveled.&lt;/strong&gt; There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in &lt;code&gt;/var/log&lt;/code&gt;. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.&lt;/p&gt;
-&lt;p&gt;In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.&lt;/p&gt;
-&lt;h2 id=&quot;docker-logging-commands&quot;&gt;Docker Logging Commands&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; is a command that shows all the information logged by a running container. The &lt;code&gt;docker service logs&lt;/code&gt; command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: STDIN, STDOUT, and STDERR. And the default is set to show only STDOUT and STDERR.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;STDIN is the command’s input stream, which may include input from the keyboard or input from another command.&lt;/li&gt;
-&lt;li&gt;STDOUT is usually a command’s normal output.&lt;/li&gt;
-&lt;li&gt;STDERR is typically used to output error messages.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The &lt;code&gt;docker logs&lt;/code&gt; command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of STDOUT and STDERR. With &lt;code&gt;docker logs &amp;lt;CONTAINER_ID&amp;gt;&lt;/code&gt;, you can see all the logs broadcasted by a specific container identified by a unique ID.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker run &lt;span class=&quot;at&quot;&gt;--name&lt;/span&gt; test &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; busybox sh &lt;span class=&quot;at&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;while true; do &lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; date&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;; sleep 1; done&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; date&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--until&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;2s test&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:01 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:02 UTC&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; works a bit differently in community and enterprise versions. In Docker Enterprise, &lt;code&gt;docker logs&lt;/code&gt; read logs created by any logging driver, but in Docker CE, it can only read logs created by the json-file, local, and journald drivers.&lt;/p&gt;
-&lt;p&gt;For example, here’s the JSON log created by the &lt;a href=&quot;https://hub.docker.com/_/hello-world&quot;&gt;hello-world&lt;/a&gt; Docker image using the json-file driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello from Docker!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stream&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stdout&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;time&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;2021-02-10T00:00:00.000000000Z&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can see, the log follows a pattern of printing:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Log’s origin&lt;/li&gt;
-&lt;li&gt;Either &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;A timestamp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;You can find this log in your Docker host at:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; /var/lib/docker/containers/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;-json.log  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;These Docker logs are stored in a host container and will build up over time. To address that, you can implement log rotation, which will remove a chunk of logs at specified intervals, and a log aggregator, which can be used to push them into a centralized location for a permanent log repository. You can use this repository for further analysis and improvements in the system down the road.&lt;/p&gt;
-&lt;p&gt;To find &lt;code&gt;container_id&lt;/code&gt;, run the &lt;code&gt;docker ps&lt;/code&gt; command. It’ll list all the running containers.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker ps&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;CONTAINER&lt;/span&gt; ID   IMAGE       COMMAND             CREATED             STATUS              PORTS     NAMES&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;cg95e1yqk810&lt;/span&gt;   bar_image  &lt;span class=&quot;st&quot;&gt;&amp;quot;node index.js&amp;quot;&lt;/span&gt;     Y min ago           Up Y min            80/tcp     bar_app&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then, the &lt;code&gt;docker logs container_id&lt;/code&gt; lists the logs for a particular container.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to follow the Docker container logs:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; -f&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to see the last N log lines:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; --tail N&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you only want to see any specific logs, use &lt;code&gt;grep&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; node&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to check errors:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-i&lt;/span&gt; error&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;logging-drivers-supported-by-docker&quot;&gt;Logging Drivers Supported by Docker&lt;/h2&gt;
-&lt;p&gt;Logging drivers, or log-drivers, are mechanisms for getting information from running containers and services, and Docker has lots of them available for you. Every Docker daemon has a default logging driver, which each container uses. Docker uses the json-file logging driver as its default driver.&lt;/p&gt;
-&lt;p&gt;Currently, Docker supports the following logging drivers:&lt;/p&gt;
-&lt;table&gt;
-&lt;colgroup&gt;
-&lt;col style=&quot;width: 43%&quot; /&gt;
-&lt;col style=&quot;width: 56%&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr class=&quot;header&quot;&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Driver&lt;/th&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;none&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;No logs are available for the container and Docker logs do not return any output.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/local/&quot;&gt;local&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are stored in a custom format designed for minimal overhead.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;json-file&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are formatted as JSON. The default logging driver for Docker.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/syslog/&quot;&gt;syslog&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes logging messages to the Syslog facility. The Syslog daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/journald/&quot;&gt;journald&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to journald. The journald daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gcplogs/&quot;&gt;gcplogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Google Cloud Platform (GCP) logging.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/awslogs/&quot;&gt;awslogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Amazon CloudWatch logs.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/splunk/&quot;&gt;splunk&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Splunk using the HTTP Event Collector.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gelf/&quot;&gt;gelf&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to a Graylog Extended Log Format (GELF) endpoint, such as Graylog or Logstash.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/fluentd/&quot;&gt;fluentd&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to fluentd (forward input). The fluentd daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/etwlogs/&quot;&gt;etwlogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages as Event Tracing for Windows (ETW) events. Only available on Windows platforms.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/logentries/&quot;&gt;logentries&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Rapid7 Logentries.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&quot;configuring-the-logging-driver&quot;&gt;Configuring the Logging Driver&lt;/h3&gt;
-&lt;p&gt;To configure the Docker daemon to a logging driver, you need to set the value of &lt;code&gt;log-driver&lt;/code&gt; to the name of the logging driver in the daemon.json configuration file. Then you need to restart Docker for the changes to take effect for all the newly created containers. All the existing containers will remain as they are.&lt;/p&gt;
-&lt;p&gt;For example, let’s set up a default logging driver with some additional options.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-2&quot;&gt;&lt;a href=&quot;#cb10-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;json-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-3&quot;&gt;&lt;a href=&quot;#cb10-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-4&quot;&gt;&lt;a href=&quot;#cb10-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-size&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;25m&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-5&quot;&gt;&lt;a href=&quot;#cb10-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;10&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-6&quot;&gt;&lt;a href=&quot;#cb10-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;labels&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;production_bind&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-7&quot;&gt;&lt;a href=&quot;#cb10-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;env&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;os,customer&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-8&quot;&gt;&lt;a href=&quot;#cb10-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-9&quot;&gt;&lt;a href=&quot;#cb10-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To find the current logging driver for the Docker daemon:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker info &lt;span class=&quot;at&quot;&gt;--format&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.LoggingDriver}}&amp;#39;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-4&quot;&gt;&lt;a href=&quot;#cb11-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;json-file&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can override the default driver by adding the &lt;code&gt;--log-driver&lt;/code&gt; option to the docker run command that creates a container.&lt;/p&gt;
-&lt;p&gt;The following command will start using the Splunk driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;at&quot;&gt;--log-driver&lt;/span&gt; splunk httpd&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Modify the &lt;code&gt;daemon.json&lt;/code&gt; file, to pass the address of the splunk host to the driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb13&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb13-1&quot;&gt;&lt;a href=&quot;#cb13-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-2&quot;&gt;&lt;a href=&quot;#cb13-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-3&quot;&gt;&lt;a href=&quot;#cb13-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-4&quot;&gt;&lt;a href=&quot;#cb13-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-5&quot;&gt;&lt;a href=&quot;#cb13-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-6&quot;&gt;&lt;a href=&quot;#cb13-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker inspect &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.HostConfig.LogConfig.Type}}&amp;#39;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;CONTAINER&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-3&quot;&gt;&lt;a href=&quot;#cb14-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-4&quot;&gt;&lt;a href=&quot;#cb14-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;splunk&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver&quot;&gt;Choosing the Delivery Mode of Log Messages From Container to Log Driver&lt;/h3&gt;
-&lt;p&gt;Docker provides two modes for delivering log messages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Blocking (default):&lt;/strong&gt; The container interrupts the application every time it needs to deliver a message to the driver. This will add latency in the performance of your application (for some drivers), but it’ll guarantee that all the messages will be sent to the driver. Case in point, the json-file driver writes logs very quickly, therefore it’s unlikely to cause latency. But drivers like &lt;code&gt;gcplogs&lt;/code&gt; and &lt;code&gt;awslogs&lt;/code&gt; open a connection to a remote server and so are more likely to block and cause latency.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Non-Blocking:&lt;/strong&gt; The container writes and stores its logs to an in-memory ring buffer until the logging driver is available to process them. This ensures that a high rate of logging will not affect application performance. It does not guarantee that all the messages will be sent to the driver. In cases where log broadcasts are faster than the driver processor, the ring buffer will soon run out of space. As a result, buffered logs are deleted to make space for the next set of incoming logs. The default value for &lt;code&gt;max-buffer-size&lt;/code&gt; is 1 MB.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To change the mode:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-2&quot;&gt;&lt;a href=&quot;#cb15-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-3&quot;&gt;&lt;a href=&quot;#cb15-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-4&quot;&gt;&lt;a href=&quot;#cb15-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-5&quot;&gt;&lt;a href=&quot;#cb15-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;mode&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;non-blocking&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-6&quot;&gt;&lt;a href=&quot;#cb15-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-7&quot;&gt;&lt;a href=&quot;#cb15-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;understanding-logging-strategies&quot;&gt;Understanding Logging Strategies&lt;/h2&gt;
-&lt;p&gt;Docker logging effectively means logging the events of an application, host OS, and the respective Docker service. There are a few defined logging strategies you should keep in mind when working with containerized apps.&lt;/p&gt;
-&lt;h3 id=&quot;application-logging&quot;&gt;1. Application Logging&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, the application running in the containers will have its own logging framework. For example, a Node.js app could use a &lt;a href=&quot;https://www.npmjs.com/package/winston&quot;&gt;&lt;code&gt;winston&lt;/code&gt;&lt;/a&gt; library to format and send the logs. With this approach, you have complete control over the logging event.&lt;/p&gt;
-&lt;p&gt;If you have multiple containers, you need to add an identifier at each container level, so you can uniquely determine the container and its respective logs. But as the size of the logs increases, this will start creating a load on the application process. Due to the transient nature of containers, the logs will be wiped out when a container is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;To address this, you have two options: - Configure steady storage to hold these logs, i.e. disks/data volumes. - Forward these logs to a log management solution.&lt;/p&gt;
-&lt;h3 id=&quot;data-volumes&quot;&gt;2. Data Volumes&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, your container’s directory gets links to one of the host machine directories that will hold all the data for you. Containers can now be terminated or shut down, and access logs from multiple containers.&lt;/p&gt;
-&lt;p&gt;A regular backup is a good idea in order to prevent data corruption or loss in case of a failure. But if you want to shift the containers on different hosts without loss of data, then the data volumes strategy will make that difficult.&lt;/p&gt;
-&lt;h3 id=&quot;docker-logging-driver&quot;&gt;3. Docker Logging Driver&lt;/h3&gt;
-&lt;p&gt;Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt; streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like fluentd, Splunk, and awslogs.&lt;/p&gt;
-&lt;p&gt;Note that the &lt;code&gt;docker log&lt;/code&gt; command will not work if you use anything other than the &lt;code&gt;json-file&lt;/code&gt; driver. And if log forwarding over a TCP connection fails or becomes unreachable, the containers will shut down.&lt;/p&gt;
-&lt;h3 id=&quot;dedicated-logging-container&quot;&gt;4. Dedicated Logging Container&lt;/h3&gt;
-&lt;p&gt;Here, you need to set up a dedicated container whose only job is to collect and manage logs within a Docker ecosystem. It’ll aggregate, monitor, and analyze logs from containers and forward them to a central repository. The log dependency on the host machine is no longer an issue, and it’s best suited for microservices architecture.&lt;/p&gt;
-&lt;p&gt;This strategy gives you the freedom to:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Move containers between the hosts.&lt;/li&gt;
-&lt;li&gt;Scale up by just adding a new container.&lt;/li&gt;
-&lt;li&gt;Tie up all the various streams of log events.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;sidecar-logging-container&quot;&gt;5. Sidecar Logging Container&lt;/h3&gt;
-&lt;p&gt;This logging strategy is similar to dedicated logging in that you have a container to hold logs, but here, each application has its own dedicated logging container (note that the application and its log container can be considered as a single unit). This opens up the flexibility of app-level logging customization. By adding custom identifiers, you can identify the specific container that broadcasts the log.&lt;/p&gt;
-&lt;p&gt;This is best suited for a complex system where each entity customizes the logs, making it popular in microservices deployment. Maintaining a container per application level will require additional resources for management and setup, so it’s complex to implement. Also, you may end up losing data when a container from the unit becomes unserviceable.&lt;/p&gt;
-&lt;h3 id=&quot;third-party-logging-services&quot;&gt;6. Third-party Logging Services&lt;/h3&gt;
-&lt;p&gt;There are a lot of third-party logging services you can use according to your infrastructure and application needs, enabling you to aggregate, manage, and analyze logs and take proactive preventative actions as a result.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.splunk.com/&quot;&gt;Splunk&lt;/a&gt;:&lt;/strong&gt; Splunk is built to scale from a single server to multiple data centers. It has built-in alerting and reporting, real-time search, analysis, and visualization, which helps you take action against malfunctions faster. It comes with a Splunk Enterprise on-premise deployment and Splunk Cloud. The free plan comes with 500 MB data per day, and the paid plan starts from $150 a month for a GB.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/elastic/logstash&quot;&gt;Logstash&lt;/a&gt;:&lt;/strong&gt; Logstash is part of the &lt;a href=&quot;https://www.elastic.co/products&quot;&gt;Elastic Stack&lt;/a&gt; along with Beats, Elasticsearch, and Kibana. It’s a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favourite “stash.” Logstash has over 200 plugins for input, filter/transform, and output. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.fluentd.org/&quot;&gt;Fluentd&lt;/a&gt;:&lt;/strong&gt; Fluentd is an open-source data collector. Its performance has been well proven, handling 5 TB of daily data, 50,000 messages/sec at peak time. The main reason to use it would be performance. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.papertrail.com/&quot;&gt;PaperTrail&lt;/a&gt;:&lt;/strong&gt; PaperTrail is a simple and user-friendly service that provides a terminal-like experience. Once the data is sent over the syslog, you can perform tail and search operations with the PaperTrail UI. It’s affordable for low volumes but becomes expensive for higher volume. It comes with a free 50 MB/month plan, and paid plans start at $7/month for 1 GB per month.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.loggly.com/&quot;&gt;Loggly&lt;/a&gt;:&lt;/strong&gt; Loggly focuses on simplicity and ease of use for a DevOps audience. It’s one of the more robust log analyzers. Primary use cases are for troubleshooting and customer support scenarios, and it provides richer visualizations and more parsing functionality than PaperTrail. It comes with a free 200 MB/day, and paid plans start at $79 a month for 1 GB per day ingestion with a 2 weeks retention.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;limitations-and-challenges-of-docker-logging&quot;&gt;Limitations and Challenges of Docker Logging&lt;/h2&gt;
-&lt;p&gt;Docker makes containerized application deployment easier, faster, and streamlines it with limited resources. Log management and analysis are handled differently with Docker as compared to a traditional system, which introduces a new set of challenges and limitations. From storing logs in a file system to forwarding them to a central repository, Docker logging has some pain points you’ll need to overcome with a deeper understanding of Docker capability.&lt;/p&gt;
-&lt;h3 id=&quot;the-only-compatible-driver-is-json-file&quot;&gt;The Only Compatible Driver Is json-file&lt;/h3&gt;
-&lt;p&gt;The json-file driver is the only one that works with the &lt;code&gt;docker logs&lt;/code&gt; command, a limitation of Docker logs. When you start using any other logging drivers, such as Fluentd or Splunk, the &lt;code&gt;docker logs&lt;/code&gt; command shows an error and the Docker logs API calls will fail. Also, you won’t be able to check the container logs in this situation.&lt;/p&gt;
-&lt;h3 id=&quot;docker-syslog-impacts-container-deployment&quot;&gt;Docker Syslog Impacts Container Deployment&lt;/h3&gt;
-&lt;p&gt;The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail ife a connection is not made.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker: Error response from daemon: Failed to initialize logging driver: dial tcp&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your container deployment will be affected if you face network problems or latency issues. And it’s not recommended that you restart the Syslog server because this will drop all the connections from the containers to a central Syslog server.&lt;/p&gt;
-&lt;h3 id=&quot;potential-loss-of-logs-with-docker-syslog-driver&quot;&gt;Potential Loss of Logs with Docker Syslog Driver&lt;/h3&gt;
-&lt;p&gt;The Docker syslog driver needs an established TCP or TLS connection to deliver logs. Note that when the connection is down or not reachable, you’ll start losing the logs until the connection reestablished.&lt;/p&gt;
-&lt;h3 id=&quot;multiline-logs-not-supported&quot;&gt;Multiline Logs Not Supported&lt;/h3&gt;
-&lt;p&gt;Generally, either of two patterns is followed for logging: single-line per log or multiple lines with extended information per log, like stack traces or exceptions. But with Docker logging, this is a moot point, because containers always broadcast logs to the same output: &lt;code&gt;stdout&lt;/code&gt;. ### Multiple Logging Drivers Not Supported It’s mandatory that you use only a single driver for all of your logging needs. Scenarios where you can store logs locally and push it to remote servers are not supported.&lt;/p&gt;
-&lt;h3 id=&quot;logs-can-miss-or-skip&quot;&gt;Logs Can Miss or Skip&lt;/h3&gt;
-&lt;p&gt;There’s a rate limitation setting at the Docker end for journald drivers that takes care of the rate that logs get pushed. If it exceeds, then the driver might skip some logs. To prevent such issues, increase the rate limitation settings according to your logging needs.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;While Docker containerization allows developers to encapsulate a program and its file system into a single portable package, that certainly doesn’t mean containerization is free of maintenance. Docker Logging is a bit more complex than traditional methods, so teams using Docker must familiarize themselves with the Docker logging to support full-stack visibility, troubleshooting, performance improvements, root cause analysis, etc.&lt;/p&gt;
-&lt;p&gt;As we have seen in this post, to facilitate logging, Docker offers logging drivers and commands in the platform which gives you the mechanisms for accessing the performance data and also provides plugins to integrate with third-party logging tools as well. To maximize the logging capabilities there are several methods and strategies which help in designing your logging infrastructure, but each comes with its advantages and disadvantages.&lt;/p&gt;
-&lt;p&gt;With this understanding of logging, containerization can be a powerful tool. Earthly is a containerized &lt;a href=&quot;https://earthly.dev/&quot;&gt;continuous integration tool&lt;/a&gt;. If you’ve ever had to deal with flaky builds you should &lt;a href=&quot;https://earthly.dev/&quot;&gt;check it out&lt;/a&gt;.&lt;/p&gt;</content><author><name>Sanket Makhija</name></author><category term="Tutorials" /><category term="docker" /><category term="tutorials" /><summary type="html">Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.</summary></entry><entry><title type="html">How to Setup and Use Amazon’s Elastic Container Registry</title><link href="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/" rel="alternate" type="text/html" title="How to Setup and Use Amazon’s Elastic Container Registry" /><published>2021-03-05T00:00:00-05:00</published><updated>2021-03-05T00:00:00-05:00</updated><id>https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry</id><content type="html" xml:base="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/">&lt;p&gt;A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming &lt;a href=&quot;https://www.cio.com/article/3434010/more-enterprises-are-using-containers-here-s-why.html&quot;&gt;a method of choice&lt;/a&gt; for shipping modern applications.&lt;/p&gt;
-&lt;p&gt;Containers are created from a read-only template called an &lt;em&gt;Image&lt;/em&gt;. These images need to be stored somewhere so they can be retrieved by any machine authorized to use them. That’s where a container registry comes in.&lt;/p&gt;
-&lt;h2 id=&quot;docker-hub-where-many-start&quot;&gt;Docker Hub: Where Many Start&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; is one of the most well-known pieces of software for working with containerized applications. To help with the storage issue, Docker created &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; - the world’s largest container registry - where developers can share and download pre-built images from others.&lt;/p&gt;
-&lt;p&gt;While Docker Hub is still the most common option, it’s lost a bit of steam since the company started restricting free public repositories to just &lt;a href=&quot;https://cloudonaut.io/amazon-ecr-vs-docker-hub-vs-github-container-registry/&quot;&gt;a few hundred pulls every 6 hours&lt;/a&gt;. Docker Hub also offers some of the same features that ECR does (image scanning, team access) to paid users, but it’s likely to be much more expensive than Amazon ECR is when you’re starting out.&lt;/p&gt;
-&lt;p&gt;Finally, the free Docker Hub plan has added a restrictive retention policy. They will delete any container images that haven’t been accessed within the last six months, so if you’re using Docker Hub for your side project that you update only occasionally, you might be surprised to find it suddenly gone one day.&lt;/p&gt;
-&lt;h2 id=&quot;introducing-amazon-elastic-container-registry-ecr&quot;&gt;Introducing Amazon Elastic Container Registry (ECR)&lt;/h2&gt;
-&lt;p&gt;Amazon ECR is a fully managed container registry offered as part of the AWS suite. Like Docker Hub, it makes storing, sharing, managing, and deploying your images easier, but it’s also likely to save you money - especially if you’re already using AWS. Simply push your images to ECR and pull the images using container management tool: &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kuberenetes&lt;/a&gt;, &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;Docker Compose&lt;/a&gt;, &lt;a href=&quot;https://aws.amazon.com/ecs&quot;&gt;ECS&lt;/a&gt;, &lt;a href=&quot;https://aws.amazon.com/eks&quot;&gt;EKS&lt;/a&gt;, etc.&lt;/p&gt;
-&lt;h3 id=&quot;pricing&quot;&gt;Pricing&lt;/h3&gt;
-&lt;p&gt;Generally, public repositories are suitable for open-source developers sharing their work with the world for free. In contrast, private repositories are used by companies to share proprietary images of their internal software. Depending on the privacy level you need, here’s how AWS charges for ECR:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Private Repositories&lt;/strong&gt;: As a part of the AWS free tier, you get 500 MB of storage for one year for private repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage for private repositories.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Public Repositories&lt;/strong&gt;: ECR offers 50 GB-month of free storage and 500 GB to 5 TB (depending on whether you authenticate with AWS or not) for public repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There may be additional costs depending on your region and usage, so be sure to check the pricing &lt;a href=&quot;https://aws.amazon.com/ecr/pricing/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;why-ecr&quot;&gt;Why ECR?&lt;/h3&gt;
-&lt;p&gt;If you’re already bought into the Amazon ecosystem, ECR is an obvious choice for your container registry as you won’t have to add a new service to your budget. Besides saving you money, ECR integrates with other standard AWS services, which will hopefully improve developer experience as well.&lt;/p&gt;
-&lt;h3 id=&quot;iam-identity-and-access-management&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/iam&quot;&gt;IAM (Identity and Access Management)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html&quot;&gt;ECR integrates with IAM&lt;/a&gt; to configure policies and manage and control access to your images. This means you won’t have to share credentials or manage permissions individually for each repository.&lt;/p&gt;
-&lt;h3 id=&quot;eks-elastic-kubernetes-service&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/eks&quot;&gt;EKS (Elastic Kubernetes Service)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Kubernetes is a widely used container orchestration technology for automating deployments, networking, and scaling your application. Elastic Kubernetes Service is the AWS-managed Kubernetes platform.&lt;/p&gt;
-&lt;p&gt;EKS allows you to run Kubernetes on AWS without maintaining your own &lt;a href=&quot;https://kubernetes.io/docs/concepts/overview/components/#control-plane-components&quot;&gt;Kubernetes control plane&lt;/a&gt;. You define a manifest file, and the Kubernetes master node will schedule and run the deployments. As you’ll see later, you can use images hosted in ECR in this manifest file to easily deploy your workloads from your public or private repositories.&lt;/p&gt;
-&lt;h3 id=&quot;ecs-elastic-container-service&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/ecs&quot;&gt;ECS (Elastic Container Service)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Like EKS, ECS is a container orchestration service that makes running, stopping, and managing containers on AWS resources easy. Without getting into all of the specifics, ECS is typically better for teams that want a simple but powerful way to run their containers, while EKS adds the flexibility and security options available in Kubernetes. To learn more about each of AWS’s container orchestration tools, read &lt;a href=&quot;https://aws.amazon.com/blogs/containers/amazon-ecs-vs-amazon-eks-making-sense-of-aws-container-services/&quot;&gt;this article on picking the right one&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;When integrating with ECR, ECS users simply have to &lt;a href=&quot;https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html&quot;&gt;add their images to a task definition&lt;/a&gt;. Task definitions are JSON files that describe each container that forms the application. These definitions are similar to Kubernetes manifest files but require their own format and options.&lt;/p&gt;
-&lt;h2 id=&quot;using-elastic-container-registry&quot;&gt;Using Elastic Container Registry&lt;/h2&gt;
-&lt;p&gt;If you’ve decided that ECR is the right option for your application, you’re ready to set up and start using it. In the remainder of this tutorial, I’ll walk you through the steps required to get started with ECR. I’ll show you how to push and pull images from ECR and how you can use your ECR images in EKS and ECS.&lt;/p&gt;
-&lt;p&gt;Typically these steps will be run as part of your continuous integration workflow, but you can also run them locally to get more familiar with the required tooling before you automate them.&lt;/p&gt;
-&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html&quot;&gt;AWS Credentials&lt;/a&gt; with permissions to interact with ECR.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.docker.com/get-docker/&quot;&gt;Docker installed for your operating system&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;The &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS CLI installed locally&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;creating-a-new-repository&quot;&gt;Creating a New Repository&lt;/h3&gt;
-&lt;p&gt;Assuming you’ve already got an AWS account and permissions correctly configured, the easiest way to get started is to create a new ECR repository via the Amazon Web Services UI.&lt;/p&gt;
-&lt;p&gt;Go to the &lt;a href=&quot;http://console.aws.amazon.com/ecr/get-started&quot;&gt;ECR homepage&lt;/a&gt; and click the &lt;em&gt;Get Started&lt;/em&gt; button.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/xX4GGwL.png&quot; alt=&quot;ECR landing page&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;ECR landing page&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;You will be taken to the &lt;em&gt;Create repository&lt;/em&gt; page, where you can enter all the details for your new repository.&lt;/p&gt;
-&lt;h3 id=&quot;configuring-your-repository&quot;&gt;Configuring Your Repository&lt;/h3&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/SZrf8AQ.png&quot; alt=&quot;Amazon ECR repository creation menu&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Amazon ECR repository creation menu&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Choose a visibility (&lt;em&gt;Public&lt;/em&gt; or &lt;em&gt;Private&lt;/em&gt;), name the repository (ideally something short but self-explanatory), and below the name, select any of the other options you need:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Tag immutability&lt;/em&gt; - Prevents the same tag from being pushed twice and overwriting a previous version of the tag.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Scan on push&lt;/em&gt; - Your images will be scanned for security vulnerabilities each time a new tag is pushed.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;[KMS encryption}(https://medium.com/&lt;span class=&quot;citation&quot; data-cites=&quot;suprajaraman/aws-kms-all-about-keys-564245425ecc&quot;&gt;@suprajaraman/aws-kms-all-about-keys-564245425ecc&lt;/span&gt;)&lt;/em&gt; - Allows you to use AWS Key Management Service (KMS) to encrypt the images in this repository.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;Note: your final repository URL structure will be something like this:&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Once your repository is configured, click &lt;em&gt;Create repository&lt;/em&gt; to initialize your ECR repository. If you want to create a public repository, you can follow the same steps but select &lt;code&gt;Pubic&lt;/code&gt; instead of &lt;code&gt;Private&lt;/code&gt;.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/XCZe4vX.png&quot; alt=&quot;Amazon ECR dashboard&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Amazon ECR dashboard&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h3 id=&quot;pushing-an-image-to-the-repository&quot;&gt;Pushing an Image to the Repository&lt;/h3&gt;
-&lt;p&gt;Before publishing the Image to ECR, make sure you have Docker installed on your workstation and a project with a Dockerfile that’s ready to be built and pushed to ECR.&lt;/p&gt;
-&lt;p&gt;If you don’t have a project ready, create a new file called &lt;code&gt;Dockerfile&lt;/code&gt; and enter the following (this is based on the official &lt;a href=&quot;https://hub.docker.com/_/alpine&quot;&gt;Docker &lt;code&gt;alpine:3.7&lt;/code&gt; image&lt;/a&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM alpine:3.7
-CMD echo &amp;#39;Hello world&amp;#39;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next, &lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html&quot;&gt;set up your AWS credentials on the CLI&lt;/a&gt; if you haven’t already:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;aws configure&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Paste your &lt;em&gt;AWS Access Key ID&lt;/em&gt; and &lt;em&gt;AWS Secret Access Key&lt;/em&gt;. This will allow your CLI instance access to your AWS account.&lt;/p&gt;
-&lt;p&gt;If you’re using the CLI as part of your continuous integration workflow, you also have the option &lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html&quot;&gt;to use environment variables&lt;/a&gt; to securely store your credentials.&lt;/p&gt;
-&lt;h3 id=&quot;adding-your-ecr-credentials-to-the-docker-cli&quot;&gt;Adding Your ECR Credentials to the Docker CLI&lt;/h3&gt;
-&lt;p&gt;Next, you need Docker to be able to push images to your ECR repository. The &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/login/&quot;&gt;&lt;code&gt;docker login&lt;/code&gt; command&lt;/a&gt; will allow you to do this, so using the AWS CLI, retrieve your ECR password and pipe it into the Docker command:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;aws ecr get-login-password \
-    --region &amp;lt;account-region&amp;gt; \
-| docker login \
-    --username AWS \
-    --password-stdin &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;After authentication, you will see &lt;code&gt;Login Succeeded&lt;/code&gt; as a response. Now you’ll be able to push tagged images to your ECR repository.&lt;/p&gt;
-&lt;p&gt;If you are pushing or pulling images from this machine regularly, you may not want to go through this login process every time. Instead of using &lt;code&gt;docker login&lt;/code&gt;, you can configure the &lt;a href=&quot;https://github.com/awslabs/amazon-ecr-credential-helper&quot;&gt;Amazon ECR Docker Credential Helper&lt;/a&gt; to give the Docker daemon direct access to your AWS credentials. This method is also convenient for CI environments because it automates the authentication process and caches tokens to minimize your risk of being throttled.&lt;/p&gt;
-&lt;h3 id=&quot;pushing-an-image-to-ecr&quot;&gt;Pushing an Image to ECR&lt;/h3&gt;
-&lt;p&gt;Next, build the image from your Dockerfile:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker build -t &amp;lt;image-name&amp;gt;:&amp;lt;image-version&amp;gt; .&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then, tag the image with your ECR repository name:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker tag &amp;lt;image-name&amp;gt;:&amp;lt;image-version&amp;gt; &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Your image is now ready to push to ECR:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker push &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And just like that, you have pushed our first image to a repository on Elastic Container Registry. In the next section, you’ll see how you can use these images for local or remote deployments.&lt;/p&gt;
-&lt;h3 id=&quot;pulling-an-image-from-ecr&quot;&gt;Pulling an Image from ECR&lt;/h3&gt;
-&lt;p&gt;Whether you want to pull an image from a public ECR repository or your company has private images stored in ECR, pulling works in the same way it does in any container registry. After you’ve authenticated (using the same steps above), you can use &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/pull/&quot;&gt;&lt;code&gt;docker pull&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker pull &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now you can run this image locally.&lt;/p&gt;
-&lt;h3 id=&quot;using-ecr-images-in-a-dockerfile&quot;&gt;Using ECR Images in a Dockerfile&lt;/h3&gt;
-&lt;p&gt;If you are building a new application from a base image stored in ECR, you can use the &lt;code&gt;FROM&lt;/code&gt; command in your Dockerfile just as you would with any other Docker image. For example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM: &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Again, you’ll need to be authenticated if you want to build an image off a private image in ECR, but this allows you to share base images with your team or the public.&lt;/p&gt;
-&lt;h3 id=&quot;using-ecr-images-in-production-deployments&quot;&gt;Using ECR Images in Production Deployments&lt;/h3&gt;
-&lt;p&gt;To use your images from ECR in a container management platform like ECS or EKS, simply add the name and tag of the image you want to use to the relevant configuration file.&lt;/p&gt;
-&lt;h5 id=&quot;eks-manifest&quot;&gt;EKS Manifest&lt;/h5&gt;
-&lt;p&gt;For example, you can use the following EKS manifest to deploy a NodeJS image stored in ECR:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;apiVersion: batch/v1 
-kind: Job 
-metadata: 
-    name: eks-iam-test-s3 
-spec: template: 
-    metadata: 
-      labels: 
-        app: eks-iam-test-s3 
-    spec: 
-      serviceAccountName: iam-test 
-      containers: 
-        - name: eks-iam-test 
-          image: 123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1 
-          args: [&amp;quot;s3&amp;quot;, &amp;quot;ls&amp;quot;] 
-      restartPolicy: Never&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;When deployed, it will create a job with the name &lt;code&gt;eks-iam-test-s3&lt;/code&gt; using the &lt;code&gt;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&lt;/code&gt; image. To see the complete step-by-step process for deploying this job to EKS, see &lt;a href=&quot;https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html&quot;&gt;the AWS documentation here&lt;/a&gt;.&lt;/p&gt;
-&lt;h5 id=&quot;ecs-task-definition&quot;&gt;ECS Task Definition&lt;/h5&gt;
-&lt;p&gt;ECR images can also be used in ECS task definition files to define your containers:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &amp;quot;containerDefinitions&amp;quot;: [
-    {
-      &amp;quot;name&amp;quot;: &amp;quot;sample-app&amp;quot;,
-      &amp;quot;image&amp;quot;: &amp;quot;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&amp;quot;,
-      &amp;quot;memory&amp;quot;: 200,
-      &amp;quot;cpu&amp;quot;: 10,
-      &amp;quot;essential&amp;quot;: true
-    }
-  ],
-  &amp;quot;family&amp;quot;: &amp;quot;example_task_3&amp;quot;,
-  &amp;quot;taskRoleArn&amp;quot;: &amp;quot;arn:aws:iam::123456789012:role/AmazonECSTaskS3BucketRole&amp;quot;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This definition will deploy a container named &lt;code&gt;sample-app&lt;/code&gt; using image &lt;code&gt;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&lt;/code&gt;. More detailed steps are &lt;a href=&quot;https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition.html&quot;&gt;available in the ECS documentation here&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;In this tutorial, you learned the basics of containers and container registries. You learned about the differences between Docker Hub and Amazon ECR for public and private repository hosting, and you saw how to set up and use ECR to store your images.&lt;/p&gt;
-&lt;p&gt;Whether you’re using Docker images in production or not, ECR is a useful tool if you’re already embedded in the AWS ecosystem. It gives you the advantage of working well with other Amazon services like IAM for security and ECS or EKS for deployments.&lt;/p&gt;
-&lt;p&gt;If you are pushing images to ECR as part of your build pipeline, check out Earthly’s support for &lt;a href=&quot;https://docs.earthly.dev/docs/guides/configuring-registries/aws-ecr&quot;&gt;ECR credentials&lt;/a&gt;. Unlike other build tools, Earthly executes each CI build in an isolated containerized environment, and it can pull images from ECR or any other container registry you choose. It’s free to use, so &lt;a href=&quot;https://earthly.dev/&quot;&gt;check Earthly out today&lt;/a&gt;.&lt;/p&gt;</content><author><name>Vivek Sonar</name></author><category term="Tutorials" /><summary type="html">A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.</summary></entry><entry><title type="html">Using Apple Silicon (M1) as a cloud engineer, two months in</title><link href="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/" rel="alternate" type="text/html" title="Using Apple Silicon (M1) as a cloud engineer, two months in" /><published>2021-03-03T00:00:00-05:00</published><updated>2021-03-03T00:00:00-05:00</updated><id>https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in</id><content type="html" xml:base="https://earthly.dev/blog/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/">&lt;p&gt;So I’ve been using my new M1-based MacBook Pro for a couple of months for a mix of development, email, and other things an &lt;a href=&quot;https://github.com/earthly/earthly&quot;&gt;open-source maintainer&lt;/a&gt; does day-to-day.&lt;/p&gt;
-&lt;p&gt;The typical first reaction that you get when using this is “it runs my Docker stack without sounding like a plane taking off??”.&lt;/p&gt;
-&lt;p&gt;It’s a pretty amazing piece of engineering, and in many ways, I think that the ARM architecture is the future. A number of fast-growing tech giants (besides Apple) are pouring a ton of money into making ARM work for a ton of use-cases: Nvidia (trying to &lt;a href=&quot;https://www.cnbc.com/2020/09/14/nvidia-to-buy-arm-holdings-from-softbank-for-40-billion.html&quot;&gt;buy ARM Holdings from SoftBank&lt;/a&gt;) and Amazon (deep investment in the new &lt;a href=&quot;https://aws.amazon.com/ec2/graviton/&quot;&gt;Graviton processors&lt;/a&gt;) are the two that primarily come to mind.&lt;/p&gt;
-&lt;p&gt;As you might know, in processors low energy consumption (and low heat dissipation) often equates to the ability to scale processing efficiently for large workloads. It also means longer battery cycles for non-cloud use-cases (less waste, more bang for the buck). This is why I think ARM is the future, even if it might take a decade for the mainstream cloud to migrate over.&lt;/p&gt;
-&lt;p&gt;My Xeon Linux-based workstation suddenly feels old.&lt;/p&gt;
-&lt;h2 id=&quot;compatibility&quot;&gt;Compatibility&lt;/h2&gt;
-&lt;p&gt;All the software I need to use “just works”. I found that if an ARM-native version is not available for an application, the emulated one works just fine and there’s no performance drawback that I can notice. To emulate an application, you just need to install Rosetta 2. The OS will automatically detect that Rosetta is needed and prompt you to install it. However, you can also install it manually via&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/usr/sbin/softwareupdate --install-rosetta&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The tools you use for development are likely still catching up to this architectural change, and will be for some time. We engineers sometimes use very low-level system capabilities. In some cases, I had to install preview editions of software, but everything worked very well for me. Here are some programs that I’ve tested:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;✅ Chrome (native)&lt;/li&gt;
-&lt;li&gt;✅ 1Password (emulated)&lt;/li&gt;
-&lt;li&gt;✅ Zoom (native)&lt;/li&gt;
-&lt;li&gt;✅ Backblaze (emulated)&lt;/li&gt;
-&lt;li&gt;✅ Signal (emulated)&lt;/li&gt;
-&lt;li&gt;✅ Spotify (emulated)&lt;/li&gt;
-&lt;li&gt;✅ VS Code. The amd64 version works perfectly well, however, the terminal will be an amd64 process, which may cause some programs to also run as amd64. The arm64 native version is available on the &lt;a href=&quot;https://code.visualstudio.com/insiders/&quot;&gt;VS Code Insiders&lt;/a&gt; and works really well.&lt;/li&gt;
-&lt;li&gt;✅ Docker. M1 native version is a must. Emulation doesn’t have virtualization features, which the Docker app requires. You can download the &lt;a href=&quot;https://docs.docker.com/docker-for-mac/apple-m1/&quot;&gt;Docker App for M1&lt;/a&gt;, which is in preview. As mentioned on the documentation page, there are some limitations currently related to HTTP proxy, VPN clients, and performance, but the Docker team is making progress fast. (A month or two ago Kubernetes wasn’t working, but now it is!).&lt;/li&gt;
-&lt;li&gt;✅ Brew (native, encountered some issues with git, but was able to fix them)&lt;/li&gt;
-&lt;li&gt;✅ iTerm (native)&lt;/li&gt;
-&lt;li&gt;✅ Earthly (&lt;code&gt;v0.5.1+&lt;/code&gt; now supports M1 natively - just &lt;code&gt;brew install earthly&lt;/code&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I should also mention that during the first few weeks I had some issues with audio skips when using Bluetooth, but an OS update fixed it (just like &lt;a href=&quot;https://www.imore.com/fix-way-m1-mac-bluetooth-problems&quot;&gt;Apple promissed&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;I also use a ✅ YubiKey 5C Nano and a bunch of random peripherals like a ✅ USB microphone and a ✅ dock plugged into Ethernet.&lt;/p&gt;
-&lt;p&gt;Languages and frameworks I’ve tested - most of them in Docker containers:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;✅ Go. &lt;a href=&quot;https://golang.org/doc/go1.16#darwin&quot;&gt;1.16 RC adds support for building darwin/arm64 binaries&lt;/a&gt;. I built binaries in Docker and ran them natively. Works great.&lt;/li&gt;
-&lt;li&gt;🟡 Java and Scala. I had issues with the JVM, experiencing random process hangs. It seems that there are no official OpenJDK builds for aarch64, however there are some community options. See more info below.&lt;/li&gt;
-&lt;li&gt;✅ C++ works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;🟡 .Net works fine when emulated as amd64 in a container. Did not immediately work natively (and I did not investigate).&lt;/li&gt;
-&lt;li&gt;✅ Elixir works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ gRPC works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ JavaScript / Node works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ Python works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ Ruby and Ruby on Rails works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ Cobol (yes, really) works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;li&gt;✅ Rust works fine on native architecture in Docker. Minimal testing though.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;how-to-tell-what-architecture-a-program-is-running-as&quot;&gt;How to tell what architecture a program is running as&lt;/h2&gt;
-&lt;p&gt;It’s extremely easy to mistake the kind of architecture you run as. Rosetta 2 is that good.&lt;/p&gt;
-&lt;p&gt;The easiest way to tell the difference is by opening Activity Monitor and looking at the Architecture column: if it says &lt;code&gt;Apple&lt;/code&gt;, it’s ARM. If it says &lt;code&gt;Intel&lt;/code&gt;, it’s X86_64. Here’s how I can tell that Zoom is an ARM process, while Spotify is an X86_64 process.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img1.png&quot; alt=&quot;Activity Monitor showing Zoom as an Apple process&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Activity Monitor showing Zoom as an Apple process&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img2.png&quot; alt=&quot;Activity Monitor showing Spotify as an Intel process&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Activity Monitor showing Spotify as an Intel process&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;If you’re not sure about the terminal you’re using, you can type &lt;code&gt;uname -m&lt;/code&gt;. It’ll say either &lt;code&gt;X86_64&lt;/code&gt;, &lt;code&gt;arm64&lt;/code&gt; (mac) or &lt;code&gt;aarch64&lt;/code&gt; (linux). &lt;code&gt;arm64&lt;/code&gt; and &lt;code&gt;aarch64&lt;/code&gt; are both ARM - &lt;code&gt;uname&lt;/code&gt; on Mac just reports it differently compared to Linux.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img3.png&quot; alt=&quot;Terminal showing the output of uname -m as arm64&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Terminal showing the output of &lt;code&gt;uname -m&lt;/code&gt; as &lt;code&gt;arm64&lt;/code&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h2 id=&quot;brew-issues&quot;&gt;Brew issues&lt;/h2&gt;
-&lt;p&gt;One issue I encountered on both my M1 laptop and also a &lt;a href=&quot;https://www.macstadium.com/m1-mini&quot;&gt;MacStadium MacMini&lt;/a&gt; instance that we use for Mac testing is that Brew randomly started to complain about git missing. Not sure what the cause of this is, but it could be the fact that brew has been adding native arm support for many packages in the last few months and it’s possible that this migration resulted in some inconsistencies. This is pure speculation, however, I’ve not researched this.&lt;/p&gt;
-&lt;p&gt;(In any case, a very impressive effort to switch architecture so quickly for a project that hosts so many packages!)&lt;/p&gt;
-&lt;p&gt;Back to fixing the issue now. Using &lt;code&gt;brew doctor&lt;/code&gt; I was able to find out that Xcode needed a (re)install. Easy: &lt;code&gt;xcode-select --install&lt;/code&gt;. However, the issue was still there. On the MacStadium instance, I was able to just uninstall brew and reinstall it and everything was fine. I was not as comfortable doing that on my laptop after having installed so much via casks. Instead, I was able to just remove the brew &lt;code&gt;git&lt;/code&gt; via &lt;code&gt;brew uninstall git&lt;/code&gt; and simply rely on &lt;code&gt;git&lt;/code&gt; from Xcode, which seems to work just fine. (If anyone reading this knows what’s up with my brew’s git and can tell me how to fix it, ping me on Twitter: &lt;span class=&quot;citation&quot; data-cites=&quot;vladaionescu&quot;&gt;[@vladaionescu]&lt;/span&gt;(https://twitter.com/VladAIonescu))&lt;/p&gt;
-&lt;h2 id=&quot;using-docker&quot;&gt;Using Docker&lt;/h2&gt;
-&lt;p&gt;The Docker preview worked almost flawlessly for me from day 1. Making use of multi-platform images seems daunting at first, but really it’s actually pretty simple.&lt;/p&gt;
-&lt;p&gt;The Docker for Mac app comes packed with &lt;a href=&quot;https://www.qemu.org/&quot;&gt;QEMU&lt;/a&gt; out of the box - so Docker is able to run either arm64 and amd64 images. Most official images are now supported on arm64 too. If you’re building an image, by default it’ll use your native architecture to execute the build (arm64) and most things will magically just work. Your mileage may vary, however, if you are &lt;code&gt;curl&lt;/code&gt;ing some binary that may need to switch from &lt;code&gt;X86_64&lt;/code&gt; to &lt;code&gt;aarch64&lt;/code&gt; in its URL, or if you’re doing lower-level stuff. I also noticed that some alpine packages are also not available for ARM (eg &lt;code&gt;shellcheck&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;To build an image for a different architecture, you can use &lt;code&gt;docker buildx build --platform=linux/amd64 .&lt;/code&gt; instead of the usual &lt;code&gt;docker build .&lt;/code&gt;. For more details on building multi-platform images see &lt;a href=&quot;https://medium.com/nttlabs/buildx-multiarch-2c6c2df00ca2&quot;&gt;Akihiro Suda’s blog&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If you &lt;code&gt;docker pull&lt;/code&gt; an image from the registry, it will again default to your native architecture (if available), unless you specify &lt;code&gt;--platform=linux/amd64&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;If you &lt;code&gt;docker run&lt;/code&gt; an image, it will default to whatever version of the image you have available locally or it will attempt to pull the arm64 version from the registry. You can also override the platform via &lt;code&gt;--platform=linux/amd64&lt;/code&gt; if you’d like to run the amd64 version specifically.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img4.png&quot; alt=&quot;Terminal showing the output of uname -m for different container platforms&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Terminal showing the output of &lt;code&gt;uname -m&lt;/code&gt; for different container platforms&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Docker Compose will happily run a mixture of various architectures. The same rules apply with regards to pulling and running. You can also specify &lt;code&gt;platform: linux/amd64&lt;/code&gt; for the service definition in &lt;code&gt;docker-compose.yml&lt;/code&gt; if you’d like to be specific.&lt;/p&gt;
-&lt;p&gt;One thing to note is that Docker-in-Docker is not supported by QEMU (&lt;a href=&quot;https://github.com/moby/qemu/pull/7&quot;&gt;abandoned PR here&lt;/a&gt;). So you cannot run an arm64 Docker in an amd64 Docker or vice-versa. &lt;strong&gt;However&lt;/strong&gt;, if you run your natively-supported Docker-in-Docker, the inner Docker can still run multi-platform images fine.&lt;/p&gt;
-&lt;p&gt;There are currently performance issues with multi-processor use - so much so that performance using a single core is sometimes slightly better than the performance of using 8 cores. Or at least that’s what &lt;span class=&quot;citation&quot; data-cites=&quot;jasmas&quot;&gt;[@jasmas claims]&lt;/span&gt;(https://github.com/docker/roadmap/issues/142#issuecomment-772732443).&lt;/p&gt;
-&lt;h2 id=&quot;using-vs-code&quot;&gt;Using VS Code&lt;/h2&gt;
-&lt;p&gt;Native support for Apple Silicon is not yet available in the generally available VS Code version, but running the amd64 emulated version works pretty well. You can also use the native version via a VS Code Universal build (contains both architectures in a single package) available via &lt;a href=&quot;https://code.visualstudio.com/insiders/#osx&quot;&gt;VS Code Insiders&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;An issue I ran into with the amd64 version was that I did not realize that the terminal was also an amd64 process (Again, Rosetta 2 is just that good). In some situations, this led to some strange issues when running Docker, where QEMU was acting up with segmentation faults. After some head-scratching the issue was resolved by switching to the ARM-based VS Code Insiders edition.&lt;/p&gt;
-&lt;h2 id=&quot;using-earthly&quot;&gt;Using Earthly&lt;/h2&gt;
-&lt;p&gt;We’ve added support for Apple M1 in Earthly and so far it’s working wonderfully. This is in Beta, so if you end up giving this a try - we’d appreciate any feedback you can give us via &lt;a href=&quot;https://github.com/earthly/earthly/issues&quot;&gt;GitHub issues&lt;/a&gt; or in our &lt;a href=&quot;https://earthly.dev/slack&quot;&gt;Slack&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;One useful Earthly trick I’ve used a lot is that if one part of your build has not yet been ported to amd64, you can simply mark it as &lt;code&gt;--platform=linux/amd64&lt;/code&gt; - and thus only that part will execute on amd64. The rest will run natively. This is relatively rare, however - most Docker builds just work across either platform. Our &lt;a href=&quot;https://github.com/earthly/earthly/blob/b7b640094f8b5a0982eca5376cb54147feac7878/Earthfile#L295-L321&quot;&gt;examples build&lt;/a&gt; is pretty representative. There’s also an extensive guide on &lt;a href=&quot;https://docs.earthly.dev/guides/multi-platform&quot;&gt;multi-platform builds with Earthly&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;using-go&quot;&gt;Using Go&lt;/h2&gt;
-&lt;p&gt;You don’t necessarily need to build &lt;code&gt;darwin/arm64&lt;/code&gt; binaries to run them on M1. Rosetta 2 emulation works great on Intel ones. If you want to, however, &lt;a href=&quot;https://golang.org/doc/go1.16#darwin&quot;&gt;Go 1.16 RC just added support for this&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;java-scala-jvm-issues&quot;&gt;Java / Scala / JVM issues&lt;/h2&gt;
-&lt;p&gt;I ran into issues when using the JVM. After investigating online, it seems that OpenJDK is not yet available for the M1. The way this was manifesting for me was that the JVM process would just hang randomly. By using &lt;code&gt;--platform=linux/amd64&lt;/code&gt; in Docker or in Earthly builds, I was able to get OpenJDK to work most of the time, but I’m still seeing random hangs.&lt;/p&gt;
-&lt;p&gt;According to this &lt;a href=&quot;https://stackoverflow.com/questions/64788005/java-jdk-for-apple-m1-chip&quot;&gt;StackOverflow thread&lt;/a&gt;, there are &lt;a href=&quot;https://www.azul.com/downloads/zulu-community/?package=jdk&quot;&gt;Azul-provided builds of the Zulu JDK&lt;/a&gt; for the M1 and also &lt;a href=&quot;https://github.com/microsoft/openjdk-aarch64/releases/tag/16-ea%2B10-macos&quot;&gt;Microsoft has put up an aarch64 build for the OpenJDK&lt;/a&gt; too. I have not tested these so I can’t say whether they work well or not.&lt;/p&gt;
-&lt;h2 id=&quot;performance&quot;&gt;Performance&lt;/h2&gt;
-&lt;p&gt;One of the things I noticed about my new laptop is that everything opens up really fast and the awake from sleep time is also really low. These are sub-second differences though so you might not notice it - or maybe it’s a placebo acting up on me and there’s no real difference :-)&lt;/p&gt;
-&lt;p&gt;Docker is currently slower, however, as mentioned above, due to the multi-core issue. As far as I can tell the difference is approximately 1.75X compared to an Intel MacBook Pro. I would assume that this will be fixed in a future preview of the Docker for Mac app.&lt;/p&gt;
-&lt;h2 id=&quot;battery-life&quot;&gt;Battery life&lt;/h2&gt;
-&lt;p&gt;Battery life on the M1 is really really really good - half a day of Zoom meetings + email only took 20% of my battery. I work from home a lot, so I don’t use this much. But it’s great to know it really lasts for a serious coding session if I needed it on the go.&lt;/p&gt;
-&lt;h2 id=&quot;cost&quot;&gt;Cost&lt;/h2&gt;
-&lt;p&gt;I can’t talk about the M1 without mentioning the cost of the setup. It has very similar specs to the Intel MBP I bought last year, but it’s a whole $1000 cheaper. It’s crazy. I don’t know why - it feels really performant for the most part, it has 100% fewer fans and a long-lasting battery. Why would anyone buy the old version anymore?&lt;/p&gt;
-&lt;p&gt;The only downside is that it only has two Thunderbolt ports, rather than four. But it’s not a huge deal for me as I use a dock.&lt;/p&gt;
-&lt;p&gt;I think the strategy here is that this will be the low-end MacBook Pro of the line-up, while a future Apple Silicon-based one will have even beefier specs.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;As you can see, my workflow is very much Docker-heavy. Docker seems to be working well enough for me and it’s taken away any possible pain that may be associated with individual language ecosystem tooling.&lt;/p&gt;
-&lt;p&gt;For most binaries, if they don’t work across platforms natively, Rosetta 2 works wonders on them, or &lt;code&gt;--platform=linux/amd64&lt;/code&gt; in Docker is all that is needed. The JVM issues were the only ones I could not figure out completely - but also, I did not spend time trying out the Microsoft-provided OpenJDK build or the Zulu JVM.&lt;/p&gt;
-&lt;p&gt;Overall I’m happy with my M1. I like bleeding-edge technology, and I had to use preview versions of some software, but had no major issues in my typical workflow. I’m surprised how well most things just work.&lt;/p&gt;
-&lt;p&gt;If you’re a developer and your coding productivity depends on your laptop, I would triple check that my setup works as expected on an ARM architecture before making a purchase. For the most part you should be fine outside the Java / Scala world - but you never know!&lt;/p&gt;
-&lt;p&gt;If you’re not a developer, or only use your laptop for browsing and email, I really don’t see any reason why you would pick an Intel MacBook over this one. I would also assume that the MacBook Air version is also amazing (unlike the Intel version of MacBook Air, which is often on the slow side for modern web browsing). The M1 chip is very similar between Pro and Air and there’s no need for fans.&lt;/p&gt;</content><author><name>Vlad A. Ionescu</name></author><category term="Articles" /><category term="docker" /><category term="apple-silicon" /><category term="m1" /><category term="arm64" /><category term="aarch64" /><summary type="html">So I’ve been using my new M1-based MacBook Pro for a couple of months for a mix of development, email, and other things an open-source maintainer does day-to-day.</summary></entry></feed>
+&lt;!--kg-card-end: markdown--&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.</summary></entry></feed>
