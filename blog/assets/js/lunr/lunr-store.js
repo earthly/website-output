@@ -226,4 +226,10 @@ var store = [{
         "tags": [],
         "url": "/blog/real-time-phoenix-elixir/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Green Vs. Brown Programming Languages",
+        "excerpt":"The Data The Stack Overflow Developer Survey1 results are a great source of information about how developers work. I was looking at the 2020 results for some ideas on what programming languages we should add to our documentation on containerized builds, and I noticed something interesting about the types of...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/brown-green-language/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
