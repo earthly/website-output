@@ -320,7 +320,7 @@
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Adam</span></span></code></pre></div>
 <p>Nothing executes the YAML. It only offers some information to the blogging platform. But I don’t think that is the type of YAML that made up the volume of config at Twitter.</p>
 <p>I suspect a lot of it was build and deployment scripts in the form of YAML. It was the type of configuration that encoded the control flow of some external system. YAML like that lives in this grey zone between declarative configuration and a full-blown programming language.</p>
-<p>I’ll show you what I mean. Let’s look at an example from <a href="https://github.com/koalaman/shellcheck/blob/master/.travis.yml">shellcheck</a>’s build script.</p>
+<p>I’ll show you what I mean. Let’s look at an example from <a href="https://github.com/koalaman/shellcheck/blob/bd3299edd3b517f92f74c2e3327c9f6b72b31f7c/.travis.yml">shellcheck</a>’s build script.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> shell</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">os</span><span class="kw">:</span><span class="at"> linux</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -643,13 +643,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/brown-green-language/header-600-61ecba029.webp 600w, /blog/generated/assets/images/brown-green-language/header-800-61ecba029.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/brown-green-language/header-600-4d9e7c280.jpg 600w, /blog/generated/assets/images/brown-green-language/header-800-4d9e7c280.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/brown-green-language/header-800-4d9e7c280.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/brown-green-language/" rel="permalink">Green Vs. Brown Programming Languages
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -667,14 +667,15 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I’ve noticed something interesting about the types of programming languages people like. It’s something that doesn’t seem to come up in various discussions o...</p>
+    <p class="archive__item-excerpt" itemprop="description">Here you can specify a description, if you don’t like the default.
+</p>
   </article>
 </div>
 
@@ -694,13 +695,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/real-time-phoenix-elixir/header-600-b3ab65760.webp 600w, /blog/generated/assets/images/real-time-phoenix-elixir/header-800-b3ab65760.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/real-time-phoenix-elixir/header-600-0edae3cb6.jpg 600w, /blog/generated/assets/images/real-time-phoenix-elixir/header-800-0edae3cb6.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/real-time-phoenix-elixir/header-800-0edae3cb6.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/real-time-phoenix-elixir/" rel="permalink">Building a Real-Time Application in the Phoenix Framework with Elixir
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -718,7 +719,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          14 minute read
+          1 minute read
         
       </span>
     
@@ -726,7 +727,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity lev...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
