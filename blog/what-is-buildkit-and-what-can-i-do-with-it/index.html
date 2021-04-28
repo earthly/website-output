@@ -428,7 +428,7 @@ CMD [&quot;/bin/sh&quot;]
 error: failed to solve: rpc error: code = Unknown desc = failed to solve with frontend dockerfile.v0: failed to create LLB definition: docker.io/agbell/test:local: not found
 </code></pre>
 <p>It doesn’t work. It looks like it is trying to fetch the image from docker.io, the default docker hub registry.</p>
-<p>We can verify this by quickly <a href="earthly.dev/blog/mitmproxy/">capturing requests</a> from buildkitd:</p>
+<p>We can verify this by quickly <a href="https://earthly.dev/blog/mitmproxy/">capturing requests</a> from buildkitd:</p>
 <pre><code>➜ cat ~\Dockerfile
 FROM moby/buildkit 
 RUN apk update &amp;&amp; apk add curl

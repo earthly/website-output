@@ -320,7 +320,7 @@
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Adam</span></span></code></pre></div>
 <p>Nothing executes the YAML. It only offers some information to the blogging platform. But I don’t think that is the type of YAML that made up the volume of config at Twitter.</p>
 <p>I suspect a lot of it was build and deployment scripts in the form of YAML. It was the type of configuration that encoded the control flow of some external system. YAML like that lives in this grey zone between declarative configuration and a full-blown programming language.</p>
-<p>I’ll show you what I mean. Let’s look at an example from <a href="https://github.com/koalaman/shellcheck/blob/master/.travis.yml">shellcheck</a>’s build script.</p>
+<p>I’ll show you what I mean. Let’s look at an example from <a href="https://github.com/koalaman/shellcheck/blob/bd3299edd3b517f92f74c2e3327c9f6b72b31f7c/.travis.yml">shellcheck</a>’s build script.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">language</span><span class="kw">:</span><span class="at"> shell</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">os</span><span class="kw">:</span><span class="at"> linux</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
