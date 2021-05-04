@@ -1,4 +1,628 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-03T16:54:44-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Green Vs. Brown Programming Languages</title><link href="https://earthly.dev/blog/brown-green-language/" rel="alternate" type="text/html" title="Green Vs. Brown Programming Languages" /><published>2021-04-22T00:00:00-04:00</published><updated>2021-04-22T00:00:00-04:00</updated><id>https://earthly.dev/blog/brown-green-language</id><content type="html" xml:base="https://earthly.dev/blog/brown-green-language/">&lt;h2 id=&quot;the-data&quot;&gt;The Data&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-03T21:03:34-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Example Graphs</title><link href="https://earthly.dev/blog/example-plot/" rel="alternate" type="text/html" title="Example Graphs" /><published>2029-01-01T00:00:00-05:00</published><updated>2020-01-07T00:00:00-05:00</updated><id>https://earthly.dev/blog/example-plot</id><content type="html" xml:base="https://earthly.dev/blog/example-plot/">&lt;p&gt;You can embedded graphs into the markdown like this:&lt;/p&gt;
+&lt;h3 id=&quot;simple-graph&quot;&gt;Simple Graph&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/814682798287101234.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h3 id=&quot;more-complex&quot;&gt;More Complex&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/7822399007724819225.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;how-to-install-pandoc-plot&quot;&gt;How to install pandoc-plot&lt;/h2&gt;
+&lt;p&gt;If you are using the docker container and jekyll, it should just work.&lt;/p&gt;
+&lt;p&gt;Manual Mac setup:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;brew install pandoc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;brew install pandoc-plot&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;install specific libs: &lt;code&gt;pandoc-plot toolkits&lt;/code&gt; to list
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pip3 install matplotlib&lt;/code&gt; for matplotlib&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;how-to-run-pandoc-plot&quot;&gt;How to run pandoc-plot&lt;/h2&gt;
+&lt;p&gt;The site will run pandoc-plot itself, but if you want to run it manually here is how:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; pandoc blog/_posts/2029-01-01-example-plot.md --filter pandoc-plot -f markdown -t html -s -o plot.html&lt;/code&gt;&lt;/pre&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorials" /><summary type="html">You can embedded graphs into the markdown like this:</summary></entry><entry><title type="html">Example Post</title><link href="https://earthly.dev/blog/example/" rel="alternate" type="text/html" title="Example Post" /><published>2029-01-01T00:00:00-05:00</published><updated>2020-01-07T00:00:00-05:00</updated><id>https://earthly.dev/blog/example</id><content type="html" xml:base="https://earthly.dev/blog/example/">&lt;p&gt;This post is in the future, and won’t show up in the published site&lt;/p&gt;
+&lt;h2 id=&quot;image-without-figure&quot;&gt;Image without figure&lt;/h2&gt;
+&lt;p&gt;An image with the alt text hidden.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;some alt text&quot; /&gt;&lt;br /&gt;
+&lt;/p&gt;
+&lt;p&gt;An image with alt text printed below.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;some alt text&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;some alt text&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-with-explicit-figure&quot;&gt;Image with explicit figure&lt;/h2&gt;
+&lt;figure class&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot;
+       alt=&quot;handddrawn cartoon for a person talking to a computer server&quot;&gt;
+&lt;figcaption&gt;
+&lt;p&gt;Alex likes to draw and add a caption&lt;/p&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-with-implicit-figure&quot;&gt;Image with implicit figure&lt;/h2&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;This is my alt text and my figure. The alt text is used as the default figure if not specified.&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;This is my alt text and my figure. The alt text is used as the default figure if not specified.&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h2 id=&quot;image-wide&quot;&gt;Image Wide&lt;/h2&gt;
+&lt;div class=&quot;wide&quot;&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/example/alex-draw.png&quot; alt=&quot;This should be wide&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;This should be wide&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;graph-using-matplotlib&quot;&gt;graph using matplotlib&lt;/h3&gt;
+&lt;figure&gt;
+&lt;img src=&quot;_site/assets/images/814682798287101234.svg&quot; /&gt;
+&lt;/figure&gt;
+&lt;h3 id=&quot;code-blocks-with-syntax-highlighting&quot;&gt;Code blocks (with syntax highlighting)&lt;/h3&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode go&quot;&gt;&lt;code class=&quot;sourceCode go&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    syntax &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;proto3&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;package&lt;/span&gt; simplekeyvalue&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    option go_package &lt;span class=&quot;op&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;kvapi&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;co&quot;&gt;// The key/value API contains two procedures for storing and retrieving data&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    service KeyValue &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Set &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;SetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      rpc Get &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetRequest&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; returns &lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;GetReply&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;raw-code-blocks&quot;&gt;Raw code blocks&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;
+{{ raw template code}}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;figcaption&gt;
+Use &lt;code&gt;raw&lt;/code&gt; and &lt;code&gt;endraw&lt;/code&gt; for code that overlaps with the liquid templates
+&lt;/figcaption&gt;
+&lt;h2 id=&quot;fensed-code-blocks&quot;&gt;Fensed code blocks&lt;/h2&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&quot;code-with-captions&quot;&gt;Code with Captions&lt;/h4&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode scala&quot;&gt;&lt;code class=&quot;sourceCode scala&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;object&lt;/span&gt; Main &lt;span class=&quot;kw&quot;&gt;extends&lt;/span&gt; App &lt;span class=&quot;op&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello, World!&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;figcaption&gt;
+Main.scala
+&lt;/figcaption&gt;
+&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Notice&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;ℹ️ Notice Info&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Warning&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here - one - two&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;notice--success&quot; data-markdown=&quot;1&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Success&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Markdown here&lt;/p&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;more-example-usage&quot;&gt;More Example Usage&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&quot;&gt;Theme Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Sample &lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/year-archive/&quot;&gt;Rendered Posts&lt;/a&gt; and &lt;a href=&quot;https://github.com/mmistakes/minimal-mistakes/tree/d6444412c63aea5e47241ef536509fb1bfef4830/docs/_posts&quot;&gt;Raw mardown&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Markdown stuff (pandoc): &lt;a href=&quot;https://laurentrdc.github.io/pandoc-plot/&quot;&gt;Graphs&lt;/a&gt; and &lt;a href=&quot;https://pandoc.org/MANUAL.html#pandocs-markdown&quot;&gt;markdown&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Adam Gordon Bell</name></author><category term="News" /><category term="Tutorials" /><category term="Articles" /><category term="tag1" /><category term="tag2" /><category term="tag3" /><summary type="html">Here you can specify a description, if you don't like the default.</summary></entry><entry><title type="html">Understanding Docker Networking</title><link href="https://earthly.dev/blog/docker-networking/" rel="alternate" type="text/html" title="Understanding Docker Networking" /><published>2021-05-05T00:00:00-04:00</published><updated>2021-05-05T00:00:00-04:00</updated><id>https://earthly.dev/blog/docker-networking</id><content type="html" xml:base="https://earthly.dev/blog/docker-networking/">&lt;p&gt;Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.&lt;/p&gt;
+&lt;p&gt;Once the application is inside a container, it’s easier to scale and even runs on different cloud platforms, like AWS, GCP, and Azure. In this article, let’s focus on the &lt;a href=&quot;https://docs.docker.com/network/&quot;&gt;networking aspect of Docker&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;what-is-a-docker-network&quot;&gt;What Is a Docker Network?&lt;/h2&gt;
+&lt;p&gt;Networking is about communication among processes, and Docker’s networking is no different. Docker networking is primarily used to establish communication between Docker containers and the outside world via the host machine where the Docker daemon is running.&lt;/p&gt;
+&lt;p&gt;Docker supports different types of networks, each fit for certain use cases. We’ll be exploring the network drivers supported by Docker in general, along with some coding examples.&lt;/p&gt;
+&lt;p&gt;Docker networking differs from virtual machine (VM) or physical machine networking in a few ways:&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Virtual machines are more flexible in some ways as they can support configurations like &lt;a href=&quot;https://superuser.com/questions/227505/what-is-the-difference-between-nat-bridged-host-only-networking&quot;&gt;NAT and host networking&lt;/a&gt;. Docker typically uses a bridge network, and while it can support host networking, that option is &lt;a href=&quot;https://docs.docker.com/network/host/&quot;&gt;only available on Linux&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;When using Docker containers, network isolation is achieved using a network namespace, not an entirely separate networking stack.&lt;/li&gt;
+&lt;li&gt;You can run hundreds of containers on a single-node Docker host, so it’s required that the host can support networking at this scale. VMs usually don’t run into these network limits as they typically run fewer processes per VM.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;what-are-docker-network-drivers&quot;&gt;What Are Docker Network Drivers?&lt;/h2&gt;
+&lt;p&gt;Docker handles communication between containers by creating a default bridge network, so you often don’t have to deal with networking and can instead focus on creating and running containers. This default bridge network works in most cases, but it’s not the only option you have.&lt;/p&gt;
+&lt;p&gt;Docker allows you to create three different types of network drivers out-of-the-box: bridge, host, and none. However, they may not fit every use case, so we’ll also explore user-defined networks such as overlay and macvlan. Let’s take a closer look at each one.&lt;/p&gt;
+&lt;h3 id=&quot;the-bridge-driver&quot;&gt;The Bridge Driver&lt;/h3&gt;
+&lt;p&gt;This is the default. Whenever you start Docker, a bridge network gets created and all newly started containers will connect automatically to the default bridge network.&lt;/p&gt;
+&lt;p&gt;You can use this whenever you want your containers running in isolation to connect and communicate with each other. Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, and Docker &lt;a href=&quot;https://docs.docker.com/network/iptables/&quot;&gt;uses iptables&lt;/a&gt; on the host machine to prevent access outside of the bridge.&lt;/p&gt;
+&lt;p&gt;Let’s look at some examples of how a bridge network driver works.&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Check the available network by running the &lt;code&gt;docker network ls&lt;/code&gt; command&lt;/li&gt;
+&lt;li&gt;Start two &lt;a href=&quot;https://hub.docker.com/_/busybox&quot;&gt;busybox&lt;/a&gt; containers named &lt;code&gt;busybox1&lt;/code&gt; and &lt;code&gt;busybox2&lt;/code&gt; in detached mode by passing the &lt;code&gt;-dit&lt;/code&gt; flag.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker network ls           &lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;NETWORK&lt;/span&gt; ID     NAME      DRIVER    SCOPE&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;5077a7b25ae6&lt;/span&gt;   bridge    bridge    local&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;7e25f334b07f&lt;/span&gt;   host      host      local&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;475e50be0fe0&lt;/span&gt;   none      null      local&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run -dit --name busybox1 busybox /bin/sh
+$ docker run -dit --name busybox2 busybox /bin/sh&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;3&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Run the &lt;code&gt;docker ps&lt;/code&gt; command to verify that containers are up and running.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps
+CONTAINER ID   IMAGE     COMMAND     CREATED          STATUS          PORTS     NAMES
+9e6464e82c4c   busybox   &amp;quot;/bin/sh&amp;quot;   5 seconds ago    Up 5 seconds              busybox2
+7fea14032748   busybox   &amp;quot;/bin/sh&amp;quot;   26 seconds ago   Up 26 seconds             busybox1&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;4&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Verify that the containers are attached to the bridge network.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect bridge                                                       
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;5077a7b25ae67abd46cff0fde160303476c8a9e2e1d52ad01ba2b4bf04acc0e0&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T03:25:58.232446444Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.17.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.17.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: false,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;7fea140327487b57c3cf31d7502cfaf701e4ea4314621f0c726309e396105885&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;busybox1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;05f216032784786c3315e30b3d54d50a25c1efc7d2030dc664716dda38056326&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:11:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.17.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;9e6464e82c4ca647b9fb60a85ca25e71370330982ea497d51c1238d073148f63&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;busybox2&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;3dcc24e927246c44a2063b5be30b5f5e1787dcd4d53864c6ff2bb3c561519115&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:11:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.17.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {
+            &amp;quot;com.docker.network.bridge.default_bridge&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.enable_icc&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.enable_ip_masquerade&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.host_binding_ipv4&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+            &amp;quot;com.docker.network.bridge.name&amp;quot;: &amp;quot;docker0&amp;quot;,
+            &amp;quot;com.docker.network.driver.mtu&amp;quot;: &amp;quot;1500&amp;quot;
+        },
+        &amp;quot;Labels&amp;quot;: {}
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;5&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Under the container’s key, you can observe that two containers (&lt;code&gt;busybox1&lt;/code&gt; and &lt;code&gt;busybox2&lt;/code&gt;) are listed with information about IP addresses. Since containers are running in the background, attach to the &lt;code&gt;busybox1&lt;/code&gt; container and try to ping to &lt;code&gt;busybox2&lt;/code&gt; with its IP address.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker attach busybox1
+/ # whoami
+root
+/ # hostname -i
+172.17.0.2
+/ # ping 172.17.0.3
+PING 172.17.0.3 (172.17.0.3): 56 data bytes
+64 bytes from 172.17.0.3: seq=0 ttl=64 time=2.083 ms
+64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.144 ms
+/ # ping busybox2
+ping: bad address &amp;#39;busybox2&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;6&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Observe that the ping works by passing the IP address of &lt;code&gt;busybox2&lt;/code&gt; but fails when the container name is passed instead.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The downside with the bridge driver is that it’s not recommended for production; the containers communicate via IP address instead of automatic service discovery to resolve an IP address to the container name. Every time you run a container, a different IP address gets assigned to it. It may work well for local development or CI/CD, but it’s definitely not a sustainable approach for applications running in production.&lt;/p&gt;
+&lt;p&gt;Another reason not to use it in production is that it will allow unrelated containers to communicate with each other, which could be a security risk. I’ll cover how you can create custom bridge networks later.&lt;/p&gt;
+&lt;h3 id=&quot;the-host-driver&quot;&gt;The Host Driver&lt;/h3&gt;
+&lt;p&gt;As the name suggests, host drivers use the networking provided by the host machine. And it removes network isolation between the container and the host machine where Docker is running. For example, If you run a container that binds to port 80 and uses host networking, the container’s application is available on port 80 on the host’s IP address. You can use the host network if you don’t want to rely on Docker’s networking but instead rely on the host machine networking.&lt;/p&gt;
+&lt;p&gt;One limitation with the host driver is that it doesn’t work on Docker desktop: you need a Linux host to use it. This article focuses on Docker desktop, but I’ll show you the commands required to work with the Linux host.&lt;/p&gt;
+&lt;p&gt;The following command will start an NGINX image and listen to port 80 on the host machine:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run --rm -d --network host --name my_nginx nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can access NGINX by hitting the &lt;code&gt;http://localhost:80/ url&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The downside with the host network is that you can’t run multiple containers on the same host having the same port. Ports are shared by all containers on the host machine network.&lt;/p&gt;
+&lt;h3 id=&quot;the-none-driver&quot;&gt;The None Driver&lt;/h3&gt;
+&lt;p&gt;The none network driver does not attach containers to any network. Containers do not access the external network or communicate with other containers. You can use it when you want to disable the networking on a container.&lt;/p&gt;
+&lt;h3 id=&quot;the-overlay-driver&quot;&gt;The Overlay Driver&lt;/h3&gt;
+&lt;p&gt;The Overlay driver is for multi-host network communication, as with &lt;a href=&quot;https://docs.docker.com/engine/swarm/&quot;&gt;Docker Swarm&lt;/a&gt; or &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt;. It allows containers across the host to communicate with each other without worrying about the setup. Think of an overlay network as a distributed virtualized network that’s built on top of an existing computer network.&lt;/p&gt;
+&lt;p&gt;To create an overlay network for Docker Swarm services, use the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker network create -d overlay my-overlay-network&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To create an overlay network so that standalone containers can communicate with each other, use this command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ docker network create -d overlay --attachable my-attachable-overlay&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;the-macvlan-driver&quot;&gt;The Macvlan Driver&lt;/h3&gt;
+&lt;p&gt;This driver connects Docker containers directly to the physical host network. As per &lt;a href=&quot;https://docs.docker.com/network/#network-drivers&quot;&gt;the Docker documentation&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network. The Docker daemon routes traffic to containers by their MAC addresses. Using the &lt;code&gt;macvlan&lt;/code&gt; driver is sometimes the best choice when dealing with legacy applications that expect to be directly connected to the physical network, rather than routed through the Docker host’s network stack.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Macvlan networks are best for legacy applications that need to be modernized by containerizing them and running them on the cloud because they need to be attached to a physical network for performance reasons. &lt;a href=&quot;https://github.com/docker/for-mac/issues/3926&quot;&gt;A macvlan network is also not supported on Docker desktop for macOS&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;basic-docker-networking-commands&quot;&gt;Basic Docker Networking Commands&lt;/h2&gt;
+&lt;p&gt;To see which commands list, create, connect, disconnect, inspect, or remove a Docker network, use the &lt;code&gt;docker network help&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network help
+
+Usage:  docker network COMMAND
+
+Manage networks
+
+Commands:
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s run through some examples of each command, starting with &lt;code&gt;docker network connect&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;connecting-a-container-to-a-network&quot;&gt;Connecting a Container to a Network&lt;/h3&gt;
+&lt;p&gt;Let’s try to connect a container to the &lt;code&gt;mynetwork&lt;/code&gt; we have created. First, we would need a running container that can connect to &lt;code&gt;mynetwork&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run -it ubuntu bash   
+root@0f8d7a833f42:/# &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have an Ubuntu Linux image and started a login shell as root inside it. We have the container running in interactive mode with the help of the &lt;code&gt;-it&lt;/code&gt; flags.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps     
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+0f8d7a833f42   ubuntu    &amp;quot;bash&amp;quot;    9 seconds ago   Up 7 seconds             wizardly_greider&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the &lt;code&gt;docker network connect 0f8d7a833f42&lt;/code&gt; command to connect the container named &lt;code&gt;wizardly_greider&lt;/code&gt; with &lt;code&gt;mynetwork&lt;/code&gt;. To verify that this container is connected to &lt;code&gt;mynetwork&lt;/code&gt;, use the &lt;code&gt;docker inspect&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;er&quot;&gt;&amp;quot;mynetwork&amp;quot;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-2&quot;&gt;&lt;a href=&quot;#cb12-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPAMConfig&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{},&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-3&quot;&gt;&lt;a href=&quot;#cb12-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Links&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-4&quot;&gt;&lt;a href=&quot;#cb12-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Aliases&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;[&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-5&quot;&gt;&lt;a href=&quot;#cb12-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                        &lt;span class=&quot;st&quot;&gt;&amp;quot;0f8d7a833f42&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-6&quot;&gt;&lt;a href=&quot;#cb12-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;ot&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-7&quot;&gt;&lt;a href=&quot;#cb12-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;NetworkID&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-8&quot;&gt;&lt;a href=&quot;#cb12-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;EndpointID&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-9&quot;&gt;&lt;a href=&quot;#cb12-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.20.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-10&quot;&gt;&lt;a href=&quot;#cb12-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.20.0.2&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-11&quot;&gt;&lt;a href=&quot;#cb12-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPPrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-12&quot;&gt;&lt;a href=&quot;#cb12-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPv6Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-13&quot;&gt;&lt;a href=&quot;#cb12-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;GlobalIPv6Address&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-14&quot;&gt;&lt;a href=&quot;#cb12-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;GlobalIPv6PrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-15&quot;&gt;&lt;a href=&quot;#cb12-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;MacAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;02:42:ac:14:00:02&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-16&quot;&gt;&lt;a href=&quot;#cb12-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;DriverOpts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-17&quot;&gt;&lt;a href=&quot;#cb12-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;creating-a-network&quot;&gt;Creating a Network&lt;/h3&gt;
+&lt;p&gt;You can use &lt;code&gt;docker network create mynetwork&lt;/code&gt; to create a Docker network. Here, we’ve created a network named &lt;code&gt;mynetwork&lt;/code&gt;. Let’s run &lt;code&gt;docker network ls&lt;/code&gt; to verify that the network is created successfully.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network ls
+NETWORK ID     NAME        DRIVER    SCOPE
+b995772ac197   bridge      bridge    local
+7e25f334b07f   host        host      local
+97a158252c99   mynetwork   bridge    local
+475e50be0fe0   none        null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a new custom network named &lt;code&gt;mynetwork&lt;/code&gt;, and its type is bridge.&lt;/p&gt;
+&lt;h3 id=&quot;disconnecting-a-container-from-the-network&quot;&gt;Disconnecting a Container from the Network&lt;/h3&gt;
+&lt;p&gt;This command disconnects a Docker container from the custom &lt;code&gt;mynetwork&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network disconnect mynetwork 0f8d7a833f42&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;inspecting-the-network&quot;&gt;Inspecting the Network&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;docker network inspect&lt;/code&gt; command displays detailed information on one or more networks.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect mynetwork
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;mynetwork&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-02T17:36:30.090173896Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: {},
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.20.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.20.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: false,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;0f8d7a833f4283202e905e621e6fd5b29a8e3d4eccc6be6ea0f209f5cb3ca81c&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;wizardly_greider&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:14:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.20.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {}
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;list-available-networks&quot;&gt;List Available Networks&lt;/h3&gt;
+&lt;p&gt;Docker installation comes with three networks: none, bridge, and host. You can verify this by running the command &lt;code&gt;docker network ls&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;removing-a-network&quot;&gt;Removing a Network&lt;/h3&gt;
+&lt;p&gt;The following are the Docker commands to remove a specific or all available networks:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network rm mynetwork
+mynetwork
+$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network prune                            
+WARNING! This will remove all custom networks not used by at least one container.
+Are you sure you want to continue? [y/N] &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;public-networking&quot;&gt;Public Networking&lt;/h2&gt;
+&lt;p&gt;Let’s talk about how to publish a container port and IP addresses to the outside world. When you start a container using the &lt;code&gt;docker run&lt;/code&gt; command, none of its ports are exposed. Your Docker container can connect to the outside world, but the outside world cannot connect to the container. To make the ports accessible for external use or with other containers not on the same network, you will have to use the &lt;code&gt;-P&lt;/code&gt; (publish all available ports) or &lt;code&gt;-p&lt;/code&gt; (publish specific ports) flag.&lt;/p&gt;
+&lt;p&gt;For example, here we’ve mapped the TCP port 80 of the container to port 8080 on the Docker host:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run -it --rm nginx -p 8080:80&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, we’ve mapped container TCP port 80 to port 8080 on the Docker host for connections to host IP 192.168.1.100:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run -p 192.168.1.100:8085:80 nginx&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can verify this by running the following curl command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ curl 192.168.1.100:8085
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;Welcome to nginx!&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Welcome to nginx!&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;For online documentation and support please refer to
+&amp;lt;a href=&amp;quot;http://nginx.org/&amp;quot;&amp;gt;nginx.org&amp;lt;/a&amp;gt;.&amp;lt;br/&amp;gt;
+Commercial support is available at
+&amp;lt;a href=&amp;quot;http://nginx.com/&amp;quot;&amp;gt;nginx.com&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you for using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let me briefly mention DNS configuration for containers. Docker provides your containers with the ability to make basic name resolutions:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker exec busybox2 ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: seq=0 ttl=37 time=9.672 ms
+64 bytes from 216.58.216.196: seq=1 ttl=37 time=6.110 ms
+$ ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: icmp_seq=0 ttl=118 time=4.722 ms&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Docker containers inherit DNS settings from the host when using a bridge network, so the container will resolve DNS names just like the host by default. To add custom host records to your container, you’ll need to use the &lt;a href=&quot;https://docs.docker.com/config/containers/container-networking/#dns-services&quot;&gt;relevant &lt;code&gt;--dns*&lt;/code&gt; flags outlined here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;docker-compose-networking&quot;&gt;Docker Compose Networking&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;Docker Compose&lt;/a&gt; is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: &lt;code&gt;docker-compose up&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;By default, Docker Compose creates a single network for each container defined in the compose file. All the containers defined in the compose file connect and communicate through the default network.&lt;/p&gt;
+&lt;p&gt;If you’re not sure about the commands supported with Docker Compose, you can run the following:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker compose help
+Docker Compose
+
+Usage:
+  docker compose [command]
+
+Available Commands:
+  build       Build or rebuild services
+  convert     Converts the compose file to a cloud format (default: cloudformation)
+  down        Stop and remove containers, networks
+  logs        View output from containers
+  ls          List running compose projects
+  ps          List containers
+  pull        Pull service images
+  push        Push service images
+  run         Run a one-off command on a service.
+  up          Create and start containers
+
+Flags:
+  -h, --help   help for compose
+
+Global Flags:
+      --config DIRECTORY   Location of the client config files DIRECTORY (default &amp;quot;/Users/ashish/.docker&amp;quot;)
+  -c, --context string     context
+  -D, --debug              Enable debug output in the logs
+  -H, --host string        Daemon socket(s) to connect to
+
+Use &amp;quot;docker compose [command] --help&amp;quot; for more information about a command.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s understand this with an example. In the following &lt;code&gt;docker-compose.yaml&lt;/code&gt; file, we have a WordPress and a MySQL image.&lt;/p&gt;
+&lt;p&gt;When deploying this setup, &lt;code&gt;docker-compose&lt;/code&gt; maps the WordPress container port 80 to port 80 of the host as specified in the compose file. We haven’t defined any custom network, so it should create one for you. Run &lt;code&gt;docker-compose up -d&lt;/code&gt; to bring up the services defined in the YAML file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version: &amp;#39;3.7&amp;#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &amp;#39;--default-authentication-plugin=mysql_native_password&amp;#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see in the following output, a network named &lt;code&gt;downloads_default&lt;/code&gt; is created for you:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose up -d
+Creating network &amp;quot;downloads_default&amp;quot; with the default driver
+Creating volume &amp;quot;downloads_db_data&amp;quot; with default driver
+Pulling db (mysql:8.0.19)...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Verify that we have two containers up and running with the &lt;code&gt;docker ps&lt;/code&gt; command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                 NAMES
+f68265cd6219   wordpress:latest   &amp;quot;docker-entrypoint.s…&amp;quot;   6 minutes ago   Up 6 minutes   0.0.0.0:80-&amp;gt;80/tcp    downloads_wordpress_1
+2838f5586c73   mysql:8.0.19       &amp;quot;docker-entrypoint.s…&amp;quot;   6 minutes ago   Up 6 minutes   3306/tcp, 33060/tcp   downloads_db_1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Navigate to &lt;code&gt;http://localhost:80&lt;/code&gt; in your web browser to access WordPress.&lt;/p&gt;
+&lt;p&gt;Now let’s inspect this network with the &lt;code&gt;docker network inspect&lt;/code&gt; command. The following is the output:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect downloads_default
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;downloads_default&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;717ea814aae357ceca3972342a64335a0c910455abf160ed820018b8d6690383&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T03:43:42.541707419Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.18.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.18.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: true,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;2838f5586c735894051498c8ed0e5e103209cd22ee5718cbb29e8c6d169c9bf8&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_db_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;10033e064387892253d69ac5813be6bc820a95df1a3e19f84eff99a8d55af1bd&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:12:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.18.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;f68265cd6219fb60491c7ebbdae2d7f4c5ea4a74aec9987f5a5082c13b1ec025&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_wordpress_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;a4a673479ab3d812713955d461cc4d7032aba3806b49f50dd783a8083588aec5&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:12:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.18.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {
+            &amp;quot;com.docker.compose.network&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;com.docker.compose.project&amp;quot;: &amp;quot;downloads&amp;quot;,
+            &amp;quot;com.docker.compose.version&amp;quot;: &amp;quot;1.27.4&amp;quot;
+        }
+    }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the container sections, you can see that two containers (&lt;code&gt;downloads_db_1&lt;/code&gt; and &lt;code&gt;downloads_wordpress_1&lt;/code&gt;) are attached to the default &lt;code&gt;downloads_default&lt;/code&gt; network driver, which is the bridge type. Run the following commands to clean up everything:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose down
+Stopping downloads_wordpress_1 ... done
+Stopping downloads_db_1        ... done
+Removing downloads_wordpress_1 ... done
+Removing downloads_db_1        ... done
+Removing network downloads_default&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can observe that the network created by Compose is deleted, too:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose down -v
+Removing network downloads_default
+WARNING: Network downloads_default not found.
+Removing volume downloads_db_data&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The volume created earlier is deleted, and since the network is already deleted after running the previous command, it shows a warning that the default network is not found. That’s fine.&lt;/p&gt;
+&lt;p&gt;The example we’ve looked at so far covers the default network created by Compose, but what if we want to create our custom network and connect services to it? You will define the user-defined networks using the Compose file. The following is the &lt;code&gt;docker-compose&lt;/code&gt; YAML file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version: &amp;#39;3.7&amp;#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &amp;#39;--default-authentication-plugin=mysql_native_password&amp;#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    networks:
+      - mynetwork
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:
+networks:
+  mynetwork:&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I’ve defined a user-defined network under the top-level networks section at the end of the file and called the network &lt;code&gt;mynetwork&lt;/code&gt;. It’s a bridge type, meaning it’s a network on the host machine separated from the rest of the host network stack. Following each service, I added the network key to specify that these services should connect to &lt;code&gt;mynetwork&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s bring up the services again after the changing the Docker Compose YAML file:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose up -d                    
+Creating network &amp;quot;downloads_mynetwork&amp;quot; with the default driver
+Creating volume &amp;quot;downloads_db_data&amp;quot; with default driver
+Creating downloads_wordpress_1 ... done
+Creating downloads_db_1        ... done&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, Docker Compose has created the new custom &lt;code&gt;mynetwork&lt;/code&gt;, started the containers, and connected them to the custom network. You can inspect it by using the Docker inspect command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect downloads_mynetwork
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;downloads_mynetwork&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;cb24ed3832dfdd34ca6fdcfcf0065c8e0df6b9b72f7b29a2aaada74970835dd1&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T04:23:14.354570267Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.19.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.19.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: true,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;334bd5bf1689b067fa24705af0b6ab444976b288d25846349ce5b8f6914d8c19&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_wordpress_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;10674d2ddd9feb67c98e3c08fcf451f32bda58e96c9c256aee70a0487f6a4496&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:13:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.19.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;9ffc94adab6896620648a1d08d215ba3d9423fee934b905b7bc2a44dd30bd74c&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_db_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;927943a0202bfb69692bc172a5c26e05676df6961236596eba3c3464cacbd1ab&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:13:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.19.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {
+            &amp;quot;com.docker.compose.network&amp;quot;: &amp;quot;mynetwork&amp;quot;,
+            &amp;quot;com.docker.compose.project&amp;quot;: &amp;quot;downloads&amp;quot;,
+            &amp;quot;com.docker.compose.version&amp;quot;: &amp;quot;1.27.4&amp;quot;
+        }
+    }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Inspecting the network, you can see there are now two containers connected to the custom network.&lt;/p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this article, we’ve covered the what and how of Docker networking in detail, starting with Docker’s network drivers available out-of-the-box and then some advanced concepts such as overlay and macvlan. We ran through some examples of the most common Docker network commands, and then discussed some common use cases and general pitfalls of the available network drivers. We also covered port publishing, which allows the outside world to connect with containers, and how Docker resolves DNS names. Finally, we explored Docker Compose networking with some examples.&lt;/p&gt;
+&lt;p&gt;That should provide you with a decent overview of how Docker networking provides different modes of network drivers so that your containers can communicate on a single or multi-host setup. With this knowledge, you can pick and choose a network driver that fits your use case.&lt;/p&gt;</content><author><name>Ashish Choudhary</name></author><category term="Tutorials" /><summary type="html">Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.</summary></entry><entry><title type="html">Green Vs. Brown Programming Languages</title><link href="https://earthly.dev/blog/brown-green-language/" rel="alternate" type="text/html" title="Green Vs. Brown Programming Languages" /><published>2021-04-22T00:00:00-04:00</published><updated>2021-04-22T00:00:00-04:00</updated><id>https://earthly.dev/blog/brown-green-language</id><content type="html" xml:base="https://earthly.dev/blog/brown-green-language/">&lt;h2 id=&quot;the-data&quot;&gt;The Data&lt;/h2&gt;
 &lt;p&gt;The Stack Overflow Developer Survey&lt;a href=&quot;#fn1&quot; class=&quot;footnote-ref&quot; id=&quot;fnref1&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; results are a great source of information about how developers work. I was looking at the 2020 results for some ideas on what programming languages we should add to our &lt;a href=&quot;https://docs.earthly.dev/basics/part-1-a-simple-earthfile&quot;&gt;documentation&lt;/a&gt; on containerized builds, and I noticed something interesting about the types of programming languages people like. It’s something that doesn’t seem to come up in various discussions of programming language preferences.&lt;/p&gt;
 &lt;p&gt;The survey results have rankings for &lt;strong&gt;The Most Dreaded Programming Languages&lt;/strong&gt; and &lt;strong&gt;The Most Loved Programming Langauge&lt;/strong&gt;. Both rankings come from this question:&lt;/p&gt;
 &lt;blockquote&gt;
@@ -1278,522 +1902,4 @@ README.md&lt;/code&gt;&lt;/pre&gt;
 &lt;ol&gt;
 &lt;li id=&quot;fn1&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.&lt;a href=&quot;#fnref1&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Articles" /><category term="news" /><summary type="html">My article about how YAML makes a bad programming language 1 generated a lot of great discussions online. To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.↩︎</summary></entry><entry><title type="html">Build Your Own Ngrok Clone With AWS</title><link href="https://earthly.dev/blog/build-your-own-ngrok-clone/" rel="alternate" type="text/html" title="Build Your Own Ngrok Clone With AWS" /><published>2021-03-11T00:00:00-05:00</published><updated>2021-03-11T00:00:00-05:00</updated><id>https://earthly.dev/blog/build-your-own-ngrok-clone</id><content type="html" xml:base="https://earthly.dev/blog/build-your-own-ngrok-clone/">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://ngrok.com/&quot;&gt;Ngrok&lt;/a&gt; is a tool that allows you to create secure, publically accessible URLs for your locally running code. Just a simple &lt;code&gt;./ngrok http 3000&lt;/code&gt;, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for a stable domain it costs &lt;em&gt;at least&lt;/em&gt; $5/month, and it only goes up from there. Additionally, you’re limited in the number of connections and tunnels that you can make.&lt;/p&gt;
-&lt;p&gt;However, it can be hard to trust fancy tools like &lt;code&gt;ngrok&lt;/code&gt; until you experience how the sausage is made; at least once. It may also be hard to explan yet &lt;em&gt;another&lt;/em&gt; recurring charge on the credit card to your partner. So, here is a tutorial to build yourself a DIY &lt;code&gt;ngrok&lt;/code&gt; for free (at least 12 months, after that its very cheap), using the &lt;a href=&quot;https://aws.amazon.com/free/&quot;&gt;AWS Free Tier&lt;/a&gt;, &lt;a href=&quot;https://www.nginx.com/&quot;&gt;NGINX&lt;/a&gt;, and (of course) &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt;. The result is a decent approximation that won’t break the bank.&lt;/p&gt;
-&lt;h2 id=&quot;so-how-does-ngrok-work&quot;&gt;So, How Does &lt;code&gt;ngrok&lt;/code&gt; Work?&lt;/h2&gt;
-&lt;p&gt;To understand why &lt;code&gt;ngrok&lt;/code&gt; is so cool, you’ll need to first understand how you would normally get traffic from the broader internet into your local machine. A typical flow would be something like this:&lt;/p&gt;
-&lt;div class=&quot;wide&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;img src=&quot;/blog/assets/images/build-your-own-ngrok-clone/without_ngrok.png&quot; alt=&quot;Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine.&quot; /&gt;&lt;br /&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;This flow is normal for most of the machines on the internet today, but it has its downsides for local development. For instance, most home and non-commerical internet connections do not have a &lt;a href=&quot;https://whatismyipaddress.com/dynamic-static&quot;&gt;Static IP&lt;/a&gt; - which means you need to double-check your IP address before sending it out, or (more often) install and configure additional software to keep your DNS records up to date.&lt;/p&gt;
-&lt;p&gt;Additionally, you’ll need to configure your router to forward that traffic to your machine. This configuration is typically fairly annoying to set up, and should also be turned off each time you arent using it, otherwise you are keeping your computer exposed to the internet at large! Its like putting a giant welcome mat out for hackers during their automated scans.&lt;/p&gt;
-With this foundation, you can now understand why &lt;code&gt;ngrok&lt;/code&gt; (and our DIY one) is so cool! It removes the need for all this additional configuration, while also providing better security. All you need to do is add an extra computer into the mix, like this:
-&lt;div class=&quot;wide&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;img src=&quot;/blog/assets/images/build-your-own-ngrok-clone/with_ngrok.png&quot; alt=&quot;Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine.&quot; /&gt;&lt;br /&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Because you are using a &lt;a href=&quot;https://en.wikipedia.org/wiki/Reverse_proxy&quot;&gt;Reverse Proxy&lt;/a&gt; to get the traffic from the extra computer to yours, no additional configuration is required on your end. And, when you are done, you can simply shut down the extra machine, and there are no loose ends or open ports left to close!&lt;/p&gt;
-&lt;p&gt;As mentioned above, this tutorial uses AWS to create the proxy. Other cloud providers will work just as well, but the commands and samples in this document will be for AWS only. &lt;a href=&quot;https://github.com/earthly/example-diy-ngrok&quot;&gt;Pull requests are welcome&lt;/a&gt;, if you want to contribute specific scripts for your cloud provider of choice!&lt;/p&gt;
-&lt;p&gt;One elephant in the room to address before moving on is the inevitable “Why not (Terraform/Pulumi/Cloud Formation/My Favorite IAAS tool…)?” question. These tools are, in fact, made for setting up and tearing down insfrastructure exactly like this! However, using fewer tools helps keep this tutorial simple and accessible, so only the AWS CLI will be used throughout.&lt;/p&gt;
-&lt;h2 id=&quot;lets-build-it&quot;&gt;Lets Build It&lt;/h2&gt;
-&lt;p&gt;You will need the following to complete the rest of this tutorial:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;An active AWS account &lt;a href=&quot;https://portal.aws.amazon.com/billing/signup#/start&quot;&gt;(If you don’t have one, you can sign up here)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html&quot;&gt;Installed the AWS CLI&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html&quot;&gt;Configured AWS credentials&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Optionally, you may also want to install:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://stedolan.github.io/jq/&quot;&gt;jq&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;With those in hand, it’s time to get started!&lt;/p&gt;
-&lt;h3 id=&quot;where-will-the-instance-live&quot;&gt;Where will the instance live?&lt;/h3&gt;
-&lt;p&gt;Before creating anything in the cloud, you’ll need to make sure that you have some information about the VPC and subnet the instance will be assigned to. This information can be found in the console, or on the command-line via &lt;code&gt;aws ec2 describe-subnets&lt;/code&gt;. It will list all your subnets, and the VPCs they belong to.&lt;/p&gt;
-&lt;p&gt;If your cloud is like most peoples, you likely have quite a few of these lying around, which makes it difficult to find the one you want to place your proxy in. I like to add &lt;code&gt;jq&lt;/code&gt; into the mix to make it easier to parse, like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 describe-subnets \
-    | jq -r &amp;#39;.Subnets[] \
-    | &amp;quot;\(.AvailabilityZone)\t\(.CidrBlock)\t\(.SubnetId)\t\(.VpcId)&amp;quot;&amp;#39; \
-    | sort&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;When selecting a subnet, ensure that the one you choose assigns public IP addresses, as you will need to accept traffic from the general internet later.&lt;/p&gt;
-&lt;h3 id=&quot;ssh-keypair&quot;&gt;SSH Keypair&lt;/h3&gt;
-&lt;p&gt;The first thing to create is your EC2 SSH keypair. This is simple to do, especially because the &lt;code&gt;aws&lt;/code&gt; tool can generate on for you.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 create-key-pair \
-    --key-name proxy-key-pair \
-    &amp;gt; key-output.json&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;ℹ️ About the AWS CLI output&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Note the &lt;code&gt;&amp;gt; key-output.json&lt;/code&gt; at the end. The &lt;code&gt;aws&lt;/code&gt; CLI tool will always &lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cliv2-migration.html#cliv2-migration-output-pager&quot;&gt;invoke your system pager with some kind of JSON output as the result of any calls&lt;/a&gt;. Because you don’t want to lose the key generated by &lt;code&gt;aws&lt;/code&gt; for our yet-to-be-created instance, capture it here. It’s a running trend that you will see throughout this tutorial.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;You can get the key directly with &lt;code&gt;jq&lt;/code&gt; by &lt;code&gt;jq -r .KeyPairId key-output.json&lt;/code&gt;, or via your preferred means.&lt;/p&gt;
-&lt;h3 id=&quot;security-group&quot;&gt;Security Group&lt;/h3&gt;
-&lt;p&gt;Now that you have a key pair, you will also need to create a security group for the instance to reside in. To oversimplify, a security group is essentially a firewall for your instance, constraining what ports traffic is allowed to enter or leave on. &lt;a href=&quot;https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html#VPCSecurityGroups&quot;&gt;You can read more about security groups here, for a longer and more complete explanation.&lt;/a&gt; Getting this right is important, so your proxy is less likely to be compromised.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 create-security-group \
-    --group-name reverse-proxy \
-    --description reverse-proxy \
-    --vpc-id $VPC_ID \
-    &amp;gt; sg-output.json&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Make sure you replace &lt;code&gt;$VPC_ID&lt;/code&gt; with the ID for the &lt;a href=&quot;#where-will-the-instance-live&quot;&gt;VPC you identified earlier&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;By default, AWS security groups are configured to disallow all traffic coming in (ingress), and to allow all traffic out (egress). While an instance that doesn’t allow traffic in is fairly secure, it also doesn’t do you much good. You will need to open up port 22 (ssh) for traffic from our current IP only, and port 80 (http) for traffic from the internet at large. By restricting SSH to your current IP address, you prevent external entities from attempting to SSH into your proxy.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 authorize-security-group-ingress \
-    --group-id $SG_ID \
-    --protocol tcp \
-    --port 22 \
-    --cidr $IP/32 \
-    --no-cli-pager
-
-❯ aws ec2 authorize-security-group-ingress \
-    --group-id $SG_ID \
-    --protocol tcp \
-    --port 80 \
-    --cidr 0.0.0.0/0 \
-    --no-cli-pager&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;ℹ️ Find your public IP from the command line&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;AWS has a public service that returns your IP to you. It’s super handy for scripting, because its much clearer to read than the most popular &lt;code&gt;dig&lt;/code&gt;-based examples passed around on the internet. You can use it like this: &lt;code&gt;curl -s https://checkip.amazonaws.com&lt;/code&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Make sure you replace &lt;code&gt;$SG_ID&lt;/code&gt; with the ID for the security group you created earlier. If you saved the output like the sample earlier, you can get it by running &lt;code&gt;jq -r .GroupId sg-output.json&lt;/code&gt;. Also, make sure you replace &lt;code&gt;$IP&lt;/code&gt; with your &lt;em&gt;public&lt;/em&gt; IP address.&lt;/p&gt;
-&lt;/div&gt;
-&lt;h3 id=&quot;ec2-instance&quot;&gt;EC2 Instance&lt;/h3&gt;
-&lt;p&gt;Now that you have keys, and a security group configured in AWS, you’re finally ready to create your EC2 instance! Its easiest for this kind of work to use a &lt;code&gt;t2.micro&lt;/code&gt;, since that is available on AWS’ free tier. If your account is older than 1 year, this instance is still among the cheapest to provision. If a &lt;code&gt;t2.micro&lt;/code&gt; is too expensive, you may want to size down to a &lt;code&gt;t2.nano&lt;/code&gt;, or consider &lt;a href=&quot;https://aws.amazon.com/ec2/spot/&quot;&gt;spot instances&lt;/a&gt;, which are beyond the scope of this tutorial. The instance will be provisioned with an AMI using Amazon Linux 2, to keep things as simple as possible.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 run-instances \
-    --image-id resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 \
-    --count 1 \
-    --instance-type t2.micro \
-    --key-name $KEY_NAME \
-    --security-group-ids $SG_ID \
-    --subnet-id $SUBNET_ID \
-    &amp;gt; ec2-output.json&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Make sure you replace &lt;code&gt;$KEY_NAME&lt;/code&gt; with the name (&lt;em&gt;not id&lt;/em&gt;) of the keypair you created earlier (&lt;code&gt;proxy-key-pair&lt;/code&gt;). Also make sure you replace &lt;code&gt;$SG_ID&lt;/code&gt; with the ID for the security group you created earlier, and &lt;code&gt;$SUBNET_ID&lt;/code&gt; with the subnet you identified before you began.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;ℹ️ EC2 is fast, but not instant&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Although AWS can provision instances very quickly, it can &lt;em&gt;still&lt;/em&gt; take a couple minutes for the instance to come up, so be patient! You can wait for the instance on the CLI (if desired) by running the following command: &lt;code&gt;aws ec2 wait instance-status-ok --instance-ids $EC2_ID&lt;/code&gt;, where &lt;code&gt;$EC2_ID&lt;/code&gt; is the instance ID from the prior step.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, SSH into the box and install NGINX.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ sudo amazon-linux-extras install nginx1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;NGINX needs to be configured to use the AWS-assigned public DNS name, and proxy traffic from port 80 to you. Heres a sample config you can use:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;upstream tunnel {
-  server 127.0.0.1:8080;
-}
-
-server {
-  server_name PUBLIC_DNS;
-  
-  location / {
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    
-    proxy_pass http://tunnel;
-  }
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Be sure to replace &lt;code&gt;PUBLIC_DNS&lt;/code&gt; with the AWS public DNS name. This is &lt;em&gt;not&lt;/em&gt; in the initial output from AWS, because the DNS name is not granted until the machine enters a running state. You can find itby running &lt;code&gt;aws ec2 describe-instances --instance-ids $EC2_ID&lt;/code&gt;, where &lt;code&gt;$EC2_ID&lt;/code&gt; is the ID of the machine you provisioned earlier. This ID &lt;em&gt;can&lt;/em&gt; be found in the outputwhen you created the instance by running &lt;code&gt;jq -r '.Instances[0].InstanceId' ec2-output.json&lt;/code&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Save the completed configuration as &lt;code&gt;/etc/nginx/conf.d/server.conf&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Additionally, NGINX doesn’t quite handle the lengthy public DNS names that AWS hands out, so you’ll need to increase &lt;code&gt;server_names_hash_bucket_size&lt;/code&gt; to the next power of 2, which is &lt;code&gt;128&lt;/code&gt;. To do this, add &lt;code&gt;server_names_hash_bucket_size 128&lt;/code&gt; to &lt;code&gt;/etc/nginx/nginx.conf&lt;/code&gt;, in the &lt;code&gt;http&lt;/code&gt; section.&lt;/p&gt;
-&lt;p&gt;Now that NGINX is configured, start it, and exit your SSH session.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ sudo service nginx start
-
-...
-
-❯ exit&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;using-the-proxy&quot;&gt;Using the Proxy&lt;/h3&gt;
-&lt;p&gt;Now that the instance is configured, all you will need to do to allow the internet at large to connect to a service running on your local box is to use an &lt;code&gt;ssh&lt;/code&gt; reverse proxy to get data from AWS to your local machine! Start one up like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ ssh -i key.pem -R 8080:localhost:$LOCAL_PORT ec2-user@$PUBLIC_DNS&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Replace &lt;code&gt;$LOCAL_PORT&lt;/code&gt; with the port your application is running on, and &lt;code&gt;$PUBLIC_DNS&lt;/code&gt; with the AWS-assigned public DNS name, like you did for the NGINX config.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Once that is up, all you need to do is simply share the AWS public DNS name with anybody you want to allow into your locally-hosted website!&lt;/p&gt;
-&lt;h2 id=&quot;teardown&quot;&gt;Teardown&lt;/h2&gt;
-&lt;p&gt;Although you can leave the proxy up for as long as you like, you’ll likely need to tear it down eventually. If you have AWS console access, simply terminate the instance, delete the security group, and delete the keypair. If you saved the IDs of these resources (they are in the JSON responses from earlier), you can also do it via the command line:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ aws ec2 terminate-instances --no-cli-pager --instance-ids $EC2_ID &amp;gt; /dev/null
-
-❯ aws ec2 delete-key-pair --no-cli-pager --key-pair-id $KEY_ID &amp;amp;&amp;amp; \
-  aws ec2 delete-security-group --no-cli-pager --group-id $SG_ID&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Note that the instance could take a couple minutes to finish terminating. You will not be able to remove the key or security group before the instance has been terminated.&lt;/p&gt;
-&lt;h2 id=&quot;create-using-earthly&quot;&gt;Create using Earthly&lt;/h2&gt;
-&lt;p&gt;If you don’t want to deal with manual setup or teardown, we’ve created an &lt;code&gt;Earthfile&lt;/code&gt; that should automate all of this for you. It can create a proxy just like this, from scratch, in under five minutes! To start up a proxy using &lt;code&gt;earthly&lt;/code&gt;, execute this &lt;em&gt;single&lt;/em&gt; command.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;❯ earthly \
-  --secret-file config=/home/user/.aws/config \
-  --secret-file credentials=/home/dchw/.aws/credentials \
-  --build-arg AWS_REGION=my_region \
-  --build-arg SUBNET_ID=my_subnet \
-  github.com/earthly/example-diy-ngrok:main+build-proxy&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;ℹ️ AWS Credentials&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The reason you’ll need to pass the credentials, is so that our scripts can use them to construct the proxy. If you are uncomfortable passing credentials to a remote target, feel free to clone and inspect the repository before using it. You could also simplify this by trying out Earthly’s experimental &lt;a href=&quot;https://docs.earthly.dev/guides/cloud-secrets&quot;&gt;cloud-based secrets.&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class=&quot;notice--warning&quot; data-markdown=&quot;1&quot;&gt;
-&lt;p&gt;&lt;strong&gt;❗ Don’t Forget&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Replace the following:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;/home/user&lt;/code&gt; with the directory of the AWS configuration directory (&lt;code&gt;.aws&lt;/code&gt;)&lt;br /&gt;
-&lt;code&gt;my-region&lt;/code&gt; with the AWS region you use.&lt;br /&gt;
-&lt;code&gt;my-subnet&lt;/code&gt; with the ID of the subnet you would like to use.&lt;/p&gt;
-&lt;p&gt;If you need to use temporary role-based credentials, add &lt;code&gt;--build-arg AWS_PROFILE=my_profile&lt;/code&gt;, where the profile is the one to assume when creating the resources.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Building this container will construct a proxy in the same manner detailed earlier, but with a few extra benefits:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Allows you to retrieve the generated SSH key&lt;/li&gt;
-&lt;li&gt;Automated teardown of the constructed proxy&lt;/li&gt;
-&lt;li&gt;Sample SSH Command for proxying&lt;/li&gt;
-&lt;li&gt;A list of all IDs for all resources created&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To see everything it can do, run &lt;code&gt;docker run proxy:latest&lt;/code&gt; for a list.&lt;/p&gt;
-&lt;h2 id=&quot;shortcomings&quot;&gt;Shortcomings&lt;/h2&gt;
-&lt;p&gt;This approach to a free, simple ngrok alternative isn’t without its shortcomings. For instance, it can’t do &lt;code&gt;https&lt;/code&gt; without a self-signed certificate, because issuers like Let’s Encrypt won’t issue certificates for AWS public DNS names. Also, it can’t handle a ton of traffic since its a small &lt;code&gt;t2.micro&lt;/code&gt; capped at low bandwidth.&lt;/p&gt;
-&lt;p&gt;It also requires non-trivial IAM permissions in AWS to setup and teardown. If you don’t have that kind of access to an account, you may end up waiting on others to set it up for you.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;Turns out it’s pretty simple to get something basic up and running, just like &lt;code&gt;ngrok&lt;/code&gt; does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.&lt;/p&gt;
-&lt;p&gt;Thanks for following along with us! &lt;a href=&quot;https://github.com/earthly/example-diy-ngrok&quot;&gt;Visit the example repository, with all scripts avaliable here.&lt;/a&gt;&lt;/p&gt;
-&lt;!--kg-card-end: markdown--&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.</summary></entry><entry><title type="html">Understanding Docker Logging and Log Files</title><link href="https://earthly.dev/blog/understanding-docker-logging-and-log-files/" rel="alternate" type="text/html" title="Understanding Docker Logging and Log Files" /><published>2021-03-10T00:00:00-05:00</published><updated>2021-03-10T00:00:00-05:00</updated><id>https://earthly.dev/blog/understanding-docker-logging-and-log-files</id><content type="html" xml:base="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">&lt;p&gt;Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.&lt;/p&gt;
-&lt;p&gt;With that in mind, let’s dive into Docker logging and its log files.&lt;/p&gt;
-&lt;h2 id=&quot;introduction-to-docker-logging&quot;&gt;Introduction to Docker Logging&lt;/h2&gt;
-&lt;p&gt;Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A &lt;a href=&quot;https://www.sumologic.com/glossary/log-analysis/&quot;&gt;log analysis&lt;/a&gt; then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;1. Containers are transient.&lt;/strong&gt; When a Docker container broadcasts logs, it sends them to the application’s &lt;code&gt;stdout&lt;/code&gt; and &lt;code&gt;stderr&lt;/code&gt; output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;&lt;code&gt;json-file&lt;/code&gt; is the default logging driver used by Docker&lt;/a&gt;). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;2. Containers are multileveled.&lt;/strong&gt; There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in &lt;code&gt;/var/log&lt;/code&gt;. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.&lt;/p&gt;
-&lt;p&gt;In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.&lt;/p&gt;
-&lt;h2 id=&quot;docker-logging-commands&quot;&gt;Docker Logging Commands&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; is a command that shows all the information logged by a running container. The &lt;code&gt;docker service logs&lt;/code&gt; command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: STDIN, STDOUT, and STDERR. And the default is set to show only STDOUT and STDERR.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;STDIN is the command’s input stream, which may include input from the keyboard or input from another command.&lt;/li&gt;
-&lt;li&gt;STDOUT is usually a command’s normal output.&lt;/li&gt;
-&lt;li&gt;STDERR is typically used to output error messages.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The &lt;code&gt;docker logs&lt;/code&gt; command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of STDOUT and STDERR. With &lt;code&gt;docker logs &amp;lt;CONTAINER_ID&amp;gt;&lt;/code&gt;, you can see all the logs broadcasted by a specific container identified by a unique ID.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker run &lt;span class=&quot;at&quot;&gt;--name&lt;/span&gt; test &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; busybox sh &lt;span class=&quot;at&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;while true; do &lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; date&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;; sleep 1; done&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; date&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--until&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;2s test&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:01 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:02 UTC&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; works a bit differently in community and enterprise versions. In Docker Enterprise, &lt;code&gt;docker logs&lt;/code&gt; read logs created by any logging driver, but in Docker CE, it can only read logs created by the json-file, local, and journald drivers.&lt;/p&gt;
-&lt;p&gt;For example, here’s the JSON log created by the &lt;a href=&quot;https://hub.docker.com/_/hello-world&quot;&gt;hello-world&lt;/a&gt; Docker image using the json-file driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello from Docker!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stream&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stdout&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;time&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;2021-02-10T00:00:00.000000000Z&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can see, the log follows a pattern of printing:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Log’s origin&lt;/li&gt;
-&lt;li&gt;Either &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;A timestamp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;You can find this log in your Docker host at:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; /var/lib/docker/containers/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;-json.log  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;These Docker logs are stored in a host container and will build up over time. To address that, you can implement log rotation, which will remove a chunk of logs at specified intervals, and a log aggregator, which can be used to push them into a centralized location for a permanent log repository. You can use this repository for further analysis and improvements in the system down the road.&lt;/p&gt;
-&lt;p&gt;To find &lt;code&gt;container_id&lt;/code&gt;, run the &lt;code&gt;docker ps&lt;/code&gt; command. It’ll list all the running containers.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker ps&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;CONTAINER&lt;/span&gt; ID   IMAGE       COMMAND             CREATED             STATUS              PORTS     NAMES&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;cg95e1yqk810&lt;/span&gt;   bar_image  &lt;span class=&quot;st&quot;&gt;&amp;quot;node index.js&amp;quot;&lt;/span&gt;     Y min ago           Up Y min            80/tcp     bar_app&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then, the &lt;code&gt;docker logs container_id&lt;/code&gt; lists the logs for a particular container.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to follow the Docker container logs:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; -f&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to see the last N log lines:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; --tail N&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you only want to see any specific logs, use &lt;code&gt;grep&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; node&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to check errors:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-i&lt;/span&gt; error&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;logging-drivers-supported-by-docker&quot;&gt;Logging Drivers Supported by Docker&lt;/h2&gt;
-&lt;p&gt;Logging drivers, or log-drivers, are mechanisms for getting information from running containers and services, and Docker has lots of them available for you. Every Docker daemon has a default logging driver, which each container uses. Docker uses the json-file logging driver as its default driver.&lt;/p&gt;
-&lt;p&gt;Currently, Docker supports the following logging drivers:&lt;/p&gt;
-&lt;table&gt;
-&lt;colgroup&gt;
-&lt;col style=&quot;width: 43%&quot; /&gt;
-&lt;col style=&quot;width: 56%&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr class=&quot;header&quot;&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Driver&lt;/th&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;none&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;No logs are available for the container and Docker logs do not return any output.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/local/&quot;&gt;local&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are stored in a custom format designed for minimal overhead.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;json-file&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are formatted as JSON. The default logging driver for Docker.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/syslog/&quot;&gt;syslog&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes logging messages to the Syslog facility. The Syslog daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/journald/&quot;&gt;journald&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to journald. The journald daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gcplogs/&quot;&gt;gcplogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Google Cloud Platform (GCP) logging.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/awslogs/&quot;&gt;awslogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Amazon CloudWatch logs.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/splunk/&quot;&gt;splunk&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Splunk using the HTTP Event Collector.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gelf/&quot;&gt;gelf&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to a Graylog Extended Log Format (GELF) endpoint, such as Graylog or Logstash.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/fluentd/&quot;&gt;fluentd&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to fluentd (forward input). The fluentd daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/etwlogs/&quot;&gt;etwlogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages as Event Tracing for Windows (ETW) events. Only available on Windows platforms.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/logentries/&quot;&gt;logentries&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Rapid7 Logentries.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&quot;configuring-the-logging-driver&quot;&gt;Configuring the Logging Driver&lt;/h3&gt;
-&lt;p&gt;To configure the Docker daemon to a logging driver, you need to set the value of &lt;code&gt;log-driver&lt;/code&gt; to the name of the logging driver in the daemon.json configuration file. Then you need to restart Docker for the changes to take effect for all the newly created containers. All the existing containers will remain as they are.&lt;/p&gt;
-&lt;p&gt;For example, let’s set up a default logging driver with some additional options.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-2&quot;&gt;&lt;a href=&quot;#cb10-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;json-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-3&quot;&gt;&lt;a href=&quot;#cb10-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-4&quot;&gt;&lt;a href=&quot;#cb10-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-size&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;25m&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-5&quot;&gt;&lt;a href=&quot;#cb10-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;10&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-6&quot;&gt;&lt;a href=&quot;#cb10-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;labels&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;production_bind&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-7&quot;&gt;&lt;a href=&quot;#cb10-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;env&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;os,customer&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-8&quot;&gt;&lt;a href=&quot;#cb10-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-9&quot;&gt;&lt;a href=&quot;#cb10-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To find the current logging driver for the Docker daemon:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker info &lt;span class=&quot;at&quot;&gt;--format&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.LoggingDriver}}&amp;#39;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-4&quot;&gt;&lt;a href=&quot;#cb11-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;json-file&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can override the default driver by adding the &lt;code&gt;--log-driver&lt;/code&gt; option to the docker run command that creates a container.&lt;/p&gt;
-&lt;p&gt;The following command will start using the Splunk driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;at&quot;&gt;--log-driver&lt;/span&gt; splunk httpd&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Modify the &lt;code&gt;daemon.json&lt;/code&gt; file, to pass the address of the splunk host to the driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb13&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb13-1&quot;&gt;&lt;a href=&quot;#cb13-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-2&quot;&gt;&lt;a href=&quot;#cb13-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-3&quot;&gt;&lt;a href=&quot;#cb13-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-4&quot;&gt;&lt;a href=&quot;#cb13-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-5&quot;&gt;&lt;a href=&quot;#cb13-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-6&quot;&gt;&lt;a href=&quot;#cb13-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker inspect &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.HostConfig.LogConfig.Type}}&amp;#39;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;CONTAINER&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-3&quot;&gt;&lt;a href=&quot;#cb14-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-4&quot;&gt;&lt;a href=&quot;#cb14-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;splunk&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver&quot;&gt;Choosing the Delivery Mode of Log Messages From Container to Log Driver&lt;/h3&gt;
-&lt;p&gt;Docker provides two modes for delivering log messages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Blocking (default):&lt;/strong&gt; The container interrupts the application every time it needs to deliver a message to the driver. This will add latency in the performance of your application (for some drivers), but it’ll guarantee that all the messages will be sent to the driver. Case in point, the json-file driver writes logs very quickly, therefore it’s unlikely to cause latency. But drivers like &lt;code&gt;gcplogs&lt;/code&gt; and &lt;code&gt;awslogs&lt;/code&gt; open a connection to a remote server and so are more likely to block and cause latency.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Non-Blocking:&lt;/strong&gt; The container writes and stores its logs to an in-memory ring buffer until the logging driver is available to process them. This ensures that a high rate of logging will not affect application performance. It does not guarantee that all the messages will be sent to the driver. In cases where log broadcasts are faster than the driver processor, the ring buffer will soon run out of space. As a result, buffered logs are deleted to make space for the next set of incoming logs. The default value for &lt;code&gt;max-buffer-size&lt;/code&gt; is 1 MB.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To change the mode:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-2&quot;&gt;&lt;a href=&quot;#cb15-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-3&quot;&gt;&lt;a href=&quot;#cb15-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-4&quot;&gt;&lt;a href=&quot;#cb15-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-5&quot;&gt;&lt;a href=&quot;#cb15-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;mode&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;non-blocking&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-6&quot;&gt;&lt;a href=&quot;#cb15-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-7&quot;&gt;&lt;a href=&quot;#cb15-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;understanding-logging-strategies&quot;&gt;Understanding Logging Strategies&lt;/h2&gt;
-&lt;p&gt;Docker logging effectively means logging the events of an application, host OS, and the respective Docker service. There are a few defined logging strategies you should keep in mind when working with containerized apps.&lt;/p&gt;
-&lt;h3 id=&quot;application-logging&quot;&gt;1. Application Logging&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, the application running in the containers will have its own logging framework. For example, a Node.js app could use a &lt;a href=&quot;https://www.npmjs.com/package/winston&quot;&gt;&lt;code&gt;winston&lt;/code&gt;&lt;/a&gt; library to format and send the logs. With this approach, you have complete control over the logging event.&lt;/p&gt;
-&lt;p&gt;If you have multiple containers, you need to add an identifier at each container level, so you can uniquely determine the container and its respective logs. But as the size of the logs increases, this will start creating a load on the application process. Due to the transient nature of containers, the logs will be wiped out when a container is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;To address this, you have two options: - Configure steady storage to hold these logs, i.e. disks/data volumes. - Forward these logs to a log management solution.&lt;/p&gt;
-&lt;h3 id=&quot;data-volumes&quot;&gt;2. Data Volumes&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, your container’s directory gets links to one of the host machine directories that will hold all the data for you. Containers can now be terminated or shut down, and access logs from multiple containers.&lt;/p&gt;
-&lt;p&gt;A regular backup is a good idea in order to prevent data corruption or loss in case of a failure. But if you want to shift the containers on different hosts without loss of data, then the data volumes strategy will make that difficult.&lt;/p&gt;
-&lt;h3 id=&quot;docker-logging-driver&quot;&gt;3. Docker Logging Driver&lt;/h3&gt;
-&lt;p&gt;Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt; streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like fluentd, Splunk, and awslogs.&lt;/p&gt;
-&lt;p&gt;Note that the &lt;code&gt;docker log&lt;/code&gt; command will not work if you use anything other than the &lt;code&gt;json-file&lt;/code&gt; driver. And if log forwarding over a TCP connection fails or becomes unreachable, the containers will shut down.&lt;/p&gt;
-&lt;h3 id=&quot;dedicated-logging-container&quot;&gt;4. Dedicated Logging Container&lt;/h3&gt;
-&lt;p&gt;Here, you need to set up a dedicated container whose only job is to collect and manage logs within a Docker ecosystem. It’ll aggregate, monitor, and analyze logs from containers and forward them to a central repository. The log dependency on the host machine is no longer an issue, and it’s best suited for microservices architecture.&lt;/p&gt;
-&lt;p&gt;This strategy gives you the freedom to:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Move containers between the hosts.&lt;/li&gt;
-&lt;li&gt;Scale up by just adding a new container.&lt;/li&gt;
-&lt;li&gt;Tie up all the various streams of log events.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;sidecar-logging-container&quot;&gt;5. Sidecar Logging Container&lt;/h3&gt;
-&lt;p&gt;This logging strategy is similar to dedicated logging in that you have a container to hold logs, but here, each application has its own dedicated logging container (note that the application and its log container can be considered as a single unit). This opens up the flexibility of app-level logging customization. By adding custom identifiers, you can identify the specific container that broadcasts the log.&lt;/p&gt;
-&lt;p&gt;This is best suited for a complex system where each entity customizes the logs, making it popular in microservices deployment. Maintaining a container per application level will require additional resources for management and setup, so it’s complex to implement. Also, you may end up losing data when a container from the unit becomes unserviceable.&lt;/p&gt;
-&lt;h3 id=&quot;third-party-logging-services&quot;&gt;6. Third-party Logging Services&lt;/h3&gt;
-&lt;p&gt;There are a lot of third-party logging services you can use according to your infrastructure and application needs, enabling you to aggregate, manage, and analyze logs and take proactive preventative actions as a result.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.splunk.com/&quot;&gt;Splunk&lt;/a&gt;:&lt;/strong&gt; Splunk is built to scale from a single server to multiple data centers. It has built-in alerting and reporting, real-time search, analysis, and visualization, which helps you take action against malfunctions faster. It comes with a Splunk Enterprise on-premise deployment and Splunk Cloud. The free plan comes with 500 MB data per day, and the paid plan starts from $150 a month for a GB.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/elastic/logstash&quot;&gt;Logstash&lt;/a&gt;:&lt;/strong&gt; Logstash is part of the &lt;a href=&quot;https://www.elastic.co/products&quot;&gt;Elastic Stack&lt;/a&gt; along with Beats, Elasticsearch, and Kibana. It’s a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favourite “stash.” Logstash has over 200 plugins for input, filter/transform, and output. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.fluentd.org/&quot;&gt;Fluentd&lt;/a&gt;:&lt;/strong&gt; Fluentd is an open-source data collector. Its performance has been well proven, handling 5 TB of daily data, 50,000 messages/sec at peak time. The main reason to use it would be performance. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.papertrail.com/&quot;&gt;PaperTrail&lt;/a&gt;:&lt;/strong&gt; PaperTrail is a simple and user-friendly service that provides a terminal-like experience. Once the data is sent over the syslog, you can perform tail and search operations with the PaperTrail UI. It’s affordable for low volumes but becomes expensive for higher volume. It comes with a free 50 MB/month plan, and paid plans start at $7/month for 1 GB per month.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.loggly.com/&quot;&gt;Loggly&lt;/a&gt;:&lt;/strong&gt; Loggly focuses on simplicity and ease of use for a DevOps audience. It’s one of the more robust log analyzers. Primary use cases are for troubleshooting and customer support scenarios, and it provides richer visualizations and more parsing functionality than PaperTrail. It comes with a free 200 MB/day, and paid plans start at $79 a month for 1 GB per day ingestion with a 2 weeks retention.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;limitations-and-challenges-of-docker-logging&quot;&gt;Limitations and Challenges of Docker Logging&lt;/h2&gt;
-&lt;p&gt;Docker makes containerized application deployment easier, faster, and streamlines it with limited resources. Log management and analysis are handled differently with Docker as compared to a traditional system, which introduces a new set of challenges and limitations. From storing logs in a file system to forwarding them to a central repository, Docker logging has some pain points you’ll need to overcome with a deeper understanding of Docker capability.&lt;/p&gt;
-&lt;h3 id=&quot;the-only-compatible-driver-is-json-file&quot;&gt;The Only Compatible Driver Is json-file&lt;/h3&gt;
-&lt;p&gt;The json-file driver is the only one that works with the &lt;code&gt;docker logs&lt;/code&gt; command, a limitation of Docker logs. When you start using any other logging drivers, such as Fluentd or Splunk, the &lt;code&gt;docker logs&lt;/code&gt; command shows an error and the Docker logs API calls will fail. Also, you won’t be able to check the container logs in this situation.&lt;/p&gt;
-&lt;h3 id=&quot;docker-syslog-impacts-container-deployment&quot;&gt;Docker Syslog Impacts Container Deployment&lt;/h3&gt;
-&lt;p&gt;The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail ife a connection is not made.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker: Error response from daemon: Failed to initialize logging driver: dial tcp&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your container deployment will be affected if you face network problems or latency issues. And it’s not recommended that you restart the Syslog server because this will drop all the connections from the containers to a central Syslog server.&lt;/p&gt;
-&lt;h3 id=&quot;potential-loss-of-logs-with-docker-syslog-driver&quot;&gt;Potential Loss of Logs with Docker Syslog Driver&lt;/h3&gt;
-&lt;p&gt;The Docker syslog driver needs an established TCP or TLS connection to deliver logs. Note that when the connection is down or not reachable, you’ll start losing the logs until the connection reestablished.&lt;/p&gt;
-&lt;h3 id=&quot;multiline-logs-not-supported&quot;&gt;Multiline Logs Not Supported&lt;/h3&gt;
-&lt;p&gt;Generally, either of two patterns is followed for logging: single-line per log or multiple lines with extended information per log, like stack traces or exceptions. But with Docker logging, this is a moot point, because containers always broadcast logs to the same output: &lt;code&gt;stdout&lt;/code&gt;. ### Multiple Logging Drivers Not Supported It’s mandatory that you use only a single driver for all of your logging needs. Scenarios where you can store logs locally and push it to remote servers are not supported.&lt;/p&gt;
-&lt;h3 id=&quot;logs-can-miss-or-skip&quot;&gt;Logs Can Miss or Skip&lt;/h3&gt;
-&lt;p&gt;There’s a rate limitation setting at the Docker end for journald drivers that takes care of the rate that logs get pushed. If it exceeds, then the driver might skip some logs. To prevent such issues, increase the rate limitation settings according to your logging needs.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;While Docker containerization allows developers to encapsulate a program and its file system into a single portable package, that certainly doesn’t mean containerization is free of maintenance. Docker Logging is a bit more complex than traditional methods, so teams using Docker must familiarize themselves with the Docker logging to support full-stack visibility, troubleshooting, performance improvements, root cause analysis, etc.&lt;/p&gt;
-&lt;p&gt;As we have seen in this post, to facilitate logging, Docker offers logging drivers and commands in the platform which gives you the mechanisms for accessing the performance data and also provides plugins to integrate with third-party logging tools as well. To maximize the logging capabilities there are several methods and strategies which help in designing your logging infrastructure, but each comes with its advantages and disadvantages.&lt;/p&gt;
-&lt;p&gt;With this understanding of logging, containerization can be a powerful tool. Earthly is a containerized &lt;a href=&quot;https://earthly.dev/&quot;&gt;continuous integration tool&lt;/a&gt;. If you’ve ever had to deal with flaky builds you should &lt;a href=&quot;https://earthly.dev/&quot;&gt;check it out&lt;/a&gt;.&lt;/p&gt;</content><author><name>Sanket Makhija</name></author><category term="Tutorials" /><category term="docker" /><category term="tutorials" /><summary type="html">Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.</summary></entry><entry><title type="html">How to Setup and Use Amazon’s Elastic Container Registry</title><link href="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/" rel="alternate" type="text/html" title="How to Setup and Use Amazon’s Elastic Container Registry" /><published>2021-03-05T00:00:00-05:00</published><updated>2021-03-05T00:00:00-05:00</updated><id>https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry</id><content type="html" xml:base="https://earthly.dev/blog/how-to-setup-and-use-amazons-elastic-container-registry/">&lt;p&gt;A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming &lt;a href=&quot;https://www.cio.com/article/3434010/more-enterprises-are-using-containers-here-s-why.html&quot;&gt;a method of choice&lt;/a&gt; for shipping modern applications.&lt;/p&gt;
-&lt;p&gt;Containers are created from a read-only template called an &lt;em&gt;Image&lt;/em&gt;. These images need to be stored somewhere so they can be retrieved by any machine authorized to use them. That’s where a container registry comes in.&lt;/p&gt;
-&lt;h2 id=&quot;docker-hub-where-many-start&quot;&gt;Docker Hub: Where Many Start&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; is one of the most well-known pieces of software for working with containerized applications. To help with the storage issue, Docker created &lt;a href=&quot;https://hub.docker.com/&quot;&gt;Docker Hub&lt;/a&gt; - the world’s largest container registry - where developers can share and download pre-built images from others.&lt;/p&gt;
-&lt;p&gt;While Docker Hub is still the most common option, it’s lost a bit of steam since the company started restricting free public repositories to just &lt;a href=&quot;https://cloudonaut.io/amazon-ecr-vs-docker-hub-vs-github-container-registry/&quot;&gt;a few hundred pulls every 6 hours&lt;/a&gt;. Docker Hub also offers some of the same features that ECR does (image scanning, team access) to paid users, but it’s likely to be much more expensive than Amazon ECR is when you’re starting out.&lt;/p&gt;
-&lt;p&gt;Finally, the free Docker Hub plan has added a restrictive retention policy. They will delete any container images that haven’t been accessed within the last six months, so if you’re using Docker Hub for your side project that you update only occasionally, you might be surprised to find it suddenly gone one day.&lt;/p&gt;
-&lt;h2 id=&quot;introducing-amazon-elastic-container-registry-ecr&quot;&gt;Introducing Amazon Elastic Container Registry (ECR)&lt;/h2&gt;
-&lt;p&gt;Amazon ECR is a fully managed container registry offered as part of the AWS suite. Like Docker Hub, it makes storing, sharing, managing, and deploying your images easier, but it’s also likely to save you money - especially if you’re already using AWS. Simply push your images to ECR and pull the images using container management tool: &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kuberenetes&lt;/a&gt;, &lt;a href=&quot;https://docs.docker.com/compose/&quot;&gt;Docker Compose&lt;/a&gt;, &lt;a href=&quot;https://aws.amazon.com/ecs&quot;&gt;ECS&lt;/a&gt;, &lt;a href=&quot;https://aws.amazon.com/eks&quot;&gt;EKS&lt;/a&gt;, etc.&lt;/p&gt;
-&lt;h3 id=&quot;pricing&quot;&gt;Pricing&lt;/h3&gt;
-&lt;p&gt;Generally, public repositories are suitable for open-source developers sharing their work with the world for free. In contrast, private repositories are used by companies to share proprietary images of their internal software. Depending on the privacy level you need, here’s how AWS charges for ECR:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Private Repositories&lt;/strong&gt;: As a part of the AWS free tier, you get 500 MB of storage for one year for private repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage for private repositories.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Public Repositories&lt;/strong&gt;: ECR offers 50 GB-month of free storage and 500 GB to 5 TB (depending on whether you authenticate with AWS or not) for public repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There may be additional costs depending on your region and usage, so be sure to check the pricing &lt;a href=&quot;https://aws.amazon.com/ecr/pricing/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;why-ecr&quot;&gt;Why ECR?&lt;/h3&gt;
-&lt;p&gt;If you’re already bought into the Amazon ecosystem, ECR is an obvious choice for your container registry as you won’t have to add a new service to your budget. Besides saving you money, ECR integrates with other standard AWS services, which will hopefully improve developer experience as well.&lt;/p&gt;
-&lt;h3 id=&quot;iam-identity-and-access-management&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/iam&quot;&gt;IAM (Identity and Access Management)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html&quot;&gt;ECR integrates with IAM&lt;/a&gt; to configure policies and manage and control access to your images. This means you won’t have to share credentials or manage permissions individually for each repository.&lt;/p&gt;
-&lt;h3 id=&quot;eks-elastic-kubernetes-service&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/eks&quot;&gt;EKS (Elastic Kubernetes Service)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Kubernetes is a widely used container orchestration technology for automating deployments, networking, and scaling your application. Elastic Kubernetes Service is the AWS-managed Kubernetes platform.&lt;/p&gt;
-&lt;p&gt;EKS allows you to run Kubernetes on AWS without maintaining your own &lt;a href=&quot;https://kubernetes.io/docs/concepts/overview/components/#control-plane-components&quot;&gt;Kubernetes control plane&lt;/a&gt;. You define a manifest file, and the Kubernetes master node will schedule and run the deployments. As you’ll see later, you can use images hosted in ECR in this manifest file to easily deploy your workloads from your public or private repositories.&lt;/p&gt;
-&lt;h3 id=&quot;ecs-elastic-container-service&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/ecs&quot;&gt;ECS (Elastic Container Service)&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Like EKS, ECS is a container orchestration service that makes running, stopping, and managing containers on AWS resources easy. Without getting into all of the specifics, ECS is typically better for teams that want a simple but powerful way to run their containers, while EKS adds the flexibility and security options available in Kubernetes. To learn more about each of AWS’s container orchestration tools, read &lt;a href=&quot;https://aws.amazon.com/blogs/containers/amazon-ecs-vs-amazon-eks-making-sense-of-aws-container-services/&quot;&gt;this article on picking the right one&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;When integrating with ECR, ECS users simply have to &lt;a href=&quot;https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html&quot;&gt;add their images to a task definition&lt;/a&gt;. Task definitions are JSON files that describe each container that forms the application. These definitions are similar to Kubernetes manifest files but require their own format and options.&lt;/p&gt;
-&lt;h2 id=&quot;using-elastic-container-registry&quot;&gt;Using Elastic Container Registry&lt;/h2&gt;
-&lt;p&gt;If you’ve decided that ECR is the right option for your application, you’re ready to set up and start using it. In the remainder of this tutorial, I’ll walk you through the steps required to get started with ECR. I’ll show you how to push and pull images from ECR and how you can use your ECR images in EKS and ECS.&lt;/p&gt;
-&lt;p&gt;Typically these steps will be run as part of your continuous integration workflow, but you can also run them locally to get more familiar with the required tooling before you automate them.&lt;/p&gt;
-&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html&quot;&gt;AWS Credentials&lt;/a&gt; with permissions to interact with ECR.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://docs.docker.com/get-docker/&quot;&gt;Docker installed for your operating system&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;The &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS CLI installed locally&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;creating-a-new-repository&quot;&gt;Creating a New Repository&lt;/h3&gt;
-&lt;p&gt;Assuming you’ve already got an AWS account and permissions correctly configured, the easiest way to get started is to create a new ECR repository via the Amazon Web Services UI.&lt;/p&gt;
-&lt;p&gt;Go to the &lt;a href=&quot;http://console.aws.amazon.com/ecr/get-started&quot;&gt;ECR homepage&lt;/a&gt; and click the &lt;em&gt;Get Started&lt;/em&gt; button.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/xX4GGwL.png&quot; alt=&quot;ECR landing page&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;ECR landing page&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;You will be taken to the &lt;em&gt;Create repository&lt;/em&gt; page, where you can enter all the details for your new repository.&lt;/p&gt;
-&lt;h3 id=&quot;configuring-your-repository&quot;&gt;Configuring Your Repository&lt;/h3&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/SZrf8AQ.png&quot; alt=&quot;Amazon ECR repository creation menu&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Amazon ECR repository creation menu&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Choose a visibility (&lt;em&gt;Public&lt;/em&gt; or &lt;em&gt;Private&lt;/em&gt;), name the repository (ideally something short but self-explanatory), and below the name, select any of the other options you need:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Tag immutability&lt;/em&gt; - Prevents the same tag from being pushed twice and overwriting a previous version of the tag.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Scan on push&lt;/em&gt; - Your images will be scanned for security vulnerabilities each time a new tag is pushed.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;[KMS encryption}(https://medium.com/&lt;span class=&quot;citation&quot; data-cites=&quot;suprajaraman/aws-kms-all-about-keys-564245425ecc&quot;&gt;@suprajaraman/aws-kms-all-about-keys-564245425ecc&lt;/span&gt;)&lt;/em&gt; - Allows you to use AWS Key Management Service (KMS) to encrypt the images in this repository.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;Note: your final repository URL structure will be something like this:&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Once your repository is configured, click &lt;em&gt;Create repository&lt;/em&gt; to initialize your ECR repository. If you want to create a public repository, you can follow the same steps but select &lt;code&gt;Pubic&lt;/code&gt; instead of &lt;code&gt;Private&lt;/code&gt;.&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/XCZe4vX.png&quot; alt=&quot;Amazon ECR dashboard&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Amazon ECR dashboard&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h3 id=&quot;pushing-an-image-to-the-repository&quot;&gt;Pushing an Image to the Repository&lt;/h3&gt;
-&lt;p&gt;Before publishing the Image to ECR, make sure you have Docker installed on your workstation and a project with a Dockerfile that’s ready to be built and pushed to ECR.&lt;/p&gt;
-&lt;p&gt;If you don’t have a project ready, create a new file called &lt;code&gt;Dockerfile&lt;/code&gt; and enter the following (this is based on the official &lt;a href=&quot;https://hub.docker.com/_/alpine&quot;&gt;Docker &lt;code&gt;alpine:3.7&lt;/code&gt; image&lt;/a&gt;):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM alpine:3.7
-CMD echo &amp;#39;Hello world&amp;#39;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next, &lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html&quot;&gt;set up your AWS credentials on the CLI&lt;/a&gt; if you haven’t already:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;aws configure&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Paste your &lt;em&gt;AWS Access Key ID&lt;/em&gt; and &lt;em&gt;AWS Secret Access Key&lt;/em&gt;. This will allow your CLI instance access to your AWS account.&lt;/p&gt;
-&lt;p&gt;If you’re using the CLI as part of your continuous integration workflow, you also have the option &lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html&quot;&gt;to use environment variables&lt;/a&gt; to securely store your credentials.&lt;/p&gt;
-&lt;h3 id=&quot;adding-your-ecr-credentials-to-the-docker-cli&quot;&gt;Adding Your ECR Credentials to the Docker CLI&lt;/h3&gt;
-&lt;p&gt;Next, you need Docker to be able to push images to your ECR repository. The &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/login/&quot;&gt;&lt;code&gt;docker login&lt;/code&gt; command&lt;/a&gt; will allow you to do this, so using the AWS CLI, retrieve your ECR password and pipe it into the Docker command:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;aws ecr get-login-password \
-    --region &amp;lt;account-region&amp;gt; \
-| docker login \
-    --username AWS \
-    --password-stdin &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;After authentication, you will see &lt;code&gt;Login Succeeded&lt;/code&gt; as a response. Now you’ll be able to push tagged images to your ECR repository.&lt;/p&gt;
-&lt;p&gt;If you are pushing or pulling images from this machine regularly, you may not want to go through this login process every time. Instead of using &lt;code&gt;docker login&lt;/code&gt;, you can configure the &lt;a href=&quot;https://github.com/awslabs/amazon-ecr-credential-helper&quot;&gt;Amazon ECR Docker Credential Helper&lt;/a&gt; to give the Docker daemon direct access to your AWS credentials. This method is also convenient for CI environments because it automates the authentication process and caches tokens to minimize your risk of being throttled.&lt;/p&gt;
-&lt;h3 id=&quot;pushing-an-image-to-ecr&quot;&gt;Pushing an Image to ECR&lt;/h3&gt;
-&lt;p&gt;Next, build the image from your Dockerfile:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker build -t &amp;lt;image-name&amp;gt;:&amp;lt;image-version&amp;gt; .&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Then, tag the image with your ECR repository name:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker tag &amp;lt;image-name&amp;gt;:&amp;lt;image-version&amp;gt; &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Your image is now ready to push to ECR:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker push &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And just like that, you have pushed our first image to a repository on Elastic Container Registry. In the next section, you’ll see how you can use these images for local or remote deployments.&lt;/p&gt;
-&lt;h3 id=&quot;pulling-an-image-from-ecr&quot;&gt;Pulling an Image from ECR&lt;/h3&gt;
-&lt;p&gt;Whether you want to pull an image from a public ECR repository or your company has private images stored in ECR, pulling works in the same way it does in any container registry. After you’ve authenticated (using the same steps above), you can use &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/pull/&quot;&gt;&lt;code&gt;docker pull&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;docker pull &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now you can run this image locally.&lt;/p&gt;
-&lt;h3 id=&quot;using-ecr-images-in-a-dockerfile&quot;&gt;Using ECR Images in a Dockerfile&lt;/h3&gt;
-&lt;p&gt;If you are building a new application from a base image stored in ECR, you can use the &lt;code&gt;FROM&lt;/code&gt; command in your Dockerfile just as you would with any other Docker image. For example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;FROM: &amp;lt;account-id&amp;gt;.dkr.ecr.&amp;lt;account-region&amp;gt;.amazonaws.com/&amp;lt;repository-name&amp;gt;:&amp;lt;image-version&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Again, you’ll need to be authenticated if you want to build an image off a private image in ECR, but this allows you to share base images with your team or the public.&lt;/p&gt;
-&lt;h3 id=&quot;using-ecr-images-in-production-deployments&quot;&gt;Using ECR Images in Production Deployments&lt;/h3&gt;
-&lt;p&gt;To use your images from ECR in a container management platform like ECS or EKS, simply add the name and tag of the image you want to use to the relevant configuration file.&lt;/p&gt;
-&lt;h5 id=&quot;eks-manifest&quot;&gt;EKS Manifest&lt;/h5&gt;
-&lt;p&gt;For example, you can use the following EKS manifest to deploy a NodeJS image stored in ECR:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;apiVersion: batch/v1 
-kind: Job 
-metadata: 
-    name: eks-iam-test-s3 
-spec: template: 
-    metadata: 
-      labels: 
-        app: eks-iam-test-s3 
-    spec: 
-      serviceAccountName: iam-test 
-      containers: 
-        - name: eks-iam-test 
-          image: 123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1 
-          args: [&amp;quot;s3&amp;quot;, &amp;quot;ls&amp;quot;] 
-      restartPolicy: Never&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;When deployed, it will create a job with the name &lt;code&gt;eks-iam-test-s3&lt;/code&gt; using the &lt;code&gt;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&lt;/code&gt; image. To see the complete step-by-step process for deploying this job to EKS, see &lt;a href=&quot;https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html&quot;&gt;the AWS documentation here&lt;/a&gt;.&lt;/p&gt;
-&lt;h5 id=&quot;ecs-task-definition&quot;&gt;ECS Task Definition&lt;/h5&gt;
-&lt;p&gt;ECR images can also be used in ECS task definition files to define your containers:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;{
-  &amp;quot;containerDefinitions&amp;quot;: [
-    {
-      &amp;quot;name&amp;quot;: &amp;quot;sample-app&amp;quot;,
-      &amp;quot;image&amp;quot;: &amp;quot;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&amp;quot;,
-      &amp;quot;memory&amp;quot;: 200,
-      &amp;quot;cpu&amp;quot;: 10,
-      &amp;quot;essential&amp;quot;: true
-    }
-  ],
-  &amp;quot;family&amp;quot;: &amp;quot;example_task_3&amp;quot;,
-  &amp;quot;taskRoleArn&amp;quot;: &amp;quot;arn:aws:iam::123456789012:role/AmazonECSTaskS3BucketRole&amp;quot;
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This definition will deploy a container named &lt;code&gt;sample-app&lt;/code&gt; using image &lt;code&gt;123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1&lt;/code&gt;. More detailed steps are &lt;a href=&quot;https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition.html&quot;&gt;available in the ECS documentation here&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;In this tutorial, you learned the basics of containers and container registries. You learned about the differences between Docker Hub and Amazon ECR for public and private repository hosting, and you saw how to set up and use ECR to store your images.&lt;/p&gt;
-&lt;p&gt;Whether you’re using Docker images in production or not, ECR is a useful tool if you’re already embedded in the AWS ecosystem. It gives you the advantage of working well with other Amazon services like IAM for security and ECS or EKS for deployments.&lt;/p&gt;
-&lt;p&gt;If you are pushing images to ECR as part of your build pipeline, check out Earthly’s support for &lt;a href=&quot;https://docs.earthly.dev/docs/guides/configuring-registries/aws-ecr&quot;&gt;ECR credentials&lt;/a&gt;. Unlike other build tools, Earthly executes each CI build in an isolated containerized environment, and it can pull images from ECR or any other container registry you choose. It’s free to use, so &lt;a href=&quot;https://earthly.dev/&quot;&gt;check Earthly out today&lt;/a&gt;.&lt;/p&gt;</content><author><name>Vivek Sonar</name></author><category term="Tutorials" /><summary type="html">A container is a simple unit that packages all your code and its dependencies so your application can run quickly and reliably from any computing environment. That means you could quickly move from your local environment to your staging and into production. Due to their portability, small size, and convenience, containers are becoming a method of choice for shipping modern applications.</summary></entry></feed>
+&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Articles" /><category term="news" /><summary type="html">My article about how YAML makes a bad programming language 1 generated a lot of great discussions online. To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.↩︎</summary></entry></feed>

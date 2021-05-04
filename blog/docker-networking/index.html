@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+<title>Understanding Docker Networking - Earthly Blog</title>
+<meta name="description" content="Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.">
+
+
+  <meta name="author" content="Ashish Choudhary">
+  
+  <meta property="article:author" content="Ashish Choudhary">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Understanding Docker Networking">
+<meta property="og:url" content="https://earthly.dev/blog/docker-networking/">
+
+
+  <meta property="og:description" content="Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/docker-networking/header-800-c1776b8fc.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Understanding Docker Networking">
+  <meta name="twitter:description" content="Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/docker-networking/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/docker-networking/header-800-c1776b8fc.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-05T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/docker-networking/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/docker-networking/header-400-28d181ba1.webp 400w, /blog/generated/assets/images/docker-networking/header-600-28d181ba1.webp 600w, /blog/generated/assets/images/docker-networking/header-800-28d181ba1.webp 800w, /blog/generated/assets/images/docker-networking/header-1000-28d181ba1.webp 1000w, /blog/generated/assets/images/docker-networking/header-1200-28d181ba1.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/docker-networking/header-400-28d181ba1.png 400w, /blog/generated/assets/images/docker-networking/header-600-28d181ba1.png 600w, /blog/generated/assets/images/docker-networking/header-800-28d181ba1.png 800w, /blog/generated/assets/images/docker-networking/header-1000-28d181ba1.png 1000w, /blog/generated/assets/images/docker-networking/header-1200-28d181ba1.png 1200w" type="image/png"><img src="/blog/generated/assets/images/docker-networking/header-800-28d181ba1.jpg" alt="Understanding Docker Networking"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Container Tutorials</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/understanding-docker-logging-and-log-files/">Docker Logging</a></li>
+          
+            <li><a href="/blog/docker-networking/" class="active">Docker Networking</a></li>
+          
+            <li><a href="/blog/how-to-setup-and-use-amazons-elastic-container-registry/">AWS ECR</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Best Practices</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/youre-using-docker-compose-wrong/">Docker Compose</a></li>
+          
+            <li><a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/">What Is BuildKit?</a></li>
+          
+            <li><a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">Compiling Containers</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Understanding Docker Networking">
+    <meta itemprop="description" content="Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.">
+    <meta itemprop="datePublished" content="2021-05-05T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Understanding Docker Networking
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          16 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-05T00:00:00-04:00">May 5, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-is-a-docker-network">What Is a Docker Network?</a></li><li><a href="#what-are-docker-network-drivers">What Are Docker Network Drivers?</a><ul><li><a href="#the-bridge-driver">The Bridge Driver</a></li><li><a href="#the-host-driver">The Host Driver</a></li><li><a href="#the-none-driver">The None Driver</a></li><li><a href="#the-overlay-driver">The Overlay Driver</a></li><li><a href="#the-macvlan-driver">The Macvlan Driver</a></li></ul></li><li><a href="#basic-docker-networking-commands">Basic Docker Networking Commands</a><ul><li><a href="#connecting-a-container-to-a-network">Connecting a Container to a Network</a></li><li><a href="#creating-a-network">Creating a Network</a></li><li><a href="#disconnecting-a-container-from-the-network">Disconnecting a Container from the Network</a></li><li><a href="#inspecting-the-network">Inspecting the Network</a></li><li><a href="#list-available-networks">List Available Networks</a></li><li><a href="#removing-a-network">Removing a Network</a></li></ul></li><li><a href="#public-networking">Public Networking</a></li><li><a href="#docker-compose-networking">Docker Compose Networking</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.</p>
+<p>Once the application is inside a container, it’s easier to scale and even runs on different cloud platforms, like AWS, GCP, and Azure. In this article, let’s focus on the <a href="https://docs.docker.com/network/">networking aspect of Docker</a>.</p>
+<h2 id="what-is-a-docker-network">What Is a Docker Network?</h2>
+<p>Networking is about communication among processes, and Docker’s networking is no different. Docker networking is primarily used to establish communication between Docker containers and the outside world via the host machine where the Docker daemon is running.</p>
+<p>Docker supports different types of networks, each fit for certain use cases. We’ll be exploring the network drivers supported by Docker in general, along with some coding examples.</p>
+<p>Docker networking differs from virtual machine (VM) or physical machine networking in a few ways:</p>
+<ol type="1">
+<li>Virtual machines are more flexible in some ways as they can support configurations like <a href="https://superuser.com/questions/227505/what-is-the-difference-between-nat-bridged-host-only-networking">NAT and host networking</a>. Docker typically uses a bridge network, and while it can support host networking, that option is <a href="https://docs.docker.com/network/host/">only available on Linux</a>.</li>
+<li>When using Docker containers, network isolation is achieved using a network namespace, not an entirely separate networking stack.</li>
+<li>You can run hundreds of containers on a single-node Docker host, so it’s required that the host can support networking at this scale. VMs usually don’t run into these network limits as they typically run fewer processes per VM.</li>
+</ol>
+<h2 id="what-are-docker-network-drivers">What Are Docker Network Drivers?</h2>
+<p>Docker handles communication between containers by creating a default bridge network, so you often don’t have to deal with networking and can instead focus on creating and running containers. This default bridge network works in most cases, but it’s not the only option you have.</p>
+<p>Docker allows you to create three different types of network drivers out-of-the-box: bridge, host, and none. However, they may not fit every use case, so we’ll also explore user-defined networks such as overlay and macvlan. Let’s take a closer look at each one.</p>
+<h3 id="the-bridge-driver">The Bridge Driver</h3>
+<p>This is the default. Whenever you start Docker, a bridge network gets created and all newly started containers will connect automatically to the default bridge network.</p>
+<p>You can use this whenever you want your containers running in isolation to connect and communicate with each other. Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, and Docker <a href="https://docs.docker.com/network/iptables/">uses iptables</a> on the host machine to prevent access outside of the bridge.</p>
+<p>Let’s look at some examples of how a bridge network driver works.</p>
+<ol type="1">
+<li>Check the available network by running the <code>docker network ls</code> command</li>
+<li>Start two <a href="https://hub.docker.com/_/busybox">busybox</a> containers named <code>busybox1</code> and <code>busybox2</code> in detached mode by passing the <code>-dit</code> flag.</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker network ls           </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">NETWORK</span> ID     NAME      DRIVER    SCOPE</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">5077a7b25ae6</span>   bridge    bridge    local</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">7e25f334b07f</span>   host      host      local</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">475e50be0fe0</span>   none      null      local</span></code></pre></div>
+<pre class="shell"><code>$ docker run -dit --name busybox1 busybox /bin/sh
+$ docker run -dit --name busybox2 busybox /bin/sh</code></pre>
+<ol start="3" type="1">
+<li>Run the <code>docker ps</code> command to verify that containers are up and running.</li>
+</ol>
+<pre class="shell"><code>$ docker ps
+CONTAINER ID   IMAGE     COMMAND     CREATED          STATUS          PORTS     NAMES
+9e6464e82c4c   busybox   &quot;/bin/sh&quot;   5 seconds ago    Up 5 seconds              busybox2
+7fea14032748   busybox   &quot;/bin/sh&quot;   26 seconds ago   Up 26 seconds             busybox1</code></pre>
+<ol start="4" type="1">
+<li>Verify that the containers are attached to the bridge network.</li>
+</ol>
+<pre class="shell"><code>$ docker network inspect bridge                                                       
+[
+    {
+        &quot;Name&quot;: &quot;bridge&quot;,
+        &quot;Id&quot;: &quot;5077a7b25ae67abd46cff0fde160303476c8a9e2e1d52ad01ba2b4bf04acc0e0&quot;,
+        &quot;Created&quot;: &quot;2021-03-05T03:25:58.232446444Z&quot;,
+        &quot;Scope&quot;: &quot;local&quot;,
+        &quot;Driver&quot;: &quot;bridge&quot;,
+        &quot;EnableIPv6&quot;: false,
+        &quot;IPAM&quot;: {
+            &quot;Driver&quot;: &quot;default&quot;,
+            &quot;Options&quot;: null,
+            &quot;Config&quot;: [
+                {
+                    &quot;Subnet&quot;: &quot;172.17.0.0/16&quot;,
+                    &quot;Gateway&quot;: &quot;172.17.0.1&quot;
+                }
+            ]
+        },
+        &quot;Internal&quot;: false,
+        &quot;Attachable&quot;: false,
+        &quot;Ingress&quot;: false,
+        &quot;ConfigFrom&quot;: {
+            &quot;Network&quot;: &quot;&quot;
+        },
+        &quot;ConfigOnly&quot;: false,
+        &quot;Containers&quot;: {
+            &quot;7fea140327487b57c3cf31d7502cfaf701e4ea4314621f0c726309e396105885&quot;: {
+                &quot;Name&quot;: &quot;busybox1&quot;,
+                &quot;EndpointID&quot;: &quot;05f216032784786c3315e30b3d54d50a25c1efc7d2030dc664716dda38056326&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.17.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;9e6464e82c4ca647b9fb60a85ca25e71370330982ea497d51c1238d073148f63&quot;: {
+                &quot;Name&quot;: &quot;busybox2&quot;,
+                &quot;EndpointID&quot;: &quot;3dcc24e927246c44a2063b5be30b5f5e1787dcd4d53864c6ff2bb3c561519115&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:11:00:03&quot;,
+                &quot;IPv4Address&quot;: &quot;172.17.0.3/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+        &quot;Options&quot;: {
+            &quot;com.docker.network.bridge.default_bridge&quot;: &quot;true&quot;,
+            &quot;com.docker.network.bridge.enable_icc&quot;: &quot;true&quot;,
+            &quot;com.docker.network.bridge.enable_ip_masquerade&quot;: &quot;true&quot;,
+            &quot;com.docker.network.bridge.host_binding_ipv4&quot;: &quot;0.0.0.0&quot;,
+            &quot;com.docker.network.bridge.name&quot;: &quot;docker0&quot;,
+            &quot;com.docker.network.driver.mtu&quot;: &quot;1500&quot;
+        },
+        &quot;Labels&quot;: {}
+    }
+]
+</code></pre>
+<ol start="5" type="1">
+<li>Under the container’s key, you can observe that two containers (<code>busybox1</code> and <code>busybox2</code>) are listed with information about IP addresses. Since containers are running in the background, attach to the <code>busybox1</code> container and try to ping to <code>busybox2</code> with its IP address.</li>
+</ol>
+<pre class="shell"><code>$ docker attach busybox1
+/ # whoami
+root
+/ # hostname -i
+172.17.0.2
+/ # ping 172.17.0.3
+PING 172.17.0.3 (172.17.0.3): 56 data bytes
+64 bytes from 172.17.0.3: seq=0 ttl=64 time=2.083 ms
+64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.144 ms
+/ # ping busybox2
+ping: bad address &#39;busybox2&#39;</code></pre>
+<ol start="6" type="1">
+<li>Observe that the ping works by passing the IP address of <code>busybox2</code> but fails when the container name is passed instead.</li>
+</ol>
+<p>The downside with the bridge driver is that it’s not recommended for production; the containers communicate via IP address instead of automatic service discovery to resolve an IP address to the container name. Every time you run a container, a different IP address gets assigned to it. It may work well for local development or CI/CD, but it’s definitely not a sustainable approach for applications running in production.</p>
+<p>Another reason not to use it in production is that it will allow unrelated containers to communicate with each other, which could be a security risk. I’ll cover how you can create custom bridge networks later.</p>
+<h3 id="the-host-driver">The Host Driver</h3>
+<p>As the name suggests, host drivers use the networking provided by the host machine. And it removes network isolation between the container and the host machine where Docker is running. For example, If you run a container that binds to port 80 and uses host networking, the container’s application is available on port 80 on the host’s IP address. You can use the host network if you don’t want to rely on Docker’s networking but instead rely on the host machine networking.</p>
+<p>One limitation with the host driver is that it doesn’t work on Docker desktop: you need a Linux host to use it. This article focuses on Docker desktop, but I’ll show you the commands required to work with the Linux host.</p>
+<p>The following command will start an NGINX image and listen to port 80 on the host machine:</p>
+<pre class="shell"><code>$ docker run --rm -d --network host --name my_nginx nginx
+</code></pre>
+<p>You can access NGINX by hitting the <code>http://localhost:80/ url</code>.</p>
+<p>The downside with the host network is that you can’t run multiple containers on the same host having the same port. Ports are shared by all containers on the host machine network.</p>
+<h3 id="the-none-driver">The None Driver</h3>
+<p>The none network driver does not attach containers to any network. Containers do not access the external network or communicate with other containers. You can use it when you want to disable the networking on a container.</p>
+<h3 id="the-overlay-driver">The Overlay Driver</h3>
+<p>The Overlay driver is for multi-host network communication, as with <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a> or <a href="https://kubernetes.io/">Kubernetes</a>. It allows containers across the host to communicate with each other without worrying about the setup. Think of an overlay network as a distributed virtualized network that’s built on top of an existing computer network.</p>
+<p>To create an overlay network for Docker Swarm services, use the following command:</p>
+<pre><code>$ docker network create -d overlay my-overlay-network</code></pre>
+<p>To create an overlay network so that standalone containers can communicate with each other, use this command:</p>
+<pre><code>$ docker network create -d overlay --attachable my-attachable-overlay</code></pre>
+<h3 id="the-macvlan-driver">The Macvlan Driver</h3>
+<p>This driver connects Docker containers directly to the physical host network. As per <a href="https://docs.docker.com/network/#network-drivers">the Docker documentation</a>:</p>
+<blockquote>
+<p>“Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network. The Docker daemon routes traffic to containers by their MAC addresses. Using the <code>macvlan</code> driver is sometimes the best choice when dealing with legacy applications that expect to be directly connected to the physical network, rather than routed through the Docker host’s network stack.”</p>
+</blockquote>
+<p>Macvlan networks are best for legacy applications that need to be modernized by containerizing them and running them on the cloud because they need to be attached to a physical network for performance reasons. <a href="https://github.com/docker/for-mac/issues/3926">A macvlan network is also not supported on Docker desktop for macOS</a>.</p>
+<h2 id="basic-docker-networking-commands">Basic Docker Networking Commands</h2>
+<p>To see which commands list, create, connect, disconnect, inspect, or remove a Docker network, use the <code>docker network help</code> command.</p>
+<pre class="shell"><code>$ docker network help
+
+Usage:  docker network COMMAND
+
+Manage networks
+
+Commands:
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks</code></pre>
+<p>Let’s run through some examples of each command, starting with <code>docker network connect</code>.</p>
+<h3 id="connecting-a-container-to-a-network">Connecting a Container to a Network</h3>
+<p>Let’s try to connect a container to the <code>mynetwork</code> we have created. First, we would need a running container that can connect to <code>mynetwork</code>.</p>
+<pre class="shell"><code>$ docker run -it ubuntu bash   
+root@0f8d7a833f42:/# </code></pre>
+<p>Now we have an Ubuntu Linux image and started a login shell as root inside it. We have the container running in interactive mode with the help of the <code>-it</code> flags.</p>
+<pre class="shell"><code>$ docker ps     
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+0f8d7a833f42   ubuntu    &quot;bash&quot;    9 seconds ago   Up 7 seconds             wizardly_greider</code></pre>
+<p>Run the <code>docker network connect 0f8d7a833f42</code> command to connect the container named <code>wizardly_greider</code> with <code>mynetwork</code>. To verify that this container is connected to <code>mynetwork</code>, use the <code>docker inspect</code> command.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;mynetwork&quot;:</span> <span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;IPAMConfig&quot;</span><span class="fu">:</span> <span class="fu">{},</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;Links&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;Aliases&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;0f8d7a833f42&quot;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                    <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;NetworkID&quot;</span><span class="fu">:</span> <span class="st">&quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&quot;</span><span class="fu">,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;EndpointID&quot;</span><span class="fu">:</span> <span class="st">&quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&quot;</span><span class="fu">,</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;Gateway&quot;</span><span class="fu">:</span> <span class="st">&quot;172.20.0.1&quot;</span><span class="fu">,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;IPAddress&quot;</span><span class="fu">:</span> <span class="st">&quot;172.20.0.2&quot;</span><span class="fu">,</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;IPPrefixLen&quot;</span><span class="fu">:</span> <span class="dv">16</span><span class="fu">,</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;IPv6Gateway&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;GlobalIPv6Address&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;GlobalIPv6PrefixLen&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;MacAddress&quot;</span><span class="fu">:</span> <span class="st">&quot;02:42:ac:14:00:02&quot;</span><span class="fu">,</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                    <span class="dt">&quot;DriverOpts&quot;</span><span class="fu">:</span> <span class="fu">{}</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                <span class="fu">}</span></span></code></pre></div>
+<h3 id="creating-a-network">Creating a Network</h3>
+<p>You can use <code>docker network create mynetwork</code> to create a Docker network. Here, we’ve created a network named <code>mynetwork</code>. Let’s run <code>docker network ls</code> to verify that the network is created successfully.</p>
+<pre class="shell"><code>$ docker network ls
+NETWORK ID     NAME        DRIVER    SCOPE
+b995772ac197   bridge      bridge    local
+7e25f334b07f   host        host      local
+97a158252c99   mynetwork   bridge    local
+475e50be0fe0   none        null      local</code></pre>
+<p>Now we have a new custom network named <code>mynetwork</code>, and its type is bridge.</p>
+<h3 id="disconnecting-a-container-from-the-network">Disconnecting a Container from the Network</h3>
+<p>This command disconnects a Docker container from the custom <code>mynetwork</code>:</p>
+<pre class="shell"><code>$ docker network disconnect mynetwork 0f8d7a833f42</code></pre>
+<h3 id="inspecting-the-network">Inspecting the Network</h3>
+<p>The <code>docker network inspect</code> command displays detailed information on one or more networks.</p>
+<pre class="shell"><code>$ docker network inspect mynetwork
+[
+    {
+        &quot;Name&quot;: &quot;mynetwork&quot;,
+        &quot;Id&quot;: &quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&quot;,
+        &quot;Created&quot;: &quot;2021-03-02T17:36:30.090173896Z&quot;,
+        &quot;Scope&quot;: &quot;local&quot;,
+        &quot;Driver&quot;: &quot;bridge&quot;,
+        &quot;EnableIPv6&quot;: false,
+        &quot;IPAM&quot;: {
+            &quot;Driver&quot;: &quot;default&quot;,
+            &quot;Options&quot;: {},
+            &quot;Config&quot;: [
+                {
+                    &quot;Subnet&quot;: &quot;172.20.0.0/16&quot;,
+                    &quot;Gateway&quot;: &quot;172.20.0.1&quot;
+                }
+            ]
+        },
+        &quot;Internal&quot;: false,
+        &quot;Attachable&quot;: false,
+        &quot;Ingress&quot;: false,
+        &quot;ConfigFrom&quot;: {
+            &quot;Network&quot;: &quot;&quot;
+        },
+        &quot;ConfigOnly&quot;: false,
+        &quot;Containers&quot;: {
+            &quot;0f8d7a833f4283202e905e621e6fd5b29a8e3d4eccc6be6ea0f209f5cb3ca81c&quot;: {
+                &quot;Name&quot;: &quot;wizardly_greider&quot;,
+                &quot;EndpointID&quot;: &quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:14:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.20.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+        &quot;Options&quot;: {},
+        &quot;Labels&quot;: {}
+    }
+]
+</code></pre>
+<h3 id="list-available-networks">List Available Networks</h3>
+<p>Docker installation comes with three networks: none, bridge, and host. You can verify this by running the command <code>docker network ls</code>:</p>
+<pre class="shell"><code>docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local</code></pre>
+<h3 id="removing-a-network">Removing a Network</h3>
+<p>The following are the Docker commands to remove a specific or all available networks:</p>
+<pre class="shell"><code>$ docker network rm mynetwork
+mynetwork
+$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local</code></pre>
+<pre class="shell"><code>$ docker network prune                            
+WARNING! This will remove all custom networks not used by at least one container.
+Are you sure you want to continue? [y/N] </code></pre>
+<h2 id="public-networking">Public Networking</h2>
+<p>Let’s talk about how to publish a container port and IP addresses to the outside world. When you start a container using the <code>docker run</code> command, none of its ports are exposed. Your Docker container can connect to the outside world, but the outside world cannot connect to the container. To make the ports accessible for external use or with other containers not on the same network, you will have to use the <code>-P</code> (publish all available ports) or <code>-p</code> (publish specific ports) flag.</p>
+<p>For example, here we’ve mapped the TCP port 80 of the container to port 8080 on the Docker host:</p>
+<pre><code>docker run -it --rm nginx -p 8080:80</code></pre>
+<p>Here, we’ve mapped container TCP port 80 to port 8080 on the Docker host for connections to host IP 192.168.1.100:</p>
+<pre><code>docker run -p 192.168.1.100:8085:80 nginx</code></pre>
+<p>You can verify this by running the following curl command:</p>
+<pre class="shell"><code>$ curl 192.168.1.100:8085
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+&lt;style&gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&lt;/p&gt;
+
+&lt;p&gt;For online documentation and support please refer to
+&lt;a href=&quot;http://nginx.org/&quot;&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+Commercial support is available at
+&lt;a href=&quot;http://nginx.com/&quot;&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Let me briefly mention DNS configuration for containers. Docker provides your containers with the ability to make basic name resolutions:</p>
+<pre class="shell"><code>$ docker exec busybox2 ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: seq=0 ttl=37 time=9.672 ms
+64 bytes from 216.58.216.196: seq=1 ttl=37 time=6.110 ms
+$ ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: icmp_seq=0 ttl=118 time=4.722 ms</code></pre>
+<p>Docker containers inherit DNS settings from the host when using a bridge network, so the container will resolve DNS names just like the host by default. To add custom host records to your container, you’ll need to use the <a href="https://docs.docker.com/config/containers/container-networking/#dns-services">relevant <code>--dns*</code> flags outlined here</a>.</p>
+<h2 id="docker-compose-networking">Docker Compose Networking</h2>
+<p><a href="https://docs.docker.com/compose/">Docker Compose</a> is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: <code>docker-compose up</code>.</p>
+<p>By default, Docker Compose creates a single network for each container defined in the compose file. All the containers defined in the compose file connect and communicate through the default network.</p>
+<p>If you’re not sure about the commands supported with Docker Compose, you can run the following:</p>
+<pre class="shell"><code>$ docker compose help
+Docker Compose
+
+Usage:
+  docker compose [command]
+
+Available Commands:
+  build       Build or rebuild services
+  convert     Converts the compose file to a cloud format (default: cloudformation)
+  down        Stop and remove containers, networks
+  logs        View output from containers
+  ls          List running compose projects
+  ps          List containers
+  pull        Pull service images
+  push        Push service images
+  run         Run a one-off command on a service.
+  up          Create and start containers
+
+Flags:
+  -h, --help   help for compose
+
+Global Flags:
+      --config DIRECTORY   Location of the client config files DIRECTORY (default &quot;/Users/ashish/.docker&quot;)
+  -c, --context string     context
+  -D, --debug              Enable debug output in the logs
+  -H, --host string        Daemon socket(s) to connect to
+
+Use &quot;docker compose [command] --help&quot; for more information about a command.</code></pre>
+<p>Let’s understand this with an example. In the following <code>docker-compose.yaml</code> file, we have a WordPress and a MySQL image.</p>
+<p>When deploying this setup, <code>docker-compose</code> maps the WordPress container port 80 to port 80 of the host as specified in the compose file. We haven’t defined any custom network, so it should create one for you. Run <code>docker-compose up -d</code> to bring up the services defined in the YAML file:</p>
+<pre><code>version: &#39;3.7&#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &#39;--default-authentication-plugin=mysql_native_password&#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:</code></pre>
+<p>As you can see in the following output, a network named <code>downloads_default</code> is created for you:</p>
+<pre class="shell"><code>$ docker-compose up -d
+Creating network &quot;downloads_default&quot; with the default driver
+Creating volume &quot;downloads_db_data&quot; with default driver
+Pulling db (mysql:8.0.19)...</code></pre>
+<p>Verify that we have two containers up and running with the <code>docker ps</code> command:</p>
+<pre class="shell"><code>$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                 NAMES
+f68265cd6219   wordpress:latest   &quot;docker-entrypoint.s…&quot;   6 minutes ago   Up 6 minutes   0.0.0.0:80-&gt;80/tcp    downloads_wordpress_1
+2838f5586c73   mysql:8.0.19       &quot;docker-entrypoint.s…&quot;   6 minutes ago   Up 6 minutes   3306/tcp, 33060/tcp   downloads_db_1</code></pre>
+<p>Navigate to <code>http://localhost:80</code> in your web browser to access WordPress.</p>
+<p>Now let’s inspect this network with the <code>docker network inspect</code> command. The following is the output:</p>
+<pre class="shell"><code>$ docker network inspect downloads_default
+[
+    {
+        &quot;Name&quot;: &quot;downloads_default&quot;,
+        &quot;Id&quot;: &quot;717ea814aae357ceca3972342a64335a0c910455abf160ed820018b8d6690383&quot;,
+        &quot;Created&quot;: &quot;2021-03-05T03:43:42.541707419Z&quot;,
+        &quot;Scope&quot;: &quot;local&quot;,
+        &quot;Driver&quot;: &quot;bridge&quot;,
+        &quot;EnableIPv6&quot;: false,
+        &quot;IPAM&quot;: {
+            &quot;Driver&quot;: &quot;default&quot;,
+            &quot;Options&quot;: null,
+            &quot;Config&quot;: [
+                {
+                    &quot;Subnet&quot;: &quot;172.18.0.0/16&quot;,
+                    &quot;Gateway&quot;: &quot;172.18.0.1&quot;
+                }
+            ]
+        },
+        &quot;Internal&quot;: false,
+        &quot;Attachable&quot;: true,
+        &quot;Ingress&quot;: false,
+        &quot;ConfigFrom&quot;: {
+            &quot;Network&quot;: &quot;&quot;
+        },
+        &quot;ConfigOnly&quot;: false,
+        &quot;Containers&quot;: {
+            &quot;2838f5586c735894051498c8ed0e5e103209cd22ee5718cbb29e8c6d169c9bf8&quot;: {
+                &quot;Name&quot;: &quot;downloads_db_1&quot;,
+                &quot;EndpointID&quot;: &quot;10033e064387892253d69ac5813be6bc820a95df1a3e19f84eff99a8d55af1bd&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:12:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.18.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;f68265cd6219fb60491c7ebbdae2d7f4c5ea4a74aec9987f5a5082c13b1ec025&quot;: {
+                &quot;Name&quot;: &quot;downloads_wordpress_1&quot;,
+                &quot;EndpointID&quot;: &quot;a4a673479ab3d812713955d461cc4d7032aba3806b49f50dd783a8083588aec5&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:12:00:03&quot;,
+                &quot;IPv4Address&quot;: &quot;172.18.0.3/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+        &quot;Options&quot;: {},
+        &quot;Labels&quot;: {
+            &quot;com.docker.compose.network&quot;: &quot;default&quot;,
+            &quot;com.docker.compose.project&quot;: &quot;downloads&quot;,
+            &quot;com.docker.compose.version&quot;: &quot;1.27.4&quot;
+        }
+    }
+]</code></pre>
+<p>In the container sections, you can see that two containers (<code>downloads_db_1</code> and <code>downloads_wordpress_1</code>) are attached to the default <code>downloads_default</code> network driver, which is the bridge type. Run the following commands to clean up everything:</p>
+<pre class="shell"><code>$ docker-compose down
+Stopping downloads_wordpress_1 ... done
+Stopping downloads_db_1        ... done
+Removing downloads_wordpress_1 ... done
+Removing downloads_db_1        ... done
+Removing network downloads_default</code></pre>
+<p>You can observe that the network created by Compose is deleted, too:</p>
+<pre class="shell"><code>$ docker-compose down -v
+Removing network downloads_default
+WARNING: Network downloads_default not found.
+Removing volume downloads_db_data</code></pre>
+<p>The volume created earlier is deleted, and since the network is already deleted after running the previous command, it shows a warning that the default network is not found. That’s fine.</p>
+<p>The example we’ve looked at so far covers the default network created by Compose, but what if we want to create our custom network and connect services to it? You will define the user-defined networks using the Compose file. The following is the <code>docker-compose</code> YAML file:</p>
+<pre><code>version: &#39;3.7&#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &#39;--default-authentication-plugin=mysql_native_password&#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    networks:
+      - mynetwork
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:
+networks:
+  mynetwork:</code></pre>
+<p>I’ve defined a user-defined network under the top-level networks section at the end of the file and called the network <code>mynetwork</code>. It’s a bridge type, meaning it’s a network on the host machine separated from the rest of the host network stack. Following each service, I added the network key to specify that these services should connect to <code>mynetwork</code>.</p>
+<p>Let’s bring up the services again after the changing the Docker Compose YAML file:</p>
+<pre class="shell"><code>$ docker-compose up -d                    
+Creating network &quot;downloads_mynetwork&quot; with the default driver
+Creating volume &quot;downloads_db_data&quot; with default driver
+Creating downloads_wordpress_1 ... done
+Creating downloads_db_1        ... done</code></pre>
+<p>As you can see, Docker Compose has created the new custom <code>mynetwork</code>, started the containers, and connected them to the custom network. You can inspect it by using the Docker inspect command:</p>
+<pre class="shell"><code>$ docker network inspect downloads_mynetwork
+[
+    {
+        &quot;Name&quot;: &quot;downloads_mynetwork&quot;,
+        &quot;Id&quot;: &quot;cb24ed3832dfdd34ca6fdcfcf0065c8e0df6b9b72f7b29a2aaada74970835dd1&quot;,
+        &quot;Created&quot;: &quot;2021-03-05T04:23:14.354570267Z&quot;,
+        &quot;Scope&quot;: &quot;local&quot;,
+        &quot;Driver&quot;: &quot;bridge&quot;,
+        &quot;EnableIPv6&quot;: false,
+        &quot;IPAM&quot;: {
+            &quot;Driver&quot;: &quot;default&quot;,
+            &quot;Options&quot;: null,
+            &quot;Config&quot;: [
+                {
+                    &quot;Subnet&quot;: &quot;172.19.0.0/16&quot;,
+                    &quot;Gateway&quot;: &quot;172.19.0.1&quot;
+                }
+            ]
+        },
+        &quot;Internal&quot;: false,
+        &quot;Attachable&quot;: true,
+        &quot;Ingress&quot;: false,
+        &quot;ConfigFrom&quot;: {
+            &quot;Network&quot;: &quot;&quot;
+        },
+        &quot;ConfigOnly&quot;: false,
+        &quot;Containers&quot;: {
+            &quot;334bd5bf1689b067fa24705af0b6ab444976b288d25846349ce5b8f6914d8c19&quot;: {
+                &quot;Name&quot;: &quot;downloads_wordpress_1&quot;,
+                &quot;EndpointID&quot;: &quot;10674d2ddd9feb67c98e3c08fcf451f32bda58e96c9c256aee70a0487f6a4496&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:13:00:03&quot;,
+                &quot;IPv4Address&quot;: &quot;172.19.0.3/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            },
+            &quot;9ffc94adab6896620648a1d08d215ba3d9423fee934b905b7bc2a44dd30bd74c&quot;: {
+                &quot;Name&quot;: &quot;downloads_db_1&quot;,
+                &quot;EndpointID&quot;: &quot;927943a0202bfb69692bc172a5c26e05676df6961236596eba3c3464cacbd1ab&quot;,
+                &quot;MacAddress&quot;: &quot;02:42:ac:13:00:02&quot;,
+                &quot;IPv4Address&quot;: &quot;172.19.0.2/16&quot;,
+                &quot;IPv6Address&quot;: &quot;&quot;
+            }
+        },
+        &quot;Options&quot;: {},
+        &quot;Labels&quot;: {
+            &quot;com.docker.compose.network&quot;: &quot;mynetwork&quot;,
+            &quot;com.docker.compose.project&quot;: &quot;downloads&quot;,
+            &quot;com.docker.compose.version&quot;: &quot;1.27.4&quot;
+        }
+    }
+]</code></pre>
+<p>Inspecting the network, you can see there are now two containers connected to the custom network.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this article, we’ve covered the what and how of Docker networking in detail, starting with Docker’s network drivers available out-of-the-box and then some advanced concepts such as overlay and macvlan. We ran through some examples of the most common Docker network commands, and then discussed some common use cases and general pitfalls of the available network drivers. We also covered port publishing, which allows the outside world to connect with containers, and how Docker resolves DNS names. Finally, we explored Docker Compose networking with some examples.</p>
+<p>That should provide you with a decent overview of how Docker networking provides different modes of network drivers so that your containers can communicate on a single or multi-host setup. With this knowledge, you can pick and choose a network driver that fits your use case.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Ashish Choudhary</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Ashish Choudhary is a software engineer with over 10 years of experience in tech, including design, development, and web apps. He’s an active blogger and technical writer who loves Java, Spring Boot, DevOps, and the cloud, and is a strong advocate for open source.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-05T00:00:00-04:00">May 5, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/brown-green-language/" class="pagination--pager" title="Green Vs. Brown Programming Languages
+">Previous</a>
+    
+    
+      <a href="/blog/example-plot/" class="pagination--pager" title="Example Graphs
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Here you can specify a description, if you don’t like the default.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
