@@ -345,7 +345,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -368,7 +368,7 @@
 <p>“One of the main design goals of BuildKit is to separate frontend and backend concerns during a build process” - <a href="https://github.com/moby/moby/issues/32925">Intial BuildKit Proposal</a></p>
 </blockquote>
 <h2 id="install-buildkit">Install BuildKit</h2>
-<h4 id="buildctl">buildctl</h4>
+<h3 id="buildctl">buildctl</h3>
 <p>BuildKit has two primary components: buildctl and buildkitd. buildctl is the BuildKit controller, and it communicates with <code>buildkitd</code>. Though designed for Linux, it can run on macOS and Windows under WSL2.</p>
 <p>On macOS, you can install buildctl with brew.</p>
 <pre><code>brew install buildkit</code></pre>
@@ -403,7 +403,7 @@ GLOBAL OPTIONS:
    --help, -h             show help
    --version, -v          print the version</code></pre>
 <p><em><strong>Other Tools</strong>: In this guide, we will use <a href="https://linux.die.net/man/1/pstree">pstree</a>, <a href="https://github.com/Canop/broot">br</a>, and <a href="earthly.dev/blog/mitmproxy/">mitmproxy</a>. They are not required to use BuildKit or to follow this guide, but they help us demonstrate how BuildKit works.</em></p>
-<h4 id="buildkitd">buildkitd</h4>
+<h3 id="buildkitd">buildkitd</h3>
 <p>buildkitd does the actual work of transforming a build definition into some output. It is designed to be a long-running process. It also isn’t possible to run it on macOS or Windows. For this tutorial, we will run it as a docker container. That will work regardless of your host OS.</p>
 <pre><code>➜ docker run --rm --privileged -d --name buildkit moby/buildkit
 Unable to find image &#39;moby/buildkit:latest&#39; locally
