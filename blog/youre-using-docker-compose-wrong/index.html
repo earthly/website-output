@@ -228,8 +228,63 @@
 
 <div id="main" role="main">
   
-  <div class="sidebar sticky">
+  <div class="sidebar">
+  
+    
+      
+      
+      
+      
+    
+    
+      
 
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Container Tutorials</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/understanding-docker-logging-and-log-files/">Docker Logging</a></li>
+          
+            <li><a href="/blog/docker-networking/">Docker Networking</a></li>
+          
+            <li><a href="/blog/how-to-setup-and-use-amazons-elastic-container-registry/">AWS ECR</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Best Practices</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/youre-using-docker-compose-wrong/" class="active">Docker Compose</a></li>
+          
+            <li><a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/">What Is BuildKit?</a></li>
+          
+            <li><a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">Compiling Containers</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
   
   </div>
 
@@ -243,6 +298,9 @@
 
     <div class="page__inner-wrap">
       
+
+      <section class="page__content" itemprop="text">
+        
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">You’re using docker-compose wrong
 </h1>
@@ -283,8 +341,6 @@
 
         </header>
       
-
-      <section class="page__content" itemprop="text">
         
         <p>Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.</p>
 <p>Ok, that might be an exaggeration. I don’t think there’s actually a 100% right or wrong way to use it: home-grown build and dev setups tend to have all kinds of weird requirements and so the standard doesn’t always match the needs. Please take the article with the appropriate skepticism if your situation doesn’t quite fit.</p>

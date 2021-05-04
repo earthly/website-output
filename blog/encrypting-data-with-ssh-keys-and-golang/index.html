@@ -228,8 +228,7 @@
 
 <div id="main" role="main">
   
-  <div class="sidebar sticky">
-
+  <div class="sidebar">
   
   </div>
 
@@ -243,6 +242,9 @@
 
     <div class="page__inner-wrap">
       
+
+      <section class="page__content" itemprop="text">
+        
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">Encrypting Data With SSH Keys and Golang
 </h1>
@@ -283,8 +285,6 @@
 
         </header>
       
-
-      <section class="page__content" itemprop="text">
         
         <p>We’re currently working on a server for sharing secrets between developers and CI systems, and one of the features we decided to support is passwordless login via ssh keys. I had never used any of the public/private key encryption libraries in Go before, so I wanted to spend some time experimenting with them to familiarise myself with the libraries.</p>
 <p>Here’s a short tutorial with some sample code for experimenting with public/private key RSA encryption.</p>
