@@ -232,4 +232,10 @@ var store = [{
         "tags": [],
         "url": "/blog/brown-green-language/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding Docker Networking",
+        "excerpt":"Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/docker-networking/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
