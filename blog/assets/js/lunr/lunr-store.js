@@ -238,4 +238,34 @@ var store = [{
         "tags": [],
         "url": "/blog/docker-networking/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building a Monorepo with Bazel",
+        "excerpt":"A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase. Wikipedia describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/monorepo-with-bazel/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "What Is Continuous Integration?",
+        "excerpt":"Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics of continuous integration, the differences between CI and CD, and common CI tools. You’ll also find some tips for the best way to set up CI in...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/continuous-integration/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding Docker Multistage Builds",
+        "excerpt":"Understanding Docker Multistage Builds At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/docker-multistage/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

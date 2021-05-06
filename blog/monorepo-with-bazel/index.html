@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+<title>Building a Monorepo with Bazel - Earthly Blog</title>
+<meta name="description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Building a Monorepo with Bazel">
+<meta property="og:url" content="https://earthly.dev/blog/monorepo-with-bazel/">
+
+
+  <meta property="og:description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/monorepo-with-bazel/header-800-da95d26aa.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Building a Monorepo with Bazel">
+  <meta name="twitter:description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/monorepo-with-bazel/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/monorepo-with-bazel/header-800-da95d26aa.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-12T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/monorepo-with-bazel/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-400-9268a3dce.webp 400w, /blog/generated/assets/images/monorepo-with-bazel/header-600-9268a3dce.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-9268a3dce.webp 800w, /blog/generated/assets/images/monorepo-with-bazel/header-1000-9268a3dce.webp 1000w, /blog/generated/assets/images/monorepo-with-bazel/header-1200-9268a3dce.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-400-9268a3dce.png 400w, /blog/generated/assets/images/monorepo-with-bazel/header-600-9268a3dce.png 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-9268a3dce.png 800w, /blog/generated/assets/images/monorepo-with-bazel/header-1000-9268a3dce.png 1000w, /blog/generated/assets/images/monorepo-with-bazel/header-1200-9268a3dce.png 1200w" type="image/png"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-9268a3dce.jpg" alt="Building a Monorepo with Bazel"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Building a Monorepo with Bazel">
+    <meta itemprop="description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
+    <meta itemprop="datePublished" content="2021-05-12T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Building a Monorepo with Bazel
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#who-uses-monorepos-and-why">Who Uses Monorepos and Why?</a></li><li><a href="#the-efficiency-of-building-a-monorepo-with-bazel">The Efficiency of Building a Monorepo with Bazel</a></li><li><a href="#bazel-basics">Bazel Basics</a><ul><li><a href="#workspace">Workspace</a></li><li><a href="#packages">Packages</a></li><li><a href="#targets">Targets</a></li><li><a href="#labels">Labels</a></li><li><a href="#dependencies">Dependencies</a></li><li><a href="#build-files">Build Files</a></li><li><a href="#bazel-basic-commands">Bazel Basic Commands</a></li></ul></li><li><a href="#how-to-build-a-monorepo-with-bazel">How to Build a Monorepo with Bazel</a><ul><li><a href="#configuring-the-bazel.rc-file">Configuring the bazel.rc File</a></li><li><a href="#adding-the-buildifier-dependency-to-your-project">Adding the buildifier Dependency to Your Project</a></li><li><a href="#buildingcompiling-code">Building/Compiling Code</a></li><li><a href="#setting-up-continuous-integration">Setting Up Continuous Integration</a></li></ul></li><li><a href="#downsides-of-bazel-and-the-monorepo-pattern">Downsides of Bazel and the Monorepo Pattern</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>A <em>monorepo</em> is perhaps what you would expect from the name: a single code repository for your entire codebase.</p>
+<p><a href="https://en.wikipedia.org/wiki/Monorepo">Wikipedia</a> describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for governing loosely tied applications. For instance, if you have a full-stack web application stored in one repository and an Android client in another, a monorepo would essentially wrap them in the same repository codebase.</p>
+<h2 id="who-uses-monorepos-and-why">Who Uses Monorepos and Why?</h2>
+<p>Google is one of the most notable adopters of the monorepo pattern, and <a href="https://bazel.build/users.html#whos-using-bazel">companies</a> like Dropbox, LinkedIn, and Uber use monorepos to manage their large codebases. This is because large-scale projects having little or no dependency on each other can be developed, tested, and built without bisecting them into smaller projects.</p>
+<p>If you’re from a JavaScript or <a href="https://www.npmjs.com/">npm</a> background, you can think of a monorepo as a project having a single <code>package.json</code> file for managing all your project dependencies. It also allows you to easily share code between multiple environments using isolated modules as published packages. You can configure a single bundler for performing unit tests, integration tests, and other configurations without worrying about language and ecosystem-specific configurations.</p>
+<h2 id="the-efficiency-of-building-a-monorepo-with-bazel">The Efficiency of Building a Monorepo with Bazel</h2>
+<p><a href="https://docs.bazel.build/versions/4.0.0/bazel-overview.html">Bazel</a> is an open-source build tool developed by Google to give power and life to your monorepo. It’s similar to other build tools like <a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Maven</a>, <a href="https://gradle.org/">Gradle</a>, and <a href="https://buck.build/">Buck</a>, but it has a number of advantages:</p>
+<ol type="1">
+<li>Bazel supports multiple languages (Java, JavaScript, Go, C++, to name a few) and platforms (Linux, macOS, and Windows).</li>
+<li>It’s built with <a href="https://docs.rs/starlark/0.3.1/starlark/">Starlark</a>, a high-level language similar to Python that allows it to perform complex operations on binaries, scripts, and data sets.</li>
+<li>Even for large source files, Bazel is blazingly fast at building, as it caches previous work and rebuilds only the code that needs to be.</li>
+</ol>
+<p>This article will walk you through the core concepts of Bazel and set you up for building and compiling your own monorepo in JavaScript.</p>
+<h2 id="bazel-basics">Bazel Basics</h2>
+<p>First, some vocabulary.</p>
+<h3 id="workspace">Workspace</h3>
+<p>Bazel calls your top-level source file a <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#workspace">workspace</a>, which contains other source files in a nested fashion. Your workspace is what builds your entire software by taking a set of inputs and generating the desired output.</p>
+<h3 id="packages">Packages</h3>
+<p>A <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#packages">package</a> contains all your related files and dependencies and a file named <code>BUILD</code>. Subdirectories falling under a package are called subpackages.</p>
+<p>Consider the following directory tree:</p>
+<pre><code>src/app/BUILD
+src/app/core/input.txt
+src/app/tests/BUILD</code></pre>
+<p>It has two packages: <code>app</code>, and a subpackage, <code>app/tests</code>, since both contain their own BUILD files. Note that <code>app/core</code> is not a package but a regular directory inside <code>app</code>.</p>
+<h3 id="targets">Targets</h3>
+<p>Elements of a package are called <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#targets">targets</a>, which can be categorized as <em>files</em> and <em>rules</em>.</p>
+<p>Files can either be source files containing the code of a developer or <em>generated files</em> generated by Bazel according to a specific set of rules. A rule specifies the relationship between a set of inputs and outputs along with the necessary steps to derive the latter from the former.</p>
+<h3 id="labels">Labels</h3>
+<p>The name of a target is its <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#labels">label</a>, which uniquely identifies it and always starts with <code>//</code>.</p>
+<pre><code>@repo//app/main:app_binary</code></pre>
+<p>Each label has two parts: a package name (<code>app/main</code>) and a target name (<code>app_binary</code>).</p>
+<h3 id="dependencies">Dependencies</h3>
+<p>Target X is considered a dependency for target Y, if Y needs X at build or execution time. The dependency relation produces a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">Directed Acyclic Graph</a> (DAG) called a <em>dependency graph</em>, which is used to classify these dependencies further. You can read more about <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#dependencies">these types and their definitions here</a>.</p>
+<h3 id="build-files">Build Files</h3>
+<p><a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#BUILD_files">Build files</a> contain the top-level program that describes the set of declared rules. These files are periodically updated with respect to changes in the dependencies being used.</p>
+<h3 id="bazel-basic-commands">Bazel Basic Commands</h3>
+<p>You can check if you have Bazel installed on your system by running the <code>version</code> command.</p>
+<pre class="shell"><code>$ bazel --version
+bazel 4.0.0</code></pre>
+<p>The primary <code>build</code> command builds your project’s targets, and <code>analyze-profile</code> can analyze your builds. You can also remove output files and close the server using the <code>clean</code> command. You can get a list of all these basic commands along with their use cases by running:</p>
+<pre class="shell"><code>$ bazel help 
+Usage: bazel &lt;command&gt; &lt;options&gt; ...
+
+Available commands:
+  analyze-profile     Analyzes build profile data.
+...</code></pre>
+<h2 id="how-to-build-a-monorepo-with-bazel">How to Build a Monorepo with Bazel</h2>
+<p>Once you have the <a href="https://nodejs.org/en/">Node.js</a> installed on your system, you can run the following command to install Bazel globally:</p>
+<pre class="shell"><code>npm install -g @bazel/bazelisk </code></pre>
+<p>You can also install <a href="https://docs.bazel.build/versions/master/build-javascript.html#installing-ibazel">iBazel</a> to enable hot reloading. This lets you see your changes live in real time.</p>
+<pre class="shell"><code>npm install --save-dev @bazel/ibazel
+npm install --global @bazel/ibazel</code></pre>
+<h3 id="configuring-the-bazel.rc-file">Configuring the <code>bazel.rc</code> File</h3>
+<p>You can write build options in a <a href="https://docs.bazel.build/versions/master/guide.html#bazelrc"><code>bazel.rc</code> file</a> to apply them on every build. You can use the same settings for your project by creating a <code>tools/bazel.rc</code> file at the root of your Bazel workspace.</p>
+<p>If you don’t want to share these settings, you can move out the <code>.bazel.rc</code> file to the root directory and add it to your <code>.gitignore</code> list instead. You can also personalize these settings locally by moving it in your home directory.</p>
+<p>The following is a generic <code>bazel.rc</code> file that you can modify according to your needs:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode .rc"><code class="sourceCode xml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a># Directory structure         #</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a># Artifacts are typically placed in a directory called &quot;dist&quot;</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a># Be aware that this setup will still create a bazel-out symlink in</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a># your project directory, which you must exclude from version control and your</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a># editor&#39;s search path.</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>build --symlink_prefix=dist/</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a># Output                      #</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a># A more useful default output mode for bazel query, which</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a># prints &quot;ng_module rule //foo:bar&quot; instead of just &quot;//foo:bar&quot;.</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>query --output=label_kind</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a># By default, failing tests don&#39;t print any output, it&#39;s logged to a</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a># file instead.</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>test --test_output=errors</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a># Typescript / Angular / Sass #</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>###############################</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a># Make TypeScript and Angular compilation fast by keeping a few</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a># copies of the compiler running as daemons, and cache SourceFile</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a># ASTs to reduce parse time.</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>build --strategy=TypeScriptCompile=worker --strategy=AngularTemplateCompile=worker</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a># Enable debugging tests with --config=debug</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results</span></code></pre></div>
+<h3 id="adding-the-buildifier-dependency-to-your-project">Adding the <code>buildifier</code> Dependency to Your Project</h3>
+<p>Buildifier is a formatting tool that ensures all <code>BUILD</code> files are formatted in a similar fashion. It creates a standardized formatting for all your <code>BUILD</code> and <code>.bzl</code> files. It also has a linter out of the box to help you detect issues in your code and automatically fix them. You can add the <code>buildifier</code> dependency to your project either using npm:</p>
+<pre class="shell"><code>npm install --save-dev @bazel/buildifier</code></pre>
+<p>or Yarn:</p>
+<pre class="shell"><code>yarn add -D @bazel/buildifier</code></pre>
+<p>You will need the following scripts inside your <code>package.json</code> file to run the <code>buildifier</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span>  </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;bazel:format&quot;</span><span class="fu">:</span> <span class="st">&quot;find . -type f </span><span class="ch">\\</span><span class="st">( -name </span><span class="ch">\&quot;</span><span class="st">*.bzl</span><span class="ch">\&quot;</span><span class="st"> -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel </span><span class="ch">\\</span><span class="st">) ! -path </span><span class="ch">\&quot;</span><span class="st">*/node_modules/*</span><span class="ch">\&quot;</span><span class="st"> | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable&quot;</span><span class="fu">,</span>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;bazel:lint&quot;</span><span class="fu">:</span> <span class="st">&quot;yarn bazel:format --lint=warn&quot;</span><span class="fu">,</span>  </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;bazel:lint-fix&quot;</span><span class="fu">:</span> <span class="st">&quot;yarn bazel:format --lint=fix&quot;</span>  </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span>  </span></code></pre></div>
+<h3 id="buildingcompiling-code">Building/Compiling Code</h3>
+<p>In this example, you’ll start from a new empty directory and build and compile a simple Node.js application using Bazel. You’ll end up with the following structure:</p>
+<pre><code>  WORKSPACE     
+  BUILD.bazel    
+  es5.babelrc  
+  app.js    
+  package-lock.json  
+  package.json    
+  </code></pre>
+<p>Instead of manually configuring everything, you can use the following commands to get started:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> init @bazel bazel_build_nodejs  </span></code></pre></div>
+<p>Or if you’re using Yarn:</p>
+<pre class="shell"><code>yarn create @bazel bazel_build_nodejs  </code></pre>
+<p>The previous commands use <a href="https://www.npmjs.com/package/@bazel/create"><code>@bazel/create</code></a> under the hood to set up your monorepo with some minimal configurations. This means that it automatically creates <code>package.json</code>, <code>WORKSPACE</code>, and <code>BUILD.bazel</code> files for you.</p>
+<p>The <code>package.json</code> is exactly how it’s created when you’re initializing any Node.js project using the <code>npm init</code> command. It contains some development time dependencies and some scripts through which you can run your build.</p>
+<p>Also notice how it automatically adds <code>buildifier</code> to your project so you can avoid manually setting it up. This is only a starting point though, and you would need to manually set up a <code>buildifier</code> depending on the requirements of your project.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span>  </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;bazel_build_nodejs&quot;</span><span class="fu">,</span>  </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;0.1.0&quot;</span><span class="fu">,</span>  </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;private&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span>  </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;devDependencies&quot;</span><span class="fu">:</span> <span class="fu">{</span>  </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;@bazel/bazelisk&quot;</span><span class="fu">:</span> <span class="st">&quot;latest&quot;</span><span class="fu">,</span>  </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;@bazel/ibazel&quot;</span><span class="fu">:</span> <span class="st">&quot;latest&quot;</span><span class="fu">,</span>  </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;@bazel/buildifier&quot;</span><span class="fu">:</span> <span class="st">&quot;latest&quot;</span>  </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span>  </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;scripts&quot;</span><span class="fu">:</span> <span class="fu">{</span>  </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;build&quot;</span><span class="fu">:</span> <span class="st">&quot;bazel build //...&quot;</span><span class="fu">,</span>  </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="st">&quot;bazel test //...&quot;</span>  </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span>  </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span>  </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
+<p>Let’s install these packages and a few more like <a href="https://babeljs.io/">Babel</a> to <a href="https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them">transpile</a> your JavaScript code.</p>
+<pre class="shell"><code>npm install @babel/core @babel/cli @babel/preset-env  </code></pre>
+<p>A <code>package-lock.json</code> file will also be automatically created for you. Your <code>WORKSPACE.bazel</code> file should look like this:</p>
+<pre class="text"><code># Bazel workspace created by @bazel/create 3.4.1  
+  
+# Declares that this directory is the root of a Bazel workspace.  
+# See https://docs.bazel.build/versions/master/build-ref.html#workspace  
+workspace(  
+    # How this workspace would be referenced with absolute labels from another workspace  
+    name = &quot;bazel_build_nodejs&quot;,  
+    # Map the @npm bazel workspace to the node_modules directory.  
+    # This lets Bazel use the same node_modules as other local tooling.  
+    managed_directories = {&quot;@npm&quot;: [&quot;node_modules&quot;]},  
+)  
+  
+# Install the nodejs &quot;bootstrap&quot; package  
+# This provides the basic tools for running and packaging Node.js programs in Bazel  
+load(&quot;@bazel_tools//tools/build_defs/repo:http.bzl&quot;, &quot;http_archive&quot;)  
+http_archive(  
+    name = &quot;build_bazel_rules_nodejs&quot;,  
+    sha256 = &quot;a160d9ac88f2aebda2aa995de3fa3171300c076f06ad1d7c2e1385728b8442fa&quot;,  
+    urls = [&quot;https://github.com/bazelbuild/rules_nodejs/releases/download/3.4.1/rules_nodejs-3.4.1.tar.gz&quot;],  
+)  
+  
+# The npm_install rule runs Yarn anytime the package.json or package-lock.json file changes.  
+# It also extracts any Bazel rules distributed in an npm package.  
+load(&quot;@build_bazel_rules_nodejs//:index.bzl&quot;, &quot;npm_install&quot;)  
+npm_install(  
+    # Name this npm so that Bazel Label references look like @npm//package  
+    name = &quot;npm&quot;,  
+    package_json = &quot;//:package.json&quot;,  
+    package_lock_json = &quot;//:package-lock.json&quot;,  
+)  
+  </code></pre>
+<p>It basically tells Bazel where to pull the tools for running your project and fetches all the required rules to create a build. You also need to tell Bazel to use auto-generated rules. Add the following line to the top of your <code>BUILD.bazel</code>:</p>
+<pre><code>load(&quot;@npm//@babel/cli:index.bzl&quot;, &quot;babel&quot;)  </code></pre>
+<p>Let’s add a simple console statement inside <code>app.js</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;NodeJS Built using Bazel!&#39;</span>)<span class="op">;</span>  </span></code></pre></div>
+<p>Next add the following code inside <code>es5.babelrc</code> to configure Babel for transpiling JavaScript code:</p>
+<pre class="babelrc"><code>{  
+    &quot;sourceMaps&quot;: &quot;inline&quot;,  
+    &quot;presets&quot;: [  
+      [  
+        &quot;@babel/preset-env&quot;,  
+        {  
+          &quot;modules&quot;: &quot;systemjs&quot;  
+        }  
+      ]  
+    ]  
+  }  </code></pre>
+<p>Finally, you need to tell Bazel how to take JavaScript inputs and convert them to transpiled or <a href="https://johnpapa.net/es5-es2015-typescript/">ES5</a> output. Add the following code inside <code>BUILD.bazel</code> file after the previous load statement:</p>
+<pre class="bazel"><code>babel(  
+    name = &quot;compile&quot;,  
+    data = [  
+        &quot;app.js&quot;,  
+        &quot;es5.babelrc&quot;,  
+        &quot;@npm//@babel/preset-env&quot;,  
+    ],  
+    outs = [&quot;app.es5.js&quot;],  
+    args = [  
+        &quot;app.js&quot;,  
+        &quot;--config-file&quot;,  
+        &quot;./$(execpath es5.babelrc)&quot;,  
+        &quot;--out-file&quot;,  
+        &quot;$(execpath app.es5.js)&quot;,  
+    ],  
+)  </code></pre>
+<p>Run the following command to build and compile your JavaScript code:</p>
+<pre><code>npm run build  </code></pre>
+<p>In case you run into an error, try renaming your <code>WORKSPACE.bazel</code> file to simply <code>WORKSPACE</code>. If all goes well, you should see something similar to the following screenshot on your terminal:</p>
+<figure>
+<img src="/blog/assets/images/monorepo-with-bazel/RhmR1Xx.png" alt="Terminal log of the build command" /><figcaption aria-hidden="true">Terminal log of the build command</figcaption>
+</figure>
+<p>You will see <code>bazel-out</code> and a <code>dist</code> directory where your output files will be present.</p>
+<p><img src="/blog/assets/images/monorepo-with-bazel/Ffu5zoQ.png" height="400" alt="Output directories" /><br />
+</p>
+<p>If you check inside <code>dist/bin/app.es5.js</code>, you should see your transpiled ES5 JavaScript code as shown:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>System<span class="op">.</span><span class="fu">register</span>([]<span class="op">,</span> <span class="kw">function</span> (_export<span class="op">,</span> _context) {  </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;use strict&quot;</span><span class="op">;</span>  </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> {  </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">setters</span><span class="op">:</span> []<span class="op">,</span>  </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">execute</span><span class="op">:</span> <span class="kw">function</span> () {  </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;NodeJS Built using Bazel!&#39;</span>)<span class="op">;</span>  </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    }  </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span>  </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span>  </span></code></pre></div>
+<h3 id="setting-up-continuous-integration">Setting Up Continuous Integration</h3>
+<p>Bazel recommends using container environments like the <a href="https://hub.docker.com/r/angular/ngcontainer/">ngcontainer Docker image</a> for continuous integration (CI). You can easily add specific CI settings using the <code>build:ci</code> or <code>test:ci</code> prefixes to your <code>bazel.rc</code> file.</p>
+<p>If you’re using <a href="https://circleci.com/">CircleCI</a>, you can use <a href="https://github.com/angular/angular-bazel-example/blob/master/.circleci/config.yml">this example</a> as a reference. If you’re using GitLab, you can set up CI in minutes using the following scripts:</p>
+<pre><code>variables:  
+  BAZEL_DIGEST_VERSION: &quot;f670e9aec235aa23a5f068566352c5850a67eb93de8d7a2350240c68fcec3b25&quot; # Bazel 3.4.1  
+  
+build:  
+  image:  
+    name: gcr.io/cloud-marketplace-containers/google/bazel@sha256:$BAZEL_DIGEST_VERSION  
+    entrypoint: [&quot;&quot;]  
+  stage: build  
+  script:  
+    - bazel --output_base output build //main/...  
+  artifacts:  
+    paths:  
+      - bazel-bin/main/hello-world  
+  cache:  
+    key: $BAZEL_DIGEST_VERSION  
+    paths:  
+      - output  </code></pre>
+<p>The above scripts define the build outputs and cache directory and also ensures immutability. Luckily the GitLab team has a <a href="https://about.gitlab.com/blog/2020/09/01/using-bazel-to-speed-up-gitlab-ci-builds/">dedicated article</a> on this for the best reference.</p>
+<h2 id="downsides-of-bazel-and-the-monorepo-pattern">Downsides of Bazel and the Monorepo Pattern</h2>
+<p>The monorepo pattern is trendy these days, but there are some trade-offs you should be aware of. For a large and diverse team working on a monorepo, it might not be a great idea to expose every ounce of that codebase to novice developers.</p>
+<p>Besides someone messing things up accidentally, keeping open access to all your config files, API keys, and so on might pose an issue from a security standpoint. On similar lines, you can understand why open-source projects aren’t living inside monorepos yet.</p>
+<p>While Bazel definitely does some magic to ease out this pain for developers, it doesn’t have a large open-source community backing it yet. Having all your source code in one place could slow down the general process of approving pull requests and running the build scripts every now and then.</p>
+<p>Bazel also promotes a strict demarcation between your dependencies and source code, while modern languages and frameworks have dedicated directories for bookkeeping dependencies. For instance, an npm project will always have its dependencies in a <code>node_modules</code> directory inside the root directory. Diverging away from that pattern can present a steep learning curve, or at minimum an uncomfortable change.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Due to better structured configurational files and multiple language support, Bazel is a viable option for your large multi-language project deployed on multiple platforms. It’s fast, and you can even optimize your slow builds <a href="https://docs.bazel.build/versions/master/remote-caching.html">using your own build cache</a>. Google has tried and tested Bazel’s core features to validate its stability, and their extensive documentation is some compensation for the small community.</p>
+<p>If you’d like to explore further, you can build your own React or Angular app using Bazel to see how it treats different environments of the same language. You can also try out their <a href="https://docs.bazel.build/versions/0.17.2/build-javascript.html#tutorials">tutorials for different languages</a> to get a bigger picture of how Bazel works. And if today’s the day you’re welcoming Bazel into your project, definitely take a moment to familiarize yourself with its documented <a href="https://docs.bazel.build/versions/master/best-practices.html">best practices</a>.</p>
+<p>If the benefits of Bazel look promising but the downsides prevent you from adopting it, then take a look at <a href="https://earthly.dev/">Earthly</a>. It supports monorepo and poly repos and has a gentler learning curve.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/docker-networking/" class="pagination--pager" title="Understanding Docker Networking
+">Previous</a>
+    
+    
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
