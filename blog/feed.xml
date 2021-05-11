@@ -1,4 +1,250 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-11T08:53:56-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Understanding Docker Networking</title><link href="https://earthly.dev/blog/docker-networking/" rel="alternate" type="text/html" title="Understanding Docker Networking" /><published>2021-05-05T00:00:00-04:00</published><updated>2021-05-05T00:00:00-04:00</updated><id>https://earthly.dev/blog/docker-networking</id><content type="html" xml:base="https://earthly.dev/blog/docker-networking/">&lt;p&gt;Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-11T12:17:26-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Building a Monorepo with Bazel</title><link href="https://earthly.dev/blog/monorepo-with-bazel/" rel="alternate" type="text/html" title="Building a Monorepo with Bazel" /><published>2021-05-11T00:00:00-04:00</published><updated>2021-05-11T00:00:00-04:00</updated><id>https://earthly.dev/blog/monorepo-with-bazel</id><content type="html" xml:base="https://earthly.dev/blog/monorepo-with-bazel/">&lt;p&gt;A &lt;em&gt;monorepo&lt;/em&gt; is perhaps what you would expect from the name: a single code repository for your entire codebase.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Monorepo&quot;&gt;Wikipedia&lt;/a&gt; describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for governing loosely tied applications. For instance, if you have a full-stack web application stored in one repository and an Android client in another, a monorepo would essentially wrap them in the same repository codebase.&lt;/p&gt;
+&lt;h2 id=&quot;who-uses-monorepos-and-why&quot;&gt;Who Uses Monorepos and Why?&lt;/h2&gt;
+&lt;p&gt;Google is one of the most notable adopters of the monorepo pattern, and &lt;a href=&quot;https://bazel.build/users.html#whos-using-bazel&quot;&gt;companies&lt;/a&gt; like Dropbox, LinkedIn, and Uber use monorepos to manage their large codebases. This is because large-scale projects having little or no dependency on each other can be developed, tested, and built without bisecting them into smaller projects.&lt;/p&gt;
+&lt;p&gt;If you’re from a JavaScript or &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt; background, you can think of a monorepo as a project having a single &lt;code&gt;package.json&lt;/code&gt; file for managing all your project dependencies. It also allows you to easily share code between multiple environments using isolated modules as published packages. You can configure a single bundler for performing unit tests, integration tests, and other configurations without worrying about language and ecosystem-specific configurations.&lt;/p&gt;
+&lt;h2 id=&quot;the-efficiency-of-building-a-monorepo-with-bazel&quot;&gt;The Efficiency of Building a Monorepo with Bazel&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/bazel-overview.html&quot;&gt;Bazel&lt;/a&gt; is an open-source build tool developed by Google to give power and life to your monorepo. It’s similar to other build tools like &lt;a href=&quot;https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html&quot;&gt;Maven&lt;/a&gt;, &lt;a href=&quot;https://gradle.org/&quot;&gt;Gradle&lt;/a&gt;, and &lt;a href=&quot;https://buck.build/&quot;&gt;Buck&lt;/a&gt;, but it has a number of advantages:&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Bazel supports multiple languages (Java, JavaScript, Go, C++, to name a few) and platforms (Linux, macOS, and Windows).&lt;/li&gt;
+&lt;li&gt;It’s built with &lt;a href=&quot;https://docs.rs/starlark/0.3.1/starlark/&quot;&gt;Starlark&lt;/a&gt;, a high-level language similar to Python that allows it to perform complex operations on binaries, scripts, and data sets.&lt;/li&gt;
+&lt;li&gt;Even for large source files, Bazel is blazingly fast at building, as it caches previous work and rebuilds only the code that needs to be.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This article will walk you through the core concepts of Bazel and set you up for building and compiling your own monorepo in JavaScript.&lt;/p&gt;
+&lt;h2 id=&quot;bazel-basics&quot;&gt;Bazel Basics&lt;/h2&gt;
+&lt;p&gt;First, some vocabulary.&lt;/p&gt;
+&lt;h3 id=&quot;workspace&quot;&gt;Workspace&lt;/h3&gt;
+&lt;p&gt;Bazel calls your top-level source file a &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#workspace&quot;&gt;workspace&lt;/a&gt;, which contains other source files in a nested fashion. Your workspace is what builds your entire software by taking a set of inputs and generating the desired output.&lt;/p&gt;
+&lt;h3 id=&quot;packages&quot;&gt;Packages&lt;/h3&gt;
+&lt;p&gt;A &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#packages&quot;&gt;package&lt;/a&gt; contains all your related files and dependencies and a file named &lt;code&gt;BUILD&lt;/code&gt;. Subdirectories falling under a package are called subpackages.&lt;/p&gt;
+&lt;p&gt;Consider the following directory tree:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;src/app/BUILD
+src/app/core/input.txt
+src/app/tests/BUILD&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It has two packages: &lt;code&gt;app&lt;/code&gt;, and a subpackage, &lt;code&gt;app/tests&lt;/code&gt;, since both contain their own BUILD files. Note that &lt;code&gt;app/core&lt;/code&gt; is not a package but a regular directory inside &lt;code&gt;app&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;targets&quot;&gt;Targets&lt;/h3&gt;
+&lt;p&gt;Elements of a package are called &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#targets&quot;&gt;targets&lt;/a&gt;, which can be categorized as &lt;em&gt;files&lt;/em&gt; and &lt;em&gt;rules&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Files can either be source files containing the code of a developer or &lt;em&gt;generated files&lt;/em&gt; generated by Bazel according to a specific set of rules. A rule specifies the relationship between a set of inputs and outputs along with the necessary steps to derive the latter from the former.&lt;/p&gt;
+&lt;h3 id=&quot;labels&quot;&gt;Labels&lt;/h3&gt;
+&lt;p&gt;The name of a target is its &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#labels&quot;&gt;label&lt;/a&gt;, which uniquely identifies it and always starts with &lt;code&gt;//&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@repo//app/main:app_binary&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Each label has two parts: a package name (&lt;code&gt;app/main&lt;/code&gt;) and a target name (&lt;code&gt;app_binary&lt;/code&gt;).&lt;/p&gt;
+&lt;h3 id=&quot;dependencies&quot;&gt;Dependencies&lt;/h3&gt;
+&lt;p&gt;Target X is considered a dependency for target Y, if Y needs X at build or execution time. The dependency relation produces a &lt;a href=&quot;https://en.wikipedia.org/wiki/Directed_acyclic_graph&quot;&gt;Directed Acyclic Graph&lt;/a&gt; (DAG) called a &lt;em&gt;dependency graph&lt;/em&gt;, which is used to classify these dependencies further. You can read more about &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#dependencies&quot;&gt;these types and their definitions here&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;build-files&quot;&gt;Build Files&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#BUILD_files&quot;&gt;Build files&lt;/a&gt; contain the top-level program that describes the set of declared rules. These files are periodically updated with respect to changes in the dependencies being used.&lt;/p&gt;
+&lt;h3 id=&quot;bazel-basic-commands&quot;&gt;Bazel Basic Commands&lt;/h3&gt;
+&lt;p&gt;You can check if you have Bazel installed on your system by running the &lt;code&gt;version&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ bazel --version
+bazel 4.0.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The primary &lt;code&gt;build&lt;/code&gt; command builds your project’s targets, and &lt;code&gt;analyze-profile&lt;/code&gt; can analyze your builds. You can also remove output files and close the server using the &lt;code&gt;clean&lt;/code&gt; command. You can get a list of all these basic commands along with their use cases by running:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ bazel help 
+Usage: bazel &amp;lt;command&amp;gt; &amp;lt;options&amp;gt; ...
+
+Available commands:
+  analyze-profile     Analyzes build profile data.
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;how-to-build-a-monorepo-with-bazel&quot;&gt;How to Build a Monorepo with Bazel&lt;/h2&gt;
+&lt;p&gt;Once you have the &lt;a href=&quot;https://nodejs.org/en/&quot;&gt;Node.js&lt;/a&gt; installed on your system, you can run the following command to install Bazel globally:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install -g @bazel/bazelisk &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can also install &lt;a href=&quot;https://docs.bazel.build/versions/master/build-javascript.html#installing-ibazel&quot;&gt;iBazel&lt;/a&gt; to enable hot reloading. This lets you see your changes live in real time.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install --save-dev @bazel/ibazel
+npm install --global @bazel/ibazel&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;configuring-the-bazel.rc-file&quot;&gt;Configuring the &lt;code&gt;bazel.rc&lt;/code&gt; File&lt;/h3&gt;
+&lt;p&gt;You can write build options in a &lt;a href=&quot;https://docs.bazel.build/versions/master/guide.html#bazelrc&quot;&gt;&lt;code&gt;bazel.rc&lt;/code&gt; file&lt;/a&gt; to apply them on every build. You can use the same settings for your project by creating a &lt;code&gt;tools/bazel.rc&lt;/code&gt; file at the root of your Bazel workspace.&lt;/p&gt;
+&lt;p&gt;If you don’t want to share these settings, you can move out the &lt;code&gt;.bazel.rc&lt;/code&gt; file to the root directory and add it to your &lt;code&gt;.gitignore&lt;/code&gt; list instead. You can also personalize these settings locally by moving it in your home directory.&lt;/p&gt;
+&lt;p&gt;The following is a generic &lt;code&gt;bazel.rc&lt;/code&gt; file that you can modify according to your needs:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode .rc&quot;&gt;&lt;code class=&quot;sourceCode xml&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Directory structure         #&lt;/span&gt;
+&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Artifacts are typically placed in a directory called &amp;quot;dist&amp;quot;&lt;/span&gt;
+&lt;span id=&quot;cb7-6&quot;&gt;&lt;a href=&quot;#cb7-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Be aware that this setup will still create a bazel-out symlink in&lt;/span&gt;
+&lt;span id=&quot;cb7-7&quot;&gt;&lt;a href=&quot;#cb7-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# your project directory, which you must exclude from version control and your&lt;/span&gt;
+&lt;span id=&quot;cb7-8&quot;&gt;&lt;a href=&quot;#cb7-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# editor&amp;#39;s search path.&lt;/span&gt;
+&lt;span id=&quot;cb7-9&quot;&gt;&lt;a href=&quot;#cb7-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;build --symlink_prefix=dist/&lt;/span&gt;
+&lt;span id=&quot;cb7-10&quot;&gt;&lt;a href=&quot;#cb7-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-11&quot;&gt;&lt;a href=&quot;#cb7-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-12&quot;&gt;&lt;a href=&quot;#cb7-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Output                      #&lt;/span&gt;
+&lt;span id=&quot;cb7-13&quot;&gt;&lt;a href=&quot;#cb7-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-14&quot;&gt;&lt;a href=&quot;#cb7-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-15&quot;&gt;&lt;a href=&quot;#cb7-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# A more useful default output mode for bazel query, which&lt;/span&gt;
+&lt;span id=&quot;cb7-16&quot;&gt;&lt;a href=&quot;#cb7-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# prints &amp;quot;ng_module rule //foo:bar&amp;quot; instead of just &amp;quot;//foo:bar&amp;quot;.&lt;/span&gt;
+&lt;span id=&quot;cb7-17&quot;&gt;&lt;a href=&quot;#cb7-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;query --output=label_kind&lt;/span&gt;
+&lt;span id=&quot;cb7-18&quot;&gt;&lt;a href=&quot;#cb7-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-19&quot;&gt;&lt;a href=&quot;#cb7-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# By default, failing tests don&amp;#39;t print any output, it&amp;#39;s logged to a&lt;/span&gt;
+&lt;span id=&quot;cb7-20&quot;&gt;&lt;a href=&quot;#cb7-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# file instead.&lt;/span&gt;
+&lt;span id=&quot;cb7-21&quot;&gt;&lt;a href=&quot;#cb7-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;test --test_output=errors&lt;/span&gt;
+&lt;span id=&quot;cb7-22&quot;&gt;&lt;a href=&quot;#cb7-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-23&quot;&gt;&lt;a href=&quot;#cb7-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-24&quot;&gt;&lt;a href=&quot;#cb7-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Typescript / Angular / Sass #&lt;/span&gt;
+&lt;span id=&quot;cb7-25&quot;&gt;&lt;a href=&quot;#cb7-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
+&lt;span id=&quot;cb7-26&quot;&gt;&lt;a href=&quot;#cb7-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Make TypeScript and Angular compilation fast by keeping a few&lt;/span&gt;
+&lt;span id=&quot;cb7-27&quot;&gt;&lt;a href=&quot;#cb7-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# copies of the compiler running as daemons, and cache SourceFile&lt;/span&gt;
+&lt;span id=&quot;cb7-28&quot;&gt;&lt;a href=&quot;#cb7-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# ASTs to reduce parse time.&lt;/span&gt;
+&lt;span id=&quot;cb7-29&quot;&gt;&lt;a href=&quot;#cb7-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;build --strategy=TypeScriptCompile=worker --strategy=AngularTemplateCompile=worker&lt;/span&gt;
+&lt;span id=&quot;cb7-30&quot;&gt;&lt;a href=&quot;#cb7-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb7-31&quot;&gt;&lt;a href=&quot;#cb7-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Enable debugging tests with --config=debug&lt;/span&gt;
+&lt;span id=&quot;cb7-32&quot;&gt;&lt;a href=&quot;#cb7-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;adding-the-buildifier-dependency-to-your-project&quot;&gt;Adding the &lt;code&gt;buildifier&lt;/code&gt; Dependency to Your Project&lt;/h3&gt;
+&lt;p&gt;Buildifier is a formatting tool that ensures all &lt;code&gt;BUILD&lt;/code&gt; files are formatted in a similar fashion. It creates a standardized formatting for all your &lt;code&gt;BUILD&lt;/code&gt; and &lt;code&gt;.bzl&lt;/code&gt; files. It also has a linter out of the box to help you detect issues in your code and automatically fix them. You can add the &lt;code&gt;buildifier&lt;/code&gt; dependency to your project either using npm:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install --save-dev @bazel/buildifier&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or Yarn:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;yarn add -D @bazel/buildifier&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You will need the following scripts inside your &lt;code&gt;package.json&lt;/code&gt; file to run the &lt;code&gt;buildifier&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;er&quot;&gt;&amp;quot;scripts&amp;quot;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb10-2&quot;&gt;&lt;a href=&quot;#cb10-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:format&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;find . -type f &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;( -name &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;*.bzl&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;) ! -path &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;*/node_modules/*&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb10-3&quot;&gt;&lt;a href=&quot;#cb10-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:lint&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;yarn bazel:format --lint=warn&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb10-4&quot;&gt;&lt;a href=&quot;#cb10-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:lint-fix&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;yarn bazel:format --lint=fix&amp;quot;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb10-5&quot;&gt;&lt;a href=&quot;#cb10-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;buildingcompiling-code&quot;&gt;Building/Compiling Code&lt;/h3&gt;
+&lt;p&gt;In this example, you’ll start from a new empty directory and build and compile a simple Node.js application using Bazel. You’ll end up with the following structure:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  WORKSPACE     
+  BUILD.bazel    
+  es5.babelrc  
+  app.js    
+  package-lock.json  
+  package.json    
+  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Instead of manually configuring everything, you can use the following commands to get started:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode sh&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;npm&lt;/span&gt; init @bazel bazel_build_nodejs  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Or if you’re using Yarn:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;yarn create @bazel bazel_build_nodejs  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The previous commands use &lt;a href=&quot;https://www.npmjs.com/package/@bazel/create&quot;&gt;&lt;code&gt;@bazel/create&lt;/code&gt;&lt;/a&gt; under the hood to set up your monorepo with some minimal configurations. This means that it automatically creates &lt;code&gt;package.json&lt;/code&gt;, &lt;code&gt;WORKSPACE&lt;/code&gt;, and &lt;code&gt;BUILD.bazel&lt;/code&gt; files for you.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;package.json&lt;/code&gt; is exactly how it’s created when you’re initializing any Node.js project using the &lt;code&gt;npm init&lt;/code&gt; command. It contains some development time dependencies and some scripts through which you can run your build.&lt;/p&gt;
+&lt;p&gt;Also notice how it automatically adds &lt;code&gt;buildifier&lt;/code&gt; to your project so you can avoid manually setting it up. This is only a starting point though, and you would need to manually set up a &lt;code&gt;buildifier&lt;/code&gt; depending on the requirements of your project.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel_build_nodejs&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-3&quot;&gt;&lt;a href=&quot;#cb14-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;version&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;0.1.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-4&quot;&gt;&lt;a href=&quot;#cb14-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;private&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-5&quot;&gt;&lt;a href=&quot;#cb14-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;devDependencies&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-6&quot;&gt;&lt;a href=&quot;#cb14-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/bazelisk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-7&quot;&gt;&lt;a href=&quot;#cb14-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/ibazel&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-8&quot;&gt;&lt;a href=&quot;#cb14-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/buildifier&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-9&quot;&gt;&lt;a href=&quot;#cb14-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;},&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-10&quot;&gt;&lt;a href=&quot;#cb14-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;scripts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-11&quot;&gt;&lt;a href=&quot;#cb14-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;build&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel build //...&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-12&quot;&gt;&lt;a href=&quot;#cb14-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;test&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel test //...&amp;quot;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-13&quot;&gt;&lt;a href=&quot;#cb14-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-14&quot;&gt;&lt;a href=&quot;#cb14-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb14-15&quot;&gt;&lt;a href=&quot;#cb14-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let’s install these packages and a few more like &lt;a href=&quot;https://babeljs.io/&quot;&gt;Babel&lt;/a&gt; to &lt;a href=&quot;https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them&quot;&gt;transpile&lt;/a&gt; your JavaScript code.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install @babel/core @babel/cli @babel/preset-env  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;A &lt;code&gt;package-lock.json&lt;/code&gt; file will also be automatically created for you. Your &lt;code&gt;WORKSPACE.bazel&lt;/code&gt; file should look like this:&lt;/p&gt;
+&lt;pre class=&quot;text&quot;&gt;&lt;code&gt;# Bazel workspace created by @bazel/create 3.4.1  
+  
+# Declares that this directory is the root of a Bazel workspace.  
+# See https://docs.bazel.build/versions/master/build-ref.html#workspace  
+workspace(  
+    # How this workspace would be referenced with absolute labels from another workspace  
+    name = &amp;quot;bazel_build_nodejs&amp;quot;,  
+    # Map the @npm bazel workspace to the node_modules directory.  
+    # This lets Bazel use the same node_modules as other local tooling.  
+    managed_directories = {&amp;quot;@npm&amp;quot;: [&amp;quot;node_modules&amp;quot;]},  
+)  
+  
+# Install the nodejs &amp;quot;bootstrap&amp;quot; package  
+# This provides the basic tools for running and packaging Node.js programs in Bazel  
+load(&amp;quot;@bazel_tools//tools/build_defs/repo:http.bzl&amp;quot;, &amp;quot;http_archive&amp;quot;)  
+http_archive(  
+    name = &amp;quot;build_bazel_rules_nodejs&amp;quot;,  
+    sha256 = &amp;quot;a160d9ac88f2aebda2aa995de3fa3171300c076f06ad1d7c2e1385728b8442fa&amp;quot;,  
+    urls = [&amp;quot;https://github.com/bazelbuild/rules_nodejs/releases/download/3.4.1/rules_nodejs-3.4.1.tar.gz&amp;quot;],  
+)  
+  
+# The npm_install rule runs Yarn anytime the package.json or package-lock.json file changes.  
+# It also extracts any Bazel rules distributed in an npm package.  
+load(&amp;quot;@build_bazel_rules_nodejs//:index.bzl&amp;quot;, &amp;quot;npm_install&amp;quot;)  
+npm_install(  
+    # Name this npm so that Bazel Label references look like @npm//package  
+    name = &amp;quot;npm&amp;quot;,  
+    package_json = &amp;quot;//:package.json&amp;quot;,  
+    package_lock_json = &amp;quot;//:package-lock.json&amp;quot;,  
+)  
+  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It basically tells Bazel where to pull the tools for running your project and fetches all the required rules to create a build. You also need to tell Bazel to use auto-generated rules. Add the following line to the top of your &lt;code&gt;BUILD.bazel&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;load(&amp;quot;@npm//@babel/cli:index.bzl&amp;quot;, &amp;quot;babel&amp;quot;)  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s add a simple console statement inside &lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;#39;NodeJS Built using Bazel!&amp;#39;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next add the following code inside &lt;code&gt;es5.babelrc&lt;/code&gt; to configure Babel for transpiling JavaScript code:&lt;/p&gt;
+&lt;pre class=&quot;babelrc&quot;&gt;&lt;code&gt;{  
+    &amp;quot;sourceMaps&amp;quot;: &amp;quot;inline&amp;quot;,  
+    &amp;quot;presets&amp;quot;: [  
+      [  
+        &amp;quot;@babel/preset-env&amp;quot;,  
+        {  
+          &amp;quot;modules&amp;quot;: &amp;quot;systemjs&amp;quot;  
+        }  
+      ]  
+    ]  
+  }  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, you need to tell Bazel how to take JavaScript inputs and convert them to transpiled or &lt;a href=&quot;https://johnpapa.net/es5-es2015-typescript/&quot;&gt;ES5&lt;/a&gt; output. Add the following code inside &lt;code&gt;BUILD.bazel&lt;/code&gt; file after the previous load statement:&lt;/p&gt;
+&lt;pre class=&quot;bazel&quot;&gt;&lt;code&gt;babel(  
+    name = &amp;quot;compile&amp;quot;,  
+    data = [  
+        &amp;quot;app.js&amp;quot;,  
+        &amp;quot;es5.babelrc&amp;quot;,  
+        &amp;quot;@npm//@babel/preset-env&amp;quot;,  
+    ],  
+    outs = [&amp;quot;app.es5.js&amp;quot;],  
+    args = [  
+        &amp;quot;app.js&amp;quot;,  
+        &amp;quot;--config-file&amp;quot;,  
+        &amp;quot;./$(execpath es5.babelrc)&amp;quot;,  
+        &amp;quot;--out-file&amp;quot;,  
+        &amp;quot;$(execpath app.es5.js)&amp;quot;,  
+    ],  
+)  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the following command to build and compile your JavaScript code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm run build  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In case you run into an error, try renaming your &lt;code&gt;WORKSPACE.bazel&lt;/code&gt; file to simply &lt;code&gt;WORKSPACE&lt;/code&gt;. If all goes well, you should see something similar to the following screenshot on your terminal:&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/monorepo-with-bazel/RhmR1Xx.png&quot; alt=&quot;Terminal log of the build command&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Terminal log of the build command&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;You will see &lt;code&gt;bazel-out&lt;/code&gt; and a &lt;code&gt;dist&lt;/code&gt; directory where your output files will be present.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/blog/assets/images/monorepo-with-bazel/Ffu5zoQ.png&quot; height=&quot;400&quot; alt=&quot;Output directories&quot; /&gt;&lt;br /&gt;
+&lt;/p&gt;
+&lt;p&gt;If you check inside &lt;code&gt;dist/bin/app.es5.js&lt;/code&gt;, you should see your transpiled ES5 JavaScript code as shown:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb22&quot;&gt;&lt;pre class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb22-1&quot;&gt;&lt;a href=&quot;#cb22-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;System&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;register&lt;/span&gt;([]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt; (_export&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; _context) {  &lt;/span&gt;
+&lt;span id=&quot;cb22-2&quot;&gt;&lt;a href=&quot;#cb22-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;use strict&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb22-3&quot;&gt;&lt;a href=&quot;#cb22-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb22-4&quot;&gt;&lt;a href=&quot;#cb22-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; {  &lt;/span&gt;
+&lt;span id=&quot;cb22-5&quot;&gt;&lt;a href=&quot;#cb22-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;setters&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb22-6&quot;&gt;&lt;a href=&quot;#cb22-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt; () {  &lt;/span&gt;
+&lt;span id=&quot;cb22-7&quot;&gt;&lt;a href=&quot;#cb22-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;#39;NodeJS Built using Bazel!&amp;#39;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb22-8&quot;&gt;&lt;a href=&quot;#cb22-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }  &lt;/span&gt;
+&lt;span id=&quot;cb22-9&quot;&gt;&lt;a href=&quot;#cb22-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
+&lt;span id=&quot;cb22-10&quot;&gt;&lt;a href=&quot;#cb22-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;setting-up-continuous-integration&quot;&gt;Setting Up Continuous Integration&lt;/h3&gt;
+&lt;p&gt;Bazel recommends using container environments like the &lt;a href=&quot;https://hub.docker.com/r/angular/ngcontainer/&quot;&gt;ngcontainer Docker image&lt;/a&gt; for continuous integration (CI). You can easily add specific CI settings using the &lt;code&gt;build:ci&lt;/code&gt; or &lt;code&gt;test:ci&lt;/code&gt; prefixes to your &lt;code&gt;bazel.rc&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;If you’re using &lt;a href=&quot;https://circleci.com/&quot;&gt;CircleCI&lt;/a&gt;, you can use &lt;a href=&quot;https://github.com/angular/angular-bazel-example/blob/master/.circleci/config.yml&quot;&gt;this example&lt;/a&gt; as a reference. If you’re using GitLab, you can set up CI in minutes using the following scripts:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;variables:  
+  BAZEL_DIGEST_VERSION: &amp;quot;f670e9aec235aa23a5f068566352c5850a67eb93de8d7a2350240c68fcec3b25&amp;quot; # Bazel 3.4.1  
+  
+build:  
+  image:  
+    name: gcr.io/cloud-marketplace-containers/google/bazel@sha256:$BAZEL_DIGEST_VERSION  
+    entrypoint: [&amp;quot;&amp;quot;]  
+  stage: build  
+  script:  
+    - bazel --output_base output build //main/...  
+  artifacts:  
+    paths:  
+      - bazel-bin/main/hello-world  
+  cache:  
+    key: $BAZEL_DIGEST_VERSION  
+    paths:  
+      - output  &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above scripts define the build outputs and cache directory and also ensures immutability. Luckily the GitLab team has a &lt;a href=&quot;https://about.gitlab.com/blog/2020/09/01/using-bazel-to-speed-up-gitlab-ci-builds/&quot;&gt;dedicated article&lt;/a&gt; on this for the best reference.&lt;/p&gt;
+&lt;h2 id=&quot;downsides-of-bazel-and-the-monorepo-pattern&quot;&gt;Downsides of Bazel and the Monorepo Pattern&lt;/h2&gt;
+&lt;p&gt;The monorepo pattern is trendy these days, but there are some trade-offs you should be aware of. For a large and diverse team working on a monorepo, it might not be a great idea to expose every ounce of that codebase to novice developers.&lt;/p&gt;
+&lt;p&gt;Besides someone messing things up accidentally, keeping open access to all your config files, API keys, and so on might pose an issue from a security standpoint. On similar lines, you can understand why open-source projects aren’t living inside monorepos yet.&lt;/p&gt;
+&lt;p&gt;While Bazel definitely does some magic to ease out this pain for developers, it doesn’t have a large open-source community backing it yet. Having all your source code in one place could slow down the general process of approving pull requests and running the build scripts every now and then.&lt;/p&gt;
+&lt;p&gt;Bazel also promotes a strict demarcation between your dependencies and source code, while modern languages and frameworks have dedicated directories for bookkeeping dependencies. For instance, an npm project will always have its dependencies in a &lt;code&gt;node_modules&lt;/code&gt; directory inside the root directory. Diverging away from that pattern can present a steep learning curve, or at minimum an uncomfortable change.&lt;/p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Due to better structured configurational files and multiple language support, Bazel is a viable option for your large multi-language project deployed on multiple platforms. It’s fast, and you can even optimize your slow builds &lt;a href=&quot;https://docs.bazel.build/versions/master/remote-caching.html&quot;&gt;using your own build cache&lt;/a&gt;. Google has tried and tested Bazel’s core features to validate its stability, and their extensive documentation is some compensation for the small community.&lt;/p&gt;
+&lt;p&gt;If you’d like to explore further, you can build your own React or Angular app using Bazel to see how it treats different environments of the same language. You can also try out their &lt;a href=&quot;https://docs.bazel.build/versions/0.17.2/build-javascript.html#tutorials&quot;&gt;tutorials for different languages&lt;/a&gt; to get a bigger picture of how Bazel works. And if today’s the day you’re welcoming Bazel into your project, definitely take a moment to familiarize yourself with its documented &lt;a href=&quot;https://docs.bazel.build/versions/master/best-practices.html&quot;&gt;best practices&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If the benefits of Bazel look promising but the downsides prevent you from adopting it, then take a look at &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt;. It supports monorepo and poly repos and has a gentler learning curve.&lt;/p&gt;</content><author><name>Siddhant Varma</name></author><category term="Tutorials" /><summary type="html">A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.</summary></entry><entry><title type="html">Understanding Docker Networking</title><link href="https://earthly.dev/blog/docker-networking/" rel="alternate" type="text/html" title="Understanding Docker Networking" /><published>2021-05-05T00:00:00-04:00</published><updated>2021-05-05T00:00:00-04:00</updated><id>https://earthly.dev/blog/docker-networking</id><content type="html" xml:base="https://earthly.dev/blog/docker-networking/">&lt;p&gt;Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.&lt;/p&gt;
 &lt;p&gt;Once the application is inside a container, it’s easier to scale and even runs on different cloud platforms, like AWS, GCP, and Azure. In this article, let’s focus on the &lt;a href=&quot;https://docs.docker.com/network/&quot;&gt;networking aspect of Docker&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;what-is-a-docker-network&quot;&gt;What Is a Docker Network?&lt;/h2&gt;
 &lt;p&gt;Networking is about communication among processes, and Docker’s networking is no different. Docker networking is primarily used to establish communication between Docker containers and the outside world via the host machine where the Docker daemon is running.&lt;/p&gt;
@@ -1980,212 +2226,4 @@ server {
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Turns out it’s pretty simple to get something basic up and running, just like &lt;code&gt;ngrok&lt;/code&gt; does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.&lt;/p&gt;
 &lt;p&gt;Thanks for following along with us! &lt;a href=&quot;https://github.com/earthly/example-diy-ngrok&quot;&gt;Visit the example repository, with all scripts avaliable here.&lt;/a&gt;&lt;/p&gt;
-&lt;!--kg-card-end: markdown--&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.</summary></entry><entry><title type="html">Understanding Docker Logging and Log Files</title><link href="https://earthly.dev/blog/understanding-docker-logging-and-log-files/" rel="alternate" type="text/html" title="Understanding Docker Logging and Log Files" /><published>2021-03-10T00:00:00-05:00</published><updated>2021-03-10T00:00:00-05:00</updated><id>https://earthly.dev/blog/understanding-docker-logging-and-log-files</id><content type="html" xml:base="https://earthly.dev/blog/understanding-docker-logging-and-log-files/">&lt;p&gt;Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.&lt;/p&gt;
-&lt;p&gt;With that in mind, let’s dive into Docker logging and its log files.&lt;/p&gt;
-&lt;h2 id=&quot;introduction-to-docker-logging&quot;&gt;Introduction to Docker Logging&lt;/h2&gt;
-&lt;p&gt;Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A &lt;a href=&quot;https://www.sumologic.com/glossary/log-analysis/&quot;&gt;log analysis&lt;/a&gt; then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;1. Containers are transient.&lt;/strong&gt; When a Docker container broadcasts logs, it sends them to the application’s &lt;code&gt;stdout&lt;/code&gt; and &lt;code&gt;stderr&lt;/code&gt; output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;&lt;code&gt;json-file&lt;/code&gt; is the default logging driver used by Docker&lt;/a&gt;). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;2. Containers are multileveled.&lt;/strong&gt; There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in &lt;code&gt;/var/log&lt;/code&gt;. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.&lt;/p&gt;
-&lt;p&gt;In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.&lt;/p&gt;
-&lt;h2 id=&quot;docker-logging-commands&quot;&gt;Docker Logging Commands&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; is a command that shows all the information logged by a running container. The &lt;code&gt;docker service logs&lt;/code&gt; command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: STDIN, STDOUT, and STDERR. And the default is set to show only STDOUT and STDERR.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;STDIN is the command’s input stream, which may include input from the keyboard or input from another command.&lt;/li&gt;
-&lt;li&gt;STDOUT is usually a command’s normal output.&lt;/li&gt;
-&lt;li&gt;STDERR is typically used to output error messages.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The &lt;code&gt;docker logs&lt;/code&gt; command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of STDOUT and STDERR. With &lt;code&gt;docker logs &amp;lt;CONTAINER_ID&amp;gt;&lt;/code&gt;, you can see all the logs broadcasted by a specific container identified by a unique ID.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker run &lt;span class=&quot;at&quot;&gt;--name&lt;/span&gt; test &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; busybox sh &lt;span class=&quot;at&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;while true; do &lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; date&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;; sleep 1; done&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; date&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--until&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;2s test&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:00 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:01 UTC&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Tue&lt;/span&gt; 06 Feb 2020 00:00:02 UTC&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;docker logs&lt;/code&gt; works a bit differently in community and enterprise versions. In Docker Enterprise, &lt;code&gt;docker logs&lt;/code&gt; read logs created by any logging driver, but in Docker CE, it can only read logs created by the json-file, local, and journald drivers.&lt;/p&gt;
-&lt;p&gt;For example, here’s the JSON log created by the &lt;a href=&quot;https://hub.docker.com/_/hello-world&quot;&gt;hello-world&lt;/a&gt; Docker image using the json-file driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello from Docker!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stream&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;stdout&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;time&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;2021-02-10T00:00:00.000000000Z&amp;quot;&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;As you can see, the log follows a pattern of printing:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Log’s origin&lt;/li&gt;
-&lt;li&gt;Either &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;A timestamp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;You can find this log in your Docker host at:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; /var/lib/docker/containers/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;/&lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;-json.log  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;These Docker logs are stored in a host container and will build up over time. To address that, you can implement log rotation, which will remove a chunk of logs at specified intervals, and a log aggregator, which can be used to push them into a centralized location for a permanent log repository. You can use this repository for further analysis and improvements in the system down the road.&lt;/p&gt;
-&lt;p&gt;To find &lt;code&gt;container_id&lt;/code&gt;, run the &lt;code&gt;docker ps&lt;/code&gt; command. It’ll list all the running containers.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker ps&lt;/span&gt;
-&lt;span id=&quot;cb4-2&quot;&gt;&lt;a href=&quot;#cb4-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;CONTAINER&lt;/span&gt; ID   IMAGE       COMMAND             CREATED             STATUS              PORTS     NAMES&lt;/span&gt;
-&lt;span id=&quot;cb4-3&quot;&gt;&lt;a href=&quot;#cb4-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;cg95e1yqk810&lt;/span&gt;   bar_image  &lt;span class=&quot;st&quot;&gt;&amp;quot;node index.js&amp;quot;&lt;/span&gt;     Y min ago           Up Y min            80/tcp     bar_app&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then, the &lt;code&gt;docker logs container_id&lt;/code&gt; lists the logs for a particular container.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to follow the Docker container logs:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; -f&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to see the last N log lines:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; --tail N&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you only want to see any specific logs, use &lt;code&gt;grep&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; node&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you want to check errors:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker logs &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;container_id&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-i&lt;/span&gt; error&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;logging-drivers-supported-by-docker&quot;&gt;Logging Drivers Supported by Docker&lt;/h2&gt;
-&lt;p&gt;Logging drivers, or log-drivers, are mechanisms for getting information from running containers and services, and Docker has lots of them available for you. Every Docker daemon has a default logging driver, which each container uses. Docker uses the json-file logging driver as its default driver.&lt;/p&gt;
-&lt;p&gt;Currently, Docker supports the following logging drivers:&lt;/p&gt;
-&lt;table&gt;
-&lt;colgroup&gt;
-&lt;col style=&quot;width: 43%&quot; /&gt;
-&lt;col style=&quot;width: 56%&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr class=&quot;header&quot;&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Driver&lt;/th&gt;
-&lt;th style=&quot;text-align: center;&quot;&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;none&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;No logs are available for the container and Docker logs do not return any output.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/local/&quot;&gt;local&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are stored in a custom format designed for minimal overhead.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/json-file/&quot;&gt;json-file&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Logs are formatted as JSON. The default logging driver for Docker.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/syslog/&quot;&gt;syslog&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes logging messages to the Syslog facility. The Syslog daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/journald/&quot;&gt;journald&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to journald. The journald daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gcplogs/&quot;&gt;gcplogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Google Cloud Platform (GCP) logging.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/awslogs/&quot;&gt;awslogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Amazon CloudWatch logs.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/splunk/&quot;&gt;splunk&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Splunk using the HTTP Event Collector.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/gelf/&quot;&gt;gelf&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to a Graylog Extended Log Format (GELF) endpoint, such as Graylog or Logstash.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/fluentd/&quot;&gt;fluentd&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to fluentd (forward input). The fluentd daemon must be running on the host machine.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/etwlogs/&quot;&gt;etwlogs&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages as Event Tracing for Windows (ETW) events. Only available on Windows platforms.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;a href=&quot;https://docs.docker.com/config/containers/logging/logentries/&quot;&gt;logentries&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;
-&lt;td style=&quot;text-align: center;&quot;&gt;Writes log messages to Rapid7 Logentries.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&quot;configuring-the-logging-driver&quot;&gt;Configuring the Logging Driver&lt;/h3&gt;
-&lt;p&gt;To configure the Docker daemon to a logging driver, you need to set the value of &lt;code&gt;log-driver&lt;/code&gt; to the name of the logging driver in the daemon.json configuration file. Then you need to restart Docker for the changes to take effect for all the newly created containers. All the existing containers will remain as they are.&lt;/p&gt;
-&lt;p&gt;For example, let’s set up a default logging driver with some additional options.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-2&quot;&gt;&lt;a href=&quot;#cb10-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;json-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-3&quot;&gt;&lt;a href=&quot;#cb10-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-4&quot;&gt;&lt;a href=&quot;#cb10-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-size&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;25m&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-5&quot;&gt;&lt;a href=&quot;#cb10-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;max-file&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;10&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-6&quot;&gt;&lt;a href=&quot;#cb10-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;labels&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;production_bind&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-7&quot;&gt;&lt;a href=&quot;#cb10-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;env&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;os,customer&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-8&quot;&gt;&lt;a href=&quot;#cb10-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb10-9&quot;&gt;&lt;a href=&quot;#cb10-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To find the current logging driver for the Docker daemon:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker info &lt;span class=&quot;at&quot;&gt;--format&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.LoggingDriver}}&amp;#39;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-4&quot;&gt;&lt;a href=&quot;#cb11-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;json-file&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can override the default driver by adding the &lt;code&gt;--log-driver&lt;/code&gt; option to the docker run command that creates a container.&lt;/p&gt;
-&lt;p&gt;The following command will start using the Splunk driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;at&quot;&gt;--log-driver&lt;/span&gt; splunk httpd&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Modify the &lt;code&gt;daemon.json&lt;/code&gt; file, to pass the address of the splunk host to the driver:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb13&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb13-1&quot;&gt;&lt;a href=&quot;#cb13-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-2&quot;&gt;&lt;a href=&quot;#cb13-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-3&quot;&gt;&lt;a href=&quot;#cb13-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-4&quot;&gt;&lt;a href=&quot;#cb13-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-5&quot;&gt;&lt;a href=&quot;#cb13-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb13-6&quot;&gt;&lt;a href=&quot;#cb13-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker inspect &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;{{.HostConfig.LogConfig.Type}}&amp;#39;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;CONTAINER&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-3&quot;&gt;&lt;a href=&quot;#cb14-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-4&quot;&gt;&lt;a href=&quot;#cb14-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;splunk&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver&quot;&gt;Choosing the Delivery Mode of Log Messages From Container to Log Driver&lt;/h3&gt;
-&lt;p&gt;Docker provides two modes for delivering log messages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Blocking (default):&lt;/strong&gt; The container interrupts the application every time it needs to deliver a message to the driver. This will add latency in the performance of your application (for some drivers), but it’ll guarantee that all the messages will be sent to the driver. Case in point, the json-file driver writes logs very quickly, therefore it’s unlikely to cause latency. But drivers like &lt;code&gt;gcplogs&lt;/code&gt; and &lt;code&gt;awslogs&lt;/code&gt; open a connection to a remote server and so are more likely to block and cause latency.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Non-Blocking:&lt;/strong&gt; The container writes and stores its logs to an in-memory ring buffer until the logging driver is available to process them. This ensures that a high rate of logging will not affect application performance. It does not guarantee that all the messages will be sent to the driver. In cases where log broadcasts are faster than the driver processor, the ring buffer will soon run out of space. As a result, buffered logs are deleted to make space for the next set of incoming logs. The default value for &lt;code&gt;max-buffer-size&lt;/code&gt; is 1 MB.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To change the mode:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-2&quot;&gt;&lt;a href=&quot;#cb15-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-driver&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;splunk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-3&quot;&gt;&lt;a href=&quot;#cb15-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;log-opts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-4&quot;&gt;&lt;a href=&quot;#cb15-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;splunk-url&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.1.1.1:11111&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-5&quot;&gt;&lt;a href=&quot;#cb15-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;mode&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;non-blocking&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-6&quot;&gt;&lt;a href=&quot;#cb15-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-7&quot;&gt;&lt;a href=&quot;#cb15-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;understanding-logging-strategies&quot;&gt;Understanding Logging Strategies&lt;/h2&gt;
-&lt;p&gt;Docker logging effectively means logging the events of an application, host OS, and the respective Docker service. There are a few defined logging strategies you should keep in mind when working with containerized apps.&lt;/p&gt;
-&lt;h3 id=&quot;application-logging&quot;&gt;1. Application Logging&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, the application running in the containers will have its own logging framework. For example, a Node.js app could use a &lt;a href=&quot;https://www.npmjs.com/package/winston&quot;&gt;&lt;code&gt;winston&lt;/code&gt;&lt;/a&gt; library to format and send the logs. With this approach, you have complete control over the logging event.&lt;/p&gt;
-&lt;p&gt;If you have multiple containers, you need to add an identifier at each container level, so you can uniquely determine the container and its respective logs. But as the size of the logs increases, this will start creating a load on the application process. Due to the transient nature of containers, the logs will be wiped out when a container is terminated or shut down.&lt;/p&gt;
-&lt;p&gt;To address this, you have two options: - Configure steady storage to hold these logs, i.e. disks/data volumes. - Forward these logs to a log management solution.&lt;/p&gt;
-&lt;h3 id=&quot;data-volumes&quot;&gt;2. Data Volumes&lt;/h3&gt;
-&lt;p&gt;In this logging strategy, your container’s directory gets links to one of the host machine directories that will hold all the data for you. Containers can now be terminated or shut down, and access logs from multiple containers.&lt;/p&gt;
-&lt;p&gt;A regular backup is a good idea in order to prevent data corruption or loss in case of a failure. But if you want to shift the containers on different hosts without loss of data, then the data volumes strategy will make that difficult.&lt;/p&gt;
-&lt;h3 id=&quot;docker-logging-driver&quot;&gt;3. Docker Logging Driver&lt;/h3&gt;
-&lt;p&gt;Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s &lt;code&gt;stdout&lt;/code&gt; or &lt;code&gt;stderr&lt;/code&gt; streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like fluentd, Splunk, and awslogs.&lt;/p&gt;
-&lt;p&gt;Note that the &lt;code&gt;docker log&lt;/code&gt; command will not work if you use anything other than the &lt;code&gt;json-file&lt;/code&gt; driver. And if log forwarding over a TCP connection fails or becomes unreachable, the containers will shut down.&lt;/p&gt;
-&lt;h3 id=&quot;dedicated-logging-container&quot;&gt;4. Dedicated Logging Container&lt;/h3&gt;
-&lt;p&gt;Here, you need to set up a dedicated container whose only job is to collect and manage logs within a Docker ecosystem. It’ll aggregate, monitor, and analyze logs from containers and forward them to a central repository. The log dependency on the host machine is no longer an issue, and it’s best suited for microservices architecture.&lt;/p&gt;
-&lt;p&gt;This strategy gives you the freedom to:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Move containers between the hosts.&lt;/li&gt;
-&lt;li&gt;Scale up by just adding a new container.&lt;/li&gt;
-&lt;li&gt;Tie up all the various streams of log events.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;sidecar-logging-container&quot;&gt;5. Sidecar Logging Container&lt;/h3&gt;
-&lt;p&gt;This logging strategy is similar to dedicated logging in that you have a container to hold logs, but here, each application has its own dedicated logging container (note that the application and its log container can be considered as a single unit). This opens up the flexibility of app-level logging customization. By adding custom identifiers, you can identify the specific container that broadcasts the log.&lt;/p&gt;
-&lt;p&gt;This is best suited for a complex system where each entity customizes the logs, making it popular in microservices deployment. Maintaining a container per application level will require additional resources for management and setup, so it’s complex to implement. Also, you may end up losing data when a container from the unit becomes unserviceable.&lt;/p&gt;
-&lt;h3 id=&quot;third-party-logging-services&quot;&gt;6. Third-party Logging Services&lt;/h3&gt;
-&lt;p&gt;There are a lot of third-party logging services you can use according to your infrastructure and application needs, enabling you to aggregate, manage, and analyze logs and take proactive preventative actions as a result.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.splunk.com/&quot;&gt;Splunk&lt;/a&gt;:&lt;/strong&gt; Splunk is built to scale from a single server to multiple data centers. It has built-in alerting and reporting, real-time search, analysis, and visualization, which helps you take action against malfunctions faster. It comes with a Splunk Enterprise on-premise deployment and Splunk Cloud. The free plan comes with 500 MB data per day, and the paid plan starts from $150 a month for a GB.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/elastic/logstash&quot;&gt;Logstash&lt;/a&gt;:&lt;/strong&gt; Logstash is part of the &lt;a href=&quot;https://www.elastic.co/products&quot;&gt;Elastic Stack&lt;/a&gt; along with Beats, Elasticsearch, and Kibana. It’s a server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favourite “stash.” Logstash has over 200 plugins for input, filter/transform, and output. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;http://www.fluentd.org/&quot;&gt;Fluentd&lt;/a&gt;:&lt;/strong&gt; Fluentd is an open-source data collector. Its performance has been well proven, handling 5 TB of daily data, 50,000 messages/sec at peak time. The main reason to use it would be performance. It’s free and open source.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.papertrail.com/&quot;&gt;PaperTrail&lt;/a&gt;:&lt;/strong&gt; PaperTrail is a simple and user-friendly service that provides a terminal-like experience. Once the data is sent over the syslog, you can perform tail and search operations with the PaperTrail UI. It’s affordable for low volumes but becomes expensive for higher volume. It comes with a free 50 MB/month plan, and paid plans start at $7/month for 1 GB per month.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;https://www.loggly.com/&quot;&gt;Loggly&lt;/a&gt;:&lt;/strong&gt; Loggly focuses on simplicity and ease of use for a DevOps audience. It’s one of the more robust log analyzers. Primary use cases are for troubleshooting and customer support scenarios, and it provides richer visualizations and more parsing functionality than PaperTrail. It comes with a free 200 MB/day, and paid plans start at $79 a month for 1 GB per day ingestion with a 2 weeks retention.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;limitations-and-challenges-of-docker-logging&quot;&gt;Limitations and Challenges of Docker Logging&lt;/h2&gt;
-&lt;p&gt;Docker makes containerized application deployment easier, faster, and streamlines it with limited resources. Log management and analysis are handled differently with Docker as compared to a traditional system, which introduces a new set of challenges and limitations. From storing logs in a file system to forwarding them to a central repository, Docker logging has some pain points you’ll need to overcome with a deeper understanding of Docker capability.&lt;/p&gt;
-&lt;h3 id=&quot;the-only-compatible-driver-is-json-file&quot;&gt;The Only Compatible Driver Is json-file&lt;/h3&gt;
-&lt;p&gt;The json-file driver is the only one that works with the &lt;code&gt;docker logs&lt;/code&gt; command, a limitation of Docker logs. When you start using any other logging drivers, such as Fluentd or Splunk, the &lt;code&gt;docker logs&lt;/code&gt; command shows an error and the Docker logs API calls will fail. Also, you won’t be able to check the container logs in this situation.&lt;/p&gt;
-&lt;h3 id=&quot;docker-syslog-impacts-container-deployment&quot;&gt;Docker Syslog Impacts Container Deployment&lt;/h3&gt;
-&lt;p&gt;The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail ife a connection is not made.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker: Error response from daemon: Failed to initialize logging driver: dial tcp&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your container deployment will be affected if you face network problems or latency issues. And it’s not recommended that you restart the Syslog server because this will drop all the connections from the containers to a central Syslog server.&lt;/p&gt;
-&lt;h3 id=&quot;potential-loss-of-logs-with-docker-syslog-driver&quot;&gt;Potential Loss of Logs with Docker Syslog Driver&lt;/h3&gt;
-&lt;p&gt;The Docker syslog driver needs an established TCP or TLS connection to deliver logs. Note that when the connection is down or not reachable, you’ll start losing the logs until the connection reestablished.&lt;/p&gt;
-&lt;h3 id=&quot;multiline-logs-not-supported&quot;&gt;Multiline Logs Not Supported&lt;/h3&gt;
-&lt;p&gt;Generally, either of two patterns is followed for logging: single-line per log or multiple lines with extended information per log, like stack traces or exceptions. But with Docker logging, this is a moot point, because containers always broadcast logs to the same output: &lt;code&gt;stdout&lt;/code&gt;. ### Multiple Logging Drivers Not Supported It’s mandatory that you use only a single driver for all of your logging needs. Scenarios where you can store logs locally and push it to remote servers are not supported.&lt;/p&gt;
-&lt;h3 id=&quot;logs-can-miss-or-skip&quot;&gt;Logs Can Miss or Skip&lt;/h3&gt;
-&lt;p&gt;There’s a rate limitation setting at the Docker end for journald drivers that takes care of the rate that logs get pushed. If it exceeds, then the driver might skip some logs. To prevent such issues, increase the rate limitation settings according to your logging needs.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;While Docker containerization allows developers to encapsulate a program and its file system into a single portable package, that certainly doesn’t mean containerization is free of maintenance. Docker Logging is a bit more complex than traditional methods, so teams using Docker must familiarize themselves with the Docker logging to support full-stack visibility, troubleshooting, performance improvements, root cause analysis, etc.&lt;/p&gt;
-&lt;p&gt;As we have seen in this post, to facilitate logging, Docker offers logging drivers and commands in the platform which gives you the mechanisms for accessing the performance data and also provides plugins to integrate with third-party logging tools as well. To maximize the logging capabilities there are several methods and strategies which help in designing your logging infrastructure, but each comes with its advantages and disadvantages.&lt;/p&gt;
-&lt;p&gt;With this understanding of logging, containerization can be a powerful tool. Earthly is a containerized &lt;a href=&quot;https://earthly.dev/&quot;&gt;continuous integration tool&lt;/a&gt;. If you’ve ever had to deal with flaky builds you should &lt;a href=&quot;https://earthly.dev/&quot;&gt;check it out&lt;/a&gt;.&lt;/p&gt;</content><author><name>Sanket Makhija</name></author><category term="Tutorials" /><category term="docker" /><category term="tutorials" /><summary type="html">Docker logging and its management are an important part of the containerization of your application. Once you’ve deployed your application, logging is one of the best tools to help reveal errors, aid in debugging, and optimize your application’s performance.</summary></entry></feed>
+&lt;!--kg-card-end: markdown--&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.</summary></entry></feed>

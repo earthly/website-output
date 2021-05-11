@@ -238,4 +238,10 @@ var store = [{
         "tags": [],
         "url": "/blog/docker-networking/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building a Monorepo with Bazel",
+        "excerpt":"A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase. Wikipedia describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/monorepo-with-bazel/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
