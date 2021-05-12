@@ -83,7 +83,7 @@ var store = [{
         "url": "/blog/building-on-kubernetes-ingress/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Technology choice? Don’t be weird",
+        "title": "Technology choice? Don't be weird",
         "excerpt":"Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform. The plan for the earthly internal platform says, “One thing to keep in mind as...","categories": ["Articles"],
         "tags": ["Interview"],
         "url": "/blog/dont-be-weird/",
@@ -95,7 +95,7 @@ var store = [{
         "url": "/blog/protobufs-and-grpc/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "You’re using docker-compose wrong",
+        "title": "You're using docker-compose wrong",
         "excerpt":"Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong. Ok, that might be an exaggeration. I don’t think there’s...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/youre-using-docker-compose-wrong/",
