@@ -383,8 +383,8 @@
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">5077a7b25ae6</span>   bridge    bridge    local</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">7e25f334b07f</span>   host      host      local</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">475e50be0fe0</span>   none      null      local</span></code></pre></div>
-<pre class="shell"><code>$ docker run -dit --name busybox1 busybox /bin/sh
-$ docker run -dit --name busybox2 busybox /bin/sh</code></pre>
+<pre class="shell"><code>docker run -dit --name busybox1 busybox /bin/sh
+docker run -dit --name busybox2 busybox /bin/sh</code></pre>
 <ol start="3" type="1">
 <li>Run the <code>docker ps</code> command to verify that containers are up and running.</li>
 </ol>
@@ -472,7 +472,7 @@ ping: bad address &#39;busybox2&#39;</code></pre>
 <p>As the name suggests, host drivers use the networking provided by the host machine. And it removes network isolation between the container and the host machine where Docker is running. For example, If you run a container that binds to port 80 and uses host networking, the container’s application is available on port 80 on the host’s IP address. You can use the host network if you don’t want to rely on Docker’s networking but instead rely on the host machine networking.</p>
 <p>One limitation with the host driver is that it doesn’t work on Docker desktop: you need a Linux host to use it. This article focuses on Docker desktop, but I’ll show you the commands required to work with the Linux host.</p>
 <p>The following command will start an NGINX image and listen to port 80 on the host machine:</p>
-<pre class="shell"><code>$ docker run --rm -d --network host --name my_nginx nginx
+<pre class="shell"><code>docker run --rm -d --network host --name my_nginx nginx
 </code></pre>
 <p>You can access NGINX by hitting the <code>http://localhost:80/ url</code>.</p>
 <p>The downside with the host network is that you can’t run multiple containers on the same host having the same port. Ports are shared by all containers on the host machine network.</p>
@@ -481,9 +481,9 @@ ping: bad address &#39;busybox2&#39;</code></pre>
 <h3 id="the-overlay-driver">The Overlay Driver</h3>
 <p>The Overlay driver is for multi-host network communication, as with <a href="https://docs.docker.com/engine/swarm/">Docker Swarm</a> or <a href="https://kubernetes.io/">Kubernetes</a>. It allows containers across the host to communicate with each other without worrying about the setup. Think of an overlay network as a distributed virtualized network that’s built on top of an existing computer network.</p>
 <p>To create an overlay network for Docker Swarm services, use the following command:</p>
-<pre><code>$ docker network create -d overlay my-overlay-network</code></pre>
+<pre><code>docker network create -d overlay my-overlay-network</code></pre>
 <p>To create an overlay network so that standalone containers can communicate with each other, use this command:</p>
-<pre><code>$ docker network create -d overlay --attachable my-attachable-overlay</code></pre>
+<pre><code>docker network create -d overlay --attachable my-attachable-overlay</code></pre>
 <h3 id="the-macvlan-driver">The Macvlan Driver</h3>
 <p>This driver connects Docker containers directly to the physical host network. As per <a href="https://docs.docker.com/network/#network-drivers">the Docker documentation</a>:</p>
 <blockquote>
@@ -544,7 +544,7 @@ b995772ac197   bridge      bridge    local
 <p>Now we have a new custom network named <code>mynetwork</code>, and its type is bridge.</p>
 <h3 id="disconnecting-a-container-from-the-network">Disconnecting a Container from the Network</h3>
 <p>This command disconnects a Docker container from the custom <code>mynetwork</code>:</p>
-<pre class="shell"><code>$ docker network disconnect mynetwork 0f8d7a833f42</code></pre>
+<pre class="shell"><code>docker network disconnect mynetwork 0f8d7a833f42</code></pre>
 <h3 id="inspecting-the-network">Inspecting the Network</h3>
 <p>The <code>docker network inspect</code> command displays detailed information on one or more networks.</p>
 <pre class="shell"><code>$ docker network inspect mynetwork

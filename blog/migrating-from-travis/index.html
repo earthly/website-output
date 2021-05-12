@@ -384,18 +384,19 @@ How can you minimize the effort of moving from build platform to another?</p>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> make all:default</span></code></pre></div>
-<p><a href="https://github.com/qmk/qmk_firmware/blob/master/Dockerfile">QMK</a> Docker File for executing the full build ### Earthly</p>
+<p><a href="https://github.com/qmk/qmk_firmware/blob/master/Dockerfile">QMK</a> Docker File for executing the full build</p>
+<h3 id="earthly">Earthly</h3>
 <p>This is the Earthly blog, and I am an Earthly contributor, but in my totally biased opinion, it deserves a mention as an neurtal format for defining a build. The Elixir web framework <a href="https://github.com/phoenixframework/phoenix/blob/master/Earthfile">Phoenix is a great example to take a look at</a>.</p>
 <p>Earthly is like a makefile where each step is containerized and dependencies are explicitly declared.  </p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> golang:1.13-alpine3.11</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>build:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> main.go .</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> go build main.go</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    SAVE ARTIFACT main AS LOCAL main</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">COPY</span> main.go .</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">RUN</span> go build main.go</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> SAVE ARTIFACT main AS LOCAL main</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>lint: </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a> ...</span></code></pre></div>
 <p>Example build steps for a <a href="https://github.com/earthly/earthly/blob/main/examples/go/Earthfile">go application</p>
 <h2 id="other-interesting-options">Other Interesting Options</h2>
 <h3 id="easier-migration-from-travis-to-gha">Easier Migration from Travis to GHA</h3>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-12T16:03:43-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">DOS Gaming In Docker</title><link href="https://earthly.dev/blog/dos-gaming-in-docker/" rel="alternate" type="text/html" title="DOS Gaming In Docker" /><published>2021-05-12T00:00:00-04:00</published><updated>2021-05-12T00:00:00-04:00</updated><id>https://earthly.dev/blog/dos-gaming-in-docker</id><content type="html" xml:base="https://earthly.dev/blog/dos-gaming-in-docker/">&lt;p&gt;Its been three decades since the height of the DOS era, and look how far we’ve come! A machine that used to cost $2,000 can be emulated - &lt;em&gt;down to the processor!&lt;/em&gt; — in our &lt;a href=&quot;https://bellard.org/jslinux/&quot;&gt;&lt;em&gt;web browsers&lt;/em&gt;&lt;/a&gt; while also checking email or watching a YouTube video. However, amidst these advancements, our old software falls by the wayside and stops working. Games are especially prone to this, since they often relied on incompatible tricks to eke out every ounce of performance from these old machines.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-12T16:53:55-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">DOS Gaming In Docker</title><link href="https://earthly.dev/blog/dos-gaming-in-docker/" rel="alternate" type="text/html" title="DOS Gaming In Docker" /><published>2021-05-12T00:00:00-04:00</published><updated>2021-05-12T00:00:00-04:00</updated><id>https://earthly.dev/blog/dos-gaming-in-docker</id><content type="html" xml:base="https://earthly.dev/blog/dos-gaming-in-docker/">&lt;p&gt;Its been three decades since the height of the DOS era, and look how far we’ve come! A machine that used to cost $2,000 can be emulated - &lt;em&gt;down to the processor!&lt;/em&gt; — in our &lt;a href=&quot;https://bellard.org/jslinux/&quot;&gt;&lt;em&gt;web browsers&lt;/em&gt;&lt;/a&gt; while also checking email or watching a YouTube video. However, amidst these advancements, our old software falls by the wayside and stops working. Games are especially prone to this, since they often relied on incompatible tricks to eke out every ounce of performance from these old machines.&lt;/p&gt;
 &lt;p&gt;Many projects have sprung up to help preserve this heritage. &lt;a href=&quot;https://www.dosbox.com/&quot;&gt;DOSBox&lt;/a&gt; provides a modern, compatible environment for old games (and other software), while projects like the &lt;a href=&quot;https://archive.org/details/software&quot;&gt;Internet Archive&lt;/a&gt; provide a massive library of DOS games, freely available to play in your browser. In my experience, they play pretty well!&lt;/p&gt;
 &lt;p&gt;However, I still miss those less-connected days of the early 90’s. I remember the thrill of riding my bike to the store to pick up a shareware copy of whatever game was available for $1. I then held a physical disk, with the game on it, ready to install on the nearest accessible computer. The self-contained nature of it all was magical. Nowadays, many &lt;em&gt;web pages&lt;/em&gt; &lt;a href=&quot;https://www.pingdom.com/blog/webpages-are-getting-larger-every-year-and-heres-why-it-matters/&quot;&gt;are bigger than the shareware games I used to buy&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This got me thinking: “Floppies can be &lt;a href=&quot;https://www.kryoflux.com/&quot;&gt;imaged&lt;/a&gt;. That sounds kind of like a Docker image. I wonder… could I make DOS shareware Docker images?”&lt;/p&gt;
@@ -415,8 +415,8 @@ build:
 &lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;5077a7b25ae6&lt;/span&gt;   bridge    bridge    local&lt;/span&gt;
 &lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;7e25f334b07f&lt;/span&gt;   host      host      local&lt;/span&gt;
 &lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;475e50be0fe0&lt;/span&gt;   none      null      local&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run -dit --name busybox1 busybox /bin/sh
-$ docker run -dit --name busybox2 busybox /bin/sh&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker run -dit --name busybox1 busybox /bin/sh
+docker run -dit --name busybox2 busybox /bin/sh&lt;/code&gt;&lt;/pre&gt;
 &lt;ol start=&quot;3&quot; type=&quot;1&quot;&gt;
 &lt;li&gt;Run the &lt;code&gt;docker ps&lt;/code&gt; command to verify that containers are up and running.&lt;/li&gt;
 &lt;/ol&gt;
@@ -504,7 +504,7 @@ ping: bad address &amp;#39;busybox2&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;As the name suggests, host drivers use the networking provided by the host machine. And it removes network isolation between the container and the host machine where Docker is running. For example, If you run a container that binds to port 80 and uses host networking, the container’s application is available on port 80 on the host’s IP address. You can use the host network if you don’t want to rely on Docker’s networking but instead rely on the host machine networking.&lt;/p&gt;
 &lt;p&gt;One limitation with the host driver is that it doesn’t work on Docker desktop: you need a Linux host to use it. This article focuses on Docker desktop, but I’ll show you the commands required to work with the Linux host.&lt;/p&gt;
 &lt;p&gt;The following command will start an NGINX image and listen to port 80 on the host machine:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run --rm -d --network host --name my_nginx nginx
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker run --rm -d --network host --name my_nginx nginx
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can access NGINX by hitting the &lt;code&gt;http://localhost:80/ url&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;The downside with the host network is that you can’t run multiple containers on the same host having the same port. Ports are shared by all containers on the host machine network.&lt;/p&gt;
@@ -513,9 +513,9 @@ ping: bad address &amp;#39;busybox2&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;the-overlay-driver&quot;&gt;The Overlay Driver&lt;/h3&gt;
 &lt;p&gt;The Overlay driver is for multi-host network communication, as with &lt;a href=&quot;https://docs.docker.com/engine/swarm/&quot;&gt;Docker Swarm&lt;/a&gt; or &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt;. It allows containers across the host to communicate with each other without worrying about the setup. Think of an overlay network as a distributed virtualized network that’s built on top of an existing computer network.&lt;/p&gt;
 &lt;p&gt;To create an overlay network for Docker Swarm services, use the following command:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ docker network create -d overlay my-overlay-network&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;docker network create -d overlay my-overlay-network&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;To create an overlay network so that standalone containers can communicate with each other, use this command:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ docker network create -d overlay --attachable my-attachable-overlay&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;docker network create -d overlay --attachable my-attachable-overlay&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;the-macvlan-driver&quot;&gt;The Macvlan Driver&lt;/h3&gt;
 &lt;p&gt;This driver connects Docker containers directly to the physical host network. As per &lt;a href=&quot;https://docs.docker.com/network/#network-drivers&quot;&gt;the Docker documentation&lt;/a&gt;:&lt;/p&gt;
 &lt;blockquote&gt;
@@ -576,7 +576,7 @@ b995772ac197   bridge      bridge    local
 &lt;p&gt;Now we have a new custom network named &lt;code&gt;mynetwork&lt;/code&gt;, and its type is bridge.&lt;/p&gt;
 &lt;h3 id=&quot;disconnecting-a-container-from-the-network&quot;&gt;Disconnecting a Container from the Network&lt;/h3&gt;
 &lt;p&gt;This command disconnects a Docker container from the custom &lt;code&gt;mynetwork&lt;/code&gt;:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network disconnect mynetwork 0f8d7a833f42&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker network disconnect mynetwork 0f8d7a833f42&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;inspecting-the-network&quot;&gt;Inspecting the Network&lt;/h3&gt;
 &lt;p&gt;The &lt;code&gt;docker network inspect&lt;/code&gt; command displays detailed information on one or more networks.&lt;/p&gt;
 &lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect mynetwork
@@ -1029,7 +1029,6 @@ explode = (0.1, 0)
 colors = [&quot;burlywood&quot;, &quot;green&quot;]
 total = 13
 
-
 # Graph two
 fig, ax2 = plt.subplots()
 ax2.set_title('Loved Languages')
@@ -1111,11 +1110,11 @@ The lifecycle of programming language hype
 &lt;li&gt;Run a Docker container with the Postgres image.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker run &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;at&quot;&gt;--name&lt;/span&gt; phoenix-psql &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;at&quot;&gt;-e&lt;/span&gt; POSTGRES_PASSWORD=Phoenix1234 &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;at&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;${HOME}&lt;/span&gt;/phoenix-postgres-data/:/var/lib/postgresql/data &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; 5432:5432 &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    postgres&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;at&quot;&gt;--name&lt;/span&gt; phoenix-psql &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;at&quot;&gt;-e&lt;/span&gt; POSTGRES_PASSWORD=Phoenix1234 &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;at&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;${HOME}&lt;/span&gt;/phoenix-postgres-data/:/var/lib/postgresql/data &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; 5432:5432 &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; postgres&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ol start=&quot;3&quot; type=&quot;1&quot;&gt;
 &lt;li&gt;Validate that the container is running.&lt;/li&gt;
 &lt;/ol&gt;
@@ -1260,16 +1259,16 @@ assets/csss/custom.css&lt;/code&gt;&lt;/pre&gt;
 &lt;span id=&quot;cb15-4&quot;&gt;&lt;a href=&quot;#cb15-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    live &lt;span class=&quot;st&quot;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;, &lt;span class=&quot;cn&quot;&gt;PageLive&lt;/span&gt;, &lt;span class=&quot;va&quot;&gt;:index&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb15-5&quot;&gt;&lt;a href=&quot;#cb15-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;This is the scaffold code that was generated when you generated the application. You want to add a new route for your actions, and you can do that easily by using the &lt;code&gt;live&lt;/code&gt; macro:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode elixir&quot;&gt;&lt;code class=&quot;sourceCode elixir&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb16-2&quot;&gt;&lt;a href=&quot;#cb16-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    live &lt;span class=&quot;st&quot;&gt;&amp;quot;/auction&amp;quot;&lt;/span&gt;, &lt;span class=&quot;cn&quot;&gt;AuctionLive&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode elixir&quot;&gt;&lt;code class=&quot;sourceCode elixir&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb16-2&quot;&gt;&lt;a href=&quot;#cb16-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; live &lt;span class=&quot;st&quot;&gt;&amp;quot;/auction&amp;quot;&lt;/span&gt;, &lt;span class=&quot;cn&quot;&gt;AuctionLive&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;It’s important to highlight that &lt;code&gt;AuctionLive&lt;/code&gt; is not a Phoenix controller. Rather, it’s a long-running LiveView process in charge of managing and tracking the state for that particular route.&lt;/p&gt;
 &lt;p&gt;Go ahead and define your new module under &lt;code&gt;lib/phoenix_fund_web/live/auction_live.ex&lt;/code&gt;. By convention, the LiveView modules are placed under the &lt;code&gt;live&lt;/code&gt; directory.&lt;/p&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb17&quot;&gt;&lt;pre class=&quot;sourceCode elixir&quot;&gt;&lt;code class=&quot;sourceCode elixir&quot;&gt;&lt;span id=&quot;cb17-1&quot;&gt;&lt;a href=&quot;#cb17-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;PhoenixFundWeb&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;cn&quot;&gt;AuctionLive&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt; &lt;/span&gt;
-&lt;span id=&quot;cb17-2&quot;&gt;&lt;a href=&quot;#cb17-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;im&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;PhoenixFundWeb&lt;/span&gt;, &lt;span class=&quot;va&quot;&gt;:live_view&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-3&quot;&gt;&lt;a href=&quot;#cb17-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;/span&gt;
-&lt;span id=&quot;cb17-4&quot;&gt;&lt;a href=&quot;#cb17-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; mount(params, session, socket) &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-5&quot;&gt;&lt;a href=&quot;#cb17-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        {&lt;span class=&quot;va&quot;&gt;:ok&lt;/span&gt;, assign(socket, &lt;span class=&quot;va&quot;&gt;:raised&lt;/span&gt;, &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;)}&lt;/span&gt;
-&lt;span id=&quot;cb17-6&quot;&gt;&lt;a href=&quot;#cb17-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb17-2&quot;&gt;&lt;a href=&quot;#cb17-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;im&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;cn&quot;&gt;PhoenixFundWeb&lt;/span&gt;, &lt;span class=&quot;va&quot;&gt;:live_view&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb17-3&quot;&gt;&lt;a href=&quot;#cb17-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;/span&gt;
+&lt;span id=&quot;cb17-4&quot;&gt;&lt;a href=&quot;#cb17-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; mount(params, session, socket) &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb17-5&quot;&gt;&lt;a href=&quot;#cb17-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  {&lt;span class=&quot;va&quot;&gt;:ok&lt;/span&gt;, assign(socket, &lt;span class=&quot;va&quot;&gt;:raised&lt;/span&gt;, &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;)}&lt;/span&gt;
+&lt;span id=&quot;cb17-6&quot;&gt;&lt;a href=&quot;#cb17-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb17-7&quot;&gt;&lt;a href=&quot;#cb17-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;This is the core of a LiveView module. &lt;code&gt;mount/3&lt;/code&gt; is the entry point for each LiveView, and it will be invoked twice:&lt;/p&gt;
 &lt;ul&gt;
@@ -1287,13 +1286,13 @@ assets/csss/custom.css&lt;/code&gt;&lt;/pre&gt;
 &lt;span id=&quot;cb18-2&quot;&gt;&lt;a href=&quot;#cb18-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb18-3&quot;&gt;&lt;a href=&quot;#cb18-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; render(assigns) &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb18-4&quot;&gt;&lt;a href=&quot;#cb18-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;~&lt;/span&gt;L&lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-5&quot;&gt;&lt;a href=&quot;#cb18-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;          &amp;lt;h1&amp;gt;Cabinet of Curiosities&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-6&quot;&gt;&lt;a href=&quot;#cb18-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;          &amp;lt;div id=&amp;quot;auction&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-7&quot;&gt;&lt;a href=&quot;#cb18-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;div class=&amp;quot;meter&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-8&quot;&gt;&lt;a href=&quot;#cb18-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                &amp;lt;span style=&amp;quot;width: &amp;lt;%= @raised %&amp;gt;%&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-9&quot;&gt;&lt;a href=&quot;#cb18-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                  $&amp;lt;%= @raised %&amp;gt; USD&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-10&quot;&gt;&lt;a href=&quot;#cb18-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                &amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-11&quot;&gt;&lt;a href=&quot;#cb18-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-5&quot;&gt;&lt;a href=&quot;#cb18-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;       &amp;lt;h1&amp;gt;Cabinet of Curiosities&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-6&quot;&gt;&lt;a href=&quot;#cb18-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;       &amp;lt;div id=&amp;quot;auction&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-7&quot;&gt;&lt;a href=&quot;#cb18-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;div class=&amp;quot;meter&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-8&quot;&gt;&lt;a href=&quot;#cb18-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;             &amp;lt;span style=&amp;quot;width: &amp;lt;%= @raised %&amp;gt;%&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-9&quot;&gt;&lt;a href=&quot;#cb18-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;               $&amp;lt;%= @raised %&amp;gt; USD&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-10&quot;&gt;&lt;a href=&quot;#cb18-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;             &amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb18-11&quot;&gt;&lt;a href=&quot;#cb18-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb18-12&quot;&gt;&lt;a href=&quot;#cb18-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb18-13&quot;&gt;&lt;a href=&quot;#cb18-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb18-14&quot;&gt;&lt;a href=&quot;#cb18-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;
@@ -1309,18 +1308,18 @@ assets/csss/custom.css&lt;/code&gt;&lt;/pre&gt;
 &lt;span id=&quot;cb19-3&quot;&gt;&lt;a href=&quot;#cb19-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb19-4&quot;&gt;&lt;a href=&quot;#cb19-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; render(assigns) &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb19-5&quot;&gt;&lt;a href=&quot;#cb19-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;op&quot;&gt;~&lt;/span&gt;L&lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-6&quot;&gt;&lt;a href=&quot;#cb19-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;          &amp;lt;h1&amp;gt;Cabinet of Curiosities&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-7&quot;&gt;&lt;a href=&quot;#cb19-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;          &amp;lt;div id=&amp;quot;auction&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-8&quot;&gt;&lt;a href=&quot;#cb19-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;div class=&amp;quot;meter&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-9&quot;&gt;&lt;a href=&quot;#cb19-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                &amp;lt;span style=&amp;quot;width: &amp;lt;%= @raised %&amp;gt;%&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-10&quot;&gt;&lt;a href=&quot;#cb19-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                  $&amp;lt;%= @raised %&amp;gt; USD&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-11&quot;&gt;&lt;a href=&quot;#cb19-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;                &amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-12&quot;&gt;&lt;a href=&quot;#cb19-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-13&quot;&gt;&lt;a href=&quot;#cb19-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-14&quot;&gt;&lt;a href=&quot;#cb19-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;button phx-click=&amp;quot;donate-1&amp;quot;&amp;gt; $1 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-15&quot;&gt;&lt;a href=&quot;#cb19-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;button phx-click=&amp;quot;donate-5&amp;quot;&amp;gt; $5 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-16&quot;&gt;&lt;a href=&quot;#cb19-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;button phx-click=&amp;quot;donate-10&amp;quot;&amp;gt; $10 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-17&quot;&gt;&lt;a href=&quot;#cb19-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;              &amp;lt;button phx-click=&amp;quot;donate-100&amp;quot;&amp;gt; $100 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-6&quot;&gt;&lt;a href=&quot;#cb19-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;       &amp;lt;h1&amp;gt;Cabinet of Curiosities&amp;lt;/h1&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-7&quot;&gt;&lt;a href=&quot;#cb19-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;       &amp;lt;div id=&amp;quot;auction&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-8&quot;&gt;&lt;a href=&quot;#cb19-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;div class=&amp;quot;meter&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-9&quot;&gt;&lt;a href=&quot;#cb19-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;             &amp;lt;span style=&amp;quot;width: &amp;lt;%= @raised %&amp;gt;%&amp;quot;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-10&quot;&gt;&lt;a href=&quot;#cb19-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;               $&amp;lt;%= @raised %&amp;gt; USD&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-11&quot;&gt;&lt;a href=&quot;#cb19-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;             &amp;lt;/span&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-12&quot;&gt;&lt;a href=&quot;#cb19-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-13&quot;&gt;&lt;a href=&quot;#cb19-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-14&quot;&gt;&lt;a href=&quot;#cb19-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        &amp;lt;button phx-click=&amp;quot;donate-1&amp;quot;&amp;gt; $1 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-15&quot;&gt;&lt;a href=&quot;#cb19-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;button phx-click=&amp;quot;donate-5&amp;quot;&amp;gt; $5 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-16&quot;&gt;&lt;a href=&quot;#cb19-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;button phx-click=&amp;quot;donate-10&amp;quot;&amp;gt; $10 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb19-17&quot;&gt;&lt;a href=&quot;#cb19-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;           &amp;lt;button phx-click=&amp;quot;donate-100&amp;quot;&amp;gt; $100 &amp;lt;/button&amp;gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb19-18&quot;&gt;&lt;a href=&quot;#cb19-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        &amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb19-19&quot;&gt;&lt;a href=&quot;#cb19-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb19-20&quot;&gt;&lt;a href=&quot;#cb19-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;
@@ -1416,7 +1415,7 @@ State: %{components: {%{}, %{}, 0}, join_ref: &amp;quot;4&amp;quot;, serializer:
 &lt;span id=&quot;cb24-4&quot;&gt;&lt;a href=&quot;#cb24-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;ot&quot;&gt;@topic&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;auction&amp;quot;&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb24-5&quot;&gt;&lt;a href=&quot;#cb24-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
 &lt;span id=&quot;cb24-6&quot;&gt;&lt;a href=&quot;#cb24-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; mount(params, session, socket) &lt;span class=&quot;kw&quot;&gt;do&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb24-7&quot;&gt;&lt;a href=&quot;#cb24-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;cn&quot;&gt;PhoenixFundWeb&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;cn&quot;&gt;Endpoint&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;subscribe(&lt;span class=&quot;ot&quot;&gt;@topic&lt;/span&gt;)&lt;/span&gt;
+&lt;span id=&quot;cb24-7&quot;&gt;&lt;a href=&quot;#cb24-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;   &lt;span class=&quot;cn&quot;&gt;PhoenixFundWeb&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;cn&quot;&gt;Endpoint&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;subscribe(&lt;span class=&quot;ot&quot;&gt;@topic&lt;/span&gt;)&lt;/span&gt;
 &lt;span id=&quot;cb24-8&quot;&gt;&lt;a href=&quot;#cb24-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    {&lt;span class=&quot;va&quot;&gt;:ok&lt;/span&gt;, assign(socket, &lt;span class=&quot;va&quot;&gt;:raised&lt;/span&gt;, &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;)}&lt;/span&gt;
 &lt;span id=&quot;cb24-9&quot;&gt;&lt;a href=&quot;#cb24-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;end&lt;/span&gt;&lt;/span&gt;
 &lt;span id=&quot;cb24-10&quot;&gt;&lt;a href=&quot;#cb24-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;...&lt;/span&gt;&lt;/span&gt;
@@ -1846,13 +1845,13 @@ Alright, enough background. Let’s programmatically generate the LLB for an ima
 &lt;/div&gt;
 &lt;p&gt;Import LLB defintions:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import (
-    &amp;quot;github.com/moby/buildkit/client/llb&amp;quot;
+ &amp;quot;github.com/moby/buildkit/client/llb&amp;quot;
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Create LLB for an Alpine image:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;func createLLBState() llb.State {
-    return llb.Image(&amp;quot;docker.io/library/alpine&amp;quot;).
-        File(llb.Copy(llb.Local(&amp;quot;context&amp;quot;), &amp;quot;README.md&amp;quot;, &amp;quot;README.md&amp;quot;)).
-        Run(llb.Args([]string{&amp;quot;/bin/sh&amp;quot;, &amp;quot;-c&amp;quot;, &amp;quot;echo \&amp;quot;programmatically built\&amp;quot; &amp;gt; /built.txt&amp;quot;})).
+ return llb.Image(&amp;quot;docker.io/library/alpine&amp;quot;).
+  File(llb.Copy(llb.Local(&amp;quot;context&amp;quot;), &amp;quot;README.md&amp;quot;, &amp;quot;README.md&amp;quot;)).
+  Run(llb.Args([]string{&amp;quot;/bin/sh&amp;quot;, &amp;quot;-c&amp;quot;, &amp;quot;echo \&amp;quot;programmatically built\&amp;quot; &amp;gt; /built.txt&amp;quot;})).
     Root()
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -1860,11 +1859,11 @@ Alright, enough background. Let’s programmatically generate the LLB for an ima
 &lt;p&gt;The final thing we need to do is turn this into protocol-buffer and emit it to standard out:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;func main() {
 
-    dt, err := createLLBState().Marshal(context.TODO(), llb.LinuxAmd64)
-    if err != nil {
-        panic(err)
-    }
-    llb.WriteTo(dt, os.Stdout)
+ dt, err := createLLBState().Marshal(context.TODO(), llb.LinuxAmd64)
+ if err != nil {
+  panic(err)
+ }
+ llb.WriteTo(dt, os.Stdout)
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Let’s look at the what this generates using the &lt;code&gt;dump-llb&lt;/code&gt; option of buildctl:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; go run ./writellb/writellb.go | \
@@ -2107,10 +2106,10 @@ images:
 
 // Define constants for the command strings
 const (
-    Copy        = &amp;quot;stash&amp;quot;
-    Run         = &amp;quot;please&amp;quot;
-    From        = &amp;quot;come_from&amp;quot;
-    ...
+ Copy        = &amp;quot;stash&amp;quot;
+ Run         = &amp;quot;please&amp;quot;
+ From        = &amp;quot;come_from&amp;quot;
+ ...
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Then we build our image:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;docker build . -t agbell/ick&lt;/code&gt;&lt;/pre&gt;
@@ -2166,7 +2165,7 @@ README.md&lt;/code&gt;&lt;/pre&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;This is an excellent point. &lt;a href=&quot;https://github.com/hashicorp/hcl&quot;&gt;HCL&lt;/a&gt; does look a bit less strange to outsiders, and Hashicorp already has mindshare in the DevOps community, and it certainly beats config templates.&lt;/p&gt;
 &lt;h2 id=&quot;dsl-creation-story&quot;&gt;DSL Creation Story&lt;/h2&gt;
-&lt;p&gt;Reddit user &lt;a href=&quot;https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopf8fj/?utm_source=reddit&amp;amp;utm_medium=web2x&amp;amp;context=3&quot;&gt;XANi_&lt;/a&gt; explained how DSL’s embedded in YAML keep getting created: &amp;gt; The vicious cycle of &amp;gt; * We don’t want config to be turing complete, we just need to declare some initial setup &amp;gt; &amp;gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &amp;gt; &amp;gt; * Oops, we need to add some templates. Just use &amp;lt;primary language’s popular templating library&amp;gt;, changing config format is too much work. &amp;gt; &amp;gt; * And congratulations, you have now written a DSL &amp;gt; &amp;gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.&lt;/p&gt;
+&lt;p&gt;Reddit user &lt;a href=&quot;https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopf8fj/?utm_source=reddit&amp;amp;utm_medium=web2x&amp;amp;context=3&quot;&gt;XANi_&lt;/a&gt; explained how DSL’s embedded in YAML keep getting created: &amp;gt; The vicious cycle of &amp;gt; &amp;gt; * We don’t want config to be turing complete, we just need to declare some initial setup &amp;gt; &amp;gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &amp;gt; &amp;gt; * Oops, we need to add some templates. Just use &amp;lt;primary language’s popular templating library&amp;gt;, changing config format is too much work. &amp;gt; &amp;gt; * And congratulations, you have now written a DSL &amp;gt; &amp;gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.&lt;/p&gt;
 &lt;h2 id=&quot;rake-webpack-and-groovy&quot;&gt;Rake, Webpack, and Groovy&lt;/h2&gt;
 &lt;p&gt;Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:&lt;/p&gt;
 &lt;blockquote&gt;

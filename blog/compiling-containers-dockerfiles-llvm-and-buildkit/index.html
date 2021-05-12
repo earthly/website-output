@@ -467,13 +467,13 @@ Alright, enough background. Let’s programmatically generate the LLB for an ima
 </div>
 <p>Import LLB defintions:</p>
 <pre><code>import (
-    &quot;github.com/moby/buildkit/client/llb&quot;
+ &quot;github.com/moby/buildkit/client/llb&quot;
 )</code></pre>
 <p>Create LLB for an Alpine image:</p>
 <pre><code>func createLLBState() llb.State {
-    return llb.Image(&quot;docker.io/library/alpine&quot;).
-        File(llb.Copy(llb.Local(&quot;context&quot;), &quot;README.md&quot;, &quot;README.md&quot;)).
-        Run(llb.Args([]string{&quot;/bin/sh&quot;, &quot;-c&quot;, &quot;echo \&quot;programmatically built\&quot; &gt; /built.txt&quot;})).
+ return llb.Image(&quot;docker.io/library/alpine&quot;).
+  File(llb.Copy(llb.Local(&quot;context&quot;), &quot;README.md&quot;, &quot;README.md&quot;)).
+  Run(llb.Args([]string{&quot;/bin/sh&quot;, &quot;-c&quot;, &quot;echo \&quot;programmatically built\&quot; &gt; /built.txt&quot;})).
     Root()
 }
 </code></pre>
@@ -481,11 +481,11 @@ Alright, enough background. Let’s programmatically generate the LLB for an ima
 <p>The final thing we need to do is turn this into protocol-buffer and emit it to standard out:</p>
 <pre><code>func main() {
 
-    dt, err := createLLBState().Marshal(context.TODO(), llb.LinuxAmd64)
-    if err != nil {
-        panic(err)
-    }
-    llb.WriteTo(dt, os.Stdout)
+ dt, err := createLLBState().Marshal(context.TODO(), llb.LinuxAmd64)
+ if err != nil {
+  panic(err)
+ }
+ llb.WriteTo(dt, os.Stdout)
 }</code></pre>
 <p>Let’s look at the what this generates using the <code>dump-llb</code> option of buildctl:</p>
 <pre><code> go run ./writellb/writellb.go | \
@@ -728,10 +728,10 @@ images:
 
 // Define constants for the command strings
 const (
-    Copy        = &quot;stash&quot;
-    Run         = &quot;please&quot;
-    From        = &quot;come_from&quot;
-    ...
+ Copy        = &quot;stash&quot;
+ Run         = &quot;please&quot;
+ From        = &quot;come_from&quot;
+ ...
 )</code></pre>
 <p>Then we build our image:</p>
 <pre><code>docker build . -t agbell/ick</code></pre>

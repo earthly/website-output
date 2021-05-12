@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What is mitmproxy?</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success!</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What is mitmproxy?</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#alpine">Alpine</a></li><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul>
 
             </nav>
           </aside>
@@ -449,7 +449,7 @@ QyVJfmCmjt2i=
 &gt; cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
 &gt; update-ca-certificates</code></pre>
 <p><em>We will be using these steps later when we work with docker containers on macOS and Windows.</em></p>
-<h2 id="great-success">Great Success!</h2>
+<h2 id="great-success">Great Success</h2>
 <p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.</p>
 Here is Slack making requests:
 <figure class>
@@ -536,7 +536,8 @@ docker.io/library/couchbase:7.0.0-beta</code></pre>
 <p>mitmweb request for cloudflare.docker.com</p>
 </figcaption>
 </figure>
-<p>## <em>Troubleshooting</em> <em>If <code>docker pull</code> fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.</em></p>
+<h2 id="troubleshooting"><em>Troubleshooting</em></h2>
+<p><em>If <code>docker pull</code> fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.</em></p>
 <h2 id="capturing-docker-container-traffic">Capturing Docker Container Traffic</h2>
 <p>We now know how to capture traffic on our host machine and the Linux container host. But what happens when we make requests from inside a running container?</p>
 <pre><code>&gt; docker run -it ubuntu
@@ -576,7 +577,8 @@ If you&#39;d like to turn off curl&#39;s verification of the certificate, use
 <p>The solution here is a familiar one. We need to follow the steps we used above for configuring Linux to trust a certificate authority, but we need to do it inside our container.</p>
 <p>There are several ways to accomplish this.</p>
 <h2 id="solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</h2>
-<p>The simplest solution is to mount the certificate into the proper spot in our container and run <code>update-ca-certificates</code>. ### Alpine:</p>
+<p>The simplest solution is to mount the certificate into the proper spot in our container and run <code>update-ca-certificates</code>.</p>
+<h3 id="alpine">Alpine</h3>
 <pre><code># Run container and mount in our CA Cert
 &gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.cer alpine
 # Add ca-certificates (and curl for testing)

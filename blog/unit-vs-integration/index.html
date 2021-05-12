@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#what-is-a-unit">What Is a Unit?</a></li><li><a href="#retroactive-unit-testing">Retroactive Unit Testing</a></li><li><a href="#what-is-an-integration-test">What Is an Integration Test?</a></li><li><a href="#when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</a><ul><li><a href="#unit-testing">Unit Testing:</a></li><li><a href="#integration-testing">Integration Testing:</a></li></ul></li><li><a href="#working-software-over-idealized-testing">Working Software Over Idealized Testing</a></li><li><a href="#see-also">See Also</a></li></ul>
+              <ul class="toc__menu"><li><a href="#what-is-a-unit">What Is a Unit?</a></li><li><a href="#retroactive-unit-testing">Retroactive Unit Testing</a></li><li><a href="#what-is-an-integration-test">What Is an Integration Test?</a></li><li><a href="#when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</a><ul><li><a href="#unit-testing">Unit Testing</a></li><li><a href="#integration-testing">Integration Testing</a></li></ul></li><li><a href="#working-software-over-idealized-testing">Working Software Over Idealized Testing</a></li><li><a href="#see-also">See Also</a></li></ul>
 
             </nav>
           </aside>
@@ -360,7 +360,7 @@
 </table>
 <h1 id="an-e-commerce-example">An E-commerce Example</h1>
 <p>Imagine you are coding a simple e-commerce site, a simple miniature amazon.com. The details matter here so let’s assume that you are going to use PostgreSQL as your datastore, PayPal for payments, UPS for shipping, and Amazon Simple Email Service for emailing invoices.  </p>
-<h3 id="unit-testing">Unit Testing:</h3>
+<h3 id="unit-testing">Unit Testing</h3>
 <p>Your unit testing strategy will be testing the logic of your application, in an isolated fashion.  This may include:</p>
 <ul>
 <li>Testing that the tax calculating logic correctly calculates the taxes for various jurisdictions.  </li>
@@ -368,7 +368,7 @@
 <li>Testing that discount codes are properly applied.</li>
 </ul>
 <p>Each of these areas will likely have several tests. Each test will verify a small piece of functionality. Unit testing power comes from their number, simplicity, and their speed and ease of execution.</p>
-<h3 id="integration-testing">Integration Testing:</h3>
+<h3 id="integration-testing">Integration Testing</h3>
 <p>Your integration testing on the other hand will focus on testing where your e-commerce code interacts with other systems.  This means testing not just the integration with the data store but also with email sending services, payment services and more. These may include:</p>
 <ul>
 <li>Testing that the shipping rates can be retrieved from the external shipping service.</li>
