@@ -244,4 +244,10 @@ var store = [{
         "tags": [],
         "url": "/blog/monorepo-with-bazel/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "DOS Gaming In Docker",
+        "excerpt":"Its been three decades since the height of the DOS era, and look how far we’ve come! A machine that used to cost $2,000 can be emulated - down to the processor! — in our web browsers while also checking email or watching a YouTube video. However, amidst these advancements,...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/dos-gaming-in-docker/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+<title>DOS Gaming In Docker - Earthly Blog</title>
+<meta name="description" content="Distributing shareware from the 90’s in modern Docker images.">
+
+
+  <meta name="author" content="Corey Larson">
+  
+  <meta property="article:author" content="Corey Larson">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="DOS Gaming In Docker">
+<meta property="og:url" content="https://earthly.dev/blog/dos-gaming-in-docker/">
+
+
+  <meta property="og:description" content="Distributing shareware from the 90’s in modern Docker images.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/logo-header-800-c4ff9c2c5.png">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="DOS Gaming In Docker">
+  <meta name="twitter:description" content="Distributing shareware from the 90’s in modern Docker images.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/dos-gaming-in-docker/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/logo-header-600-4c4f7d0dc.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-12T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/dos-gaming-in-docker/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="DOS Gaming In Docker">
+    <meta itemprop="description" content="Distributing shareware from the 90’s in modern Docker images.">
+    <meta itemprop="datePublished" content="2021-05-12T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">DOS Gaming In Docker
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+
+          &nbsp;	&nbsp;
+          Corey Larson
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <p>Its been three decades since the height of the DOS era, and look how far we’ve come! A machine that used to cost $2,000 can be emulated - <em>down to the processor!</em> — in our <a href="https://bellard.org/jslinux/"><em>web browsers</em></a> while also checking email or watching a YouTube video. However, amidst these advancements, our old software falls by the wayside and stops working. Games are especially prone to this, since they often relied on incompatible tricks to eke out every ounce of performance from these old machines.</p>
+<p>Many projects have sprung up to help preserve this heritage. <a href="https://www.dosbox.com/">DOSBox</a> provides a modern, compatible environment for old games (and other software), while projects like the <a href="https://archive.org/details/software">Internet Archive</a> provide a massive library of DOS games, freely available to play in your browser. In my experience, they play pretty well!</p>
+<p>However, I still miss those less-connected days of the early 90’s. I remember the thrill of riding my bike to the store to pick up a shareware copy of whatever game was available for $1. I then held a physical disk, with the game on it, ready to install on the nearest accessible computer. The self-contained nature of it all was magical. Nowadays, many <em>web pages</em> <a href="https://www.pingdom.com/blog/webpages-are-getting-larger-every-year-and-heres-why-it-matters/">are bigger than the shareware games I used to buy</a>.</p>
+<p>This got me thinking: “Floppies can be <a href="https://www.kryoflux.com/">imaged</a>. That sounds kind of like a Docker image. I wonder… could I make DOS shareware Docker images?”</p>
+<p>Turns out you can!</p>
+<h2 id="what-you-will-need">What You Will Need</h2>
+<ul>
+<li><a href="https://github.com/caiiiycuk/js-dos">JS-DOS 6.22</a></li>
+<li>A copy of a Shareware game</li>
+<li><a href="https://hub.docker.com/_/node">NodeJS</a></li>
+<li><a href="https://www.docker.com/get-started">Docker</a></li>
+<li><a href="https://earthly.dev/">Earthly</a> (Optional, but I think it’s neat!)</li>
+</ul>
+<h2 id="putting-it-together">Putting It Together</h2>
+<p>First, we will need to acquire JS-DOS. JS-DOS is a wrapper around an Emscripten-compiled version of <a href="https://www.dosbox.com">DOSBox</a>, so it can run in a browser. You can get the latest versions of the files <a href="https://js-dos.com/#js-dos-622-archives">here</a>. Download and place these files into a project directory. Here’s how I’m doing it, using Docker:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> site</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> wget https://js-dos.com/6.22/current/js-dos.js &amp;&amp; \</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    wget https://js-dos.com/6.22/current/wdosbox.js &amp;&amp; \</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    wget https://js-dos.com/6.22/current/wdosbox.wasm.js</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> npm install -g serve</span></code></pre></div>
+<p>JS-DOS is nice, but it’s nothing without a game to play in it. For our example purposes, we’ll use one of my childhood favorites: <a href="https://3drealms.com/catalog/secret-agent_39/">Secret Agent</a>.</p>
+<div class="notice--warning" data-markdown="1">
+<p><strong>❗ Warning</strong></p>
+<p>A couple things to note when you are looking for games:</p>
+<ul>
+<li>Make sure that the game you choose is <em>actually</em> shareware. <a href="https://www.youtube.com/watch?v=up863eQKGUI">Don’t copy that floppy!</a></li>
+<li>Make sure that it is the actual game files, not just the installer.
+<ul>
+<li>While you <em>can</em> install and <em>then</em> run the game via DOSBox, you’ll have to install it on every visit to the webpage. The installation is also fairly slow.</li>
+</ul></li>
+<li>Make sure that it is a <code>zip</code> file. This is what JS-DOS wants to load for us.</li>
+</ul>
+</div>
+<p>Heres how I add the game to our image:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ARG</span> GAME_URL</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> wget -O game.zip $GAME_URL</span></code></pre></div>
+<div class="notice--info" data-markdown="1">
+<p><strong>ℹ️ Note</strong></p>
+<p>You may note that we don’t preserve the name of the downloaded file here. This is to make our job easier, when we make the game accessible to play later.</p>
+</div>
+<p>If you built and ran the Dockerfile at this point, you would have an image containing Node, JS-DOS, and a zip file of your beloved game; but no way to play it! To make it playable, we need to create a webpage which loads JS-DOS, loads our game, and provides a canvas for JS-DOS to render its output to. Here is my tiny webpage:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;html&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;style</span> <span class="er">type</span><span class="ot">=</span><span class="st">&quot;text/css&quot;</span> <span class="er">media</span><span class="ot">=</span><span class="st">&quot;screen&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      canvas {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="kw">width</span>: <span class="dv">800</span><span class="dt">px</span><span class="op">;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          <span class="kw">height</span>: <span class="dv">600</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/style&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;head&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;title&gt;</span>DOS Game!<span class="kw">&lt;/title&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;js-dos.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/head&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;body&gt;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;canvas</span> <span class="er">id</span><span class="ot">=</span><span class="st">&quot;jsdos&quot;</span> <span class="er">width</span><span class="ot">=</span><span class="st">&quot;800&quot;</span> <span class="er">height</span><span class="ot">=</span><span class="st">&quot;600&quot;</span> <span class="kw">&gt;&lt;/canvas&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">Dos</span>(<span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&quot;jsdos&quot;</span>)<span class="op">,</span> {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>      })<span class="op">.</span><span class="fu">ready</span>((fs<span class="op">,</span> main) <span class="kw">=&gt;</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        fs<span class="op">.</span><span class="fu">extract</span>(<span class="st">&quot;game.zip&quot;</span>)<span class="op">.</span><span class="fu">then</span>(() <span class="kw">=&gt;</span> {</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          <span class="fu">main</span>([<span class="st">&quot;-c&quot;</span><span class="op">,</span> GAME_ARGS])</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        })<span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/script&gt;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/body&gt;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/html&gt;</span></span></code></pre></div>
+<div class="notice--info" data-markdown="1">
+<p><strong>ℹ️ Note</strong></p>
+<p><code>GAME_ARGS</code> is the command for DOSBox (which is inside JS-DOS) to start once it is loaded. The CLI arguments should line up with what a regular installation of DOSBox would expect. If your game requires additional arguments, please provide them in a comma-separated list.</p>
+</div>
+<p>Copy this html file into the same directory as your JS-DOS files and your game. Now all you need to do is start a server within our Docker container to serve this webpage. For this, I used <a href="https://www.npmjs.com/package/serve"><code>serve</code></a>, because it was quick and easy to script (you may have noticed installing this dependency alongside JS-DOS earlier). Heres how I add the server to the container:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ARG</span> GAME_ARGS</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> index.html .</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> sed -i s/GAME_ARGS/$GAME_ARGS/ index.html</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ENTRYPOINT</span> npx serve -l tcp://0.0.0.0:8000</span></code></pre></div>
+<p>And now we have a shareable Docker container, with playable shareware inside! You can now play the game by:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_URL=https://archive.org/download/msdos_festival_SCORCH15/SCORCH15.ZIP <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_ARGS=<span class="dt">\&quot;</span>SCORCH.EXE<span class="dt">\&quot;</span> <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 127.0.0.1:8000:8000 <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> mycool:dosgame .</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
+<h2 id="going-further">Going Further</h2>
+<p>Using Earthly, we can even go a step further! Earhly lets us separate some of the concerns within the Dockerfile:</p>
+<div class="notice--info" data-markdown="1">
+<p><strong>ℹ️ About Earthly</strong></p>
+<p><a href="https://earthly.dev/">Earthly</a> makes creating Docker images easier. <a href="https://docs.earthly.dev/basics">Take it for a spin!</a></p>
+</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>jsdos:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> node:16-alpine</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WORKDIR</span> site</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> wget https://js-dos.com/6.22/current/js-dos.js &amp;&amp; \</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        wget https://js-dos.com/6.22/current/wdosbox.js &amp;&amp; \</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        wget https://js-dos.com/6.22/current/wdosbox.wasm.js</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> npm install -g serve</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>game:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +jsdos</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ARG</span> GAME_URL</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> wget -O game.zip $GAME_URL</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>web:</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> +game</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ARG</span> GAME_ARGS</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> index.html .</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sed -i s/GAME_ARGS/$GAME_ARGS/ index.html</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ENTRYPOINT</span> npx serve -l tcp://0.0.0.0:8000</span></code></pre></div>
+<p>But it also lets us build <em>and launch</em> the game with a single command. It will also end up saving the game for you as an image on your local system! Here is the additional target that I added to accomplish this:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>play:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    LOCALLY</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ARG</span> GAME_TAG</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    WITH DOCKER --load jsdos:$GAME_TAG=+web</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">RUN</span> docker inspect jsdos:$GAME_TAG &gt; /dev/null &amp;&amp; \ <span class="co">#Using side-effect to save image locally too</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            docker run --rm -p 127.0.0.1:8000:8000 jsdos:$GAME_TAG</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    END</span></code></pre></div>
+<p>We also have a couple pre-made targets that wrap this all up for you, and all you need to do is have <a href="https://earthly.dev/get-earthly">Earthly installed</a>! Running any of these commands will start the game. Just navigate on over to <a href="http://localhost:8000">localhost:8000</a> and start playing! Additionally, you will find a Docker image on your system named <code>jsdos:$GAME_TAG</code> for when you want to play later.</p>
+<img src="/blog/assets/images/dos-gaming-in-docker/doom.png" title="fig:" alt="Screenshot of id’s Doom running in a web browser." />
+<figcaption>
+<code>earthly github.com/dchw/earthly-dos-gaming:main+doom</code>
+</figcaption>
+<img src="/blog/assets/images/dos-gaming-in-docker/agent.png" title="fig:" alt="Screenshot of Apogee’s Secret Agent running in a web browser." />
+<figcaption>
+<code>earthly github.com/dchw/earthly-dos-gaming:main+cosmo</code>
+</figcaption>
+<img src="/blog/assets/images/dos-gaming-in-docker/cosmo.png" title="fig:" alt="Screenshot of Apogee’s Cosmos Cosmic Adventure running in a web browser." />
+<figcaption>
+<code>earthly github.com/dchw/earthly-dos-gaming:main+secretagent</code>
+</figcaption>
+<p>You can run your own dos games by running:</p>
+<pre><code>earthly \
+    --build-arg GAME_TAG=doom \
+    --build-arg GAME_URL=https://archive.org/download/DoomsharewareEpisode/doom.ZIP \
+    --build-arg GAME_ARGS=\&quot;DOOM.EXE\&quot; \
+    github.com/dchw/earthly-dos-gaming:main+play</code></pre>
+<p>Make sure you replace the tag, URL, and args as appropriate.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>It’s neat that we can make independent, offline bundles, similar to those shareware floppy disks from back in the day. To see the project as a whole, check out the <a href="https://github.com/earthly/example-dos-gaming">repository</a>. Thanks for reading!</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Corey Larson</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Eats, runs, and codes. Dad. Engineer. Progressive. LDS. Disneyland fanatic.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/monorepo-with-bazel/" class="pagination--pager" title="Building a Monorepo with Bazel
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/docker-networking/header-600-224af2fd1.webp 600w, /blog/generated/assets/images/docker-networking/header-800-224af2fd1.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/docker-networking/header-600-df7493f54.jpg 600w, /blog/generated/assets/images/docker-networking/header-800-df7493f54.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/docker-networking/header-800-df7493f54.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/docker-networking/" rel="permalink">Understanding Docker Networking
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          16 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combinat...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
