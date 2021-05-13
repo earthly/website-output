@@ -301,7 +301,7 @@
 It can be, if you don’t want to customize it. But the problem space there is just so large. There’re so many API objects, and so many different ways to do things that you don’t want to necessarily use them all.  Otherwise your platform just gets really complicated. So, you need to choose the bits and pieces that you want to use there. And, tons of the plugins that you use will also have custom resource definitions, their own custom definitions of API objects, that’s on top of the ones that already exist. So, you likely want to use those instead of the native Kubernetes ones if your software you’re choosing uses those. And so it’s all of that, but then there’s even more.</p>
 <p>Kubernetes doesn’t do monitoring. Kubernetes generates logs, but doesn’t do anything with them. Kubernetes doesn’t necessarily force a deployment process or an integration kind of a process onto you as well. So Kubernetes is really just an arrow in your toolkit that kind of lets you build the rest of that, in a really nice way.</p>
 <p>The platform should cover from the moment source code is pushed to get all the way up to this code is running in production.</p>
-<h3 id="kubernetes-ingest-strategies">Kubernetes Ingest Strategies</h3>
+<h2 id="kubernetes-ingest-strategies">Kubernetes Ingest Strategies</h2>
 <p><strong>What is Ingress and how do requests get to a service inside of Kubernetes?</strong><br />
 Ingress is the networking layer of how you get requests to your services from the outside. And Kubernetes doesn’t really ship with an Ingress controller by default that actually performs all those liftings, they want you to bring your own. And there’s a ton of really interesting ones out there. There’s nginx that does that, there’s people who use Caddy to do some of that stuff. There’s newer ones that are cloud native. They’re in that giant behemoth of a chart, the cloud native compute foundation puts up, that gets memed all the time on Twitter.</p>
 <p>The way it works is a request comes from the internet and it’s going to hit some kind of a load balancer usually. We’re using one of Amazon’s application load balancers, but in the past I’ve just used even regular HAProxy or things like that. And from there, it bounces into your cluster. Your Ingress controller is going to pick it up, figure out where it should go, which services it should get routed to and route it to that service. And then, your service will generate a response and it follows these layers of the onion back out.</p>
@@ -323,7 +323,7 @@ Ingress is the networking layer of how you get requests to your services from th
 <p>Kubernetes has a few of those baked in, where it’ll roll through and you can set how many or maximum amount available, and how many extra can I spin up to give myself headroom while I’m rolling in a deployment. But there’s more to it than that because that does let you get to, more or less zero downtime.</p>
 <p>Kubernetes will handle that, “Hey, no more traffic comes to this node.” And then we’ll spin it down as soon as all the traffic there is exhausted and spin up new ones, and let those get routed to. It’ll handle all that for you, and that’s really nice.</p>
 <p>But, there’s more to it than that because there’s the whole adventure that takes place before it’s live in production taking traffic.</p>
-<p><strong>Testing in production</strong></p>
+<h2 id="testing-in-production">Testing in production</h2>
 <p>What I’m hoping to do for us as we’re going forward here is, that we can stick new deployments out on production in some small way, and then use our Ingress controller to send it some traffic. Then we can actually test the new version of the code in production without affecting anybody as a canary before we choose to roll that actually out to everybody.</p>
 <p>Service meshes are a little bit better at this, then simple ingress controllers. This is one place that service meshes do succeed, but Traefik can do it well enough too, where you actually split percentages of your request volume to one deployment versus the other.</p>
 
@@ -504,13 +504,13 @@ Ingress is the networking layer of how you get requests to your services from th
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -528,14 +528,16 @@ Ingress is the networking layer of how you get requests to your services from th
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -556,13 +558,13 @@ Ingress is the networking layer of how you get requests to your services from th
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -580,7 +582,7 @@ Ingress is the networking layer of how you get requests to your services from th
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -588,7 +590,7 @@ Ingress is the networking layer of how you get requests to your services from th
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

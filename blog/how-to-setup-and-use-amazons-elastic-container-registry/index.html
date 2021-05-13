@@ -344,7 +344,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a><ul><li><a href="#eks-manifest">EKS Manifest</a></li></ul></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -442,7 +442,7 @@ CMD echo &#39;Hello world&#39;</code></pre>
 <p>Again, you’ll need to be authenticated if you want to build an image off a private image in ECR, but this allows you to share base images with your team or the public.</p>
 <h3 id="using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</h3>
 <p>To use your images from ECR in a container management platform like ECS or EKS, simply add the name and tag of the image you want to use to the relevant configuration file.</p>
-<h5 id="eks-manifest">EKS Manifest</h5>
+<h4 id="eks-manifest">EKS Manifest</h4>
 <p>For example, you can use the following EKS manifest to deploy a NodeJS image stored in ECR:</p>
 <pre><code>apiVersion: batch/v1 
 kind: Job 
@@ -636,13 +636,13 @@ spec: template:
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -660,14 +660,16 @@ spec: template:
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -688,13 +690,13 @@ spec: template:
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -712,7 +714,7 @@ spec: template:
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -720,7 +722,7 @@ spec: template:
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#why-is-jenkins-such-a-popular-option-for-cicd">Why Is Jenkins Such a Popular Option for CI/CD?</a></li><li><a href="#overcoming-common-jenkins-performance-issues">Overcoming Common Jenkins Performance Issues</a><ul><li><a href="#avoid-complex-groovy-script-in-your-pipelines">1. Avoid Complex Groovy Script In Your Pipelines</a></li><li><a href="#keep-builds-minimal-at-the-master-node">2. Keep Builds Minimal at the Master Node</a></li><li><a href="#dont-bloat-the-jenkins-master-installation">3. Don’t Bloat the Jenkins Master Installation</a></li><li><a href="#make-agent-management-effortless">4. Make Agent Management Effortless</a></li><li><a href="#remove-older-builds">5. Remove Older Builds</a></li><li><a href="#lower-heap-size">6. Lower Heap Size</a></li><li><a href="#avoid-plugin-overload">7. Avoid Plugin Overload</a></li></ul></li><li><a href="#tracking-jenkins-performance">Tracking Jenkins Performance</a></li><li><a href="#wrapping-it-up">Wrapping It Up</a></li></ul>
+              <ul class="toc__menu"><li><a href="#why-is-jenkins-such-a-popular-option-for-cicd">Why Is Jenkins Such a Popular Option for CI/CD?</a></li><li><a href="#overcoming-common-jenkins-performance-issues">Overcoming Common Jenkins Performance Issues</a><ul><li><a href="#avoid-complex-groovy-script-in-your-pipelines">1. Avoid Complex Groovy Script In Your Pipelines</a></li><li><a href="#keep-builds-minimal-at-the-master-node">2. Keep Builds Minimal at the Master Node</a></li><li><a href="#dont-bloat-the-jenkins-master-installation">3. Don’t Bloat the Jenkins Master Installation</a></li><li><a href="#make-agent-management-effortless">4. Make Agent Management Effortless</a></li><li><a href="#remove-older-builds">5. Remove Older Builds</a><ul><li><a href="#prevent-resource-collision-in-parallel-jobs">Prevent Resource Collision in Parallel Jobs</a></li></ul></li><li><a href="#lower-heap-size">6. Lower Heap Size</a></li><li><a href="#avoid-plugin-overload">7. Avoid Plugin Overload</a></li></ul></li><li><a href="#tracking-jenkins-performance">Tracking Jenkins Performance</a></li><li><a href="#wrapping-it-up">Wrapping It Up</a></li></ul>
 
             </nav>
           </aside>
@@ -336,7 +336,7 @@
 <p>After a while, Jenkins builds can pile up, and disk consumption may get out of hand. Developers often overlook Jenkins’ <a href="https://plugins.jenkins.io/discard-old-build/">Discard Old Builds</a> option. Set metrics, such as the number of builds and days to keep builds and artifacts are under the Jenkins Log Rotation menu.</p>
 <p>Rather than letting old builds accumulate and consume a file system, developers can enable <em>Discard Old Builds</em> and enjoy automated resource usage cleanup once a Jenkins job finishes. You can also use the <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html">G1 garbage collector</a> instead of Java 8’s default <a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html">Parallel GC</a> since the former is a server-style garbage collector with a lower GC pause time.</p>
 <p>Builds can also be removed <a href="https://superuser.com/a/1418896/92661">manually</a> via the Jenkins command line or using a <a href="https://opensource.com/article/17/11/how-use-cron-linux">cron job</a> that periodically cleans up old builds. You can find other options for discarding old build data <a href="https://support.cloudbees.com/hc/en-us/articles/215549798-Deleting-Old-Builds-Best-Strategy-for-Cleanup-and-disk-space-management">in this reference post</a>.</p>
-<h5 id="prevent-resource-collision-in-parallel-jobs">Prevent Resource Collision in Parallel Jobs</h5>
+<h4 id="prevent-resource-collision-in-parallel-jobs">Prevent Resource Collision in Parallel Jobs</h4>
 <p>Jobs running in parallel might want exclusive access to ports or resources. This may cause a collision, fail a build and further slow down your Jenkins pipeline. For example, if you run multiple builds in parallel, there’s a high chance they might collide while accessing a resource, say, Postgres’s database port 5432.</p>
 <p>Jenkins offers the <a href="https://plugins.jenkins.io/throttle-concurrents/">Throttle Concurrent Builds</a> plugin to help regulate the number of concurrent builds on Jenkins nodes:</p>
 <pre><code>// Throttle a single operation
@@ -543,13 +543,13 @@ throttle([&#39;test_1&#39;]) {
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -567,14 +567,16 @@ throttle([&#39;test_1&#39;]) {
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -595,13 +597,13 @@ throttle([&#39;test_1&#39;]) {
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -619,7 +621,7 @@ throttle([&#39;test_1&#39;]) {
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -627,7 +629,7 @@ throttle([&#39;test_1&#39;]) {
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

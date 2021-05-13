@@ -458,11 +458,14 @@ echo Hello $NAME
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span></span></code></pre></div>
 <h3 id="using-curly-brackets">Using Curly Brackets</h3>
 <p>You can get away with merely referring to a variable by writing <code>$FOO</code>. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:</p>
+<!-- markdownlint-disable MD014 -->
 <div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> world&quot;</span></span></code></pre></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> World&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
 <p>In this case, bash would try to find the variable <code>$FOOlo</code>, but we just wanted to print “Hello world.” To make this work, you will have to do the following:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo world&quot;</span></span></code></pre></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo World&quot;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
 <p>This is most likely useful when you want to use a variable to define a path, like <code>/opt/${ENVIRONMENT}_build.txt</code>. Without curly brackets, the script would try to look up <code>$ENVIRONMENT_build</code>.</p>
 <h2 id="properly-set-permissions">Properly Set Permissions</h2>
 <p>One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that <a href="https://www.guru99.com/file-permissions.html">permissions</a> had to be set right. See, when you make a file with, for example, <code>touch</code>, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a <code>permission denied</code> error when you try to run the script.</p>
@@ -644,13 +647,13 @@ echo &quot;Hello World!&quot;</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -668,14 +671,16 @@ echo &quot;Hello World!&quot;</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -696,13 +701,13 @@ echo &quot;Hello World!&quot;</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -720,7 +725,7 @@ echo &quot;Hello World!&quot;</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -728,7 +733,7 @@ echo &quot;Hello World!&quot;</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

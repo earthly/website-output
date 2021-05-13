@@ -302,8 +302,9 @@
 </figure>
 <p>During this time, tech giants have innovated in parallel and have open-sourced tools like <a href="https://bazel.build/">Bazel</a> and <a href="https://www.pantsbuild.org/">Pants</a>. They bring modern features, like reproducibility, determinism, the ability to scale in a monorepo and the ability to use cloud-based cache and parallelization.</p>
 <p>Although these systems are probably some of the most advanced build automation tools the world has seen, they come at a significant cost: the build config is not compatible with any of the popular open-source tooling that the language communities have gotten so used to. It’s like they come from a parallel universe. For most teams, adopting these tools means completely rewriting all the build configs from scratch and giving up on an entire ecosystem of tooling that they have become so dependent on. As advanced as they are, these solutions have not seen significant adoption beyond tech giants.</p>
-<h1 id="introducing-earthly">Introducing Earthly</h1>
-<p><img src="/blog/assets/images/introducing-earthly-build-automation-for-the-container-era/logo.png" /></p>
+<h2 id="introducing-earthly">Introducing Earthly</h2>
+<p><img src="/blog/assets/images/introducing-earthly-build-automation-for-the-container-era/logo.png" alt="Earthly Logo" /><br />
+</p>
 <p>With the purpose of bringing these modern capabilities to people out in the real world, today we are announcing the release of <a href="https://www.earthly.dev/">Earthly: a build automation tool for the container era</a>.</p>
 <p><strong>Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it</strong>. It does not replace your Gradle, your Maven, your NPM, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.</p>
 <p><strong>Earthly runs all build targets containerized: they get container isolation and layer caching</strong>. Nothing is shared between build targets, other than clearly defined, immutable build artifacts and Docker images.</p>
@@ -490,13 +491,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -514,14 +515,16 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -542,13 +545,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -566,7 +569,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -574,7 +577,7 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

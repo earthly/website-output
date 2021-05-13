@@ -313,7 +313,7 @@
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    wget https://js-dos.com/6.22/current/wdosbox.wasm.js</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> npm install -g serve</span></code></pre></div>
 <p>JS-DOS is nice, but it’s nothing without a game to play in it. For our example purposes, we’ll use one of my childhood favorites: <a href="https://3drealms.com/catalog/secret-agent_39/">Secret Agent</a>.</p>
-<div class="notice--warning" data-markdown="1">
+<div class="notice--warning">
 <p><strong>❗ Warning</strong></p>
 <p>A couple things to note when you are looking for games:</p>
 <ul>
@@ -328,7 +328,7 @@
 <p>Heres how I add the game to our image:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ARG</span> GAME_URL</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> wget -O game.zip $GAME_URL</span></code></pre></div>
-<div class="notice--info" data-markdown="1">
+<div class="notice--info">
 <p><strong>ℹ️ Note</strong></p>
 <p>You may note that we don’t preserve the name of the downloaded file here. This is to make our job easier, when we make the game accessible to play later.</p>
 </div>
@@ -356,7 +356,7 @@
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/script&gt;</span></span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/body&gt;</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/html&gt;</span></span></code></pre></div>
-<div class="notice--info" data-markdown="1">
+<div class="notice--info">
 <p><strong>ℹ️ Note</strong></p>
 <p><code>GAME_ARGS</code> is the command for DOSBox (which is inside JS-DOS) to start once it is loaded. The CLI arguments should line up with what a regular installation of DOSBox would expect. If your game requires additional arguments, please provide them in a comma-separated list.</p>
 </div>
@@ -378,7 +378,7 @@
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
 <h2 id="going-further">Going Further</h2>
 <p>Using Earthly, we can even go a step further! Earhly lets us separate some of the concerns within the Dockerfile:</p>
-<div class="notice--info" data-markdown="1">
+<div class="notice--info">
 <p><strong>ℹ️ About Earthly</strong></p>
 <p><a href="https://earthly.dev/">Earthly</a> makes creating Docker images easier. <a href="https://docs.earthly.dev/basics">Take it for a spin!</a></p>
 </div>
@@ -571,7 +571,8 @@
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
+">Next</a>
     
   </nav>
 
@@ -599,13 +600,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -623,7 +624,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -631,7 +632,7 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+This post is in the future, and won’t show up in the published site
 
 </p>
   </article>
@@ -653,13 +654,13 @@ A monorepo is perhaps what you would expect from the name: a single code reposit
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/docker-networking/header-600-224af2fd1.webp 600w, /blog/generated/assets/images/docker-networking/header-800-224af2fd1.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/docker-networking/header-600-df7493f54.jpg 600w, /blog/generated/assets/images/docker-networking/header-800-df7493f54.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/docker-networking/header-800-df7493f54.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/docker-networking/" rel="permalink">Understanding Docker Networking
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -677,7 +678,7 @@ A monorepo is perhaps what you would expect from the name: a single code reposit
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          16 minute read
+          1 minute read
         
       </span>
     
@@ -685,7 +686,9 @@ A monorepo is perhaps what you would expect from the name: a single code reposit
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combinat...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

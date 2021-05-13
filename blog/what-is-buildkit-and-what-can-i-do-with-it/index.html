@@ -351,7 +351,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#buildkit-output-types">BuildKit Output Types</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -366,7 +366,7 @@
 <figure>
 <img src="/blog/assets/images/what-is-buildkit-and-what-can-i-do-with-it/1.gif" alt="animation of buildctl building a dockerfile" /><figcaption aria-hidden="true">animation of buildctl building a dockerfile</figcaption>
 </figure>
-<p>The original BuildKit proposal is found in the moby project:</p>
+<p>The original BuildKit proposal is found in the moby project: <!-- markdownlint-disable MD028 --></p>
 <blockquote>
 <p>“Buildkit is a proposal to separate out docker build experience into a separate project, allowing different users to collaborate on the underlying technology and reuse and customize it in different ways.”</p>
 </blockquote>
@@ -545,7 +545,7 @@ init(1)-+-containerd(983)
         `-vpnkit-bridge(452)</code></pre>
 <p>We can use pstree with a process id (pid) while a build is running to focus on just the buildkitd tree:</p>
 <pre><code>docker-desktop:/# watch -n 1 pstree -p 2522 </code></pre>
-<h1 id="buildkit-output-types">BuildKit Output Types</h1>
+<h2 id="buildkit-output-types">BuildKit Output Types</h2>
 <p>So far, we have only used <code>output type=image,</code> but BuildKit supports several types of outputs.</p>
 <p>We can output a tar:</p>
 <pre><code>buildctl build \
@@ -776,13 +776,13 @@ FROM scratch
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -800,14 +800,16 @@ FROM scratch
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
 </p>
   </article>
 </div>
@@ -828,13 +830,13 @@ FROM scratch
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-29358f0f5.webp 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-29358f0f5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/monorepo-with-bazel/header-600-f89a227c0.jpg 600w, /blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/monorepo-with-bazel/header-800-f89a227c0.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/monorepo-with-bazel/" rel="permalink">Building a Monorepo with Bazel
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -852,7 +854,7 @@ FROM scratch
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          1 minute read
         
       </span>
     
@@ -860,7 +862,7 @@ FROM scratch
 
 
     <p class="archive__item-excerpt" itemprop="description">
-A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.
+You can embedded graphs into the markdown like this:
 
 </p>
   </article>

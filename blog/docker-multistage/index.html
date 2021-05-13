@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Understanding Docker Multistage Builds - Earthly Blog</title>
+<meta name="description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+
+
+  <meta name="author" content="Lukonde Mwila">
+  
+  <meta property="article:author" content="Lukonde Mwila">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Understanding Docker Multistage Builds">
+<meta property="og:url" content="https://earthly.dev/blog/docker-multistage/">
+
+
+  <meta property="og:description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/docker-multistage/header-800-f05b12f47.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Understanding Docker Multistage Builds">
+  <meta name="twitter:description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/docker-multistage/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/docker-multistage/header-800-f05b12f47.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-21T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/docker-multistage/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/docker-multistage/header-400-99b2e0d6b.webp 400w, /blog/generated/assets/images/docker-multistage/header-600-99b2e0d6b.webp 600w, /blog/generated/assets/images/docker-multistage/header-800-99b2e0d6b.webp 800w, /blog/generated/assets/images/docker-multistage/header-1000-99b2e0d6b.webp 1000w, /blog/generated/assets/images/docker-multistage/header-1200-99b2e0d6b.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/docker-multistage/header-400-99b2e0d6b.png 400w, /blog/generated/assets/images/docker-multistage/header-600-99b2e0d6b.png 600w, /blog/generated/assets/images/docker-multistage/header-800-99b2e0d6b.png 800w, /blog/generated/assets/images/docker-multistage/header-1000-99b2e0d6b.png 1000w, /blog/generated/assets/images/docker-multistage/header-1200-99b2e0d6b.png 1200w" type="image/png"><img src="/blog/generated/assets/images/docker-multistage/header-800-99b2e0d6b.jpg" alt="Understanding Docker Multistage Builds"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Container Tutorials</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/understanding-docker-logging-and-log-files/">Docker Logging</a></li>
+          
+            <li><a href="/blog/docker-networking/">Docker Networking</a></li>
+          
+            <li><a href="/blog/how-to-setup-and-use-amazons-elastic-container-registry/">AWS ECR</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Best Practices</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/youre-using-docker-compose-wrong/">Docker Compose</a></li>
+          
+            <li><a href="/blog/what-is-buildkit-and-what-can-i-do-with-it/">What Is BuildKit?</a></li>
+          
+            <li><a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit/">Compiling Containers</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Understanding Docker Multistage Builds">
+    <meta itemprop="description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+    <meta itemprop="datePublished" content="2021-05-21T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Understanding Docker Multistage Builds
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-e5f446a5d.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
+
+          &nbsp;	&nbsp;
+          Lukonde Mwila
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#core-concepts-of-docker-multistage-builds">Core Concepts of Docker Multistage Builds</a></li><li><a href="#how-to-use-docker-multistage-builds">How to Use Docker Multistage Builds</a></li><li><a href="#problems-that-docker-multistage-builds-might-encounter">Problems That Docker Multistage Builds Might Encounter</a></li><li><a href="#more-stages">More Stages</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.</p>
+<p>To build an efficient Docker image, you want to eliminate some of these layers from the final output. Optimizing an image can take a lot of effort as you attempt to filter out what you don’t need. Building these kinds of images has a lot to do with keeping them as small as possible, because large images lead to a host of other issues.</p>
+<p>One approach to keeping Docker images small is using multistage builds. A multistage build allows you to use multiple images to build a final product. In a multistage build, you have a single Dockerfile, but can define multiple images inside it to help build the final image.</p>
+<p>In this post, you’ll learn about the core concepts of multistage builds in Docker and how they help to create production-grade images. In addition, I will detail how you can create these types of files, as well as highlight some challenges that they present.</p>
+<h2 id="core-concepts-of-docker-multistage-builds">Core Concepts of Docker Multistage Builds</h2>
+<p>Before getting to the details of multistage builds, it’s good to have an understanding of the main idea behind them. You’re already familiar with the starting point of container images, the Dockerfile. Dockerfiles are text files that make it easy to assemble all the relevant commands required to create your container image. These commands in the Dockerfile should be combined whenever possible for the sake of optimization.</p>
+<p>When I first came across this idea of building the right kind of Docker image, I asked myself a few questions that may be crossing your mind as you read this. What are the implications of <em>not</em> optimizing an image? Can it really have that much of a negative impact on your application? The answer to the latter question is yes.</p>
+<p>As for the implications, you typically end up with bigger images. The reason big images should be avoided is because <a href="https://developers.redhat.com/blog/2016/03/09/more-about-docker-images-size/" title="Keep it small: a closer look at Docker image sizing">they increase both potential security vulnerabilities and the surface area for attack</a>. You definitely want to keep things lean by ensuring you only have what your application needs to run successfully in a production environment.</p>
+<p>One way of reducing the size of your Docker images is through the use of what is informally known as the <a href="https://en.wikipedia.org/wiki/Builder_pattern" title="builder design pattern entry at Wikipedia">builder pattern</a>. The builder pattern uses two Docker images to create a base image for building assets and the second to run it. This pattern was previously implemented through the use of multiple Dockerfiles. It has become an uncommon practice since the introduction and support of multistage builds in <a href="https://www.docker.com/blog/multi-stage-builds/" title="Multi-Stage Builds">Docker 17.06 CE</a>.</p>
+<p>For context, it’s good to understand how this was typically done before multistage builds. The following example makes use of a basic React application that is first built and then has its static content served by an <a href="https://www.nginx.com/" title="Nginx web servers">Nginx virtual server</a>. Following are the two Dockerfiles used to create the optimized image. In addition, you’ll see a shell script that demonstrates the Docker CLI commands that have to be run in order to achieve this outcome. You can find the source code for this example in <a href="https://github.com/LukeMwila/builder-pattern-example" title="builder pattern example in Lukonde Mwila&#39;s GitHub repository">this repository</a>.</p>
+<pre><code>Dockerfile.build
+FROM node:12.13.0-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build</code></pre>
+<pre><code>Dockerfile.main
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY /app/build /usr/share/nginx/html</code></pre>
+<pre><code>Build.sh
+#!/bin/sh
+echo Building lukondefmwila/react:build
+
+docker build -t lukondefmwila:build . -f Dockerfile.build
+
+docker create --name extract lukondefmwila:build
+
+docker cp extract:/app/build ./app
+
+docker rm -f extract
+
+echo Building lukondefmwila/react:latest
+
+docker build --no-cache -t lukondefmwila/react:latest . -f Dockerfile.main</code></pre>
+<p>While using the builder pattern does give you the desired outcome, it presents additional challenges. This process introduces the management overhead that comes with maintaining multiple Dockerfiles—not to mention the cumbersome procedure of running through several Docker CLI commands, even if this can be streamlined by a shell script.</p>
+<h2 id="how-to-use-docker-multistage-builds">How to Use Docker Multistage Builds</h2>
+<p>Now that you get the underlying concept, turn your attention to how this translates to the modern implementation of the builder pattern. What the former approach accomplishes with multiple Dockerfiles, the multistage feature does in one. You can get the same results with your builds without the added complexity.</p>
+<p>Multistage builds make use of one Dockerfile with multiple FROM instructions. Each of these FROM instructions is a new build stage that can COPY artifacts from the previous stages. By going and copying the build artifact from the build stage, you eliminate all the intermediate steps such as downloading of code, installing dependencies, and testing. All these steps create additional layers, and you want to eliminate them from the final image.</p>
+<p>The build stage is named by appending AS <em>name-of-build</em> to the FROM instruction. The name of the build stage can be used in a subsequent FROM and COPY command by providing a convenient way to identify the source layer for files brought into the image build. The final image is produced from the last stage executed in the Dockerfile.</p>
+<p>Try taking the example from the previous section that used more than one Dockerfile for the React application and replacing the solution with one file that uses a multistage build.</p>
+<pre><code>Dockerfile
+FROM node:12.13.0-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html</code></pre>
+<p>This Dockerfile has two FROM commands, with each one constituting a distinct build stage. These distinct commands are numbered internally, stage 0 and stage 1 respectively. However, stage 0 is given a friendly alias of <code>build</code>. This stage builds the application and stores it in the directory specified by the WORKDIR command. The resultant image is over 420 MB in size.</p>
+<p>The second stage starts by pulling the official Nginx image from Docker Hub. It then copies the updated virtual server configuration to replace the default Nginx configuration. Then the COPY –from command is used to copy only the production-related application code from the image built by the previous stage. The final image is approximately 127 MB.</p>
+<h2 id="problems-that-docker-multistage-builds-might-encounter">Problems That Docker Multistage Builds Might Encounter</h2>
+<p>Depending on how they are designed, multistage builds can introduce some serious issues around the speed of the build process. Since these Dockerfiles have multiple stages to produce the production-grade image, your cache will not consist of the images built in the previous steps leading to your final output. Simulating the build locally might give you the impression that it’s worth the wait. However, when you’re working with build services such as <a href="https://aws.amazon.com/codebuild/">AWS CodeBuild</a>, <a href="https://travis-ci.org/">Travis CI</a>, or <a href="https://circleci.com/">CircleCI</a>, you want to keep your build time as short as possible for cost reasons, as well as streamlining application delivery.</p>
+<p>In order to make use of the cache, you will have to tag, push, and pull the images produced from the preliminary build stages. As an example, take the multistage Dockerfile from the previous section and split it into two files, Dockerfile.stage-one and Dockerfile.final. The first Dockerfile will create the image that will be pulled and used in stage 0 of the multistage Dockerfile.</p>
+<pre><code>Dockerfile.stage-one
+FROM node:12.13.0-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build</code></pre>
+<pre><code>Dockerfile.final
+FROM lukondefmwila/react:build-stage as build
+
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html</code></pre>
+<p>That being said, following such an approach for every stage can create an increasingly verbose process every stage that you have. Another way of solving this issue is to make use of <a href="https://earthly.dev/blog/what-is-buildkit-and-what-can-i-do-with-it/">BuildKit</a>. BuildKit came about to address issues and improve on the build features in the <a href="https://mobyproject.org/">Moby Engine</a>. It allows for better cache efficiency and control when building. To enable BuildKit builds, follow the steps outlined in <a href="https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds">Docker’s documentation</a>.</p>
+<h2 id="more-stages">More Stages</h2>
+<p>As your multi-stage build grows in complexity, comprehending how each step follows from the next can become a challenge. If the number of stages extends beyond two or if caching is becoming a challenge, you may want to consider using <a href="http://earthly.dev/">Earthly</a> to produce your docker images. Earthly mirrors the dockerfile syntax but allows for naming the stages and for more fine-grained caching.</p>
+<pre><code>FROM node:12.13.0-alpine as build
+WORKDIR /app
+
+build:
+  COPY package*.json ./
+  RUN npm install
+  COPY . .
+  RUN npm run build
+
+final:
+  FROM nginx
+  EXPOSE 3000
+  COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+  COPY  +build/app/build /usr/share/nginx/html</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>While creating Docker images the right way is not a small task, the final outcome does a great deal of good for the speed and security of your application delivery. Larger images have a high number of security vulnerabilities that shouldn’t be overlooked for the sake of speed. The reality is that quality images take time and care.</p>
+<p>The builder pattern has evolved over time in its implementation, with multistage builds coming to the rescue from the tedious steps that previously had to be followed. Tools like BuildKit and Earthly further improve on this process. Though not foolproof, multistage builds have made it much easier to create optimized images that you can be more pleased and confident to have running in your production environment.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-e5f446a5d.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Lukonde Mwila</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Lukonde Mwila specializes in cloud and DevOps engineering, cloud architecture designs, and cloud security at an enterprise level in the AWS landscape. He is passionate about sharing knowledge through various media such as meetups, tech conferences, and technical articles.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
+">Previous</a>
+    
+    
+      <a href="/blog/example-plot/" class="pagination--pager" title="Example Graphs
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
