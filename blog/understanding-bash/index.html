@@ -458,11 +458,14 @@ echo Hello $NAME
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span></span></code></pre></div>
 <h3 id="using-curly-brackets">Using Curly Brackets</h3>
 <p>You can get away with merely referring to a variable by writing <code>$FOO</code>. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:</p>
+<!-- markdownlint-disable MD014 -->
 <div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> world&quot;</span></span></code></pre></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> World&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
 <p>In this case, bash would try to find the variable <code>$FOOlo</code>, but we just wanted to print “Hello world.” To make this work, you will have to do the following:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo world&quot;</span></span></code></pre></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo World&quot;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
 <p>This is most likely useful when you want to use a variable to define a path, like <code>/opt/${ENVIRONMENT}_build.txt</code>. Without curly brackets, the script would try to look up <code>$ENVIRONMENT_build</code>.</p>
 <h2 id="properly-set-permissions">Properly Set Permissions</h2>
 <p>One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that <a href="https://www.guru99.com/file-permissions.html">permissions</a> had to be set right. See, when you make a file with, for example, <code>touch</code>, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a <code>permission denied</code> error when you try to run the script.</p>

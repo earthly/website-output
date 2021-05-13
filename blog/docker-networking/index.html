@@ -373,6 +373,7 @@
 <h3 id="the-bridge-driver">The Bridge Driver</h3>
 <p>This is the default. Whenever you start Docker, a bridge network gets created and all newly started containers will connect automatically to the default bridge network.</p>
 <p>You can use this whenever you want your containers running in isolation to connect and communicate with each other. Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, and Docker <a href="https://docs.docker.com/network/iptables/">uses iptables</a> on the host machine to prevent access outside of the bridge.</p>
+<!-- markdownlint-disable MD029 -->
 <p>Let’s look at some examples of how a bridge network driver works.</p>
 <ol type="1">
 <li>Check the available network by running the <code>docker network ls</code> command</li>

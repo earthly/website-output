@@ -351,7 +351,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#buildkit-output-types">BuildKit Output Types</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -366,7 +366,7 @@
 <figure>
 <img src="/blog/assets/images/what-is-buildkit-and-what-can-i-do-with-it/1.gif" alt="animation of buildctl building a dockerfile" /><figcaption aria-hidden="true">animation of buildctl building a dockerfile</figcaption>
 </figure>
-<p>The original BuildKit proposal is found in the moby project:</p>
+<p>The original BuildKit proposal is found in the moby project: <!-- markdownlint-disable MD028 --></p>
 <blockquote>
 <p>“Buildkit is a proposal to separate out docker build experience into a separate project, allowing different users to collaborate on the underlying technology and reuse and customize it in different ways.”</p>
 </blockquote>
@@ -545,7 +545,7 @@ init(1)-+-containerd(983)
         `-vpnkit-bridge(452)</code></pre>
 <p>We can use pstree with a process id (pid) while a build is running to focus on just the buildkitd tree:</p>
 <pre><code>docker-desktop:/# watch -n 1 pstree -p 2522 </code></pre>
-<h1 id="buildkit-output-types">BuildKit Output Types</h1>
+<h2 id="buildkit-output-types">BuildKit Output Types</h2>
 <p>So far, we have only used <code>output type=image,</code> but BuildKit supports several types of outputs.</p>
 <p>We can output a tar:</p>
 <pre><code>buildctl build \
