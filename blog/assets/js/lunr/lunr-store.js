@@ -250,4 +250,10 @@ var store = [{
         "tags": [],
         "url": "/blog/dos-gaming-in-docker/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "What Is Continuous Integration?",
+        "excerpt":"Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics of continuous integration, the differences between CI and CD, and common CI tools. You’ll also find some tips for the best way to set up CI in...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/continuous-integration/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
