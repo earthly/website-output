@@ -319,8 +319,8 @@
 <p>A <code>COMEFROM</code> anywhere in a program can grab control flow from the line you are reading. And in some implementations, if many <code>COMEFROM</code>’s reference the same line, execution splits off in each direction.</p>
 <p>A <code>COMEFROM</code> is the inverse of a <code>GOTO</code> statement with multi-threading thrown in. It breaks the mental model of imperative execution where each line’s evaluation leads to the next line. The idea that you can simulate its execution in your head, line by line, is fundamental to imperative programming and <code>COMEFROM</code> attempts to break that model.</p>
 <h2 id="variables-may-not-be-stored-in-west-hyperspace">VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE</h2>
-<p>At Twitter, they have a giant monorepo with lots of services in it. And somebody at Twitter wanted to know which language was most prevalent. Which language does Twitter use the most?</p>
-<p>Java came in 3rd, and Scala came in 2nd. But 1st was a surprise. The number one programming language used at Twitter was YAML<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>At Twitter, they have a giant <a href="/blog/monorepo-vs-polyrepo">monorepo</a> with lots of services in it. And somebody at Twitter wanted to know which language was most prevalent. Which language does Twitter use the most?</p>
+<p>Java came in 3rd, and <a href="/blog/top-5-scala-blogs">Scala</a> came in 2nd. But 1st was a surprise. The number one programming language used at Twitter was YAML<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>YAML usually doesn’t feel like a programming language to me. The file I’m currently writing in is in markdown with some YAML at the top to set the title and associated fields.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> INTERCAL, YAML, And Other Horrible Programming Languages</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Adam</span></span></code></pre></div>
@@ -355,7 +355,7 @@
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> source ./.multi_arch_docker</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> set -ex; multi_arch_docker::main; set +x</span></span></code></pre></div>
 <p>There we go, branching. It’s an if statement in a YAML file!</p>
-<p>And this isn’t TravisCI, or CI specific. Here is a simple example from Ansible:</p>
+<p>And this isn’t <a href="/blog/migrating-from-travis">TravisCI</a>, or CI specific. Here is a simple example from Ansible:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tasks</span><span class="kw">:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">include</span><span class="kw">:</span><span class="at"> foo.yml</span></span>
@@ -650,13 +650,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/continuous-integration/header-600-ed7045665.webp 600w, /blog/generated/assets/images/continuous-integration/header-800-ed7045665.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-integration/header-600-2f56dbf7f.jpg 600w, /blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/continuous-integration/" rel="permalink">What Is Continuous Integration?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -674,7 +674,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -682,7 +682,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics o...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -702,13 +704,13 @@ Continuous integration has become prevalent in software development, but it’s 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -726,14 +728,16 @@ Continuous integration has become prevalent in software development, but it’s 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
 </p>
   </article>
 </div>

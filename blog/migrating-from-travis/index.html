@@ -336,13 +336,13 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>You can find some <a href="https://medium.com/google-developers/how-to-run-travisci-locally-on-docker-822fc6b2db2e">scattered</a> <a href="https://stackoverflow.com/a/35972902">instructions</a> <a href="https://stackoverflow.com/a/35972902">online</a> for running Travis builds yourself. There are mixed reports on the stability and feasibility of this approach, but if your adventurous you could try to setup your own Travis CI build executor on your own hardware.</p>
 <p>A better option, if you want to run the builds on your own hardware is to look at something like <a href="https://buildkite.com/">Buildkite</a> or <a href="https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/">GitLab CI</a>.</p>
 <h3 id="option-circle-ci">Option: Circle CI</h3>
-<p>A better option is Circle CI, a Travis CI competitor which still offers a free plan.  </p>
+<p>A better option is <a href="/blog/continuous-integration#circleci">Circle CI</a> , a Travis CI competitor which still offers a free plan.  </p>
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
 <h3 id="best-option-github-actions">Best Option: Github Actions</h3>
 <p><img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><br />
 </p>
-<p>An even better option is Github Actions, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
+<p>An even better option is <a href="/blog/continuous-integration#github-actions">Github Actions</a>, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
 <p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
 <p>If your project is hosted on GitHub, then to me, GHA seems like the best bet right now. More details about the open-source plan can <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/usage-limits-billing-and-administration">be found here</a>.</p>
@@ -573,13 +573,13 @@ How can you minimize the effort of moving from build platform to another?</p>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/continuous-integration/header-600-ed7045665.webp 600w, /blog/generated/assets/images/continuous-integration/header-800-ed7045665.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-integration/header-600-2f56dbf7f.jpg 600w, /blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/continuous-integration/" rel="permalink">What Is Continuous Integration?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -597,7 +597,7 @@ How can you minimize the effort of moving from build platform to another?</p>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -605,7 +605,9 @@ How can you minimize the effort of moving from build platform to another?</p>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics o...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -625,13 +627,13 @@ Continuous integration has become prevalent in software development, but it’s 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -649,14 +651,16 @@ Continuous integration has become prevalent in software development, but it’s 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
 </p>
   </article>
 </div>

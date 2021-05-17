@@ -651,7 +651,7 @@ PING www.google.com (216.58.216.196): 56 data bytes
 64 bytes from 216.58.216.196: icmp_seq=0 ttl=118 time=4.722 ms</code></pre>
 <p>Docker containers inherit DNS settings from the host when using a bridge network, so the container will resolve DNS names just like the host by default. To add custom host records to your container, you’ll need to use the <a href="https://docs.docker.com/config/containers/container-networking/#dns-services">relevant <code>--dns*</code> flags outlined here</a>.</p>
 <h2 id="docker-compose-networking">Docker Compose Networking</h2>
-<p><a href="https://docs.docker.com/compose/">Docker Compose</a> is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: <code>docker-compose up</code>.</p>
+<p><a href="/blog/youre-using-docker-compose-wrong">Docker Compose</a> is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: <code>docker-compose up</code>.</p>
 <p>By default, Docker Compose creates a single network for each container defined in the compose file. All the containers defined in the compose file connect and communicate through the default network.</p>
 <p>If you’re not sure about the commands supported with Docker Compose, you can run the following:</p>
 <pre class="shell"><code>$ docker compose help
@@ -1043,13 +1043,13 @@ Creating downloads_db_1        ... done</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/continuous-integration/header-600-ed7045665.webp 600w, /blog/generated/assets/images/continuous-integration/header-800-ed7045665.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-integration/header-600-2f56dbf7f.jpg 600w, /blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/continuous-integration/" rel="permalink">What Is Continuous Integration?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -1067,7 +1067,7 @@ Creating downloads_db_1        ... done</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -1075,7 +1075,9 @@ Creating downloads_db_1        ... done</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics o...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -1095,13 +1097,13 @@ Continuous integration has become prevalent in software development, but it’s 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -1119,14 +1121,16 @@ Continuous integration has become prevalent in software development, but it’s 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
 </p>
   </article>
 </div>

@@ -400,7 +400,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <p><strong>ℹ️ EC2 is fast, but not instant</strong></p>
 <p>Although AWS can provision instances very quickly, it can <em>still</em> take a couple minutes for the instance to come up, so be patient! You can wait for the instance on the CLI (if desired) by running the following command: <code>aws ec2 wait instance-status-ok --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the instance ID from the prior step.</p>
 </div>
-<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, SSH into the box and install NGINX.</p>
+<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, <a href="/blog/encrypting-data-with-ssh-keys-and-golang">SSH</a> into the box and install NGINX.</p>
 <pre><code>❯ sudo amazon-linux-extras install nginx1</code></pre>
 <p>NGINX needs to be configured to use the AWS-assigned public DNS name, and proxy traffic from port 80 to you. Heres a sample config you can use:</p>
 <pre><code>upstream tunnel {
@@ -644,13 +644,13 @@ server {
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/continuous-integration/header-600-ed7045665.webp 600w, /blog/generated/assets/images/continuous-integration/header-800-ed7045665.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-integration/header-600-2f56dbf7f.jpg 600w, /blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/continuous-integration/header-800-2f56dbf7f.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/continuous-integration/" rel="permalink">What Is Continuous Integration?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -668,7 +668,7 @@ server {
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -676,7 +676,9 @@ server {
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics o...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -696,13 +698,13 @@ Continuous integration has become prevalent in software development, but it’s 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-4dbe24b7f.webp 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-4dbe24b7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/dos-gaming-in-docker/header-600-e04237b81.jpg 600w, /blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/dos-gaming-in-docker/header-800-e04237b81.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/dos-gaming-in-docker/" rel="permalink">DOS Gaming In Docker
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -720,14 +722,16 @@ Continuous integration has become prevalent in software development, but it’s 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Distributing shareware from the 90’s in modern Docker images.
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
 </p>
   </article>
 </div>
