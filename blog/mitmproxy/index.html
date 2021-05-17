@@ -477,7 +477,8 @@ Here is Slack making requests:
 </figure>
 <p>At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.</p>
 <p>On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.</p>
-<p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM. &gt; Before we proceed, we need to clear the proxy settings on the host network connection. We can leave mitmproxy (or MITMWeb running).</p>
+<p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM.</p>
+<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or MITMWeb running).</p>
 <p>On Windows and macOS, the easiest way to configure a proxy is via <code>Docker Desktop.</code> Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/18.png"

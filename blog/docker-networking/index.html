@@ -651,7 +651,7 @@ PING www.google.com (216.58.216.196): 56 data bytes
 64 bytes from 216.58.216.196: icmp_seq=0 ttl=118 time=4.722 ms</code></pre>
 <p>Docker containers inherit DNS settings from the host when using a bridge network, so the container will resolve DNS names just like the host by default. To add custom host records to your container, you’ll need to use the <a href="https://docs.docker.com/config/containers/container-networking/#dns-services">relevant <code>--dns*</code> flags outlined here</a>.</p>
 <h2 id="docker-compose-networking">Docker Compose Networking</h2>
-<p><a href="https://docs.docker.com/compose/">Docker Compose</a> is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: <code>docker-compose up</code>.</p>
+<p><a href="/blog/youre-using-docker-compose-wrong">Docker Compose</a> is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: <code>docker-compose up</code>.</p>
 <p>By default, Docker Compose creates a single network for each container defined in the compose file. All the containers defined in the compose file connect and communicate through the default network.</p>
 <p>If you’re not sure about the commands supported with Docker Compose, you can run the following:</p>
 <pre class="shell"><code>$ docker compose help

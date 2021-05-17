@@ -302,10 +302,10 @@
         
         <p>Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.</p>
 <h2 id="solving-reproducible-builds">Solving Reproducible Builds</h2>
-<p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.</p>
+<p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in <a href="/blog/slow-performance-in-jenkins">Jenkins</a> vs running in locally.</p>
 <p>Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.</p>
 <h2 id="a-scala-example">A Scala Example</h2>
-<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a makefile you wouldn’t be far off.  </p>
+<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">dockerfile</a> mixed with a makefile you wouldn’t be far off.  </p>
 <p>Let’s walk through creating an Earthfile for a scala project:</p>
 <pre><code>├── build.sbt 
 └── src/main
@@ -418,7 +418,7 @@ Earthfile continued
 </figure>
 <p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example here</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
 <h3 id="did-we-solve-it">Did we solve it?</h3>
-<p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.</p>
+<p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our <a href="/blog/continuous-integration">CI</a> builds.  We used earthly to encapsulate the build steps.</p>
 <figure class>
 <img src="/blog/assets/images/better-builds/diagram.png"
        alt="diagram of earthly usage">

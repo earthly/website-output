@@ -336,13 +336,13 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>You can find some <a href="https://medium.com/google-developers/how-to-run-travisci-locally-on-docker-822fc6b2db2e">scattered</a> <a href="https://stackoverflow.com/a/35972902">instructions</a> <a href="https://stackoverflow.com/a/35972902">online</a> for running Travis builds yourself. There are mixed reports on the stability and feasibility of this approach, but if your adventurous you could try to setup your own Travis CI build executor on your own hardware.</p>
 <p>A better option, if you want to run the builds on your own hardware is to look at something like <a href="https://buildkite.com/">Buildkite</a> or <a href="https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/">GitLab CI</a>.</p>
 <h3 id="option-circle-ci">Option: Circle CI</h3>
-<p>A better option is Circle CI, a Travis CI competitor which still offers a free plan.  </p>
+<p>A better option is <a href="/blog/continuous-integration#circleci">Circle CI</a> , a Travis CI competitor which still offers a free plan.  </p>
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
 <h3 id="best-option-github-actions">Best Option: Github Actions</h3>
 <p><img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><br />
 </p>
-<p>An even better option is Github Actions, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
+<p>An even better option is <a href="/blog/continuous-integration#github-actions">Github Actions</a>, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
 <p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
 <p>If your project is hosted on GitHub, then to me, GHA seems like the best bet right now. More details about the open-source plan can <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/usage-limits-billing-and-administration">be found here</a>.</p>

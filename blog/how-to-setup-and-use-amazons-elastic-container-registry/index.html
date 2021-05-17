@@ -369,7 +369,7 @@
 <h3 id="iam-identity-and-access-management"><a href="https://aws.amazon.com/iam">IAM (Identity and Access Management)</a></h3>
 <p><a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html">ECR integrates with IAM</a> to configure policies and manage and control access to your images. This means you won’t have to share credentials or manage permissions individually for each repository.</p>
 <h3 id="eks-elastic-kubernetes-service"><a href="https://aws.amazon.com/eks">EKS (Elastic Kubernetes Service)</a></h3>
-<p>Kubernetes is a widely used container orchestration technology for automating deployments, networking, and scaling your application. Elastic Kubernetes Service is the AWS-managed Kubernetes platform.</p>
+<p><a href="/blog/building-on-kubernetes-ingress">Kubernetes</a> is a widely used container orchestration technology for automating deployments, networking, and scaling your application. Elastic Kubernetes Service is the AWS-managed Kubernetes platform.</p>
 <p>EKS allows you to run Kubernetes on AWS without maintaining your own <a href="https://kubernetes.io/docs/concepts/overview/components/#control-plane-components">Kubernetes control plane</a>. You define a manifest file, and the Kubernetes master node will schedule and run the deployments. As you’ll see later, you can use images hosted in ECR in this manifest file to easily deploy your workloads from your public or private repositories.</p>
 <h3 id="ecs-elastic-container-service"><a href="https://aws.amazon.com/ecs">ECS (Elastic Container Service)</a></h3>
 <p>Like EKS, ECS is a container orchestration service that makes running, stopping, and managing containers on AWS resources easy. Without getting into all of the specifics, ECS is typically better for teams that want a simple but powerful way to run their containers, while EKS adds the flexibility and security options available in Kubernetes. To learn more about each of AWS’s container orchestration tools, read <a href="https://aws.amazon.com/blogs/containers/amazon-ecs-vs-amazon-eks-making-sense-of-aws-container-services/">this article on picking the right one</a>.</p>
@@ -407,7 +407,7 @@
 <img src="/blog/assets/images/how-to-setup-and-use-amazons-elastic-container-registry/XCZe4vX.png" alt="Amazon ECR dashboard" /><figcaption aria-hidden="true">Amazon ECR dashboard</figcaption>
 </figure>
 <h3 id="pushing-an-image-to-the-repository">Pushing an Image to the Repository</h3>
-<p>Before publishing the Image to ECR, make sure you have Docker installed on your workstation and a project with a Dockerfile that’s ready to be built and pushed to ECR.</p>
+<p>Before publishing the Image to ECR, make sure you have Docker installed on your workstation and a project with a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">Dockerfile</a> that’s ready to be built and pushed to ECR.</p>
 <p>If you don’t have a project ready, create a new file called <code>Dockerfile</code> and enter the following (this is based on the official <a href="https://hub.docker.com/_/alpine">Docker <code>alpine:3.7</code> image</a>):</p>
 <pre><code>FROM alpine:3.7
 CMD echo &#39;Hello world&#39;</code></pre>
@@ -423,7 +423,7 @@ CMD echo &#39;Hello world&#39;</code></pre>
     --username AWS \
     --password-stdin &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;</code></pre>
 <p>After authentication, you will see <code>Login Succeeded</code> as a response. Now you’ll be able to push tagged images to your ECR repository.</p>
-<p>If you are pushing or pulling images from this machine regularly, you may not want to go through this login process every time. Instead of using <code>docker login</code>, you can configure the <a href="https://github.com/awslabs/amazon-ecr-credential-helper">Amazon ECR Docker Credential Helper</a> to give the Docker daemon direct access to your AWS credentials. This method is also convenient for CI environments because it automates the authentication process and caches tokens to minimize your risk of being throttled.</p>
+<p>If you are pushing or pulling images from this machine regularly, you may not want to go through this login process every time. Instead of using <code>docker login</code>, you can configure the <a href="https://github.com/awslabs/amazon-ecr-credential-helper">Amazon ECR Docker Credential Helper</a> to give the <a href="/blog/what-is-buildkit-and-what-can-i-do-with-it">Docker daemon</a> direct access to your AWS credentials. This method is also convenient for CI environments because it automates the authentication process and caches tokens to minimize your risk of being throttled.</p>
 <h3 id="pushing-an-image-to-ecr">Pushing an Image to ECR</h3>
 <p>Next, build the image from your Dockerfile:</p>
 <pre><code>docker build -t &lt;image-name&gt;:&lt;image-version&gt; .</code></pre>

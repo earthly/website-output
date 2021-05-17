@@ -400,7 +400,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <p><strong>ℹ️ EC2 is fast, but not instant</strong></p>
 <p>Although AWS can provision instances very quickly, it can <em>still</em> take a couple minutes for the instance to come up, so be patient! You can wait for the instance on the CLI (if desired) by running the following command: <code>aws ec2 wait instance-status-ok --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the instance ID from the prior step.</p>
 </div>
-<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, SSH into the box and install NGINX.</p>
+<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, <a href="/blog/encrypting-data-with-ssh-keys-and-golang">SSH</a> into the box and install NGINX.</p>
 <pre><code>❯ sudo amazon-linux-extras install nginx1</code></pre>
 <p>NGINX needs to be configured to use the AWS-assigned public DNS name, and proxy traffic from port 80 to you. Heres a sample config you can use:</p>
 <pre><code>upstream tunnel {

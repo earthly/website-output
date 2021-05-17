@@ -370,7 +370,7 @@ Programmatically Creating an Image</li>
 Building a Frontend for BuildKit</li>
 </ul>
 <h2 id="on-docker-build">On <code>Docker Build</code></h2>
-<p>We can create container images in several ways. We can use Buildpacks, we can use build tools like Bazel or sbt, but by far, the most common way images are built is using <code>docker build</code> with a Dockerfile. The familiar base images Alpine, Ubuntu, and Debian are all created this way.</p>
+<p>We can create container images in several ways. We can use Buildpacks, we can use build tools like <a href="/blog/monorepo-with-bazel">Bazel</a> or sbt, but by far, the most common way images are built is using <code>docker build</code> with a Dockerfile. The familiar base images Alpine, Ubuntu, and Debian are all created this way.</p>
 <p>Here is an example Dockerfile:</p>
 <div class="sourceCode" id="cb1" data-startFrom="100"><pre class="sourceCode numberSource dockerfile numberLines"><code class="sourceCode dockerfile" style="counter-reset: source-line 99;"><span id="cb1-100"><a href="#cb1-100"></a><span class="kw">FROM</span> alpine</span>
 <span id="cb1-101"><a href="#cb1-101"></a><span class="kw">COPY</span> README.md README.md</span>
@@ -452,7 +452,7 @@ Building a Frontend for BuildKit</li>
 <img src="/blog/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/LLBIR-fixed.png" alt="LLVM IR VS. LLB" /><figcaption aria-hidden="true">LLVM IR VS. LLB</figcaption>
 </figure>
 </div>
-<p><a href="https://github.com/moby/buildkit/blob/ebd98bcbe600c662a72ce9725417540f277be4d6/solver/pb/ops.proto">LLB</a> is defined as a protocol buffer, and this means that BuildKit frontends can make GRPC requests against buildkitd to build a container directly.</p>
+<p><a href="https://github.com/moby/buildkit/blob/ebd98bcbe600c662a72ce9725417540f277be4d6/solver/pb/ops.proto">LLB</a> is defined as a protocol buffer, and this means that BuildKit frontends can make <a href="/blog/protobufs-and-grpc">GRPC</a> requests against buildkitd to build a container directly.</p>
 <div class="wide">
 <figure>
 <img src="/blog/assets/images/compiling-containers-dockerfiles-llvm-and-buildkit/Send-LLB.png" alt="LLVM IR VS. LLB" /><figcaption aria-hidden="true">LLVM IR VS. LLB</figcaption>
