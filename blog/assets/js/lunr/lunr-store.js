@@ -256,4 +256,34 @@ var store = [{
         "tags": [],
         "url": "/blog/continuous-integration/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "How to Not Use Our Build Tool",
+        "excerpt":"In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of...","categories": ["Articles"],
+        "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
+        "url": "/blog/dont-use-earthly/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding Docker Multistage Builds",
+        "excerpt":"At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/docker-multistage/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Why is JRuby Slow?",
+        "excerpt":"Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby. The build times looked like this:...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/jruby/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

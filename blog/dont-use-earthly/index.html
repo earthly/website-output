@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>How to Not Use Our Build Tool - Earthly Blog</title>
+<meta name="description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+
+
+  <meta name="author" content="Vlad A. Ionescu">
+  
+  <meta property="article:author" content="Vlad A. Ionescu">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="How to Not Use Our Build Tool">
+<meta property="og:url" content="https://earthly.dev/blog/dont-use-earthly/">
+
+
+  <meta property="og:description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-db9b5db4a.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="How to Not Use Our Build Tool">
+  <meta name="twitter:description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/dont-use-earthly/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-db9b5db4a.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-19T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/dont-use-earthly/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-e48f418c5.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-e48f418c5.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-e48f418c5.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-e48f418c5.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-e48f418c5.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-e48f418c5.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-e48f418c5.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-e48f418c5.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.jpg" alt="How to Not Use Our Build Tool"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to Not Use Our Build Tool">
+    <meta itemprop="description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+    <meta itemprop="datePublished" content="2021-05-19T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to Not Use Our Build Tool
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          27 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-19T00:00:00-04:00">May 19, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/vladaionescu-240-121d6d712.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/vladaionescu-240-89010bfcc.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/vladaionescu-240-89010bfcc.jpg" alt="Vlad A. Ionescu %"></picture>
+
+          &nbsp;	&nbsp;
+          Vlad A. Ionescu
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#putting-together-complex-builds---assumptions">Putting Together Complex Builds - Assumptions</a></li><li><a href="#scope-the-glue-layer">Scope: The Glue Layer</a></li><li><a href="#tips-for-taming-makefiles-in-large-teams">Tips for Taming Makefiles in Large Teams</a></li><li><a href="#tips-for-dockerfiles">Tips for Dockerfiles</a><ul><li><a href="#use-multi-stage-dockerfiles-or-multiple-dockerfiles">Use Multi-stage Dockerfiles or Multiple Dockerfiles</a></li><li><a href="#running-containerized-unit-tests">Running Containerized Unit Tests</a></li><li><a href="#running-integration-tests">Running Integration Tests</a></li><li><a href="#outputting-regular-files">Outputting Regular Files</a></li></ul></li><li><a href="#tips-for-taming-bash-scripts">Tips for Taming Bash Scripts</a></li><li><a href="#importing-code-and-artifacts-from-another-repository">Importing Code and Artifacts from Another Repository</a></li><li><a href="#parallelism-with-makefiles-and-dockerfiles">Parallelism with Makefiles and Dockerfiles</a></li><li><a href="#shared-caching">Shared Caching</a></li><li><a href="#managing-secrets">Managing Secrets</a></li><li><a href="#maintaining-consistency">Maintaining Consistency</a></li><li><a href="#other-options">Other Options</a></li><li><a href="#parting-words-and-mandatory-plug">Parting Words and Mandatory Plug</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to <a href="https://earthly.dev/blog/the-world-deserves-better-builds/">start Earthly in the first place</a>.</p>
+<p>I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).</p>
+<p>In this article, we will walk through the 10,000 feet view of your build strategy, then dive into some specific tricks, tools, and techniques you might use to keep your builds effective and reproducible, with other off-the-shelf tools.</p>
+<h2 id="putting-together-complex-builds---assumptions">Putting Together Complex Builds - Assumptions</h2>
+<p>Since this is a guide about how not to use Earthly, we’ll try to achieve the same benefits of Earthly, using other tools. Here are some assumptions:</p>
+<ul>
+<li>You are building cloud or web services, targeting Linux.</li>
+<li>You have a setup where multiple programming languages come together (e.g. multiple microservices).</li>
+<li>You would like to have fast local dev-test cycles for individual components.</li>
+<li>You would like to be able to iterate quickly when there is a CI failure.</li>
+<li>Developers on your team use varying platforms for day-to-day development: some Linux, some Mac, some Windows.</li>
+<li>You would like to optimize for cross-team collaboration.</li>
+</ul>
+<h2 id="scope-the-glue-layer">Scope: The Glue Layer</h2>
+<p>We will focus primarily on the glue layer of your builds. The stuff that brings everything together - maybe it packages things up for releases, or maybe it prepares packages for deployment, or perhaps it is simply a script that the CI definition calls into.</p>
+<p>This is a diagram we sometimes use to describe the glue layer. In this article, we’ll be focusing on the Dockerfile, Makefile, and Bash parts of that glue layer. Not having a glue layer can make CI failures difficult to reproduce, or for other teams unfamiliar with the language-specific build tooling to effectively create the right environment to run builds.</p>
+<p><img src="/blog/assets/images/dont-use-earthly/glue-layer.png" alt="The glue layer" /><br />
+</p>
+<p>The glue layer is the layer between the various projects that need to be built and will act as the common denominator - <a href="https://earthly.dev/blog/migrating-from-travis/#neutral-build-specifications">a vendor-neutral build specification</a>. If we don’t choose such a glue layer, then the CI YAML (or Groovy?) becomes the glue layer and that would mean that it’s more difficult to run it locally for fast iteration.</p>
+<p>Because we want to encourage cross-team collaboration, we want to standardize the tooling across teams as much as possible. Different language ecosystems will have different tools and we want to keep using those. You can’t tell the frontend team not to use package.json / NPM / Yarn etc - that would be terribly cumbersome for them. So we’re not touching the language-specific build layer.</p>
+<p>In addition, because we want to be able to iterate quickly when there are CI failures, we will containerize the build as much as possible. If the failure is part of a containerized script, then it will be easier to reproduce it locally.</p>
+<p>A popular choice for the glue layer is to use Makefile + Dockerfile. Makefiles are great as a collection of everyday commands that we can use (<code>make build</code>, <code>make start</code>, <code>make package</code>, <code>make test</code>), while Dockerfiles help keep most of the build containerized.</p>
+<p>Another option might be to use bash + Dockerfile, where a collection scripts for everyday tasks exist under a <code>hack</code> or <code>scripts</code> directory (<code>./hack/build</code>, <code>./hack/test</code>, <code>./hack/release</code>).</p>
+<p>Yet another, more exotic, option is to use another scripting language, such as Python or JavaScript (see, for example, the <a href="https://github.com/google/zx">zx</a> library). Keep in mind, however, that it’s best when most of the engineers can read and write the build scripts with ease. Sometimes too much flexibility of the programming language can make it harder for others to read and understand the scripts. This is an especially important point as the build scripts will likely be read much more often than they will be written.</p>
+<p>For this guide, we’ll use Makefile + Dockerfile, as an arbitrary choice. Note, however, that neither Bash nor Makefile is very intuitive at first glance and you will need to help out junior developers, or developers that simply haven’t had the opportunity to learn these yet. And also, these are purely arbitrary choices, based on what we see as popular technologies used in this area. Your own choice may vary for good reasons. This guide is not saying that Makefile / Bash / Dockerfile are the only right choices.</p>
+<h2 id="tips-for-taming-makefiles-in-large-teams">Tips for Taming Makefiles in Large Teams</h2>
+<p>While there is <a href="https://www.shellcheck.net/">shellcheck</a> for linting shell scripts and avoiding the typical pitfalls, there is currently no linter for Makefiles. Part of the reason is that there are multiple styles or philosophies as to how to write Makefiles that it is hard to enforce specific rules that prevent human errors. For example, take a look at this <a href="https://tech.davis-hansson.com/p/make/">particularly opinionated approach</a>.</p>
+<p>Makefiles have the ability to manage the chain of dependencies and avoid duplicate work. However, this feature is heavily based on file creation time (if an input is newer than the output, then rebuild the target), and in most cases that is not enough. If you really want to, it is possible to force everything into that model. However, that tends to create very complicated Makefiles that often only one person on the team understands. This person becomes the “Build Guru” and all build maintenance works flow through them. This “Build Guru” dynamic is very common but best avoided. With Makefiles, using a limited subset of the Makefile language can help avoid this pattern and keep everything more maintainable for the entire team.</p>
+<p>If the Makefile wraps an existing build (for example, a Gradle-based or NPM-based build), it might make more sense to avoid Makefile’s more advanced features in those particular projects, to help the team be comfortable with making changes to the Makefile, with limited knowledge. In such cases, the caching would be handled by the wrapped build system and not by the Makefile itself.</p>
+<p>Here are some guidelines to help keep Makefiles simple and understandable, when the Makefile wraps another build system.</p>
+<ul>
+<li>Only use <a href="https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html"><code>.PHONY</code> targets</a>. Explanation: regular Makefile targets are names of files that need to be output. If the file does not exist or it is older than its inputs, <code>make</code> decides to run the target. A <code>.PHONY</code> target is a target that is not really a file - it’s just a name that the user can use as a short-hand to refer to a recipe to be run.<code>.PHONY</code> targets don’t use the freshness algorithm.</li>
+<li>Avoid overusing the distinct features of the different variable flavors (<code>=</code> vs <code>:=</code> vs <code>?=</code> vs <code>+=</code> vs <code>!=</code>). Someone not knowing the details of how Makefiles work will be confused if the logic relies heavily on the specific flavor.</li>
+<li>Avoid order-only prerequisite types (<code>targets : normal-prerequisites | order-only-prerequisites</code>). The <code>order-only-prerequisite</code> can be misleading to someone new to Makefiles.</li>
+<li>Avoid complex rules involving <code>patsubst</code> or special variables like <code>$&lt;</code>, <code>$^</code>, <code>$*</code>, <code>$@</code>. The way these work is a mystery to Makefile newcomers and it can be really hard to Google for the meaning.</li>
+</ul>
+<p>In other words, try not to be too smart about Makefiles. Note, however, that if the Makefile does not wrap an existing build system, then it is likely that you’ll need the advanced features of Makefile to correctly make use of the caching system.</p>
+<p>Another thing to consider is that certain UNIX commands vary from platform to platform. For example, <code>sed</code> and <code>find</code> have important differences between GNU/Linux and macOS, and while Windows can behave very much like Linux through WSL 2, testing is needed to verify everything you are using will work the same. Ask a colleague to test out your scripts on their platform if in doubt.</p>
+<div class="notice--info" data-markdown="1">
+<p><strong>Remember The Tab</strong>. Use of the tab character is mandatory in Makefiles or you’ll get this error. This usually catches newbies off-guard.</p>
+<pre><code>Makefile:273: *** missing separator.  Stop.</code></pre>
+</div>
+<h2 id="tips-for-dockerfiles">Tips for Dockerfiles</h2>
+<p>To help keep builds reproducible, it’s useful to have a version of the build in containerized form. If performance allows, this might be the day-to-day form that everyone uses. If not, at the very least, it’s the form that is used to debug CI failures.</p>
+<p>Dockerfiles are the bread and butter of containerized builds. However, they have an important limitation: they can only output Docker images. They weren’t designed to run unit tests or to output regular artifacts (binaries, jars, packages, etc). However, with some wrapper code, it is possible to extract regular files from images or to execute unit tests too. The following will illustrate how.</p>
+<h3 id="use-multi-stage-dockerfiles-or-multiple-dockerfiles">Use Multi-stage Dockerfiles or Multiple Dockerfiles</h3>
+<p>To help split up Dockerfile recipes into logical groupings, you can make use of multiple Dockerfile targets (also called multi-stage builds) and/or of multiple Dockerfile files.</p>
+<p>To define targets use <code>FROM ... AS ...</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine:latest AS my-target-name</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ubuntu:latest AS another-target-name</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> my-target-name AS yet-another-target-name</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<p>A target can be used in another <code>FROM</code> command or a <code>COPY</code> command (<code>COPY --from=my-target-name &lt;file-from&gt; &lt;file-to&gt;</code>) to copy resulting files from one target into another. This flexibility allows your definition to be more modular, and possibly also more efficient in cache, or more efficient in the size of the final image.</p>
+<p>To invoke a specific Dockerfile target, you can use the <code>--target</code> flag of <code>docker build</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--target</span><span class="op">=</span>my-target-name <span class="at">-t</span> my-build-image .</span></code></pre></div>
+<p>If a target is not specified, <code>docker build</code> will simply build the last target in the file.</p>
+<h3 id="running-containerized-unit-tests">Running Containerized Unit Tests</h3>
+<p>In order to run unit tests in containers, you might take either of the following strategies:</p>
+<ol type="a">
+<li>
+Run the test as a Dockerfile target
+</li>
+<li>
+Build a container with all the necessary code and set the entrypoint to execute the unit tests, then run that container.
+</li>
+</ol>
+<p>A third, less recommended, option is to execute tests as additional layers of the final image. This is not a great option because it unnecessarily bloats your image size and also, there’s no way to skip them. If you just want an image quickly this option will end up getting in your way.</p>
+<p><strong>Option a.</strong> has the advantage that if nothing changes, the Dockerfile caching will simply reuse previous work and return quickly. Since you don’t need the image being created, you can simply skip mentioning a tag via <code>-t</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build .</span></code></pre></div>
+<p><strong>Option b.</strong> requires managing an extra image, but might make them look more like the integration tests. Plus, if you want to mount in the source code instead of <code>COPY</code>ing it (faster on Linux), this option allows that.</p>
+<h3 id="running-integration-tests">Running Integration Tests</h3>
+<p>When running containerized integration tests that depend on additional services, only <strong>option b.</strong> above is available. In such cases, you might want to make use of docker-compose to manage multiple containers running together. Even if your setup is small, it’s just easier to be able to kill everything at once if your tests hang.</p>
+<p>Another option is to use <a href="https://github.com/testcontainers">testcontainers</a> - a language-specific library that allows you to bring up containerized helper services during integration testing. This can be a great abstraction, however, if you want to keep the integration tests containerized too, you’ll need to mount <code>/var/run/docker.sock</code> (this is sometimes referred to as “docker-out-of-docker”). This will allow the integration test code to bring up the necessary helper services via testcontainers.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-v</span> /var/run/docker.sock:/var/run/docker.sock ...</span></code></pre></div>
+<p>Either way, to keep your test suite as easy to use as possible, it’s great if you can map the series of commands needed to run the integration tests to a single make command (e.g. <code>make integration</code>) and use this command without any additional settings or wrappers in your CI scripts too. That way, if your CI breaks, then you have a very easy one-liner that should (hopefully) reproduce the failure on your local machine.</p>
+<h3 id="outputting-regular-files">Outputting Regular Files</h3>
+<p>Even the most containerized builds benefit from being able to occasionally output regular files. Here are some possible situations:</p>
+<ul>
+<li>Binaries / Packages / Library archives</li>
+<li>Releaseables (deb packages, source code tarballs)</li>
+<li>Screenshots from UI tests</li>
+<li>Test coverage reports</li>
+<li>Performance profile reports</li>
+<li>Database schema init scripts</li>
+<li>Generated source code files (to help IDEs with syntax highlighting)</li>
+<li>Generated configuration</li>
+</ul>
+<p>To output regular files as part of a containerized build, there are a few options.</p>
+<ol type="a">
+<li>
+Generate the file(s) into a host-mounted volume as part of <code>docker run</code>.
+</li>
+<li>
+Generate the file(s) as part of <code>docker run</code> and then extract them using <code>docker cp</code>.
+</li>
+<li>
+Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using the <code>docker build -o</code>option.
+</li>
+<li>
+Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using <code>docker cp</code>.
+</li>
+</ol>
+<p>Let’s take these one at a time:</p>
+<p><strong>Option a. Generate the file(s) into a host-mounted volume as part of <code>docker run</code></strong>: This is by far the most used, but arguably the least useful. This technique involves setting the entrypoint as the command that generates the resulting artifact and mounting an output directory (or maybe even the entire source code directory) where the result can be stored and shared with the host system.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">/output:/output&quot;</span> my-image:latest</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /output</span></code></pre></div>
+<p>The typical issue with this approach is that the resulting artifacts are owned by <code>root</code>. Getting rid of them or moving them around then requires <code>sudo</code>. There are, of course, ways to generate the files as a different user within the container, but this can be cumbersome.</p>
+<p><strong>Option b. Generate the file(s) as part of <code>docker run</code> and then extract them using <code>docker cp</code></strong>: This option involves executing the <code>docker run</code> and then afterward issuing <code>docker cp</code> to extract the resulting artifact. Here’s an example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> build-artifact my-image:latest</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp build-artifact:/output/my-artifact ./output/my-artifact</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm build-artifact</span></code></pre></div>
+<p>This option will produce results owned by the right user. The one possible downside of this approach is that if the <code>docker run</code> fails, a hanging <code>build-artifact</code> container remains, which will cause the next run to fail due to naming conflict. This can be easily fixed, however, by adding <code>docker rm -f build-artifact</code> at the beginning of the script.</p>
+<p><strong>Option c. Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using the <code>docker build -o</code> option</strong>: This is a lesser-known technique particularly suited for outputting entire directories. It essentially outputs the root directory of an entire image to the host. Here’s how this might be used.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS base</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> mkdir -p /output</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> echo <span class="st">&quot;contents&quot;</span> &gt;/output/my-artifact</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=base /output/* /</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-o</span> ./output .</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ./output/my-artifact <span class="co"># prints &quot;contents&quot;</span></span></code></pre></div>
+<p>The use of the scratch base image is such that the final image is minimal and only the required artifact is copied over to the host.</p>
+<p>This technique outputs files owned by the right user, however sometimes the fact that it outputs a whole directory can be limiting.</p>
+<p><strong>Option d. Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using <code>docker cp</code></strong>: This technique is somewhat similar to <strong>option b.</strong> except that no <code>docker run</code> is used.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-image:latest .</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> create <span class="at">--name</span> output-artifact my-image:latest</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp output-artifact:/output/my-artifact ./output/my-artifact</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm output-artifact</span></code></pre></div>
+<p>This option too will produce artifacts owned by the right user.</p>
+<h2 id="tips-for-taming-bash-scripts">Tips for Taming Bash Scripts</h2>
+<p>Regardless of the build setup, bash scripts are sometimes inevitable, especially when extensive release logic is needed and the language-specific tooling doesn’t offer specific support.</p>
+<p>If you’re new to bash scripting, I’ll run through a few of the more useful beginner tricks from our <a href="https://earthly.dev/blog/understanding-bash/">understanding bash article</a>.</p>
+<ul>
+<li>Spaces are surprisingly important. <code>A=B</code> is different from <code>A = B</code>. Also <code>if[$A=$B]</code> does not work - it has to be <code>if [ $A = $B ]</code>.</li>
+<li>Variables can cause really weird things if they are not wrapped in double-quotes. The reason is that a variable that contains spaces can expand across multiple command parameters unless it’s within quotes. To prevent any surprises, a good rule is to never expand a variable outside of double-quotes. So use <code>"$ABC"</code> always and not simply <code>$ABC</code>.</li>
+<li>A really good tool to check for some common errors like the above is <a href="https://www.shellcheck.net/"><code>shellcheck</code></a>.</li>
+<li>If there is an error in a bash script, by default, the script simply continues without a worry. This is very often not what you want - you want to terminate immediately so that the user is aware that something has failed. To enable this, put <code>set -e</code> at the top of the file.</li>
+<li>A series of piped commands can also fail and bash doesn’t terminate by default. To terminate immediately in such cases, you can enable <code>set -o pipefail</code>.</li>
+<li>An undefined variable is treated as the empty string in bash. However a lot of times an undefined variable can also be caused by a typo, or an incomplete rename during a refactor, or some other human error. To avoid surprises, you can do <code>set -u</code>, which will cause the script to fail on undefined variables. To initialize a variable with a default value (and avoid this error, if you’d like to allow an optional external variable), you can use <code>: "${&lt;variable-name&gt;:=&lt;default-value&gt;}"</code>. Just don’t forget the <code>:</code> in front of it.</li>
+<li>If you have no idea what your bash script is doing, you can make it print every statement being evaluated using <code>set -x</code>. It’s especially useful when debugging.</li>
+</ul>
+<h2 id="importing-code-and-artifacts-from-another-repository">Importing Code and Artifacts from Another Repository</h2>
+<p>Sometimes it’s useful to import the result of one build from repo A into the build of repo B. Here are some examples of situations where this is needed:</p>
+<ul>
+<li>Building some binaries in a core repo and packaging the release in a “build-tooling” repo (example in <a href="https://github.com/Kong/kong-build-tools">kong</a>)</li>
+<li>Generating protobuf files in one repo and reusing those files in multiple other repos (client(s) and server)</li>
+<li>Pre-computing some initialization data in one repo and using it in another repo</li>
+<li>Cases where the language-specific tooling offers little or no support for importing code from another repository</li>
+</ul>
+<p>There are multiple ways to achieve importing on your own. In general, if the language you use provides solid importing mechanisms, there is little to no reason to build any scripting that does the same thing. In other cases, you might go with one of the following makeshift options:</p>
+<ol type="a">
+<li>
+Git clone
+</li>
+<li>
+Submodule
+</li>
+<li>
+Pass files via a Docker image
+</li>
+<li>
+Pass files via S3
+</li>
+</ol>
+<p><strong>Option a. Git clone</strong>: This relies on git-cloning one repo from within the other. It’s especially useful when the code itself is needed and not necessarily an artifact resulting from building that code. Here how this might be achieved in a Makefile:</p>
+<!-- markdownlint-disable no-hard-tabs -->
+<div class="sourceCode" id="cb11"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">my-dep:</span><span class="dt"> ./deps/my-dep</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ot">./deps/my-dep:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  mkdir -p deps</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps/my-dep</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  git clone --branch v1.2.3 &lt;clone-url&gt; ./deps/my-dep</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps</span></code></pre></div>
+<!-- markdownlint-enable no-hard-tabs -->
+<p>Although it’s relatively crude in that it wipes the whole dir and re-clones it when necessary, it’s also pretty robust because there’s nothing assumed about the state of that directory. (Just make sure you’re not making important changes in that directory as those may be lost!)</p>
+<p>The <code>--branch</code> setting takes any git tag, sha, or branch, or, in general, a git ref. This helps pin the dependency to something specific if that is needed.</p>
+<p>You’ll need to be careful about how you use the <code>&lt;clone-url&gt;</code> as some engineers will use HTTPS auth, while others will use <code>ssh</code> auth. You might want to standardize on only one of the two options and use git’s <code>insteadof</code> feature if an individual developer would like to switch to the other URL.</p>
+<p>For example, if a developer wants to dynamically switch from <code>https://</code> to SSH GitHub URLs, they can do:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> url.<span class="st">&quot;git@github.com:&quot;</span>.insteadOf <span class="st">&quot;https://github.com/&quot;</span></span></code></pre></div>
+<p><strong>Option b. Submodule</strong>: This is another popular option especially when the source code itself is also needed. The technique involves relying on the <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules"><code>git submodule</code></a> capabilities built into git.</p>
+<p>The way it works is that git marks certain paths within the repository where submodules (other git repositories) can be cloned into. You can use the following command to add such submodules:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule add <span class="op">&lt;</span>clone-url<span class="op">&gt;</span> <span class="op">&lt;</span>path<span class="op">&gt;</span></span></code></pre></div>
+<p>This command clones the referenced repository into that path and also adds a <code>.gitmodules</code> file in the root of your repository, which might look like this.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">submodule</span> <span class="dt">&quot;&lt;name&gt;&quot;</span><span class="kw">]</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="dt">path</span> <span class="op">=</span> <span class="er">&lt;path&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">url</span> <span class="op">=</span> <span class="er">&lt;clone-url&gt;</span></span></code></pre></div>
+<p>Besides this entry, git internally also stores the git sha of the submoduled repository, so it is tied strongly to a specific version of it.</p>
+<p>Although there is significant tooling out there for working with submodules, some people don’t enjoy them because they require adjusting the typical git workflow to account for maintaining the submodules. In some cases, when submodules are overused, they can create more confusion than necessary. You can tell things can get complex when git comes with commands like <code>git submodule foreach 'git stash'</code>.</p>
+<p>There is much more to submodules than is in scope for this guide, but a good run-down can be found in the <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">git official documentation</a>.</p>
+<p><strong>Option c. Pass files via a Docker image</strong>: This option involves creating a Docker image that is not really actually run. It is merely used as a package repository.</p>
+<p>The advantage of this technique is that Docker images support tags, which allow for embedding into a release-process-based workflow. This technique is especially useful when artifacts beyond the source code itself are needed. Things like binaries, or generated files.</p>
+<p>However, this option does require repo A to execute a build that packages up the image before it can be used in repo B. If <strong>options a.</strong> and <strong>b.</strong> are simply <strong>commit to repo A</strong> -&gt; <strong>use in repo B</strong>, for <strong>option c.</strong> the sequence is <strong>commit to repo A</strong> -&gt; <strong>wait for CI build of repo A to complete</strong> -&gt; <strong>use in repo B</strong>.</p>
+<div class="notice--info" data-markdown="1">
+<p><strong>Side Note</strong>. If the CI is slow, this can be a productivity hog. To counter this situation, make sure that the individual engineer on the team can build the image independently from the CI, in order to be able to iterate locally quickly.</p>
+</div>
+<p>Here’s how this option works in general.</p>
+<p>Repo A:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> ./build/files ./</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-artifacts:my_tag .</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-artifacts:my_tag</span></code></pre></div>
+<p>Repo B:</p>
+<pre><code>docker pull my-registry/my-artifacts:my_tag
+docker create --name output-artifacts my-registry/my-artifacts:my_tag
+docker cp output-artifacts:files ./deps/files
+docker rm output-artifacts</code></pre>
+<p>The nice thing about this approach is that Docker will use its cache if an artifact has not changed.</p>
+<p><strong>Option d. Pass files via S3</strong>: This option is very similar to <strong>option c.</strong>, except that it uses an S3 bucket instead of a Docker registry for storing artifacts.</p>
+<p>Although I’ve heard this being used as a viable alternative, I’ve never seen this in action myself. With the wide range of Docker registries available out there, I don’t think this option is necessarily better. If, however, your company for whatever reason cannot provide you with a Docker registry repository, just know that using S3 (or any other cloud blob store) is also a possibility.</p>
+<h2 id="parallelism-with-makefiles-and-dockerfiles">Parallelism with Makefiles and Dockerfiles</h2>
+<p>The bread and butter of improving build speed are caching and parallelism. We will look at each of these topics in the context of Makefiles and Dockerfiles.</p>
+<p>Makefiles have parallelism support out of the box. Running any make target with the <code>-j</code> option tells Make to execute dependencies in parallel (e.g. <code>make -j build</code>). Although this is a seemingly easy win for performance, it comes with a number of strings attached, that you should be aware of.</p>
+<p>First of all, Make targets are not isolated - they all operate on the same directory. When you run multiple such targets in parallel, you may get very surprising results due to race conditions. Imagine if, for one of your targets, you really want to run a clean build, so you make it depend on the target <code>clean</code>. And then you have another target, which ensures that your <code>build</code> directory has been created. Well if these run in parallel, you can imagine how they could get in each other’s way.</p>
+<p>To really make use of this option, you’ll need to design target dependencies with parallelism mindfulness. You’ll need to really think about dependencies whether they need to be built in a certain order, or if they can be built in any order.</p>
+<p>If you need dependencies to be built in a specific order, a great way to achieve that is to use recursive Make calls:</p>
+<!-- markdownlint-disable no-hard-tabs -->
+<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep1</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep2</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep3</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
+<!-- markdownlint-enable no-hard-tabs -->
+<p>If dependencies can execute in any order, then declaring them as regular target dependencies will be fine:</p>
+<!-- markdownlint-disable no-hard-tabs -->
+<div class="sourceCode" id="cb19"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span><span class="dt"> dep1 dep2 dep3</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
+<!-- markdownlint-enable no-hard-tabs -->
+<p>Note that these principles may be difficult to uphold in a large team, as not all engineers will be running the build with the parallel option turned on. So a lot of times the parallelism capability is not tested, and as a result, it can break often. Keep these things in mind as you may need to reinforce the use of parallelism in project READMEs to hopefully be better supported by individual PRs.</p>
+<p>Another, either alternative or complementary option, is to make use of Dockerfile parallelism. With <a href="https://github.com/moby/buildkit">Buildkit</a> turned on (<code>DOCKER_BUILDKIT=1 docker build ...</code>), Dockerfiles are built with parallelism automatically, if they involve multiple targets. So for example, if you have targets <code>dep1</code>, <code>dep2</code> and <code>dep3</code> and you <code>COPY</code> files from them like so:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS build</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep1 /output/artifact1 ./</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep2 /output/artifact2 ./</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep3 /output/artifact3 ./</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> actually build</span></code></pre></div>
+<p>Then <code>dep1</code>, <code>dep2</code>, and <code>dep3</code> will be executed in parallel. The nice thing about this is that there is nothing shared between these three targets (unlike the Makefile case) and they will just work in parallel. No special considerations are necessary.</p>
+<h2 id="shared-caching">Shared Caching</h2>
+<p>Another way to speed up builds is to make use of shared caching. Shared caching is especially relevant in modern CI setups where the CI task is sandboxed. Because the CI is sandboxed, it cannot reuse the result of a previous build.</p>
+<p>There are, of course, CI-supported cache saving features. However, those features are not usable when testing locally. And in the end, all that CI caching does is just upload a file or directory to cloud storage, which can be downloaded later in another instance of the build.</p>
+<p>Dockerfile builds have pretty powerful cache saving and importing capabilities, thanks to the new <a href="https://github.com/moby/buildkit">Buildkit</a> engine. To use these capabilities, you need to first enable Buildkit (<code>DOCKER_BUILDKIT=1 docker build ...</code>) and then pass the right arguments to turn these features on.</p>
+<p>First, you need to push images together with the cache manifest:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
+<p>And then you need to make use of the cache in subsequent builds using <code>--cache-from</code>:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image .</span></code></pre></div>
+<p>Doing both in the same command looks like this:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
+<p>If the image does not already exist (or if it does not have a cache manifest embedded), there will be a warning, but the build will work fine otherwise.</p>
+<h2 id="managing-secrets">Managing Secrets</h2>
+<p>Mature CI/CD setups often hold more secrets than there are available in the production environment. That’s because they often need access to registries, artifactories, git repositories, as well as staging environments where additional testing can be performed, and also the production environment itself, where live releases are deployed to, together with schema write access to DBs for upgrades, and also possibly S3 access. Wow - that’s a mouthful.</p>
+<p>Oh, did I also mention that the CI runs a ton of code imported from the web? That <code>npm install</code> one of your colleagues ran in CI will download half the internet. And not all of it is particularly <a href="https://www.zdnet.com/article/codecov-breach-impacted-hundreds-of-customer-networks/">trust-worthy</a>.</p>
+<p>This whole thing makes for an incredibly risky attack surface. Giving access to build secrets to every developer adds an unnecessary extra dimension to the whole risk.</p>
+<p>However, to be able to reproduce some of the builds, you really need to give at least <em>some</em> access. At the very least, developers need read access to most Docker registries and package artifactories / package repositories. In fact, if you want to ensure that artifacts and images that make it to production are never created on a developer’s computer (because you don’t know if their specific environment will produce the releasable correctly consistently), you can simply not give out write access to any Docker repository and make it a rule that only the CI may have write access. (You might still need separate, non-production repos for local testing, though).</p>
+<p>For the read access, it’s best if each engineer gets their own account and credentials. In case someone is terminated, you can simply revoke access from that engineer’s account and know that all other credentials are not compromised.</p>
+<p>For reproducing CI/CD failures in pipelines with more sensitive access, you will need to maintain a small list of employees who will receive more privileged production access.</p>
+<p>To share the initial credentials with each engineer, if an email invite feature is not provided by the system, it’s best to use a password manager to send credentials one-to-one. Sometimes this process gets fairly manual in larger teams, but for the reasons mentioned above, it’s important to maintain segregated access.</p>
+<p>For a seamless setup, you can also store build credentials in HashiCorp Vault and use the Vault CLI in scripts to read secrets where they are needed.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vault</span> read <span class="at">-field</span><span class="op">=</span>foo secret/my-secret</span></code></pre></div>
+<p>This may be helpful in setups where extensive use of build credentials is required. Managing a <a href="https://www.vaultproject.io/docs/install">Vault installation</a>, however, is a whole project of its own, and going into those details is perhaps a story for another day.</p>
+<h2 id="maintaining-consistency">Maintaining Consistency</h2>
+<p>Now to turn to a more philosophical aspect of builds. A great build setup is one where every engineer can understand what it does fairly quickly and where every engineer can contribute with minimal to no help at all. Although these principles are obvious goals to have, the norm is quite the opposite.</p>
+<p>Engineers don’t have an innate need to mess things up. It’s not like we wake up in the morning trying to make builds cumbersome and complex for everyone else. The issue is usually that builds simply grow organically into an eventual big hairball of mess.</p>
+<p>The result of this is that new team members have difficulty making sense of the build scripts and colleagues from other teams have difficulty in contributing to your team’s project, thus creating integration gaps.</p>
+<p>Think about how this is in your organization. Is it difficult for you to contribute to another team’s codebase? Do you know how to run the project’s unit and integration test suites? Is there even an integration test between the two projects?</p>
+<p>To help teams meld with each other, it’s particularly important to have a standard way to build and test any project in the organization. If the build is containerized and everyone has read access to the right base images, then everyone can build and test each other’s codebases, thus eliminating at least one of the natural barriers that get formed between engineering teams.</p>
+<p>If you want to go a step further, you can even standardize a set of commands for the repositories across the organization. For example:</p>
+<ul>
+<li><code>make build</code> - builds the project</li>
+<li><code>make test</code> - runs the unit tests</li>
+<li><code>make integration</code> - runs the integration tests</li>
+<li><code>make ci</code> - executes the same script that is run in CI</li>
+</ul>
+<p>Then your engineers will be able to build another team’s codebase in their sleep!</p>
+<h2 id="other-options">Other Options</h2>
+<p>This article wouldn’t be complete without mentioning that if you’re a large organization (thousands of engineers), you can also take a look at some large-scale build systems as popular alternatives to in-house scripts. The names that come to mind are <a href="https://bazel.build/">Bazel</a>, <a href="https://buck.build/">Buck</a> and <a href="https://v1.pantsbuild.org/">Pants</a>. These systems imply heavy organization buy-in and well-staffed build engineering teams to manage them.</p>
+<p>Some of these can provide some of the most advanced capabilities available on planet Earth, however, they do come with the tradeoff that they don’t integrate well with most open-source tooling and so all projects need to be adapted to fit the paradigm.</p>
+<p>If you’d like to get started exploring these, we have previously written about <a href="https://earthly.dev/blog/monorepo-with-bazel/">Monorepos and Bazel</a>.</p>
+<h2 id="parting-words-and-mandatory-plug">Parting Words and Mandatory Plug</h2>
+<p>Getting everyone to write containerized builds is difficult in a growing organization. As you can see from this article, certain operations within containerized builds are not trivial to achieve and the wheel may be reinvented many times across the different teams.</p>
+<p>For these reasons, we have built Earthly. Through Earthly, we wanted to give containerized builds to the world, for the sake of reproducibility. From our own experience, we saw that Dockerfiles alone are not meant as build scripts, but rather as container image definitions. In true Unix philosophy, they are a great tool for that specific job - they do one thing and they do it well. To go the extra step and have containerized builds scripts (not just image definitions), a number of tricks and wrappers are necessary. Earthly takes the best ideas from Dockerfiles and Makefiles and puts them into a unified syntax that anyone can understand at-a-glance.</p>
+<p>Give Earthly a try and tell us what you think via our <a href="https://earthly.dev/slack">Slack</a> or our <a href="https://github.com/earthly/earthly/issues">GitHub issue tracker</a>.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/vladaionescu-240-121d6d712.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/vladaionescu-240-89010bfcc.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/vladaionescu-240-89010bfcc.jpg" alt="Vlad A. Ionescu %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Vlad A. Ionescu</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Founder of Earthly. Founder of ShiftLeft. Ex Google. Ex VMware. Co-author RabbitMQ Erlang Client.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/tags/#bash" class="page__taxonomy-item" rel="tag">Bash</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#build-scripts" class="page__taxonomy-item" rel="tag">Build scripts</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#build-strategy" class="page__taxonomy-item" rel="tag">Build strategy</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#dockerfile" class="page__taxonomy-item" rel="tag">Dockerfile</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#glue-layer" class="page__taxonomy-item" rel="tag">Glue layer</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#makefile" class="page__taxonomy-item" rel="tag">Makefile</a><span class="sep">, </span>
+    
+      <a href="/blog/tags/#repeatable-builds" class="page__taxonomy-item" rel="tag">Repeatable builds</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-19T00:00:00-04:00">May 19, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
+">Previous</a>
+    
+    
+      <a href="/blog/docker-multistage/" class="pagination--pager" title="Understanding Docker Multistage Builds
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
