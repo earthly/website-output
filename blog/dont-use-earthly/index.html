@@ -9,8 +9,8 @@
 
 
 
-<title>How to Not Use Our Build Tool - Earthly Blog</title>
-<meta name="description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+<title>Getting a Repeatable Build, Every Time - Earthly Blog</title>
+<meta name="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
 
 
   <meta name="author" content="Vlad A. Ionescu">
@@ -22,26 +22,26 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Earthly Blog">
-<meta property="og:title" content="How to Not Use Our Build Tool">
+<meta property="og:title" content="Getting a Repeatable Build, Every Time">
 <meta property="og:url" content="https://earthly.dev/blog/dont-use-earthly/">
 
 
-  <meta property="og:description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+  <meta property="og:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-b10955d5d.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-9b22eaab9.jpg">
 
 
 
   <meta name="twitter:site" content="@EarthlyTech">
-  <meta name="twitter:title" content="How to Not Use Our Build Tool">
-  <meta name="twitter:description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+  <meta name="twitter:title" content="Getting a Repeatable Build, Every Time">
+  <meta name="twitter:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
   <meta name="twitter:url" content="https://earthly.dev/blog/dont-use-earthly/">
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-b10955d5d.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-9b22eaab9.jpg">
   
 
   
@@ -220,7 +220,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-9867ad84a.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-9867ad84a.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-9867ad84a.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-9867ad84a.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-9867ad84a.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-9867ad84a.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-9867ad84a.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-9867ad84a.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.jpg" alt="How to Not Use Our Build Tool"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-24d835679.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-24d835679.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-24d835679.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-24d835679.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-24d835679.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-24d835679.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-24d835679.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-24d835679.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-24d835679.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-24d835679.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-24d835679.jpg" alt="Getting a Repeatable Build, Every Time"></picture>
 
   
   
@@ -239,8 +239,8 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="How to Not Use Our Build Tool">
-    <meta itemprop="description" content="In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to start Earthly in the first place.">
+    <meta itemprop="headline" content="Getting a Repeatable Build, Every Time">
+    <meta itemprop="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
     <meta itemprop="datePublished" content="2021-05-19T00:00:00-04:00">
     
 
@@ -250,7 +250,7 @@
       <section class="page__content" itemprop="text">
         
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">How to Not Use Our Build Tool
+          <h1 id="page-title" class="page__title" itemprop="headline">Getting a Repeatable Build, Every Time
 </h1>
           
 
@@ -300,7 +300,8 @@
             </nav>
           </aside>
         
-        <p>In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to <a href="https://earthly.dev/blog/the-world-deserves-better-builds/">start Earthly in the first place</a>.</p>
+        <p><em>EDIT This post used to be titled <strong>How to not use our build tool</strong>. Thanks to Reddit user <a href="https://www.reddit.com/user/musman">musman</a> for suggesting the current updated title</em></p>
+<p>In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to <a href="https://earthly.dev/blog/the-world-deserves-better-builds/">start Earthly in the first place</a>.</p>
 <p>I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).</p>
 <p>In this article, we will walk through the 10,000 feet view of your build strategy, then dive into some specific tricks, tools, and techniques you might use to keep your builds effective and reproducible, with other off-the-shelf tools.</p>
 <h2 id="putting-together-complex-builds---assumptions">Putting Together Complex Builds - Assumptions</h2>
