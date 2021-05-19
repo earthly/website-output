@@ -30,7 +30,7 @@
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-db9b5db4a.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-b10955d5d.jpg">
 
 
 
@@ -41,7 +41,7 @@
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-db9b5db4a.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-b10955d5d.jpg">
   
 
   
@@ -220,7 +220,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-e48f418c5.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-e48f418c5.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-e48f418c5.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-e48f418c5.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-e48f418c5.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-e48f418c5.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-e48f418c5.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-e48f418c5.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-e48f418c5.jpg" alt="How to Not Use Our Build Tool"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-9867ad84a.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-9867ad84a.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-9867ad84a.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-9867ad84a.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-9867ad84a.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-9867ad84a.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-9867ad84a.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-9867ad84a.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-9867ad84a.jpg" alt="How to Not Use Our Build Tool"></picture>
 
   
   
@@ -316,8 +316,10 @@
 <h2 id="scope-the-glue-layer">Scope: The Glue Layer</h2>
 <p>We will focus primarily on the glue layer of your builds. The stuff that brings everything together - maybe it packages things up for releases, or maybe it prepares packages for deployment, or perhaps it is simply a script that the CI definition calls into.</p>
 <p>This is a diagram we sometimes use to describe the glue layer. In this article, we’ll be focusing on the Dockerfile, Makefile, and Bash parts of that glue layer. Not having a glue layer can make CI failures difficult to reproduce, or for other teams unfamiliar with the language-specific build tooling to effectively create the right environment to run builds.</p>
+<div class="wide">
 <p><img src="/blog/assets/images/dont-use-earthly/glue-layer.png" alt="The glue layer" /><br />
 </p>
+</div>
 <p>The glue layer is the layer between the various projects that need to be built and will act as the common denominator - <a href="https://earthly.dev/blog/migrating-from-travis/#neutral-build-specifications">a vendor-neutral build specification</a>. If we don’t choose such a glue layer, then the CI YAML (or Groovy?) becomes the glue layer and that would mean that it’s more difficult to run it locally for fast iteration.</p>
 <p>Because we want to encourage cross-team collaboration, we want to standardize the tooling across teams as much as possible. Different language ecosystems will have different tools and we want to keep using those. You can’t tell the frontend team not to use package.json / NPM / Yarn etc - that would be terribly cumbersome for them. So we’re not touching the language-specific build layer.</p>
 <p>In addition, because we want to be able to iterate quickly when there are CI failures, we will containerize the build as much as possible. If the failure is part of a containerized script, then it will be easier to reproduce it locally.</p>
@@ -338,9 +340,10 @@
 </ul>
 <p>In other words, try not to be too smart about Makefiles. Note, however, that if the Makefile does not wrap an existing build system, then it is likely that you’ll need the advanced features of Makefile to correctly make use of the caching system.</p>
 <p>Another thing to consider is that certain UNIX commands vary from platform to platform. For example, <code>sed</code> and <code>find</code> have important differences between GNU/Linux and macOS, and while Windows can behave very much like Linux through WSL 2, testing is needed to verify everything you are using will work the same. Ask a colleague to test out your scripts on their platform if in doubt.</p>
-<div class="notice--info" data-markdown="1">
-<p><strong>Remember The Tab</strong>. Use of the tab character is mandatory in Makefiles or you’ll get this error. This usually catches newbies off-guard.</p>
-<pre><code>Makefile:273: *** missing separator.  Stop.</code></pre>
+<div class="notice--info">
+<p><strong>Remember The Tab</strong>.</p>
+<p>Use of the tab character is mandatory in Makefiles or you’ll get this error. This usually catches newbies off-guard.</p>
+<p><em><code>Makefile:273: *** missing separator.  Stop.</code></em></p>
 </div>
 <h2 id="tips-for-dockerfiles">Tips for Dockerfiles</h2>
 <p>To help keep builds reproducible, it’s useful to have a version of the build in containerized form. If performance allows, this might be the day-to-day form that everyone uses. If not, at the very least, it’s the form that is used to debug CI failures.</p>
@@ -348,20 +351,20 @@
 <h3 id="use-multi-stage-dockerfiles-or-multiple-dockerfiles">Use Multi-stage Dockerfiles or Multiple Dockerfiles</h3>
 <p>To help split up Dockerfile recipes into logical groupings, you can make use of multiple Dockerfile targets (also called multi-stage builds) and/or of multiple Dockerfile files.</p>
 <p>To define targets use <code>FROM ... AS ...</code></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine:latest AS my-target-name</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ubuntu:latest AS another-target-name</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> my-target-name AS yet-another-target-name</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine:latest AS my-target-name</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ubuntu:latest AS another-target-name</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> my-target-name AS yet-another-target-name</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
 <p>A target can be used in another <code>FROM</code> command or a <code>COPY</code> command (<code>COPY --from=my-target-name &lt;file-from&gt; &lt;file-to&gt;</code>) to copy resulting files from one target into another. This flexibility allows your definition to be more modular, and possibly also more efficient in cache, or more efficient in the size of the final image.</p>
 <p>To invoke a specific Dockerfile target, you can use the <code>--target</code> flag of <code>docker build</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--target</span><span class="op">=</span>my-target-name <span class="at">-t</span> my-build-image .</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--target</span><span class="op">=</span>my-target-name <span class="at">-t</span> my-build-image .</span></code></pre></div>
 <p>If a target is not specified, <code>docker build</code> will simply build the last target in the file.</p>
 <h3 id="running-containerized-unit-tests">Running Containerized Unit Tests</h3>
 <p>In order to run unit tests in containers, you might take either of the following strategies:</p>
@@ -375,12 +378,12 @@ Build a container with all the necessary code and set the entrypoint to execute 
 </ol>
 <p>A third, less recommended, option is to execute tests as additional layers of the final image. This is not a great option because it unnecessarily bloats your image size and also, there’s no way to skip them. If you just want an image quickly this option will end up getting in your way.</p>
 <p><strong>Option a.</strong> has the advantage that if nothing changes, the Dockerfile caching will simply reuse previous work and return quickly. Since you don’t need the image being created, you can simply skip mentioning a tag via <code>-t</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build .</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build .</span></code></pre></div>
 <p><strong>Option b.</strong> requires managing an extra image, but might make them look more like the integration tests. Plus, if you want to mount in the source code instead of <code>COPY</code>ing it (faster on Linux), this option allows that.</p>
 <h3 id="running-integration-tests">Running Integration Tests</h3>
 <p>When running containerized integration tests that depend on additional services, only <strong>option b.</strong> above is available. In such cases, you might want to make use of docker-compose to manage multiple containers running together. Even if your setup is small, it’s just easier to be able to kill everything at once if your tests hang.</p>
 <p>Another option is to use <a href="https://github.com/testcontainers">testcontainers</a> - a language-specific library that allows you to bring up containerized helper services during integration testing. This can be a great abstraction, however, if you want to keep the integration tests containerized too, you’ll need to mount <code>/var/run/docker.sock</code> (this is sometimes referred to as “docker-out-of-docker”). This will allow the integration test code to bring up the necessary helper services via testcontainers.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-v</span> /var/run/docker.sock:/var/run/docker.sock ...</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-v</span> /var/run/docker.sock:/var/run/docker.sock ...</span></code></pre></div>
 <p>Either way, to keep your test suite as easy to use as possible, it’s great if you can map the series of commands needed to run the integration tests to a single make command (e.g. <code>make integration</code>) and use this command without any additional settings or wrappers in your CI scripts too. That way, if your CI breaks, then you have a very easy one-liner that should (hopefully) reproduce the failure on your local machine.</p>
 <h3 id="outputting-regular-files">Outputting Regular Files</h3>
 <p>Even the most containerized builds benefit from being able to occasionally output regular files. Here are some possible situations:</p>
@@ -411,30 +414,30 @@ Generate the file(s) as the contents of an image during <code>docker build</code
 </ol>
 <p>Let’s take these one at a time:</p>
 <p><strong>Option a. Generate the file(s) into a host-mounted volume as part of <code>docker run</code></strong>: This is by far the most used, but arguably the least useful. This technique involves setting the entrypoint as the command that generates the resulting artifact and mounting an output directory (or maybe even the entire source code directory) where the result can be stored and shared with the host system.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">/output:/output&quot;</span> my-image:latest</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /output</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-v</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">/output:/output&quot;</span> my-image:latest</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /output</span></code></pre></div>
 <p>The typical issue with this approach is that the resulting artifacts are owned by <code>root</code>. Getting rid of them or moving them around then requires <code>sudo</code>. There are, of course, ways to generate the files as a different user within the container, but this can be cumbersome.</p>
 <p><strong>Option b. Generate the file(s) as part of <code>docker run</code> and then extract them using <code>docker cp</code></strong>: This option involves executing the <code>docker run</code> and then afterward issuing <code>docker cp</code> to extract the resulting artifact. Here’s an example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> build-artifact my-image:latest</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp build-artifact:/output/my-artifact ./output/my-artifact</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm build-artifact</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> build-artifact my-image:latest</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp build-artifact:/output/my-artifact ./output/my-artifact</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm build-artifact</span></code></pre></div>
 <p>This option will produce results owned by the right user. The one possible downside of this approach is that if the <code>docker run</code> fails, a hanging <code>build-artifact</code> container remains, which will cause the next run to fail due to naming conflict. This can be easily fixed, however, by adding <code>docker rm -f build-artifact</code> at the beginning of the script.</p>
 <p><strong>Option c. Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using the <code>docker build -o</code> option</strong>: This is a lesser-known technique particularly suited for outputting entire directories. It essentially outputs the root directory of an entire image to the host. Here’s how this might be used.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS base</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> mkdir -p /output</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> echo <span class="st">&quot;contents&quot;</span> &gt;/output/my-artifact</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=base /output/* /</span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-o</span> ./output .</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ./output/my-artifact <span class="co"># prints &quot;contents&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS base</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> mkdir -p /output</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> echo <span class="st">&quot;contents&quot;</span> &gt;/output/my-artifact</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=base /output/* /</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-o</span> ./output .</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ./output/my-artifact <span class="co"># prints &quot;contents&quot;</span></span></code></pre></div>
 <p>The use of the scratch base image is such that the final image is minimal and only the required artifact is copied over to the host.</p>
 <p>This technique outputs files owned by the right user, however sometimes the fact that it outputs a whole directory can be limiting.</p>
 <p><strong>Option d. Generate the file(s) as the contents of an image during <code>docker build</code> then extract them using <code>docker cp</code></strong>: This technique is somewhat similar to <strong>option b.</strong> except that no <code>docker run</code> is used.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-image:latest .</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> create <span class="at">--name</span> output-artifact my-image:latest</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp output-artifact:/output/my-artifact ./output/my-artifact</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm output-artifact</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-image:latest .</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> create <span class="at">--name</span> output-artifact my-image:latest</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> cp output-artifact:/output/my-artifact ./output/my-artifact</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> rm output-artifact</span></code></pre></div>
 <p>This option too will produce artifacts owned by the right user.</p>
 <h2 id="tips-for-taming-bash-scripts">Tips for Taming Bash Scripts</h2>
 <p>Regardless of the build setup, bash scripts are sometimes inevitable, especially when extensive release logic is needed and the language-specific tooling doesn’t offer specific support.</p>
@@ -473,43 +476,43 @@ Pass files via S3
 </ol>
 <p><strong>Option a. Git clone</strong>: This relies on git-cloning one repo from within the other. It’s especially useful when the code itself is needed and not necessarily an artifact resulting from building that code. Here how this might be achieved in a Makefile:</p>
 <!-- markdownlint-disable no-hard-tabs -->
-<div class="sourceCode" id="cb11"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">my-dep:</span><span class="dt"> ./deps/my-dep</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ot">./deps/my-dep:</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  mkdir -p deps</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps/my-dep</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  git clone --branch v1.2.3 &lt;clone-url&gt; ./deps/my-dep</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dv">my-dep:</span><span class="dt"> ./deps/my-dep</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ot">./deps/my-dep:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  mkdir -p deps</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps/my-dep</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  git clone --branch v1.2.3 &lt;clone-url&gt; ./deps/my-dep</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  rm -rf ./deps</span></code></pre></div>
 <!-- markdownlint-enable no-hard-tabs -->
 <p>Although it’s relatively crude in that it wipes the whole dir and re-clones it when necessary, it’s also pretty robust because there’s nothing assumed about the state of that directory. (Just make sure you’re not making important changes in that directory as those may be lost!)</p>
 <p>The <code>--branch</code> setting takes any git tag, sha, or branch, or, in general, a git ref. This helps pin the dependency to something specific if that is needed.</p>
 <p>You’ll need to be careful about how you use the <code>&lt;clone-url&gt;</code> as some engineers will use HTTPS auth, while others will use <code>ssh</code> auth. You might want to standardize on only one of the two options and use git’s <code>insteadof</code> feature if an individual developer would like to switch to the other URL.</p>
 <p>For example, if a developer wants to dynamically switch from <code>https://</code> to SSH GitHub URLs, they can do:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> url.<span class="st">&quot;git@github.com:&quot;</span>.insteadOf <span class="st">&quot;https://github.com/&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> url.<span class="st">&quot;git@github.com:&quot;</span>.insteadOf <span class="st">&quot;https://github.com/&quot;</span></span></code></pre></div>
 <p><strong>Option b. Submodule</strong>: This is another popular option especially when the source code itself is also needed. The technique involves relying on the <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules"><code>git submodule</code></a> capabilities built into git.</p>
 <p>The way it works is that git marks certain paths within the repository where submodules (other git repositories) can be cloned into. You can use the following command to add such submodules:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule add <span class="op">&lt;</span>clone-url<span class="op">&gt;</span> <span class="op">&lt;</span>path<span class="op">&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> submodule add <span class="op">&lt;</span>clone-url<span class="op">&gt;</span> <span class="op">&lt;</span>path<span class="op">&gt;</span></span></code></pre></div>
 <p>This command clones the referenced repository into that path and also adds a <code>.gitmodules</code> file in the root of your repository, which might look like this.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">submodule</span> <span class="dt">&quot;&lt;name&gt;&quot;</span><span class="kw">]</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        <span class="dt">path</span> <span class="op">=</span> <span class="er">&lt;path&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">url</span> <span class="op">=</span> <span class="er">&lt;clone-url&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">submodule</span> <span class="dt">&quot;&lt;name&gt;&quot;</span><span class="kw">]</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>        <span class="dt">path</span> <span class="op">=</span> <span class="er">&lt;path&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">url</span> <span class="op">=</span> <span class="er">&lt;clone-url&gt;</span></span></code></pre></div>
 <p>Besides this entry, git internally also stores the git sha of the submoduled repository, so it is tied strongly to a specific version of it.</p>
 <p>Although there is significant tooling out there for working with submodules, some people don’t enjoy them because they require adjusting the typical git workflow to account for maintaining the submodules. In some cases, when submodules are overused, they can create more confusion than necessary. You can tell things can get complex when git comes with commands like <code>git submodule foreach 'git stash'</code>.</p>
 <p>There is much more to submodules than is in scope for this guide, but a good run-down can be found in the <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">git official documentation</a>.</p>
 <p><strong>Option c. Pass files via a Docker image</strong>: This option involves creating a Docker image that is not really actually run. It is merely used as a package repository.</p>
 <p>The advantage of this technique is that Docker images support tags, which allow for embedding into a release-process-based workflow. This technique is especially useful when artifacts beyond the source code itself are needed. Things like binaries, or generated files.</p>
 <p>However, this option does require repo A to execute a build that packages up the image before it can be used in repo B. If <strong>options a.</strong> and <strong>b.</strong> are simply <strong>commit to repo A</strong> -&gt; <strong>use in repo B</strong>, for <strong>option c.</strong> the sequence is <strong>commit to repo A</strong> -&gt; <strong>wait for CI build of repo A to complete</strong> -&gt; <strong>use in repo B</strong>.</p>
-<div class="notice--info" data-markdown="1">
+<div class="notice--info">
 <p><strong>Side Note</strong>. If the CI is slow, this can be a productivity hog. To counter this situation, make sure that the individual engineer on the team can build the image independently from the CI, in order to be able to iterate locally quickly.</p>
 </div>
 <p>Here’s how this option works in general.</p>
 <p>Repo A:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> ./build/files ./</span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-artifacts:my_tag .</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-artifacts:my_tag</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> scratch</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> ./build/files ./</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-artifacts:my_tag .</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-artifacts:my_tag</span></code></pre></div>
 <p>Repo B:</p>
 <pre><code>docker pull my-registry/my-artifacts:my_tag
 docker create --name output-artifacts my-registry/my-artifacts:my_tag
@@ -525,37 +528,37 @@ docker rm output-artifacts</code></pre>
 <p>To really make use of this option, you’ll need to design target dependencies with parallelism mindfulness. You’ll need to really think about dependencies whether they need to be built in a certain order, or if they can be built in any order.</p>
 <p>If you need dependencies to be built in a specific order, a great way to achieve that is to use recursive Make calls:</p>
 <!-- markdownlint-disable no-hard-tabs -->
-<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep1</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep2</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep3</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep1</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep2</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="ch">$(</span><span class="dt">MAKE</span><span class="ch">)</span> dep3</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
 <!-- markdownlint-enable no-hard-tabs -->
 <p>If dependencies can execute in any order, then declaring them as regular target dependencies will be fine:</p>
 <!-- markdownlint-disable no-hard-tabs -->
-<div class="sourceCode" id="cb19"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span><span class="dt"> dep1 dep2 dep3</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span><span class="dt"> dep1 dep2 dep3</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  actually build</span></code></pre></div>
 <!-- markdownlint-enable no-hard-tabs -->
 <p>Note that these principles may be difficult to uphold in a large team, as not all engineers will be running the build with the parallel option turned on. So a lot of times the parallelism capability is not tested, and as a result, it can break often. Keep these things in mind as you may need to reinforce the use of parallelism in project READMEs to hopefully be better supported by individual PRs.</p>
 <p>Another, either alternative or complementary option, is to make use of Dockerfile parallelism. With <a href="https://github.com/moby/buildkit">Buildkit</a> turned on (<code>DOCKER_BUILDKIT=1 docker build ...</code>), Dockerfiles are built with parallelism automatically, if they involve multiple targets. So for example, if you have targets <code>dep1</code>, <code>dep2</code> and <code>dep3</code> and you <code>COPY</code> files from them like so:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS build</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep1 /output/artifact1 ./</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep2 /output/artifact2 ./</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep3 /output/artifact3 ./</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> actually build</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine AS build</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep1 /output/artifact1 ./</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep2 /output/artifact2 ./</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> --from=dep3 /output/artifact3 ./</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> actually build</span></code></pre></div>
 <p>Then <code>dep1</code>, <code>dep2</code>, and <code>dep3</code> will be executed in parallel. The nice thing about this is that there is nothing shared between these three targets (unlike the Makefile case) and they will just work in parallel. No special considerations are necessary.</p>
 <h2 id="shared-caching">Shared Caching</h2>
 <p>Another way to speed up builds is to make use of shared caching. Shared caching is especially relevant in modern CI setups where the CI task is sandboxed. Because the CI is sandboxed, it cannot reuse the result of a previous build.</p>
 <p>There are, of course, CI-supported cache saving features. However, those features are not usable when testing locally. And in the end, all that CI caching does is just upload a file or directory to cloud storage, which can be downloaded later in another instance of the build.</p>
 <p>Dockerfile builds have pretty powerful cache saving and importing capabilities, thanks to the new <a href="https://github.com/moby/buildkit">Buildkit</a> engine. To use these capabilities, you need to first enable Buildkit (<code>DOCKER_BUILDKIT=1 docker build ...</code>) and then pass the right arguments to turn these features on.</p>
 <p>First, you need to push images together with the cache manifest:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
 <p>And then you need to make use of the cache in subsequent builds using <code>--cache-from</code>:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image .</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image .</span></code></pre></div>
 <p>Doing both in the same command looks like this:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> build <span class="at">--cache-from</span><span class="op">=</span>my-registry/my-image <span class="at">-t</span> my-registry/my-image <span class="at">--build-arg</span> BUILDKIT_INLINE_CACHE=1 .</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> push my-registry/my-image</span></code></pre></div>
 <p>If the image does not already exist (or if it does not have a cache manifest embedded), there will be a warning, but the build will work fine otherwise.</p>
 <h2 id="managing-secrets">Managing Secrets</h2>
 <p>Mature CI/CD setups often hold more secrets than there are available in the production environment. That’s because they often need access to registries, artifactories, git repositories, as well as staging environments where additional testing can be performed, and also the production environment itself, where live releases are deployed to, together with schema write access to DBs for upgrades, and also possibly S3 access. Wow - that’s a mouthful.</p>
@@ -566,7 +569,7 @@ docker rm output-artifacts</code></pre>
 <p>For reproducing CI/CD failures in pipelines with more sensitive access, you will need to maintain a small list of employees who will receive more privileged production access.</p>
 <p>To share the initial credentials with each engineer, if an email invite feature is not provided by the system, it’s best to use a password manager to send credentials one-to-one. Sometimes this process gets fairly manual in larger teams, but for the reasons mentioned above, it’s important to maintain segregated access.</p>
 <p>For a seamless setup, you can also store build credentials in HashiCorp Vault and use the Vault CLI in scripts to read secrets where they are needed.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vault</span> read <span class="at">-field</span><span class="op">=</span>foo secret/my-secret</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vault</span> read <span class="at">-field</span><span class="op">=</span>foo secret/my-secret</span></code></pre></div>
 <p>This may be helpful in setups where extensive use of build credentials is required. Managing a <a href="https://www.vaultproject.io/docs/install">Vault installation</a>, however, is a whole project of its own, and going into those details is perhaps a story for another day.</p>
 <h2 id="maintaining-consistency">Maintaining Consistency</h2>
 <p>Now to turn to a more philosophical aspect of builds. A great build setup is one where every engineer can understand what it does fairly quickly and where every engineer can contribute with minimal to no help at all. Although these principles are obvious goals to have, the norm is quite the opposite.</p>
