@@ -316,10 +316,8 @@
 <h2 id="scope-the-glue-layer">Scope: The Glue Layer</h2>
 <p>We will focus primarily on the glue layer of your builds. The stuff that brings everything together - maybe it packages things up for releases, or maybe it prepares packages for deployment, or perhaps it is simply a script that the CI definition calls into.</p>
 <p>This is a diagram we sometimes use to describe the glue layer. In this article, we’ll be focusing on the Dockerfile, Makefile, and Bash parts of that glue layer. Not having a glue layer can make CI failures difficult to reproduce, or for other teams unfamiliar with the language-specific build tooling to effectively create the right environment to run builds.</p>
-<div class="wide">
 <p><img src="/blog/assets/images/dont-use-earthly/glue-layer.png" alt="The glue layer" /><br />
 </p>
-</div>
 <p>The glue layer is the layer between the various projects that need to be built and will act as the common denominator - <a href="https://earthly.dev/blog/migrating-from-travis/#neutral-build-specifications">a vendor-neutral build specification</a>. If we don’t choose such a glue layer, then the CI YAML (or Groovy?) becomes the glue layer and that would mean that it’s more difficult to run it locally for fast iteration.</p>
 <p>Because we want to encourage cross-team collaboration, we want to standardize the tooling across teams as much as possible. Different language ecosystems will have different tools and we want to keep using those. You can’t tell the frontend team not to use package.json / NPM / Yarn etc - that would be terribly cumbersome for them. So we’re not touching the language-specific build layer.</p>
 <p>In addition, because we want to be able to iterate quickly when there are CI failures, we will containerize the build as much as possible. If the failure is part of a containerized script, then it will be easier to reproduce it locally.</p>
