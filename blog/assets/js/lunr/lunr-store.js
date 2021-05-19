@@ -256,4 +256,10 @@ var store = [{
         "tags": [],
         "url": "/blog/continuous-integration/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "How to Not Use Our Build Tool",
+        "excerpt":"In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of...","categories": ["Articles"],
+        "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
+        "url": "/blog/dont-use-earthly/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
