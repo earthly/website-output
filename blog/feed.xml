@@ -1,4 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-19T16:51:38-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Getting a Repeatable Build, Every Time</title><link href="https://earthly.dev/blog/dont-use-earthly/" rel="alternate" type="text/html" title="Getting a Repeatable Build, Every Time" /><published>2021-05-19T00:00:00-04:00</published><updated>2021-05-19T00:00:00-04:00</updated><id>https://earthly.dev/blog/dont-use-earthly</id><content type="html" xml:base="https://earthly.dev/blog/dont-use-earthly/">&lt;p&gt;&lt;em&gt;EDIT This post used to be titled &lt;strong&gt;How to not use our build tool&lt;/strong&gt;. Thanks to Reddit user &lt;a href=&quot;https://www.reddit.com/user/musman&quot;&gt;musman&lt;/a&gt; for suggesting the current updated title&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-20T08:28:12-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Understanding Docker Multistage Builds</title><link href="https://earthly.dev/blog/docker-multistage/" rel="alternate" type="text/html" title="Understanding Docker Multistage Builds" /><published>2021-05-20T00:00:00-04:00</published><updated>2021-05-20T00:00:00-04:00</updated><id>https://earthly.dev/blog/docker-multistage</id><content type="html" xml:base="https://earthly.dev/blog/docker-multistage/">&lt;p&gt;At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.&lt;/p&gt;
+&lt;p&gt;To build an efficient Docker image, you want to eliminate some of these layers from the final output. Optimizing an image can take a lot of effort as you attempt to filter out what you don’t need. Building these kinds of images has a lot to do with keeping them as small as possible, because large images lead to a host of other issues.&lt;/p&gt;
+&lt;p&gt;One approach to keeping Docker images small is using multistage builds. A multistage build allows you to use multiple images to build a final product. In a multistage build, you have a single Dockerfile, but can define multiple images inside it to help build the final image.&lt;/p&gt;
+&lt;p&gt;In this post, you’ll learn about the core concepts of multistage builds in Docker and how they help to create production-grade images. In addition, I will detail how you can create these types of files, as well as highlight some challenges that they present.&lt;/p&gt;
+&lt;h2 id=&quot;core-concepts-of-docker-multistage-builds&quot;&gt;Core Concepts of Docker Multistage Builds&lt;/h2&gt;
+&lt;p&gt;Before getting to the details of multistage builds, it’s good to have an understanding of the main idea behind them. You’re already familiar with the starting point of container images, the Dockerfile. Dockerfiles are text files that make it easy to assemble all the relevant commands required to create your container image. These commands in the Dockerfile should be combined whenever possible for the sake of optimization.&lt;/p&gt;
+&lt;p&gt;When I first came across this idea of building the right kind of Docker image, I asked myself a few questions that may be crossing your mind as you read this. What are the implications of &lt;em&gt;not&lt;/em&gt; optimizing an image? Can it really have that much of a negative impact on your application? The answer to the latter question is yes.&lt;/p&gt;
+&lt;p&gt;As for the implications, you typically end up with bigger images. The reason big images should be avoided is because &lt;a href=&quot;https://developers.redhat.com/blog/2016/03/09/more-about-docker-images-size/&quot; title=&quot;Keep it small: a closer look at Docker image sizing&quot;&gt;they increase both potential security vulnerabilities and the surface area for attack&lt;/a&gt;. You definitely want to keep things lean by ensuring you only have what your application needs to run successfully in a production environment.&lt;/p&gt;
+&lt;p&gt;One way of reducing the size of your Docker images is through the use of what is informally known as the &lt;a href=&quot;https://en.wikipedia.org/wiki/Builder_pattern&quot; title=&quot;builder design pattern entry at Wikipedia&quot;&gt;builder pattern&lt;/a&gt;. The builder pattern uses two Docker images to create a base image for building assets and the second to run it. This pattern was previously implemented through the use of multiple Dockerfiles. It has become an uncommon practice since the introduction and support of multistage builds in &lt;a href=&quot;https://www.docker.com/blog/multi-stage-builds/&quot; title=&quot;Multi-Stage Builds&quot;&gt;Docker 17.06 CE&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For context, it’s good to understand how this was typically done before multistage builds. The following example makes use of a basic React application that is first built and then has its static content served by an &lt;a href=&quot;https://www.nginx.com/&quot; title=&quot;Nginx web servers&quot;&gt;Nginx virtual server&lt;/a&gt;. Following are the two Dockerfiles used to create the optimized image. In addition, you’ll see a &lt;a href=&quot;/blog/understanding-bash&quot;&gt;shell script&lt;/a&gt; that demonstrates the Docker CLI commands that have to be run in order to achieve this outcome. You can find the source code for this example in &lt;a href=&quot;https://github.com/LukeMwila/builder-pattern-example&quot; title=&quot;builder pattern example in Lukonde Mwila&amp;#39;s GitHub repository&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Dockerfile.build
+FROM node:12.13.0-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Dockerfile.main
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY /app/build /usr/share/nginx/html&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Build.sh
+#!/bin/sh
+echo Building lukondefmwila/react:build
+
+docker build -t lukondefmwila:build . -f Dockerfile.build
+
+docker create --name extract lukondefmwila:build
+
+docker cp extract:/app/build ./app
+
+docker rm -f extract
+
+echo Building lukondefmwila/react:latest
+
+docker build --no-cache -t lukondefmwila/react:latest . -f Dockerfile.main&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While using the builder pattern does give you the desired outcome, it presents additional challenges. This process introduces the management overhead that comes with maintaining multiple Dockerfiles—not to mention the cumbersome procedure of running through several Docker CLI commands, even if this can be streamlined by a shell script.&lt;/p&gt;
+&lt;h2 id=&quot;how-to-use-docker-multistage-builds&quot;&gt;How to Use Docker Multistage Builds&lt;/h2&gt;
+&lt;p&gt;Now that you get the underlying concept, turn your attention to how this translates to the modern implementation of the builder pattern. What the former approach accomplishes with multiple Dockerfiles, the multistage feature does in one. You can get the same results with your builds without the added complexity.&lt;/p&gt;
+&lt;p&gt;Multistage builds make use of one Dockerfile with multiple FROM instructions. Each of these FROM instructions is a new build stage that can COPY artifacts from the previous stages. By going and copying the build artifact from the build stage, you eliminate all the intermediate steps such as downloading of code, installing dependencies, and testing. All these steps create additional layers, and you want to eliminate them from the final image.&lt;/p&gt;
+&lt;p&gt;The build stage is named by appending AS &lt;em&gt;name-of-build&lt;/em&gt; to the FROM instruction. The name of the build stage can be used in a subsequent FROM and COPY command by providing a convenient way to identify the source layer for files brought into the image build. The final image is produced from the last stage executed in the Dockerfile.&lt;/p&gt;
+&lt;p&gt;Try taking the example from the previous section that used more than one Dockerfile for the React application and replacing the solution with one file that uses a multistage build.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Dockerfile
+FROM node:12.13.0-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This Dockerfile has two FROM commands, with each one constituting a distinct build stage. These distinct commands are numbered internally, stage 0 and stage 1 respectively. However, stage 0 is given a friendly alias of &lt;code&gt;build&lt;/code&gt;. This stage builds the application and stores it in the directory specified by the WORKDIR command. The resultant image is over 420 MB in size.&lt;/p&gt;
+&lt;p&gt;The second stage starts by pulling the official Nginx image from Docker Hub. It then copies the updated virtual server configuration to replace the default Nginx configuration. Then the COPY –from command is used to copy only the production-related application code from the image built by the previous stage. The final image is approximately 127 MB.&lt;/p&gt;
+&lt;h2 id=&quot;problems-that-docker-multistage-builds-might-encounter&quot;&gt;Problems That Docker Multistage Builds Might Encounter&lt;/h2&gt;
+&lt;p&gt;Depending on how they are designed, multistage builds can introduce some serious issues around the speed of the build process. Since these Dockerfiles have multiple stages to produce the production-grade image, your cache will not consist of the images built in the previous steps leading to your final output. Simulating the build locally might give you the impression that it’s worth the wait. However, when you’re working with build services such as &lt;a href=&quot;https://aws.amazon.com/codebuild/&quot;&gt;AWS CodeBuild&lt;/a&gt;, &lt;a href=&quot;https://travis-ci.org/&quot;&gt;Travis CI&lt;/a&gt;, or &lt;a href=&quot;https://circleci.com/&quot;&gt;CircleCI&lt;/a&gt;, you want to keep your build time as short as possible for cost reasons, as well as streamlining application delivery.&lt;/p&gt;
+&lt;p&gt;In order to make use of the cache, you will have to tag, push, and pull the images produced from the preliminary build stages. As an example, take the multistage Dockerfile from the previous section and split it into two files, Dockerfile.stage-one and Dockerfile.final. The first Dockerfile will create the image that will be pulled and used in stage 0 of the multistage Dockerfile.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Dockerfile.stage-one
+FROM node:12.13.0-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Dockerfile.final
+FROM lukondefmwila/react:build-stage as build
+
+FROM nginx
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/build /usr/share/nginx/html&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That being said, following such an approach for every stage can create an increasingly verbose process every stage that you have. Another way of solving this issue is to make use of &lt;a href=&quot;https://earthly.dev/blog/what-is-buildkit-and-what-can-i-do-with-it/&quot;&gt;BuildKit&lt;/a&gt;. BuildKit came about to address issues and improve on the build features in the &lt;a href=&quot;https://mobyproject.org/&quot;&gt;Moby Engine&lt;/a&gt;. It allows for better cache efficiency and control when building. To enable BuildKit builds, follow the steps outlined in &lt;a href=&quot;https://docs.docker.com/develop/develop-images/build_enhancements/#to-enable-buildkit-builds&quot;&gt;Docker’s documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;more-stages&quot;&gt;More Stages&lt;/h2&gt;
+&lt;p&gt;As your multi-stage build grows in complexity, comprehending how each step follows from the next can become a challenge. If the number of stages extends beyond two or if caching is becoming a challenge, you may want to consider using &lt;a href=&quot;http://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; to produce your docker images. Earthly mirrors the dockerfile syntax but allows for naming the stages and for more fine-grained caching.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;FROM node:12.13.0-alpine as build
+WORKDIR /app
+
+build:
+  COPY package*.json ./
+  RUN npm install
+  COPY . .
+  RUN npm run build
+
+final:
+  FROM nginx
+  EXPOSE 3000
+  COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+  COPY  +build/app/build /usr/share/nginx/html&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;While creating Docker images the right way is not a small task, the final outcome does a great deal of good for the speed and security of your application delivery. Larger images have a high number of security vulnerabilities that shouldn’t be overlooked for the sake of speed. The reality is that quality images take time and care.&lt;/p&gt;
+&lt;p&gt;The builder pattern has evolved over time in its implementation, with multistage builds coming to the rescue from the tedious steps that previously had to be followed. Tools like BuildKit and Earthly further improve on this process. Though not foolproof, multistage builds have made it much easier to create optimized images that you can be more pleased and confident to have running in your production environment.&lt;/p&gt;</content><author><name>Lukonde Mwila</name></author><category term="Tutorials" /><summary type="html">At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.</summary></entry><entry><title type="html">Getting a Repeatable Build, Every Time</title><link href="https://earthly.dev/blog/dont-use-earthly/" rel="alternate" type="text/html" title="Getting a Repeatable Build, Every Time" /><published>2021-05-19T00:00:00-04:00</published><updated>2021-05-19T00:00:00-04:00</updated><id>https://earthly.dev/blog/dont-use-earthly</id><content type="html" xml:base="https://earthly.dev/blog/dont-use-earthly/">&lt;p&gt;&lt;em&gt;EDIT This post used to be titled &lt;strong&gt;How to not use our build tool&lt;/strong&gt;. Thanks to Reddit user &lt;a href=&quot;https://www.reddit.com/user/musman&quot;&gt;musman&lt;/a&gt; for suggesting the current updated title&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that a focus on build repeatability and maintainability goes a long way towards keeping the team focused on what really matters: delivering great software. Many of these ideas helped shape what Earthly is today. In fact, the complexity of the matter is what got us to &lt;a href=&quot;https://earthly.dev/blog/the-world-deserves-better-builds/&quot;&gt;start Earthly in the first place&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).&lt;/p&gt;
 &lt;p&gt;In this article, we will walk through the 10,000 feet view of your build strategy, then dive into some specific tricks, tools, and techniques you might use to keep your builds effective and reproducible, with other off-the-shelf tools.&lt;/p&gt;
@@ -1948,187 +2041,4 @@ throttle([&amp;#39;test_1&amp;#39;]) {
 &lt;p&gt;This can help you assess the effectiveness of your performance tweaks and guide you as you continue to improve your Jenkins installation.&lt;/p&gt;
 &lt;h2 id=&quot;wrapping-it-up&quot;&gt;Wrapping It Up&lt;/h2&gt;
 &lt;p&gt;Jenkins’ responsiveness issues are common, especially when dealing with heavier builds. Broken Jenkins CI/CD pipelines can stall your development teams and create unnecessary dependencies. The tips discussed in this article should help you boost the performance of your Jenkins CI/CD pipeline significantly.&lt;/p&gt;
-&lt;p&gt;Looking to make your builds more repeatable? &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; replaces clunky &lt;a href=&quot;/blog/understanding-bash&quot;&gt;bash scripts&lt;/a&gt; and makefiles by giving you a single understandable, consistent definition for your CI/CD builds and it works great with Jekyll. Learn more &lt;a href=&quot;https://earthly.dev/&quot;&gt;at Earthly.dev&lt;/a&gt;.&lt;/p&gt;</content><author><name>Milan Bhardwaj</name></author><category term="Tutorials" /><summary type="html">There’s nothing more frustrating than a sluggish continuous integration system. It slows down feedback loops and prevents code from reaching production quickly. While quick fixes like using a bigger CI server can buy you time, you ultimately have to invest in maintaining the performance of your continuous integration workflow.</summary></entry><entry><title type="html">Understanding Bash</title><link href="https://earthly.dev/blog/understanding-bash/" rel="alternate" type="text/html" title="Understanding Bash" /><published>2021-04-01T00:00:00-04:00</published><updated>2021-04-01T00:00:00-04:00</updated><id>https://earthly.dev/blog/understanding-bash</id><content type="html" xml:base="https://earthly.dev/blog/understanding-bash/">&lt;p&gt;Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.&lt;/p&gt;
-&lt;p&gt;When you’re done with this article, you’ll not only be able to write bash scripts, but you’ll be able to write them using today’s accepted best practices.&lt;/p&gt;
-&lt;h2 id=&quot;use-the-right-shebang&quot;&gt;Use the Right Shebang&lt;/h2&gt;
-&lt;p&gt;The very first thing you’ll see at the top of every (well-written) bash script is what’s called a &lt;a href=&quot;https://www.in-ulm.de/~mascheck/various/shebang/&quot;&gt;&lt;em&gt;shebang&lt;/em&gt;&lt;/a&gt;. I’ll walk you through a couple of them here.&lt;/p&gt;
-&lt;h3 id=&quot;binbash&quot;&gt;#!/bin/bash&lt;/h3&gt;
-&lt;p&gt;The most common shebang is the one referring to the &lt;code&gt;bash&lt;/code&gt; executable:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Essentially it tells your terminal that when you run the script it should use &lt;code&gt;bash&lt;/code&gt; to execute it. It can be vital since you may be using a different shell in your machine (&lt;code&gt;zsh&lt;/code&gt;, &lt;code&gt;fish&lt;/code&gt;, &lt;code&gt;sh&lt;/code&gt;, etc.), but you designed the script to work specifically with bash. In many cases, it doesn’t matter what shell you’re using, but there can be some very noteworthy differences in how they work, leading a script to work in &lt;code&gt;bash&lt;/code&gt; but not &lt;code&gt;sh&lt;/code&gt;, for example.&lt;/p&gt;
-&lt;h3 id=&quot;userbinenv-bash&quot;&gt;#!/user/bin/env bash&lt;/h3&gt;
-&lt;p&gt;If you use the previous shebang, it’s crucial that you give the executable’s absolute path. You should be aware of this since there is an alternative, where you use the &lt;code&gt;bash&lt;/code&gt; executable found in the &lt;code&gt;$PATH&lt;/code&gt;. You can do so by writing:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/user/bin/env bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Some people like to customize their systems, either their personal system or production servers, resulting in the &lt;code&gt;bash&lt;/code&gt; executable not being located in &lt;code&gt;/bin/bash&lt;/code&gt; every time. Use the above line if you can’t be sure that the &lt;code&gt;bash&lt;/code&gt; executable will be located in the same path when this script is run.&lt;/p&gt;
-&lt;h2 id=&quot;understand-common-sets&quot;&gt;Understand Common Sets&lt;/h2&gt;
-&lt;p&gt;When you run a bash script, it will always run in a new &lt;em&gt;subshell&lt;/em&gt;. This means that any unique configurations you have in your current setup will not be used within the script execution. It also means that you can customize the environment that the script is running in without worrying about how your terminal will be affected.&lt;/p&gt;
-&lt;p&gt;One way to change this environment is to use the &lt;code&gt;set&lt;/code&gt; command. I’ll go over the four most common ones and where they’re useful. I’ll show the short form for these sets in the examples throughout this article, but keep in mind that there are also long-form versions. I’ll mention those briefly.&lt;/p&gt;
-&lt;h3 id=&quot;set--u&quot;&gt;set -u&lt;/h3&gt;
-&lt;p&gt;By default, bash doesn’t do a lot of error handling. That’s left up to you. So if you want to have your script exit at a certain point, you have to define it. For example, you may have the following script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;$TEST&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you run the script as shown above, it’ll give you the following output:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See how it doesn’t complain that the &lt;code&gt;$TEST&lt;/code&gt; variable is not set? You can change that. Setting the &lt;code&gt;set -u&lt;/code&gt; (short form of &lt;code&gt;set -o nounset&lt;/code&gt;) command initially, you’re telling bash that you want it to fail if a variable is not set.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-u&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;$TEST&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 3: TEST: unbound variable&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Without &lt;code&gt;set -u&lt;/code&gt;, bash will use an empty string instead of the unset variable. When running &lt;code&gt;echo $TEST&lt;/code&gt;, that isn’t too dangerous. However, you may be running a command like &lt;code&gt;rm -rf /$TEST&lt;/code&gt; to define a path you want to delete. In this case, without &lt;code&gt;set -u&lt;/code&gt;, you would end up deleting your entire file system (which there’s no way to recover by default).&lt;/p&gt;
-&lt;h3 id=&quot;set--x&quot;&gt;set -x&lt;/h3&gt;
-&lt;p&gt;You’ll likely at some point have a big script where it’s tough to keep track of not just which commands are running what, but also which commands are outputting what. This is where &lt;code&gt;set -x&lt;/code&gt; comes to the rescue. Alternatively, you can write this as its long form, &lt;code&gt;set -o xtrace&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;When using &lt;code&gt;set -x&lt;/code&gt;, you get the following script and output.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-x&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hi&lt;/span&gt;
-&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;+&lt;/span&gt; echo Hi&lt;/span&gt;
-&lt;span id=&quot;cb8-2&quot;&gt;&lt;a href=&quot;#cb8-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hi&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb8-3&quot;&gt;&lt;a href=&quot;#cb8-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;+&lt;/span&gt; echo Hello World&lt;/span&gt;
-&lt;span id=&quot;cb8-4&quot;&gt;&lt;a href=&quot;#cb8-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;set--e&quot;&gt;set -e&lt;/h3&gt;
-&lt;p&gt;Sometimes you want to make sure that the entire script fails if one of the commands fails. This is not the default behavior in bash. You can see &lt;a href=&quot;https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html&quot;&gt;here&lt;/a&gt; that without any set options, bash is running without much error handling.&lt;/p&gt;
-&lt;p&gt;To make sure the script fails, you should use &lt;code&gt;set -e&lt;/code&gt; (also known as &lt;code&gt;set -o errexit&lt;/code&gt;), probably the most common one.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Script:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-2&quot;&gt;&lt;a href=&quot;#cb9-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-e&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-3&quot;&gt;&lt;a href=&quot;#cb9-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;foo&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb9-4&quot;&gt;&lt;a href=&quot;#cb9-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 3: foo: command not found&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;set--eo-pipefail&quot;&gt;set -eo pipefail&lt;/h3&gt;
-&lt;p&gt;Finally, we can make the script fail if a command in a pipeline fails. Usually, bash only looks for the exit code from the last command in a pipeline. If that’s 0, it’ll continue just fine. Exit code 0 is what we want, since in bash that means success.&lt;/p&gt;
-&lt;p&gt;Let’s use the following script as an example:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello World&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hi&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;set -eo pipefail&lt;/code&gt; will turn the output from:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;
-&lt;span id=&quot;cb12-2&quot;&gt;&lt;a href=&quot;#cb12-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 2: foo: command not found&lt;/span&gt;
-&lt;span id=&quot;cb12-3&quot;&gt;&lt;a href=&quot;#cb12-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hi&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;into:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb13&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb13-1&quot;&gt;&lt;a href=&quot;#cb13-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;
-&lt;span id=&quot;cb13-2&quot;&gt;&lt;a href=&quot;#cb13-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;line&lt;/span&gt; 2: foo: command not found&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The reason you may want the script to fail if a pipeline fails is the same as earlier with &lt;code&gt;set -u&lt;/code&gt;. Let’s modify the scenario a bit. You have the following in your script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;va&quot;&gt;FILE_PATH&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; /tmp/path.txt &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;s/_/-/g)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;rm -rf /$FILE_PATH&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Note: &lt;code&gt;sed&lt;/code&gt; is a search-and-replace command. In this case it replaces underscores with dashes.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;The intention is that &lt;code&gt;/tmp/path.txt&lt;/code&gt; contains &lt;code&gt;tmp_file.txt&lt;/code&gt;. Assume that the file &lt;code&gt;/tmp-file.txt&lt;/code&gt; exists on the system. In this case the script will work perfectly and delete &lt;code&gt;/tmp-file.txt&lt;/code&gt;. But what if &lt;code&gt;/tmp/path.txt&lt;/code&gt; doesn’t exist? &lt;code&gt;cat /tmp/path.txt&lt;/code&gt; will fail, but the script won’t. Now you’ve deleted your entire filesystem, but &lt;code&gt;set -eo pipefail&lt;/code&gt; will prevent this.&lt;/p&gt;
-&lt;h3 id=&quot;sets-in-summary&quot;&gt;Sets in Summary&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr class=&quot;header&quot;&gt;
-&lt;th&gt;Set&lt;/th&gt;
-&lt;th&gt;Long form&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td&gt;set -u&lt;/td&gt;
-&lt;td&gt;set -o nounset&lt;/td&gt;
-&lt;td&gt;Exits script on undefined variables&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td&gt;set -x&lt;/td&gt;
-&lt;td&gt;set -o xtrace&lt;/td&gt;
-&lt;td&gt;Shows command currently executing&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td&gt;set -e&lt;/td&gt;
-&lt;td&gt;set -o errexit&lt;/td&gt;
-&lt;td&gt;Exits script on error&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td&gt;set -eo pipefail&lt;/td&gt;
-&lt;td&gt;set -eo pipefail&lt;/td&gt;
-&lt;td&gt;Exits script on pipeline fail&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id=&quot;use-error-checking-tools&quot;&gt;Use Error Checking Tools&lt;/h2&gt;
-&lt;p&gt;Although you may be familiar with all the best practices, it can be tough to remember them all when your script is coming to life. Luckily there are tools available to help, like &lt;a href=&quot;https://www.shellcheck.net/#&quot;&gt;ShellCheck&lt;/a&gt;. ShellCheck has both a browser version and a command-line tool, but for this article, let’s work with the command-line version. You can find &lt;a href=&quot;https://github.com/koalaman/shellcheck#installing&quot;&gt;installation instructions here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;We’ll use the following script as an example:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;What&amp;#39;s your name?&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-2&quot;&gt;&lt;a href=&quot;#cb15-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;NAME&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb15-3&quot;&gt;&lt;a href=&quot;#cb15-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello &lt;span class=&quot;va&quot;&gt;$NAME&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;By saving this in a script in a file called &lt;code&gt;greeting.sh&lt;/code&gt; and running &lt;code&gt;shellcheck greeting.sh&lt;/code&gt;, you get the following output in your terminal:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;In greeting.sh line 1:
-echo &amp;quot;What&amp;#39;s your name?&amp;quot;
-^-- SC2148: Tips depend on target shell and yours is unknown. Add a shebang or a &amp;#39;shell&amp;#39; directive.
-
-
-In greeting.sh line 2:
-read NAME
-^--^ SC2162: read without -r will mangle backslashes.
-
-
-In greeting.sh line 3:
-echo Hello $NAME
-           ^---^ SC2086: Double quote to prevent globbing and word splitting.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As you can see, &lt;code&gt;shellcheck&lt;/code&gt; doesn’t just tell you what you need to change, but also why it needs to be changed. This is a valuable resource, not just for improving your scripts, but also to get better at writing them in the first place.&lt;/p&gt;
-&lt;p&gt;With these tips, you’ll end up with the following script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb17&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb17-1&quot;&gt;&lt;a href=&quot;#cb17-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-2&quot;&gt;&lt;a href=&quot;#cb17-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;What&amp;#39;s your name?&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-3&quot;&gt;&lt;a href=&quot;#cb17-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;NAME&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb17-4&quot;&gt;&lt;a href=&quot;#cb17-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; Hello &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$NAME&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;understand-variable-naming-and-declaration&quot;&gt;Understand Variable Naming and Declaration&lt;/h2&gt;
-&lt;p&gt;As you saw earlier, we tried to use the &lt;code&gt;$TEST&lt;/code&gt; variable. Variables can open up a whole world of opportunities, but they can also be tricky to work with. Let’s go over some of the common scenarios for working with variables.&lt;/p&gt;
-&lt;h3 id=&quot;assigning-variables&quot;&gt;Assigning Variables&lt;/h3&gt;
-&lt;p&gt;Assigning a variable in bash is reasonably straightforward, using the &lt;code&gt;=&lt;/code&gt; symbol. Here’s an example of assigning “Hello World” to a &lt;code&gt;$TEST&lt;/code&gt; variable:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; MSG=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hello world!&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-2&quot;&gt;&lt;a href=&quot;#cb18-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;va&quot;&gt;$MSG&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb18-3&quot;&gt;&lt;a href=&quot;#cb18-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; world!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;using-variables-inside-strings&quot;&gt;Using Variables Inside Strings&lt;/h3&gt;
-&lt;p&gt;There are multiple ways to use a variable that you’ve assigned a value. As an example, we’ve assigned &lt;code&gt;foo=uname&lt;/code&gt;.&lt;/p&gt;
-&lt;h4 id=&quot;double-quotes&quot;&gt;Double Quotes&lt;/h4&gt;
-&lt;p&gt;If you want to echo the contents of a variable, then use double quotes. It will expand what’s inside the variable and print that to the screen.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb19&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb19-1&quot;&gt;&lt;a href=&quot;#cb19-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; foo=&lt;span class=&quot;st&quot;&gt;&amp;quot;uname&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-2&quot;&gt;&lt;a href=&quot;#cb19-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb19-3&quot;&gt;&lt;a href=&quot;#cb19-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;uname&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h4 id=&quot;single-quotes&quot;&gt;Single Quotes&lt;/h4&gt;
-&lt;p&gt;In some cases, you don’t want to output a variable’s contents, but maybe write an explanation of what that variable is used for. To avoid expansion, use single quotes:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb20&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb20-1&quot;&gt;&lt;a href=&quot;#cb20-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; foo=&lt;span class=&quot;st&quot;&gt;&amp;quot;uname&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb20-2&quot;&gt;&lt;a href=&quot;#cb20-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;#39;$foo&amp;#39;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb20-3&quot;&gt;&lt;a href=&quot;#cb20-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This also means that you don’t have to manually escape the &lt;code&gt;$&lt;/code&gt; symbol, which you otherwise would need to in the case of double quotes.&lt;/p&gt;
-&lt;h4 id=&quot;backticks&quot;&gt;Backticks&lt;/h4&gt;
-&lt;p&gt;The third option for using a variable is backticks. Use this when you want the contents of the variable to be run as a shell command:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb21&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb21-1&quot;&gt;&lt;a href=&quot;#cb21-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; foo=&lt;span class=&quot;st&quot;&gt;&amp;quot;uname&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb21-2&quot;&gt;&lt;a href=&quot;#cb21-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;kw&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$foo&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;`&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb21-3&quot;&gt;&lt;a href=&quot;#cb21-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Linux&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;using-curly-brackets&quot;&gt;Using Curly Brackets&lt;/h3&gt;
-&lt;p&gt;You can get away with merely referring to a variable by writing &lt;code&gt;$FOO&lt;/code&gt;. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:&lt;/p&gt;
-&lt;!-- markdownlint-disable MD014 --&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb22&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb22-1&quot;&gt;&lt;a href=&quot;#cb22-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; FOO=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hel&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb22-2&quot;&gt;&lt;a href=&quot;#cb22-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$FOOlo&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; World&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb22-3&quot;&gt;&lt;a href=&quot;#cb22-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In this case, bash would try to find the variable &lt;code&gt;$FOOlo&lt;/code&gt;, but we just wanted to print “Hello world.” To make this work, you will have to do the following:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb23&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb23-1&quot;&gt;&lt;a href=&quot;#cb23-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; FOO=&lt;span class=&quot;st&quot;&gt;&amp;quot;Hel&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb23-2&quot;&gt;&lt;a href=&quot;#cb23-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; echo &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;${FOO}&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;lo World&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb23-3&quot;&gt;&lt;a href=&quot;#cb23-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Hello&lt;/span&gt; World&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This is most likely useful when you want to use a variable to define a path, like &lt;code&gt;/opt/${ENVIRONMENT}_build.txt&lt;/code&gt;. Without curly brackets, the script would try to look up &lt;code&gt;$ENVIRONMENT_build&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;properly-set-permissions&quot;&gt;Properly Set Permissions&lt;/h2&gt;
-&lt;p&gt;One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that &lt;a href=&quot;https://www.guru99.com/file-permissions.html&quot;&gt;permissions&lt;/a&gt; had to be set right. See, when you make a file with, for example, &lt;code&gt;touch&lt;/code&gt;, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a &lt;code&gt;permission denied&lt;/code&gt; error when you try to run the script.&lt;/p&gt;
-&lt;p&gt;Luckily this is easily fixed. Run &lt;code&gt;chmod +x script.sh&lt;/code&gt;, and now everyone is allowed to run the script.&lt;/p&gt;
-&lt;p&gt;However, do be aware that changing permissions can impose security risks. Read more about &lt;a href=&quot;https://www.linux.com/training-tutorials/understanding-linux-file-permissions/&quot;&gt;Linux file permissions&lt;/a&gt; before you start changing permissions blindly.&lt;/p&gt;
-&lt;h2 id=&quot;ensure-readability&quot;&gt;Ensure Readability&lt;/h2&gt;
-&lt;p&gt;One of the biggest pitfalls that newcomers run into is forgetting about readability. It’s easy to get caught up in wanting to have a working script, and maybe you’re even used to running everything manually in the terminal, where you want to type as little as possible.&lt;/p&gt;
-&lt;p&gt;When it comes to scripts, you want to make sure that you can still easily remember what’s happening six months down the line. An easy way to do this is by using more extended options (&lt;code&gt;--quiet&lt;/code&gt; instead of &lt;code&gt;-q&lt;/code&gt;), using longer variable names (&lt;code&gt;MESSAGE&lt;/code&gt; instead of &lt;code&gt;MSG&lt;/code&gt;), and writing comments.&lt;/p&gt;
-&lt;p&gt;You can write commands using a hash mark, after which you can write your comment, like so:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Below line will echo &amp;quot;Hello World!&amp;quot;
-echo &amp;quot;Hello World!&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;understand-your-script-in-relation-to-cli&quot;&gt;Understand Your Script in Relation to CLI&lt;/h2&gt;
-&lt;p&gt;When reading this article, you may have noticed that many code examples are being run straight in the terminal rather than written as a bash script. There’s a good reason for that! You can write everything you write in a bash script directly in the terminal.&lt;/p&gt;
-&lt;p&gt;There is one significant difference between executing a script and typing the commands in your terminal. When you run a script, it’ll start up a new, clean shell in which the script will run. This means that no variables set in your terminal will interfere with your script.&lt;/p&gt;
-&lt;p&gt;For example, if you set &lt;code&gt;TEST=&quot;hello&quot;&lt;/code&gt; in your shell and run &lt;code&gt;echo $TEST&lt;/code&gt; inside a script, it will print nothing to your screen.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;At this point, you should be ready to venture into the exciting world of bash scripting. You’ve learned about common shebangs, what &lt;code&gt;set&lt;/code&gt; does, and how it can improve the error handling of your scripts, as well as understanding some general pitfalls developers run into with bash.&lt;/p&gt;
-&lt;p&gt;So go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repo you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.&lt;/p&gt;</content><author><name>Kasper Siig</name></author><category term="Tutorials" /><summary type="html">Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.</summary></entry></feed>
+&lt;p&gt;Looking to make your builds more repeatable? &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; replaces clunky &lt;a href=&quot;/blog/understanding-bash&quot;&gt;bash scripts&lt;/a&gt; and makefiles by giving you a single understandable, consistent definition for your CI/CD builds and it works great with Jekyll. Learn more &lt;a href=&quot;https://earthly.dev/&quot;&gt;at Earthly.dev&lt;/a&gt;.&lt;/p&gt;</content><author><name>Milan Bhardwaj</name></author><category term="Tutorials" /><summary type="html">There’s nothing more frustrating than a sluggish continuous integration system. It slows down feedback loops and prevents code from reaching production quickly. While quick fixes like using a bigger CI server can buy you time, you ultimately have to invest in maintaining the performance of your continuous integration workflow.</summary></entry></feed>

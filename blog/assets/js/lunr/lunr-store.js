@@ -262,4 +262,10 @@ var store = [{
         "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
         "url": "/blog/dont-use-earthly/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding Docker Multistage Builds",
+        "excerpt":"At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/docker-multistage/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
