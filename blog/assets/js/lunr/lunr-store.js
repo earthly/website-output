@@ -268,4 +268,34 @@ var store = [{
         "tags": [],
         "url": "/blog/docker-multistage/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Protocol Buffers Best Practices for Backward and Forward Compatibility",
+        "excerpt":"Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008. Protocol Buffers are compiled to a series of strictly arranged bytes, so they...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/backward-and-forward-compatibility/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Why is JRuby Slow?",
+        "excerpt":"Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby. The build times looked like this:...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/jruby/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Achieving Repeatability in Continuous Integration",
+        "excerpt":"In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia Continuous Integration (CI) and continuous delivery...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/achieving-repeatability/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
