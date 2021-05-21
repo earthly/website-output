@@ -260,7 +260,7 @@ var store = [{
         "title": "Getting a Repeatable Build, Every Time",
         "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to Reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
         "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
-        "url": "/blog/dont-use-earthly/",
+        "url": "/blog/repeatable-builds-every-time/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Understanding Docker Multistage Builds",

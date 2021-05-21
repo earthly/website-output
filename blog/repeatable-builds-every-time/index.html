@@ -23,25 +23,25 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Earthly Blog">
 <meta property="og:title" content="Getting a Repeatable Build, Every Time">
-<meta property="og:url" content="https://earthly.dev/blog/dont-use-earthly/">
+<meta property="og:url" content="https://earthly.dev/blog/repeatable-builds-every-time/">
 
 
   <meta property="og:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/dont-use-earthly/header-800-9b22eaab9.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/repeatable-builds-every-time/header-800-9b22eaab9.jpg">
 
 
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Getting a Repeatable Build, Every Time">
   <meta name="twitter:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
-  <meta name="twitter:url" content="https://earthly.dev/blog/dont-use-earthly/">
+  <meta name="twitter:url" content="https://earthly.dev/blog/repeatable-builds-every-time/">
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/dont-use-earthly/header-800-9b22eaab9.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/repeatable-builds-every-time/header-800-9b22eaab9.jpg">
   
 
   
@@ -59,7 +59,7 @@
   
 
 
-<link rel="canonical" href="https://earthly.dev/blog/dont-use-earthly/">
+<link rel="canonical" href="https://earthly.dev/blog/repeatable-builds-every-time/">
 
 
 
@@ -220,7 +220,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-24d835679.webp 400w, /blog/generated/assets/images/dont-use-earthly/header-600-24d835679.webp 600w, /blog/generated/assets/images/dont-use-earthly/header-800-24d835679.webp 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-24d835679.webp 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-24d835679.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/dont-use-earthly/header-400-24d835679.png 400w, /blog/generated/assets/images/dont-use-earthly/header-600-24d835679.png 600w, /blog/generated/assets/images/dont-use-earthly/header-800-24d835679.png 800w, /blog/generated/assets/images/dont-use-earthly/header-1000-24d835679.png 1000w, /blog/generated/assets/images/dont-use-earthly/header-1200-24d835679.png 1200w" type="image/png"><img src="/blog/generated/assets/images/dont-use-earthly/header-800-24d835679.jpg" alt="Getting a Repeatable Build, Every Time"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/repeatable-builds-every-time/header-400-24d835679.webp 400w, /blog/generated/assets/images/repeatable-builds-every-time/header-600-24d835679.webp 600w, /blog/generated/assets/images/repeatable-builds-every-time/header-800-24d835679.webp 800w, /blog/generated/assets/images/repeatable-builds-every-time/header-1000-24d835679.webp 1000w, /blog/generated/assets/images/repeatable-builds-every-time/header-1200-24d835679.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/repeatable-builds-every-time/header-400-24d835679.png 400w, /blog/generated/assets/images/repeatable-builds-every-time/header-600-24d835679.png 600w, /blog/generated/assets/images/repeatable-builds-every-time/header-800-24d835679.png 800w, /blog/generated/assets/images/repeatable-builds-every-time/header-1000-24d835679.png 1000w, /blog/generated/assets/images/repeatable-builds-every-time/header-1200-24d835679.png 1200w" type="image/png"><img src="/blog/generated/assets/images/repeatable-builds-every-time/header-800-24d835679.jpg" alt="Getting a Repeatable Build, Every Time"></picture>
 
   
   
@@ -317,7 +317,7 @@
 <h2 id="scope-the-glue-layer">Scope: The Glue Layer</h2>
 <p>We will focus primarily on the glue layer of your builds. The stuff that brings everything together - maybe it packages things up for releases, or maybe it prepares packages for deployment, or perhaps it is simply a script that the CI definition calls into.</p>
 <p>This is a diagram we sometimes use to describe the glue layer. In this article, we’ll be focusing on the Dockerfile, Makefile, and Bash parts of that glue layer. Not having a glue layer can make CI failures difficult to reproduce, or for other teams unfamiliar with the language-specific build tooling to effectively create the right environment to run builds.</p>
-<p><img src="/blog/assets/images/dont-use-earthly/glue-layer.png" alt="The glue layer" /><br />
+<p><img src="/blog/assets/images/repeatable-builds-every-time/glue-layer.png" alt="The glue layer" /><br />
 </p>
 <p>The glue layer is the layer between the various projects that need to be built and will act as the common denominator - <a href="https://earthly.dev/blog/migrating-from-travis/#neutral-build-specifications">a vendor-neutral build specification</a>. If we don’t choose such a glue layer, then the CI YAML (or Groovy?) becomes the glue layer and that would mean that it’s more difficult to run it locally for fast iteration.</p>
 <p>Because we want to encourage cross-team collaboration, we want to standardize the tooling across teams as much as possible. Different language ecosystems will have different tools and we want to keep using those. You can’t tell the frontend team not to use package.json / NPM / Yarn etc - that would be terribly cumbersome for them. So we’re not touching the language-specific build layer.</p>
