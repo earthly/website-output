@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Protocol Buffers Best Practices for Backward and Forward Compatibility - Earthly Blog</title>
+<meta name="description" content="Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.">
+
+
+  <meta name="author" content="John Gramila">
+  
+  <meta property="article:author" content="John Gramila">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Protocol Buffers Best Practices for Backward and Forward Compatibility">
+<meta property="og:url" content="https://earthly.dev/blog/backward-and-forward-compatibility/">
+
+
+  <meta property="og:description" content="Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/backward-and-forward-compatibility/header-764-4d4046e48.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Protocol Buffers Best Practices for Backward and Forward Compatibility">
+  <meta name="twitter:description" content="Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/backward-and-forward-compatibility/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/backward-and-forward-compatibility/header-764-4d4046e48.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-05-21T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/backward-and-forward-compatibility/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-400-39de6ff62.webp 400w, /blog/generated/assets/images/backward-and-forward-compatibility/header-600-39de6ff62.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-39de6ff62.webp 800w, /blog/generated/assets/images/backward-and-forward-compatibility/header-1000-39de6ff62.webp 1000w, /blog/generated/assets/images/backward-and-forward-compatibility/header-1200-39de6ff62.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-400-39de6ff62.png 400w, /blog/generated/assets/images/backward-and-forward-compatibility/header-600-39de6ff62.png 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-39de6ff62.png 800w, /blog/generated/assets/images/backward-and-forward-compatibility/header-1000-39de6ff62.png 1000w, /blog/generated/assets/images/backward-and-forward-compatibility/header-1200-39de6ff62.png 1200w" type="image/png"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-39de6ff62.jpg" alt="Protocol Buffers Best Practices for Backward and Forward Compatibility"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Protocol Buffers Best Practices for Backward and Forward Compatibility">
+    <meta itemprop="description" content="Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.">
+    <meta itemprop="datePublished" content="2021-05-21T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Protocol Buffers Best Practices for Backward and Forward Compatibility
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/johngrimila-240-790a65252.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/johngrimila-240-fdf4b90b6.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/johngrimila-240-fdf4b90b6.jpg" alt="John Gramila %"></picture>
+
+          &nbsp;	&nbsp;
+          John Gramila
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-exactly-are-protocol-buffers">What Exactly Are Protocol Buffers?</a><ul><li><a href="#understanding-backward-and-forward-compatibility">Understanding Backward and Forward Compatibility</a></li><li><a href="#getting-started-with-buffers">Getting Started with Buffers</a></li></ul></li><li><a href="#tips-for-maintaining-compatibility">Tips for Maintaining Compatibility</a><ul><li><a href="#create-numerical-order">Create (Numerical) Order</a></li><li><a href="#beware-of-required-fields">Beware of Required Fields</a></li><li><a href="#avoid-groups">Avoid Groups</a></li><li><a href="#adding-new-fields">Adding New Fields</a></li><li><a href="#keep-an-eye-on-compatibility-when-changing-field-types">Keep an Eye on Compatibility When Changing Field Types</a></li><li><a href="#dont-destroy-deprecate">Don’t Destroy, Deprecate</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p><a href="https://developers.google.com/protocol-buffers" title="Protocol Buffers Documentation">Protocol Buffers</a> serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.</p>
+<p>Protocol Buffers are compiled to a series of strictly arranged bytes, so they can be transmitted very efficiently. After reconstitution, they can also be understood by a wide range of languages. Let’s examine protobufs first at a high level, then do a deep dive into best practices for working with them to see if they’re a fit for your expanding data workflow.</p>
+<h2 id="what-exactly-are-protocol-buffers">What Exactly Are Protocol Buffers?</h2>
+<p>Protocol Buffers are designed with the concept of extensibility at their core. You can add fields without a care, though you do have to be attentive when modifying or removing fields. This article will go through how you can manage your messages to maintain forward and backward compatibility.</p>
+<p>Protocol Buffers are most useful when regularly sharing small pieces of data (generally under 1 MB) between two computers on a regular basis. It’s designed for extracting and sharing that data, but it’s also very effective at storing data that will have to be shared between systems using different languages or controlled by different organizations.</p>
+<p>Protocol Buffers are also great at persisting blobs of data, particularly in languages like C++ where you can use protobuf as a data struct. If you’re communicating with lots of computers a little at a time, Protocol Buffers will save you network bandwidth.</p>
+<h3 id="understanding-backward-and-forward-compatibility">Understanding Backward and Forward Compatibility</h3>
+<p>Both backward and forward compatibility is important for any project you expect will run for a long time. There are at least two parts to any protobuf system, the sender and the receiver. If either one can be upgraded to a new message format, and the system functionality continues uninterrupted then the message protocol is both forward and backward compatible.</p>
+<section id="backward-compatibility" class="notice notice--big">
+<h4>Backward Compatibility</h4>
+<p>If a client that was updated to a new message type but is still able to understand the previous message type then the message change is backward compatible. Backward compatibility is being able to understand messages from a previous version.</p>
+</section>
+<section id="forward-compatibility" class="notice notice--big">
+<h4>Forward Compatibility</h4>
+<p>If a message is changed and a non-updated client can still understand and process the message then the message change is forward compatible. Forward compatibility is being able to understand messages from a future version.</p>
+</section>
+<p>With Protocol buffers, if a sender is upgraded, the receiver can still understand messages if it is forward compatible. It can accept input crafted by later versions of protobuf. The sender is backward compatible because it’s creating output that can be consumed by earlier versions. So long as you’re careful about when and how you change and remove fields, your protobuf will be forward and backward compatible.</p>
+<h3 id="getting-started-with-buffers">Getting Started with Buffers</h3>
+<p>The first step to making a Protocol Buffer is to define data structures in a <code>.proto</code> file. For each data structure you want to create, you’ll make a <code>message</code> that contains a name and data type for each field it contains.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>syntax = <span class="st">&quot;proto3&quot;</span>;</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> tutorial;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> Sample{</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> content = <span class="dv">1</span>;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int32</span> id = <span class="dv">2</span>;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> situation = <span class="dv">3</span>;</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>These declarations in the <code>.proto</code> file are shared with both the message sender and receiver to construct immutable getters and setters that allow data to be read into and accessed from binary using a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">compiler</a>, then accessed in a variety of programming languages.</p>
+<h2 id="tips-for-maintaining-compatibility">Tips for Maintaining Compatibility</h2>
+<p>Compatibility starts with defining the syntax and version of protobuf the sender and receiver are using. The <code>package</code> makes sure your code is namespaced to avoid any collisions. It is possible to have a sender using <code>proto3</code> while a receiver uses <code>proto2</code> (or any other combination) as long as you’re careful about what fields you include. Both the sender and receiver have strict definitions of existing fields—you can make changes as long as you don’t disturb those definitions.</p>
+<h3 id="create-numerical-order">Create (Numerical) Order</h3>
+<p>From a compatibility perspective, unique field numbers are the most vital piece of the message declaration. These numbers (the <code>= 1</code> after the name declaration) are used as identifiers for fields after they are converted to binary. When the message is decoded, a crucial step for compatibility is allowing the parser to skip fields it doesn’t recognize so it’s possible to add new fields without breaking programs that weren’t designed to look for them.</p>
+<p>The unique field number is combined with a wire type corresponding to the data type of the field. This identifier and type combination form the key of every field in a message. These fields combined give the receiver the ability to uniquely identify fields and determine the length of the field, so it knows when to start looking for the next field.</p>
+<p>This means once a unique field number or length is set, it cannot be changed. Any program consuming or serizalizing protobuf data needs the number to be fixed forever, or both the sender and all the receivers must be updated.</p>
+<p>Encoding the numbers 1 through 15 takes one byte to encode, 16 through 2047 take two bytes, and so on. In situations where the size of messages is important, the most frequently exchanged data should have the smallest field numbers. The language is designed to effectively handle new fields, but because you can’t change the identifier of fields, it may be wise to leave yourself a couple gaps in these high-efficiency identifier ranges in case a very common field pops up in the future.</p>
+<p>One of the best ways to prevent problems with overlapping or misunderstood field numbers is to use the <code>reserved</code> keyword. If you wanted to remove the <code>type</code> field in your <code>Sample</code> message, any applications running the protobuf version that contained that field would break if the identifier was removed and then reused for some other field.</p>
+<p>To get around these compatibility issues, you can reserve identifiers. You can also reserve ranges of identifiers; here you’re reserving a range and the removed value of <code>1</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> Sample{</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  reserved <span class="dv">1</span>, <span class="dv">5</span> to <span class="dv">8</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int32</span> id = <span class="dv">2</span>;</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">string</span> text = <span class="dv">3</span>;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="beware-of-required-fields">Beware of Required Fields</h3>
+<p>Another tricky part of compatibility is the required modifier preceding the data type. In the second version of protobuf, there were three modifiers to choose from: <code>optional</code>, <code>repeated</code>, and <code>required</code>. The <code>required</code> option was removed in <code>protobuf3</code>, because it requires careful planning to ensure compatibility. If a required field is missing from a message, readers will consider the message incomplete and return an error.</p>
+<p>Instead, consider writing custom validation or use default values within your application to handle required fields. In <code>protobuf2</code>, you were able to set <a href="https://developers.google.com/protocol-buffers/docs/proto#optional" title="Default fields in protobuf2">default values</a>, in <code>protobuf3</code>, every field type has a <a href="https://developers.google.com/protocol-buffers/docs/proto3#default" title="Default fields in protobuf3">fixed default value</a>.</p>
+<h3 id="avoid-groups">Avoid Groups</h3>
+<p>Another feature of <code>protobuf2</code> that should be avoided to ensure compatibility is Groups. These enable nesting information inside method definitions. A Group combines a nested message type and a field into a single declaration using the <code>group</code> keyword.</p>
+<p>The recommended way to nest messages is to nest them, then call them:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> SampleContainer {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">message</span> Sample{</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">optional</span> <span class="dt">int32</span> id = <span class="dv">2</span>;</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">optional</span> <span class="dt">string</span> text = <span class="dv">3</span>;</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="kw">repeated</span> Sample samples = <span class="dv">1</span>;</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The difference between nested message types and Groups is the wire format they use.</p>
+<h3 id="adding-new-fields">Adding New Fields</h3>
+<p>New fields can be safely added in any version of protobuf, but there are still compatibility considerations to be aware of. Pay attention to the depreciation of the <code>required</code> fields and transition from user-specified defaults to protobuf-specified defaults. The application receiving protobuf data has to be responsible for handling the <a href="https://developers.google.com/protocol-buffers/docs/proto3#default">default values</a> for any new fields.</p>
+<p>You generally can freely change the name and order of fields. However, when you’re producing JSON serialized data with protobuf, the field names are also reserved by the receiver. This requires users to reserve <strong>field identifiers and names</strong> when removing or deprecating fields.</p>
+<h3 id="keep-an-eye-on-compatibility-when-changing-field-types">Keep an Eye on Compatibility When Changing Field Types</h3>
+<p>Because field types are also used to determine when the receiver ends a field, changing field types across versions without carefully checking for compatibility can also cause problems. There are many specific <a href="https://developers.google.com/protocol-buffers/docs/proto3#updating" title="Rule for updating fields">rules</a> about how to change field types, but a good standard is to avoid ever changing the wire type of any field. If you’re in a situation where you need to change a field type, the best path forward is to deprecate the existing field and put the new information into a new field.</p>
+<h3 id="dont-destroy-deprecate">Don’t Destroy, Deprecate</h3>
+<p>Protocol Buffer compatibility problems generally start when you need to change the length of or remove existing fields. There are a whole host of rules about how fields can <a href="https://developers.google.com/protocol-buffers/docs/proto3#updating" title="Protobuf3 update fields">change</a>.</p>
+<p>Largely, maintaining backward and forward compatibility comes down to maintaining a consistent wire type. You can’t change the wire type or alter the length of fields and expect old code to properly send or receive messages—the sender’s and receiver’s understanding of the exact length of each element in the transmitted messages needs to be precise.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Meaning</th>
+<th>Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Varint</td>
+<td>int32, int64, uint32, uint64, sint32, sint64, bool, enum</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>64-bit</td>
+<td>fixed64, sfixed64, double</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Length-delimited</td>
+<td>string, bytes, embedded messages, packed repeated fields</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Start group</td>
+<td>groups (deprecated)</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>End group</td>
+<td>groups (deprecated)</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>32-bit</td>
+<td>fixed32, sfixed32, float</td>
+</tr>
+</tbody>
+</table>
+<figcaption>
+Protobuf Wire Types
+</figcaption>
+<h2 id="conclusion">Conclusion</h2>
+<p>The biggest problems when upgrading are mismatching required fields or a need to change field types. In the short term, adding other fields is a viable solution, but at a certain point, the marginal cost of that solution becomes more of a burden than auditing and upgrading your services.</p>
+<p>Protocol Buffers are a relatively young technology, so changes now will have long-lasting implications. Compatibility issues do exist between versions, but they’re possible to step around if you’re careful. As always, make life simpler by planning out your data structures in advance. Once things eventually do change, the safest method for modifying fields is to add a new one and deprecate the old field.</p>
+<p>To deprecate a field, you can change the name to something deprecated or remove it and reserve the identifier. If you really want to change a field type, and you’re able to follow the correct version of <a href="https://developers.google.com/protocol-buffers/docs/proto3#updating" title="Updating messages">the rules</a>, remember to never change the numerical identifier for that field. Plan well, and it’ll be easy to maintain backward and forward compatibility for your Protocol Buffer deployment.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/johngrimila-240-790a65252.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/johngrimila-240-fdf4b90b6.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/johngrimila-240-fdf4b90b6.jpg" alt="John Gramila %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">John Gramila</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>John Gramila is a coder and writer living in Chicago.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/docker-multistage/" class="pagination--pager" title="Understanding Docker Multistage Builds
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/docker-multistage/header-600-395936eb4.webp 600w, /blog/generated/assets/images/docker-multistage/header-800-395936eb4.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/docker-multistage/header-600-23bc73314.jpg 600w, /blog/generated/assets/images/docker-multistage/header-800-23bc73314.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/docker-multistage/header-800-23bc73314.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/docker-multistage/" rel="permalink">Understanding Docker Multistage Builds
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/repeatable-builds-every-time/header-600-7ad76bf31.webp 600w, /blog/generated/assets/images/repeatable-builds-every-time/header-800-7ad76bf31.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/repeatable-builds-every-time/header-600-dbe12f85c.jpg 600w, /blog/generated/assets/images/repeatable-builds-every-time/header-800-dbe12f85c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/repeatable-builds-every-time/header-800-dbe12f85c.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/repeatable-builds-every-time/" rel="permalink">Getting a Repeatable Build, Every Time
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          27 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
