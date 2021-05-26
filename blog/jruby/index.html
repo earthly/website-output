@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#what-is-jruby">What is JRuby?</a><ul><li><a href="#install-jruby">Install JRuby</a></li></ul></li><li><a href="#why-do-people-use-jruby">Why do people use JRuby?</a><ul><li><a href="#getting-past-the-gil">Getting past the GIL</a></li><li><a href="#library-access-and-environment-access">Library Access and Environment Access</a></li><li><a href="#long-running-process-performance">Long-Running Process Performance</a></li></ul></li><li><a href="#why-is-my-jruby-program-slow">Why is my JRuby Program Slow?</a><ul><li><a href="#inside---dev">Inside --dev</a></li></ul></li><li><a href="#why-is-my-jruby-program-wrong">Why is my JRuby Program Wrong?</a></li><li><a href="#what-is-truffleruby">What is TruffleRuby?</a><ul><li><a href="#install-truffleruby">Install TruffleRuby</a></li></ul></li><li><a href="#performance-shoot-out">Performance Shoot-out</a><ul><li><a href="#failure-of-fork">Failure Of Fork</a></li><li><a href="#test-with-rubyspy">Test with RubySpy</a><ul><li><a href="#jekyll-test-1">Jekyll Test 1</a></li><li><a href="#jekyll-test-2">Jekyll Test 2</a></li></ul></li></ul></li><li><a href="#performance-advice">Performance Advice</a></li><li><a href="#more-resources">More Resources</a></li></ul>
+              <ul class="toc__menu"><li><a href="#what-is-jruby">What is JRuby?</a><ul><li><a href="#install-jruby">Install JRuby</a></li></ul></li><li><a href="#why-do-people-use-jruby">Why do people use JRuby?</a><ul><li><a href="#getting-past-the-gil">Getting past the GIL</a></li><li><a href="#library-access-and-environment-access">Library Access and Environment Access</a></li><li><a href="#long-running-process-performance">Long-Running Process Performance</a></li></ul></li><li><a href="#why-is-my-jruby-program-slow">Why is my JRuby Program Slow?</a><ul><li><a href="#inside---dev">Inside --dev</a></li></ul></li><li><a href="#why-is-my-jruby-program-wrong">Why is my JRuby Program Wrong?</a></li><li><a href="#what-is-truffleruby">What is TruffleRuby?</a><ul><li><a href="#install-truffleruby">Install TruffleRuby</a></li></ul></li><li><a href="#performance-shoot-out">Performance Shoot-out</a><ul><li><a href="#failure-of-fork">Failure Of Fork</a></li><li><a href="#test-with-rubyspy">Test with RubySpy</a><ul><li><a href="#jekyll-test-1">Jekyll Test 1</a></li><li><a href="#jekyll-test-2">Jekyll Test 2</a></li></ul></li></ul></li><li><a href="#performance-advice">Performance Advice</a><ul><li><a href="#update">Update</a></li></ul></li><li><a href="#more-resources">More Resources</a></li></ul>
 
             </nav>
           </aside>
@@ -334,7 +334,7 @@ A Representative Jekyll CI <a href="https://github.com/jekyll/jekyll/runs/204854
 </figcaption>
 </div>
 <p>The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? <strong>Why was JRuby so slow?</strong></p>
-<p>Even building this little blog and using all the tricks I’ve found for making Ruby on the JVM faster, which I’ll share below, the performance still looks like this:</p>
+<p>Even building this blog and using all the tricks I’ve found, the performance of Ruby on the JVM still looks like this:</p>
 <div class="center">
 <table>
 <thead>
@@ -358,7 +358,7 @@ A Representative Jekyll CI <a href="https://github.com/jekyll/jekyll/runs/204854
 Building This blog is 10x slower
 </figcaption>
 </div>
-<p>It turns out that the answer is complicated.</p>
+<p>So why is Jruby slow in these examples? It turns out that the answer is complicated.</p>
 <h2 id="what-is-jruby">What is JRuby?</h2>
 <blockquote>
 <p>I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind</p>
@@ -605,6 +605,8 @@ A larger Jekyll Site
 <p>If your code is long-running, CPU bound, and thread-based, and if the GIL limits you, TruffleRuby will probably be a win. Also, if that is the case and you tweak your code to use Java concurrent data structures instead of Ruby defaults, you can probably achieve an order of magnitude speed-up. If the garbage collector is a bottleneck for your app, that could also be another reason for trying out a different runtime.</p>
 <p>However, if your existing ruby codebase is not CPU bound and not multi-threaded, it will probably run slower on JRuby and Truffle Ruby than with the MRIRuby runtime.</p>
 <p>Also, I could be wrong. If I missed something important, then I’d love to hear from you. Here at <a href="http://earthly.dev/">Earthly</a> we take build performance very seriously, so if you have additional suggestions for speeding up Ruby or Jekyll, I’d love to hear them.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<h3 id="update">Update</h3>
+<p>Both <span class="citation" data-cites="ChrisGSeaton">@ChrisGSeaton</span>, the creator of TruffleRuby and <span class="citation" data-cites="headius">@headius</span>, who works on JRuby have responded on <a href="https://www.reddit.com/r/programming/comments/nlhmcz/why_is_jruby_slow/">reddit</a> with suggestions and requests for reproduction steps. I’m going to put together an example repo to share.</p>
 <h2 id="more-resources">More Resources</h2>
 <ul>
 <li><a href="https://pragtob.wordpress.com/2020/08/24/the-great-rubykon-benchmark-2020-cruby-vs-jruby-vs-truffleruby/">CRUBY VS JRUBY VS TRUFFLERUBY</a></li>
