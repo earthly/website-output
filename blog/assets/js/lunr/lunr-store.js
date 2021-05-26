@@ -274,4 +274,10 @@ var store = [{
         "tags": [],
         "url": "/blog/backward-and-forward-compatibility/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Why is JRuby Slow?",
+        "excerpt":"Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby. The build times looked like this:...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/jruby/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
