@@ -266,7 +266,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          10 minute read
+          11 minute read
         
         
         &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-26T00:00:00-04:00">May 26, 2021</time>
@@ -333,7 +333,32 @@
 A Representative Jekyll CI <a href="https://github.com/jekyll/jekyll/runs/2048545456?check_suite_focus=true">Build</a>
 </figcaption>
 </div>
-<p>JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? <strong>Why was JRuby so slow?</strong> In this essay, I am going to attempt to answer that question. It turns out that, like many things, the answer is complicated.</p>
+<p>The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? <strong>Why was JRuby so slow?</strong></p>
+<p>Even building this little blog and using all the tricks I’ve found for making Ruby on the JVM faster, which I’ll share below, the performance still looks like this:</p>
+<div class="center">
+<table>
+<thead>
+<tr class="header">
+<th>Runtime</th>
+<th>Jekyll Build Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MRI Ruby 2.7.0</td>
+<td>2.64 seconds</td>
+</tr>
+<tr class="even">
+<td>Fastest Ruby on JVM Build</td>
+<td>25.7 seconds</td>
+</tr>
+</tbody>
+</table>
+<figcaption>
+Building This blog is 10x slower
+</figcaption>
+</div>
+<p>It turns out that the answer is complicated.</p>
 <h2 id="what-is-jruby">What is JRuby?</h2>
 <blockquote>
 <p>I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind</p>
@@ -480,7 +505,7 @@ TruffleRuby is significantly better in CPU heavy performance tests than JRuby, w
 <thead>
 <tr class="header">
 <th>Runtime</th>
-<th>Jekyll CI Run Time</th>
+<th>Jekyll Build Time for this site</th>
 </tr>
 </thead>
 <tbody>
@@ -618,7 +643,7 @@ A larger Jekyll Site
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
 
       </div>
     

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-26T08:28:28-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Why is JRuby Slow?</title><link href="https://earthly.dev/blog/jruby/" rel="alternate" type="text/html" title="Why is JRuby Slow?" /><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><id>https://earthly.dev/blog/jruby</id><content type="html" xml:base="https://earthly.dev/blog/jruby/">&lt;p&gt;Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses &lt;a href=&quot;http://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-05-26T09:45:59-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Why is JRuby Slow?</title><link href="https://earthly.dev/blog/jruby/" rel="alternate" type="text/html" title="Why is JRuby Slow?" /><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><id>https://earthly.dev/blog/jruby</id><content type="html" xml:base="https://earthly.dev/blog/jruby/">&lt;p&gt;Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses &lt;a href=&quot;http://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.&lt;/p&gt;
 &lt;p&gt;The build times looked like this:&lt;/p&gt;
 &lt;div class=&quot;center&quot;&gt;
 &lt;table&gt;
@@ -31,7 +31,32 @@
 A Representative Jekyll CI &lt;a href=&quot;https://github.com/jekyll/jekyll/runs/2048545456?check_suite_focus=true&quot;&gt;Build&lt;/a&gt;
 &lt;/figcaption&gt;
 &lt;/div&gt;
-&lt;p&gt;JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? &lt;strong&gt;Why was JRuby so slow?&lt;/strong&gt; In this essay, I am going to attempt to answer that question. It turns out that, like many things, the answer is complicated.&lt;/p&gt;
+&lt;p&gt;The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? &lt;strong&gt;Why was JRuby so slow?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Even building this little blog and using all the tricks I’ve found for making Ruby on the JVM faster, which I’ll share below, the performance still looks like this:&lt;/p&gt;
+&lt;div class=&quot;center&quot;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&quot;header&quot;&gt;
+&lt;th&gt;Runtime&lt;/th&gt;
+&lt;th&gt;Jekyll Build Time&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td&gt;MRI Ruby 2.7.0&lt;/td&gt;
+&lt;td&gt;2.64 seconds&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td&gt;Fastest Ruby on JVM Build&lt;/td&gt;
+&lt;td&gt;25.7 seconds&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;figcaption&gt;
+Building This blog is 10x slower
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;It turns out that the answer is complicated.&lt;/p&gt;
 &lt;h2 id=&quot;what-is-jruby&quot;&gt;What is JRuby?&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind&lt;/p&gt;
@@ -178,7 +203,7 @@ TruffleRuby is significantly better in CPU heavy performance tests than JRuby, w
 &lt;thead&gt;
 &lt;tr class=&quot;header&quot;&gt;
 &lt;th&gt;Runtime&lt;/th&gt;
-&lt;th&gt;Jekyll CI Run Time&lt;/th&gt;
+&lt;th&gt;Jekyll Build Time for this site&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
