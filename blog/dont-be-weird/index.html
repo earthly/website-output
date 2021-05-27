@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Technology choice? Don’t be weird - Earthly Blog</title>
 <meta name="description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
           &nbsp;	&nbsp;
           Corey Larson
@@ -298,12 +294,12 @@
 <p><strong>Do you have an example?</strong></p>
 <p>If you go to great lengths to work around some default of Kuberenetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.</p>
 <p>In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?</p>
-<p><strong>Also Postgres defaults are pretty sane right?</strong></p>
+<p><strong>Also Postgres defaults are pretty sane</strong></p>
 <p>I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.</p>
 <p><strong>So you should always choose what everybody else chooses unless you have a really good reason?</strong></p>
 <p>I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.</p>
 <p><strong>Does the Kuberenetes space have beaten paths?</strong></p>
-<p>There are starting to be some winners. <a href="/blog/building-on-kubernetes-ingress">Kubernetes</a> itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.  </p>
+<p>There are starting to be some winners. Kubernetes itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.  </p>
 <p><strong>So if we chose Docker Swarm or something, we’d have to have a really good reason.</strong></p>
 <p>Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.</p>
 <p>You’ve seen that CNCF landscape chart, right?  There’s tons of combinations out there that still haven’t been tried before. It gets real easy, real fast, to get weird.</p>
@@ -321,7 +317,7 @@
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
       
     </div>
@@ -486,13 +482,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -510,7 +506,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -518,7 +514,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -538,13 +536,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -562,7 +560,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -570,7 +568,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

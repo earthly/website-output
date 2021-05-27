@@ -6,17 +6,9 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Building a Monorepo with Bazel - Earthly Blog</title>
 <meta name="description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
 
-
-  <meta name="author" content="Siddhant Varma">
-  
-  <meta property="article:author" content="Siddhant Varma">
-  
 
 
 <meta property="og:type" content="article">
@@ -48,7 +40,7 @@
 
 
 
-  <meta property="article:published_time" content="2021-05-11T00:00:00-04:00">
+  <meta property="article:published_time" content="2021-05-12T00:00:00-04:00">
 
 
 
@@ -70,7 +62,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +106,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -241,7 +232,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Building a Monorepo with Bazel">
     <meta itemprop="description" content="A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.">
-    <meta itemprop="datePublished" content="2021-05-11T00:00:00-04:00">
+    <meta itemprop="datePublished" content="2021-05-12T00:00:00-04:00">
     
 
     <div class="page__inner-wrap">
@@ -269,7 +260,7 @@
           11 minute read
         
         
-        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-11T00:00:00-04:00">May 11, 2021</time>
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time>
         
 
       </span>
@@ -277,13 +268,6 @@
     <span>
       
       
-      
-      <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/siddhantvarma-240-87a1100aa.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/siddhantvarma-240-51345a2c5.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/siddhantvarma-240-51345a2c5.jpg" alt="Siddhant Varma %"></picture>
-
-          &nbsp;	&nbsp;
-          Siddhant Varma
-      </div>
       
     </span>
   </p>
@@ -300,7 +284,7 @@
             </nav>
           </aside>
         
-        <p>A <em><a href="/blog/monorepo-vs-polyrepo">monorepo</a></em> is perhaps what you would expect from the name: a single code repository for your entire codebase.</p>
+        <p>A <em>monorepo</em> is perhaps what you would expect from the name: a single code repository for your entire codebase.</p>
 <p><a href="https://en.wikipedia.org/wiki/Monorepo">Wikipedia</a> describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for governing loosely tied applications. For instance, if you have a full-stack web application stored in one repository and an Android client in another, a monorepo would essentially wrap them in the same repository codebase.</p>
 <h2 id="who-uses-monorepos-and-why">Who Uses Monorepos and Why?</h2>
 <p>Google is one of the most notable adopters of the monorepo pattern, and <a href="https://bazel.build/users.html#whos-using-bazel">companies</a> like Dropbox, LinkedIn, and Uber use monorepos to manage their large codebases. This is because large-scale projects having little or no dependency on each other can be developed, tested, and built without bisecting them into smaller projects.</p>
@@ -519,7 +503,7 @@ npm_install(
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span>  </span></code></pre></div>
 <h3 id="setting-up-continuous-integration">Setting Up Continuous Integration</h3>
 <p>Bazel recommends using container environments like the <a href="https://hub.docker.com/r/angular/ngcontainer/">ngcontainer Docker image</a> for continuous integration (CI). You can easily add specific CI settings using the <code>build:ci</code> or <code>test:ci</code> prefixes to your <code>bazel.rc</code> file.</p>
-<p>If you’re using <a href="/blog/continuous-integration#circleci">CircleCI</a>, you can use <a href="https://github.com/angular/angular-bazel-example/blob/master/.circleci/config.yml">this example</a> as a reference. If you’re using GitLab, you can set up CI in minutes using the following scripts:</p>
+<p>If you’re using <a href="https://circleci.com/">CircleCI</a>, you can use <a href="https://github.com/angular/angular-bazel-example/blob/master/.circleci/config.yml">this example</a> as a reference. If you’re using GitLab, you can set up CI in minutes using the following scripts:</p>
 <pre><code>variables:  
   BAZEL_DIGEST_VERSION: &quot;f670e9aec235aa23a5f068566352c5850a67eb93de8d7a2350240c68fcec3b25&quot; # Bazel 3.4.1  
   
@@ -558,23 +542,11 @@ build:
   <!-- <h5>About The Author</h5> -->
 
   
-    <div class="author__avatar">
-      
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/siddhantvarma-240-87a1100aa.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/siddhantvarma-240-51345a2c5.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/siddhantvarma-240-51345a2c5.jpg" alt="Siddhant Varma %"></picture>
-
-      
-    </div>
-  
 
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">Siddhant Varma</h3>
+      <h4 class="author__name" itemprop="name"></h3>
     
-    
-      <div class="author__bio" itemprop="description">
-        <p>Siddhant Varma is a frontend engineer who loves writing about tech and educating the community.</p>
-
-      </div>
     
   </div>
 
@@ -667,7 +639,7 @@ build:
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-11T00:00:00-04:00">May 11, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-12T00:00:00-04:00">May 12, 2021</time></p>
 
 
       </footer>
@@ -681,7 +653,7 @@ build:
 ">Previous</a>
     
     
-      <a href="/blog/dos-gaming-in-docker/" class="pagination--pager" title="DOS Gaming In Docker
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
 ">Next</a>
     
   </nav>
@@ -710,13 +682,13 @@ build:
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -734,7 +706,7 @@ build:
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -742,7 +714,9 @@ build:
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -762,13 +736,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -786,7 +760,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -794,7 +768,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

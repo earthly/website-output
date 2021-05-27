@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Migrating Your Open Source Builds Off Of Travis CI - Earthly Blog</title>
 <meta name="description" content="Starting in early December, a mad dash has been underway to migrate open-source projects off of Travis CI. What happened and where should you move your project to?">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -336,13 +332,13 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>You can find some <a href="https://medium.com/google-developers/how-to-run-travisci-locally-on-docker-822fc6b2db2e">scattered</a> <a href="https://stackoverflow.com/a/35972902">instructions</a> <a href="https://stackoverflow.com/a/35972902">online</a> for running Travis builds yourself. There are mixed reports on the stability and feasibility of this approach, but if your adventurous you could try to setup your own Travis CI build executor on your own hardware.</p>
 <p>A better option, if you want to run the builds on your own hardware is to look at something like <a href="https://buildkite.com/">Buildkite</a> or <a href="https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/">GitLab CI</a>.</p>
 <h3 id="option-circle-ci">Option: Circle CI</h3>
-<p>A better option is <a href="/blog/continuous-integration#circleci">Circle CI</a> , a Travis CI competitor which still offers a free plan.  </p>
+<p>A better option is Circle CI, a Travis CI competitor which still offers a free plan.  </p>
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
 <h3 id="best-option-github-actions">Best Option: Github Actions</h3>
 <p><img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><br />
 </p>
-<p>An even better option is <a href="/blog/continuous-integration#github-actions">Github Actions</a>, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
+<p>An even better option is Github Actions, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
 <p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
 <p>If your project is hosted on GitHub, then to me, GHA seems like the best bet right now. More details about the open-source plan can <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/usage-limits-billing-and-administration">be found here</a>.</p>
@@ -384,19 +380,18 @@ How can you minimize the effort of moving from build platform to another?</p>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> make all:default</span></code></pre></div>
-<p><a href="https://github.com/qmk/qmk_firmware/blob/master/Dockerfile">QMK</a> Docker File for executing the full build</p>
-<h3 id="earthly">Earthly</h3>
+<p><a href="https://github.com/qmk/qmk_firmware/blob/master/Dockerfile">QMK</a> Docker File for executing the full build ### Earthly</p>
 <p>This is the Earthly blog, and I am an Earthly contributor, but in my totally biased opinion, it deserves a mention as an neurtal format for defining a build. The Elixir web framework <a href="https://github.com/phoenixframework/phoenix/blob/master/Earthfile">Phoenix is a great example to take a look at</a>.</p>
 <p>Earthly is like a makefile where each step is containerized and dependencies are explicitly declared.  </p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> golang:1.13-alpine3.11</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>build:</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">COPY</span> main.go .</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">RUN</span> go build main.go</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> SAVE ARTIFACT main AS LOCAL main</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> main.go .</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> go build main.go</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    SAVE ARTIFACT main AS LOCAL main</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>lint: </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a> ...</span></code></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
 <p>Example build steps for a <a href="https://github.com/earthly/earthly/blob/main/examples/go/Earthfile">go application</p>
 <h2 id="other-interesting-options">Other Interesting Options</h2>
 <h3 id="easier-migration-from-travis-to-gha">Easier Migration from Travis to GHA</h3>
@@ -423,7 +418,7 @@ How can you minimize the effort of moving from build platform to another?</p>
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -435,7 +430,7 @@ How can you minimize the effort of moving from build platform to another?</p>
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -573,13 +568,13 @@ How can you minimize the effort of moving from build platform to another?</p>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -597,7 +592,7 @@ How can you minimize the effort of moving from build platform to another?</p>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -605,7 +600,9 @@ How can you minimize the effort of moving from build platform to another?</p>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -625,13 +622,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -649,7 +646,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -657,7 +654,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Using gRPC with Golang, Python, and Ruby - Earthly Blog</title>
 <meta name="description" content="I was surprised to learn that Google protocol buffers (protobufs), were first introduced nearly two decades ago. They were used internally at google as early as 2001 and were open sourced 2008.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-22904a130.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-22904a130.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg 512w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
 
           &nbsp;	&nbsp;
           Alex Couture-Beil
@@ -374,70 +370,70 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span> main</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="op">(</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;context&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;fmt&quot;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;log&quot;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;net&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;context&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;log&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;net&quot;</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>     pb <span class="st">&quot;github.com/earthly/example-grpc-key-value-store/go-server/kvapi&quot;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        pb <span class="st">&quot;github.com/earthly/example-grpc-key-value-store/go-server/kvapi&quot;</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;google.golang.org/grpc&quot;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;google.golang.org/grpc&quot;</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> <span class="op">(</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>     port <span class="op">=</span> <span class="st">&quot;:50051&quot;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        port <span class="op">=</span> <span class="st">&quot;:50051&quot;</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> errKeyNotFound <span class="op">=</span> fmt<span class="op">.</span>Errorf<span class="op">(</span><span class="st">&quot;key not found&quot;</span><span class="op">)</span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// server is used to implement kvapi.KeyValueServer</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">type</span> server <span class="kw">struct</span> <span class="op">{</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>     pb<span class="op">.</span>UnimplementedKeyValueServer</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>     data <span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">string</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        pb<span class="op">.</span>UnimplementedKeyValueServer</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        data <span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">string</span></span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Set stores a given value under a given key</span></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> <span class="op">(</span>s <span class="op">*</span>server<span class="op">)</span> Set<span class="op">(</span>ctx context<span class="op">.</span>Context<span class="op">,</span> in <span class="op">*</span>pb<span class="op">.</span>SetRequest<span class="op">)</span> <span class="op">(*</span>pb<span class="op">.</span>SetReply<span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>     key <span class="op">:=</span> in<span class="op">.</span>GetKey<span class="op">()</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>     value <span class="op">:=</span> in<span class="op">.</span>GetValue<span class="op">()</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>     log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;serving set request for key %q and value %q&quot;</span><span class="op">,</span> key<span class="op">,</span> value<span class="op">)</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        key <span class="op">:=</span> in<span class="op">.</span>GetKey<span class="op">()</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        value <span class="op">:=</span> in<span class="op">.</span>GetValue<span class="op">()</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;serving set request for key %q and value %q&quot;</span><span class="op">,</span> key<span class="op">,</span> value<span class="op">)</span></span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>     s<span class="op">.</span>data<span class="op">[</span>key<span class="op">]</span> <span class="op">=</span> value</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        s<span class="op">.</span>data<span class="op">[</span>key<span class="op">]</span> <span class="op">=</span> value</span>
 <span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>     reply <span class="op">:=</span> <span class="op">&amp;</span>pb<span class="op">.</span>SetReply<span class="op">{}</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> reply<span class="op">,</span> <span class="ot">nil</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">:=</span> <span class="op">&amp;</span>pb<span class="op">.</span>SetReply<span class="op">{}</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> reply<span class="op">,</span> <span class="ot">nil</span></span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Get returns a value associated with a key to the client</span></span>
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> <span class="op">(</span>s <span class="op">*</span>server<span class="op">)</span> Get<span class="op">(</span>ctx context<span class="op">.</span>Context<span class="op">,</span> in <span class="op">*</span>pb<span class="op">.</span>GetRequest<span class="op">)</span> <span class="op">(*</span>pb<span class="op">.</span>GetReply<span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>     key <span class="op">:=</span> in<span class="op">.</span>GetKey<span class="op">()</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>     log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;serving get request for key %q&quot;</span><span class="op">,</span> key<span class="op">)</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        key <span class="op">:=</span> in<span class="op">.</span>GetKey<span class="op">()</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;serving get request for key %q&quot;</span><span class="op">,</span> key<span class="op">)</span></span>
 <span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>     value<span class="op">,</span> ok <span class="op">:=</span> s<span class="op">.</span>data<span class="op">[</span>key<span class="op">]</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> <span class="op">!</span>ok <span class="op">{</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="ot">nil</span><span class="op">,</span> errKeyNotFound</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        value<span class="op">,</span> ok <span class="op">:=</span> s<span class="op">.</span>data<span class="op">[</span>key<span class="op">]</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="op">!</span>ok <span class="op">{</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="ot">nil</span><span class="op">,</span> errKeyNotFound</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>     reply <span class="op">:=</span> <span class="op">&amp;</span>pb<span class="op">.</span>GetReply<span class="op">{</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>      Value<span class="op">:</span> value<span class="op">,</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> reply<span class="op">,</span> <span class="ot">nil</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        reply <span class="op">:=</span> <span class="op">&amp;</span>pb<span class="op">.</span>GetReply<span class="op">{</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>            Value<span class="op">:</span> value<span class="op">,</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> reply<span class="op">,</span> <span class="ot">nil</span></span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>     lis<span class="op">,</span> err <span class="op">:=</span> net<span class="op">.</span>Listen<span class="op">(</span><span class="st">&quot;tcp&quot;</span><span class="op">,</span> port<span class="op">)</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>      log<span class="op">.</span>Fatalf<span class="op">(</span><span class="st">&quot;failed to listen: %v&quot;</span><span class="op">,</span> err<span class="op">)</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>     log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;Listening on %s&quot;</span><span class="op">,</span> port<span class="op">)</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>     serverInstance <span class="op">:=</span> server<span class="op">{</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>      data<span class="op">:</span> <span class="bu">make</span><span class="op">(</span><span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">string</span><span class="op">),</span></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>     s <span class="op">:=</span> grpc<span class="op">.</span>NewServer<span class="op">()</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>     pb<span class="op">.</span>RegisterKeyValueServer<span class="op">(</span>s<span class="op">,</span> <span class="op">&amp;</span>serverInstance<span class="op">)</span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">:=</span> s<span class="op">.</span>Serve<span class="op">(</span>lis<span class="op">);</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>      log<span class="op">.</span>Fatalf<span class="op">(</span><span class="st">&quot;failed to serve: %v&quot;</span><span class="op">,</span> err<span class="op">)</span></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        lis<span class="op">,</span> err <span class="op">:=</span> net<span class="op">.</span>Listen<span class="op">(</span><span class="st">&quot;tcp&quot;</span><span class="op">,</span> port<span class="op">)</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>            log<span class="op">.</span>Fatalf<span class="op">(</span><span class="st">&quot;failed to listen: %v&quot;</span><span class="op">,</span> err<span class="op">)</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;Listening on %s&quot;</span><span class="op">,</span> port<span class="op">)</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        serverInstance <span class="op">:=</span> server<span class="op">{</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>            data<span class="op">:</span> <span class="bu">make</span><span class="op">(</span><span class="kw">map</span><span class="op">[</span><span class="dt">string</span><span class="op">]</span><span class="dt">string</span><span class="op">),</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>        s <span class="op">:=</span> grpc<span class="op">.</span>NewServer<span class="op">()</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        pb<span class="op">.</span>RegisterKeyValueServer<span class="op">(</span>s<span class="op">,</span> <span class="op">&amp;</span>serverInstance<span class="op">)</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">:=</span> s<span class="op">.</span>Serve<span class="op">(</span>lis<span class="op">);</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>            log<span class="op">.</span>Fatalf<span class="op">(</span><span class="st">&quot;failed to serve: %v&quot;</span><span class="op">,</span> err<span class="op">)</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
 <p>Next we will compile the go code and save it as a docker image with the following Earthfile:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> golang:1.13-alpine3.11</span>
@@ -600,7 +596,7 @@ And if all went well, it’ll tell you that it’s sunny outside.
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-22904a130.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-22904a130.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg 512w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
 
       
     </div>
@@ -750,13 +746,13 @@ And if all went well, it’ll tell you that it’s sunny outside.
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -774,7 +770,7 @@ And if all went well, it’ll tell you that it’s sunny outside.
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -782,7 +778,9 @@ And if all went well, it’ll tell you that it’s sunny outside.
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -802,13 +800,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -826,7 +824,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -834,7 +832,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

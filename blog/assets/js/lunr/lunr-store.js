@@ -83,7 +83,7 @@ var store = [{
         "url": "/blog/building-on-kubernetes-ingress/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Technology choice? Don't be weird",
+        "title": "Technology choice? Don’t be weird",
         "excerpt":"Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform. The plan for the earthly internal platform says, “One thing to keep in mind as...","categories": ["Articles"],
         "tags": ["Interview"],
         "url": "/blog/dont-be-weird/",
@@ -95,14 +95,14 @@ var store = [{
         "url": "/blog/protobufs-and-grpc/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "You're using docker-compose wrong",
+        "title": "You’re using docker-compose wrong",
         "excerpt":"Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong. Ok, that might be an exaggeration. I don’t think there’s...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/youre-using-docker-compose-wrong/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Unit Testing vs Integration Testing",
-        "excerpt":"In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly. But unit testing...","categories": ["Articles"],
+        "excerpt":"In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly. But unit testing...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/unit-vs-integration/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -245,39 +245,27 @@ var store = [{
         "url": "/blog/monorepo-with-bazel/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "DOS Gaming In Docker",
-        "excerpt":"Its been three decades since the height of the DOS era, and look how far we’ve come! A machine that used to cost $2,000 can be emulated - down to the processor! — in our web browsers while also checking email or watching a YouTube video. However, amidst these advancements,...","categories": ["Tutorials"],
-        "tags": [],
-        "url": "/blog/dos-gaming-in-docker/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
         "title": "What Is Continuous Integration?",
         "excerpt":"Continuous integration has become prevalent in software development, but it’s still a complex and wide-ranging topic. In this post, we’ll cover the basics of continuous integration, the differences between CI and CD, and common CI tools. You’ll also find some tips for the best way to set up CI in...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/continuous-integration/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Getting a Repeatable Build, Every Time",
-        "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to Reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
-        "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
-        "url": "/blog/repeatable-builds-every-time/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
         "title": "Understanding Docker Multistage Builds",
-        "excerpt":"At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final...","categories": ["Tutorials"],
+        "excerpt":"Understanding Docker Multistage Builds At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/docker-multistage/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Protocol Buffers Best Practices for Backward and Forward Compatibility",
-        "excerpt":"Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008. Protocol Buffers are compiled to a series of strictly arranged bytes, so they...","categories": ["Tutorials"],
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
         "tags": [],
-        "url": "/blog/backward-and-forward-compatibility/",
+        "url": "/blog/example-plot/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Why is JRuby Slow?",
-        "excerpt":"Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby. The build times looked like this:...","categories": ["Tutorial"],
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
         "tags": [],
-        "url": "/blog/jruby/",
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

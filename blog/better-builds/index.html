@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Can We Build Better? - Earthly Blog</title>
 <meta name="description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.">
 
@@ -30,7 +27,7 @@
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/better-builds/header-800-de7cbf433.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/better-builds/header-597-642d429db.jpg">
 
 
 
@@ -41,7 +38,7 @@
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/better-builds/header-800-de7cbf433.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/better-builds/header-597-642d429db.jpg">
   
 
   
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -220,7 +216,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/better-builds/header-400-70f402e7d.webp 400w, /blog/generated/assets/images/better-builds/header-600-70f402e7d.webp 600w, /blog/generated/assets/images/better-builds/header-800-70f402e7d.webp 800w, /blog/generated/assets/images/better-builds/header-1000-70f402e7d.webp 1000w, /blog/generated/assets/images/better-builds/header-1200-70f402e7d.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/better-builds/header-400-70f402e7d.png 400w, /blog/generated/assets/images/better-builds/header-600-70f402e7d.png 600w, /blog/generated/assets/images/better-builds/header-800-70f402e7d.png 800w, /blog/generated/assets/images/better-builds/header-1000-70f402e7d.png 1000w, /blog/generated/assets/images/better-builds/header-1200-70f402e7d.png 1200w" type="image/png"><img src="/blog/generated/assets/images/better-builds/header-800-70f402e7d.jpg" alt="Can We Build Better?"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/better-builds/header-400-6685f9007.webp 400w, /blog/generated/assets/images/better-builds/header-597-6685f9007.webp 597w" type="image/webp"><source srcset="/blog/generated/assets/images/better-builds/header-400-6685f9007.png 400w, /blog/generated/assets/images/better-builds/header-597-6685f9007.png 597w" type="image/png"><img src="/blog/generated/assets/images/better-builds/header-597-6685f9007.jpg" alt="Can We Build Better?"></picture>
 
   
   
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -302,10 +298,10 @@
         
         <p>Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.</p>
 <h2 id="solving-reproducible-builds">Solving Reproducible Builds</h2>
-<p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in <a href="/blog/slow-performance-in-jenkins">Jenkins</a> vs running in locally.</p>
+<p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.</p>
 <p>Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.</p>
 <h2 id="a-scala-example">A Scala Example</h2>
-<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">dockerfile</a> mixed with a makefile you wouldn’t be far off.  </p>
+<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a makefile you wouldn’t be far off.  </p>
 <p>Let’s walk through creating an Earthfile for a scala project:</p>
 <pre><code>├── build.sbt 
 └── src/main
@@ -400,10 +396,10 @@ Earthfile continued
 <h3 id="containerize-it">Containerize It</h3>
 <p>The final step in our build is to build a docker container, so we can send this application off to run in Kuberenetes or EKS or whatever production happens to look like.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>docker:</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">COPY</span> src src</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">RUN</span> sbt assembly</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">ENTRYPOINT</span> [<span class="st">&quot;java&quot;</span>,<span class="st">&quot;-cp&quot;</span>,<span class="st">&quot;build/bin/scala-example-assembly-1.0.jar&quot;</span>,<span class="st">&quot;Main&quot;</span>]</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  SAVE IMAGE scala-example:latest</span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt assembly</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ENTRYPOINT</span> [<span class="st">&quot;java&quot;</span>,<span class="st">&quot;-cp&quot;</span>,<span class="st">&quot;build/bin/scala-example-assembly-1.0.jar&quot;</span>,<span class="st">&quot;Main&quot;</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    SAVE IMAGE scala-example:latest</span></code></pre></div>
 <figcaption>
 Earthfile continued
 </figcaption>
@@ -418,7 +414,7 @@ Earthfile continued
 </figure>
 <p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example here</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
 <h3 id="did-we-solve-it">Did we solve it?</h3>
-<p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our <a href="/blog/continuous-integration">CI</a> builds.  We used earthly to encapsulate the build steps.</p>
+<p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.</p>
 <figure class>
 <img src="/blog/assets/images/better-builds/diagram.png"
        alt="diagram of earthly usage">
@@ -443,7 +439,7 @@ Earthfile continued
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -455,7 +451,7 @@ Earthfile continued
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -593,13 +589,13 @@ Earthfile continued
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -617,7 +613,7 @@ Earthfile continued
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -625,7 +621,9 @@ Earthfile continued
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -645,13 +643,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -669,7 +667,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -677,7 +675,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

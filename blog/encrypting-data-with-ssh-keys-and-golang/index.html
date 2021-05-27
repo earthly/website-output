@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Encrypting Data With SSH Keys and Golang - Earthly Blog</title>
 <meta name="description" content="We’re currently working on a server for sharing secrets between developers and CI systems, and one of the features we decided to support is passwordless login via ssh keys. I had never used any of the public/private key encryption libraries in Go before, so I wanted to spend some time experimenting with them to familiarise myself with the libraries.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-22904a130.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-22904a130.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg 512w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
 
           &nbsp;	&nbsp;
           Alex Couture-Beil
@@ -364,46 +360,46 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span> main</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="op">(</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;crypto/rand&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;crypto/rsa&quot;</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;encoding/pem&quot;</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;crypto/x509&quot;</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;crypto/rand&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;crypto/rsa&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;encoding/pem&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;crypto/x509&quot;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;fmt&quot;</span></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>     <span class="st">&quot;golang.org/x/crypto/ssh&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;golang.org/x/crypto/ssh&quot;</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">)</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> marshalRSAPrivate<span class="op">(</span>priv <span class="op">*</span>rsa<span class="op">.</span>PrivateKey<span class="op">)</span> <span class="dt">string</span> <span class="op">{</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> <span class="dt">string</span><span class="op">(</span>pem<span class="op">.</span>EncodeToMemory<span class="op">(&amp;</span>pem<span class="op">.</span>Block<span class="op">{</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      Type<span class="op">:</span> <span class="st">&quot;RSA PRIVATE KEY&quot;</span><span class="op">,</span> Bytes<span class="op">:</span> x509<span class="op">.</span>MarshalPKCS1PrivateKey<span class="op">(</span>priv<span class="op">),</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>     <span class="op">}))</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> <span class="dt">string</span><span class="op">(</span>pem<span class="op">.</span>EncodeToMemory<span class="op">(&amp;</span>pem<span class="op">.</span>Block<span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            Type<span class="op">:</span> <span class="st">&quot;RSA PRIVATE KEY&quot;</span><span class="op">,</span> Bytes<span class="op">:</span> x509<span class="op">.</span>MarshalPKCS1PrivateKey<span class="op">(</span>priv<span class="op">),</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">}))</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> generateKey<span class="op">()</span> <span class="op">(</span><span class="dt">string</span><span class="op">,</span> <span class="dt">string</span><span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>     reader <span class="op">:=</span> rand<span class="op">.</span>Reader</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>     bitSize <span class="op">:=</span> <span class="dv">2048</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        reader <span class="op">:=</span> rand<span class="op">.</span>Reader</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        bitSize <span class="op">:=</span> <span class="dv">2048</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>     key<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>GenerateKey<span class="op">(</span>reader<span class="op">,</span> bitSize<span class="op">)</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        key<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>GenerateKey<span class="op">(</span>reader<span class="op">,</span> bitSize<span class="op">)</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>     pub<span class="op">,</span> err <span class="op">:=</span> ssh<span class="op">.</span>NewPublicKey<span class="op">(</span>key<span class="op">.</span>Public<span class="op">())</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>     pubKeyStr <span class="op">:=</span> <span class="dt">string</span><span class="op">(</span>ssh<span class="op">.</span>MarshalAuthorizedKey<span class="op">(</span>pub<span class="op">))</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>     privKeyStr <span class="op">:=</span> marshalRSAPrivate<span class="op">(</span>key<span class="op">)</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        pub<span class="op">,</span> err <span class="op">:=</span> ssh<span class="op">.</span>NewPublicKey<span class="op">(</span>key<span class="op">.</span>Public<span class="op">())</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        pubKeyStr <span class="op">:=</span> <span class="dt">string</span><span class="op">(</span>ssh<span class="op">.</span>MarshalAuthorizedKey<span class="op">(</span>pub<span class="op">))</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        privKeyStr <span class="op">:=</span> marshalRSAPrivate<span class="op">(</span>key<span class="op">)</span></span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> pubKeyStr<span class="op">,</span> privKeyStr<span class="op">,</span> <span class="ot">nil</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> pubKeyStr<span class="op">,</span> privKeyStr<span class="op">,</span> <span class="ot">nil</span></span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>     pubKey<span class="op">,</span> privKey<span class="op">,</span> _ <span class="op">:=</span> generateKey<span class="op">()</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>     fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;my public key is...&quot;</span><span class="op">)</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>     fmt<span class="op">.</span>Println<span class="op">(</span>pubKey<span class="op">)</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>     fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;my private key is...&quot;</span><span class="op">)</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>     fmt<span class="op">.</span>Println<span class="op">(</span>privKey<span class="op">)</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        pubKey<span class="op">,</span> privKey<span class="op">,</span> _ <span class="op">:=</span> generateKey<span class="op">()</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;my public key is...&quot;</span><span class="op">)</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span>pubKey<span class="op">)</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;my private key is...&quot;</span><span class="op">)</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span>privKey<span class="op">)</span></span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
 <p>Try it out in the <a href="https://play.golang.org/p/chkKzvcGJcV">go playground</a>, you should see something like this:</p>
 <pre><code>    my public key is...
@@ -440,53 +436,53 @@
 <p>Perfect! Now I can generate a public and private key via Go. I wonder how I can encrypt a message using a public key which can only be decrypted by someone with the private key. Let’s try out some more code:</p>
 <p>I want to keep my function signature as basic as possible for the purpose of learning, so we will pass in the public key as the regular base64-encoded id_rsa keyformat, and let that function handle parsing it:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> encrypt<span class="op">(</span>msg<span class="op">,</span> publicKey <span class="dt">string</span><span class="op">)</span> <span class="op">(</span><span class="dt">string</span><span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     parsed<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> err <span class="op">:=</span> ssh<span class="op">.</span>ParseAuthorizedKey<span class="op">([]</span><span class="dt">byte</span><span class="op">(</span>publicKey<span class="op">))</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>     <span class="co">// To get back to an *rsa.PublicKey, we need to first upgrade to the</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>     <span class="co">// ssh.CryptoPublicKey interface</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>     parsedCryptoKey <span class="op">:=</span> parsed<span class="op">.(</span>ssh<span class="op">.</span>CryptoPublicKey<span class="op">)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        parsed<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> err <span class="op">:=</span> ssh<span class="op">.</span>ParseAuthorizedKey<span class="op">([]</span><span class="dt">byte</span><span class="op">(</span>publicKey<span class="op">))</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// To get back to an *rsa.PublicKey, we need to first upgrade to the</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ssh.CryptoPublicKey interface</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        parsedCryptoKey <span class="op">:=</span> parsed<span class="op">.(</span>ssh<span class="op">.</span>CryptoPublicKey<span class="op">)</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>     <span class="co">// Then, we can call CryptoPublicKey() to get the actual crypto.PublicKey</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>     pubCrypto <span class="op">:=</span> parsedCryptoKey<span class="op">.</span>CryptoPublicKey<span class="op">()</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Then, we can call CryptoPublicKey() to get the actual crypto.PublicKey</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        pubCrypto <span class="op">:=</span> parsedCryptoKey<span class="op">.</span>CryptoPublicKey<span class="op">()</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>     <span class="co">// Finally, we can convert back to an *rsa.PublicKey</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>     pub <span class="op">:=</span> pubCrypto<span class="op">.(*</span>rsa<span class="op">.</span>PublicKey<span class="op">)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Finally, we can convert back to an *rsa.PublicKey</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        pub <span class="op">:=</span> pubCrypto<span class="op">.(*</span>rsa<span class="op">.</span>PublicKey<span class="op">)</span></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>     encryptedBytes<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>EncryptOAEP<span class="op">(</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      sha256<span class="op">.</span>New<span class="op">(),</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>      rand<span class="op">.</span>Reader<span class="op">,</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      pub<span class="op">,</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="op">[]</span><span class="dt">byte</span><span class="op">(</span>msg<span class="op">),</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="ot">nil</span><span class="op">)</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>EncodeToString<span class="op">(</span>encryptedBytes<span class="op">),</span> <span class="ot">nil</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        encryptedBytes<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>EncryptOAEP<span class="op">(</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            sha256<span class="op">.</span>New<span class="op">(),</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            rand<span class="op">.</span>Reader<span class="op">,</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            pub<span class="op">,</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="op">[]</span><span class="dt">byte</span><span class="op">(</span>msg<span class="op">),</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            <span class="ot">nil</span><span class="op">)</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>EncodeToString<span class="op">(</span>encryptedBytes<span class="op">),</span> <span class="ot">nil</span></span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
 <p>Try out the complete example <a href="https://play.golang.org/p/KjvwPoJ6wT4">here</a></p>
 <p>Finally, how do we decrypt it?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> decrypt<span class="op">(</span>data<span class="op">,</span> priv <span class="dt">string</span><span class="op">)</span> <span class="op">(</span><span class="dt">string</span><span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>     data2<span class="op">,</span> err <span class="op">:=</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>DecodeString<span class="op">(</span>data<span class="op">)</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        data2<span class="op">,</span> err <span class="op">:=</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>DecodeString<span class="op">(</span>data<span class="op">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>     block<span class="op">,</span> _ <span class="op">:=</span> pem<span class="op">.</span>Decode<span class="op">([]</span><span class="dt">byte</span><span class="op">(</span>priv<span class="op">))</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>     key<span class="op">,</span> err <span class="op">:=</span> x509<span class="op">.</span>ParsePKCS1PrivateKey<span class="op">(</span>block<span class="op">.</span>Bytes<span class="op">)</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        block<span class="op">,</span> _ <span class="op">:=</span> pem<span class="op">.</span>Decode<span class="op">([]</span><span class="dt">byte</span><span class="op">(</span>priv<span class="op">))</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        key<span class="op">,</span> err <span class="op">:=</span> x509<span class="op">.</span>ParsePKCS1PrivateKey<span class="op">(</span>block<span class="op">.</span>Bytes<span class="op">)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>     decrypted<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>DecryptOAEP<span class="op">(</span>sha256<span class="op">.</span>New<span class="op">(),</span> rand<span class="op">.</span>Reader<span class="op">,</span> key<span class="op">,</span> data2<span class="op">,</span> <span class="ot">nil</span><span class="op">)</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> <span class="dt">string</span><span class="op">(</span>decrypted<span class="op">),</span> <span class="ot">nil</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        decrypted<span class="op">,</span> err <span class="op">:=</span> rsa<span class="op">.</span>DecryptOAEP<span class="op">(</span>sha256<span class="op">.</span>New<span class="op">(),</span> rand<span class="op">.</span>Reader<span class="op">,</span> key<span class="op">,</span> data2<span class="op">,</span> <span class="ot">nil</span><span class="op">)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="kw">return</span> <span class="st">&quot;&quot;</span><span class="op">,</span> err</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="kw">return</span> <span class="dt">string</span><span class="op">(</span>decrypted<span class="op">),</span> <span class="ot">nil</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
 <p>Try it out <a href="https://play.golang.org/p/a5u9PYWEjgs">here</a></p>
-<p>So there we have a end-to-end example of how to generate a new public/private key, and encrypt and decrypt data all in <a href="/blog/top-3-resources-to-learn-golang-in-2021">GoLang</a>.</p>
+<p>So there we have a end-to-end example of how to generate a new public/private key, and encrypt and decrypt data all in golang.</p>
 <p>Based on my experimentation with private/public key encryption in go, I put together a small program that allows users to share encrypted data between parties using a rather simple <a href="https://github.com/alexcb/secretshare">command line tool on my personal repo</a></p>
 <p>Our server’s authentication process is slightly different from the above code – we create a digital signature using the private key, which I’ll be covering in a future blog post.</p>
 
@@ -502,7 +498,7 @@
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-22904a130.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-22904a130.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg 512w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-512-de456eb49.jpg" alt="Alex Couture-Beil %"></picture>
 
       
     </div>
@@ -652,13 +648,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -676,7 +672,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -684,7 +680,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -704,13 +702,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -728,7 +726,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -736,7 +734,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

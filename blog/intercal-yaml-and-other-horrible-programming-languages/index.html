@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>INTERCAL, YAML, And Other Horrible Programming Languages - Earthly Blog</title>
 <meta name="description" content="In 1972, two students learning FORTRAN came up with a fantastic new programming language called INTERCAL.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -319,8 +315,8 @@
 <p>A <code>COMEFROM</code> anywhere in a program can grab control flow from the line you are reading. And in some implementations, if many <code>COMEFROM</code>’s reference the same line, execution splits off in each direction.</p>
 <p>A <code>COMEFROM</code> is the inverse of a <code>GOTO</code> statement with multi-threading thrown in. It breaks the mental model of imperative execution where each line’s evaluation leads to the next line. The idea that you can simulate its execution in your head, line by line, is fundamental to imperative programming and <code>COMEFROM</code> attempts to break that model.</p>
 <h2 id="variables-may-not-be-stored-in-west-hyperspace">VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE</h2>
-<p>At Twitter, they have a giant <a href="/blog/monorepo-vs-polyrepo">monorepo</a> with lots of services in it. And somebody at Twitter wanted to know which language was most prevalent. Which language does Twitter use the most?</p>
-<p>Java came in 3rd, and <a href="/blog/top-5-scala-blogs">Scala</a> came in 2nd. But 1st was a surprise. The number one programming language used at Twitter was YAML<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>At Twitter, they have a giant monorepo with lots of services in it. And somebody at Twitter wanted to know which language was most prevalent. Which language does Twitter use the most?</p>
+<p>Java came in 3rd, and Scala came in 2nd. But 1st was a surprise. The number one programming language used at Twitter was YAML<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>YAML usually doesn’t feel like a programming language to me. The file I’m currently writing in is in markdown with some YAML at the top to set the title and associated fields.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> INTERCAL, YAML, And Other Horrible Programming Languages</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Adam</span></span></code></pre></div>
@@ -355,7 +351,7 @@
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> source ./.multi_arch_docker</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> set -ex; multi_arch_docker::main; set +x</span></span></code></pre></div>
 <p>There we go, branching. It’s an if statement in a YAML file!</p>
-<p>And this isn’t <a href="/blog/migrating-from-travis">TravisCI</a>, or CI specific. Here is a simple example from Ansible:</p>
+<p>And this isn’t TravisCI, or CI specific. Here is a simple example from Ansible:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span><span class="at"> all</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tasks</span><span class="kw">:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">include</span><span class="kw">:</span><span class="at"> foo.yml</span></span>
@@ -426,57 +422,57 @@
 <p>The line between configuration and programming languages is not some bright dividing line. It is easy to slowly drift into adding programming language constructs to a config file. Before you know it, you have a full unspecified programming language embedded in the interpretation of your config file.</p>
 <p>That is the worst of both worlds, and so much YAML seems to drift into this area.</p>
 <p>I like YAML more than XML, but for control flow, you know what would be better than YAML? Anything else! Maybe even INTERCAL? I mean, how bad could a joke programming language be?</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode fortran"><code class="sourceCode fortranfixed"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">100</span>)  PLEASE NOTE THIS IS THE FIZZBUZZ <span class="kw">FUNCTION</span> </span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode fortran"><code class="sourceCode fortranfixed"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">100</span>)  PLEASE NOTE THIS IS THE FIZZBUZZ <span class="kw">FUNCTION</span>    </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE: IS THE INPUT DIVISIBLE BY #<span class="dv">15</span><span class="kw">?</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.1</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="fl">.100</span> </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">15</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">130</span>) NEXT</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS <span class="bu">NOT</span> DIVISIBLE BY #<span class="dv">15</span> <span class="kw">=</span><span class="op">&gt;</span> CHECK <span class="kw">IF</span> DIVISIBLE BY #<span class="dv">3</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">3</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">110</span>) NEXT</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE: IS THE INPUT DIVISIBLE BY #<span class="dv">15</span><span class="kw">?</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.1</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="fl">.100</span>   </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">15</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">130</span>) NEXT</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS <span class="bu">NOT</span> DIVISIBLE BY #<span class="dv">15</span> <span class="kw">=</span><span class="op">&gt;</span> CHECK <span class="kw">IF</span> DIVISIBLE BY <span class="co">#3</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">3</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">110</span>) NEXT</span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS <span class="bu">NOT</span> DIVISIBLE BY #<span class="dv">3</span> <span class="kw">=</span><span class="op">&gt;</span> CHECK <span class="kw">IF</span> DIVISIBLE BY #<span class="dv">5</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">5</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">120</span>) NEXT</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS REGULAR <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> THE INPUT</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="fl">.100</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS <span class="bu">NOT</span> DIVISIBLE BY #<span class="dv">3</span> <span class="kw">=</span><span class="op">&gt;</span> CHECK <span class="kw">IF</span> DIVISIBLE BY #<span class="co">5</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.2</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">5</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">2030</span>) NEXT</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE: is <span class="fl">.4</span> (remainder) <span class="op">==</span> <span class="dv">0</span><span class="kw">?</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.4</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="st">&#39;?&quot;&#39;</span><span class="fl">.4</span><span class="kw">~</span><span class="fl">.4</span><span class="st">&#39;~#1&quot;$#1&#39;</span><span class="kw">~</span>#<span class="dv">3</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">120</span>) NEXT</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS REGULAR <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> THE INPUT</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> <span class="fl">.100</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
 <span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>(<span class="dv">110</span>) <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">3</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> FIZZ</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">61440</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>(<span class="dv">110</span>)   <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">3</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> FIZZ</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">61440</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
 <span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>(<span class="dv">120</span>) <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">5</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> BUZZ</span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">45056</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>(<span class="dv">120</span>)   <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">5</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> BUZZ</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">45056</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
 <span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>(<span class="dv">130</span>) <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a> PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">15</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> FIZZ<span class="kw">-</span>BUZZ</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">64256</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>(<span class="dv">130</span>)   <span class="kw">DO</span> (<span class="dv">111</span>) NEXT</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>    PLEASE NOTE NUMBER IS DIVISIBLE BY #<span class="dv">15</span> <span class="kw">=</span><span class="op">&gt;</span> <span class="kw">RETURN</span> FIZZ<span class="kw">-</span>BUZZ</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> <span class="fl">.101</span> <span class="op">&lt;</span><span class="kw">-</span> #<span class="dv">64256</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> (<span class="dv">199</span>) NEXT</span>
 <span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>(<span class="dv">111</span>) <span class="kw">DO</span> RESUME <span class="fl">.4</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>(<span class="dv">199</span>) <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a> <span class="kw">DO</span> RESUME #<span class="dv">1</span></span></code></pre></div>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>(<span class="dv">111</span>)   <span class="kw">DO</span> RESUME <span class="fl">.4</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>(<span class="dv">199</span>)   <span class="kw">DO</span> FORGET #<span class="dv">1</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DO</span> RESUME #<span class="dv">1</span></span></code></pre></div>
 <p>Oh God.</p>
 <p>Well, ok, maybe not INTERCAL but anything else. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <section class="footnotes" role="doc-endnotes">
@@ -500,7 +496,7 @@
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -512,7 +508,7 @@
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -650,13 +646,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -674,7 +670,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -682,7 +678,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -702,13 +700,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -726,7 +724,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -734,7 +732,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

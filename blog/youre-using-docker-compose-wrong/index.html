@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>You’re using docker-compose wrong - Earthly Blog</title>
 <meta name="description" content="Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -349,12 +345,12 @@
       
         
         <p>Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.</p>
-<p>Ok, that might be an exaggeration. I don’t think there’s actually a 100% right or wrong way to use it: home-grown build and dev setups tend to have all kinds of <a href="/blog/dont-be-weird">weird</a> requirements and so the standard doesn’t always match the needs. Please take the article with the appropriate skepticism if your situation doesn’t quite fit.</p>
+<p>Ok, that might be an exaggeration. I don’t think there’s actually a 100% right or wrong way to use it: home-grown build and dev setups tend to have all kinds of weird requirements and so the standard doesn’t always match the needs. Please take the article with the appropriate skepticism if your situation doesn’t quite fit.</p>
 <p>I, myself, have been guilty of each of these in the past and I might be in the future as well!!</p>
 <p>In any case, here is a rundown of some of the cardinal sins that I found myself making while using docker-compose.</p>
 <p>In this article, I’ll be focusing on use-cases related to <strong>integration testing</strong> and using docker-compose as a <strong>development environment</strong>. For production use, I think docker-compose is usually ill-suited.</p>
 <h2 id="problem-1-youre-using-the-host-network">Problem #1: You’re using the host network</h2>
-<p>One of the first things new-comers find cumbersome is the use of <a href="/blog/docker-networking">Docker networks</a>. It’s yet another layer of knowledge to add to your repertoire after you get used to the basics of <strong>docker build</strong> and <strong>docker run</strong> … and frankly, why do you even need to understand these Docker networks? Everything works fine via the host network, right? Wrong!</p>
+<p>One of the first things new-comers find cumbersome is the use of Docker networks. It’s yet another layer of knowledge to add to your repertoire after you get used to the basics of <strong>docker build</strong> and <strong>docker run</strong> … and frankly, why do you even need to understand these Docker networks? Everything works fine via the host network, right? Wrong!</p>
 <p>Using the host network means that you have to reserve specific ports for the various microservices that you use. If you happen to bring up two stacks that collide on ports, tough luck. If you want to bring up two versions of the same stack, tough luck. You want to test the behavior of a certain service when it has multiple replicas? Tough… luck!</p>
 <p>By default, docker-compose spins up its containers on a separate network called <strong>&lt;project-name&gt;_default</strong> (where <strong>&lt;project-name&gt;</strong> is by default the name of the directory). So really, you don’t need to do anything special in order to take advantage of Docker networks.</p>
 <p>This network gives you a number of benefits right off the bat:</p>
@@ -378,7 +374,7 @@
 <p>For such cases, you need something that waits for services to be ready. Docker recommends using <a href="https://github.com/vishnubob/wait-for-it">wait-for-it</a>, <a href="https://github.com/jwilder/dockerize">Dockerize</a> or <a href="https://github.com/Eficode/wait-for">wait-for</a>. Note, however, that a port being ready isn’t always a sign that the service is ready to be used. For example, in an integration test using a certain SQL DB with a certain schema, the port becomes available when the DB is initialized, however, the test might only work after a certain schema migration has been applied. You may need application-specific checks on top.</p>
 <h2 id="problem-4-youre-running-the-db-in-docker-compose-but-the-test-on-the-host">Problem #4: You’re running the DB in docker-compose, but the test on the host</h2>
 <p>Here is a situation: you want to run some unit tests but those tests depend on some external services. Maybe a database, maybe a Redis, maybe another API. Easy: let’s put those dependencies in a docker-compose and have the unit test connect to those.</p>
-<p>That’s great - but note that your tests aren’t exactly just unit tests anymore. They are now <a href="/blog/unit-vs-integration">integration tests</a>. Besides the nomenclature, there is an important distinction to take into account now: you’ll need to account for a setup of the test environment and a teardown. Usually, it’s best for the setup/teardown to be performed outside of the test code - main reason being that there may be multiple distinct packages depending on these external services. But YMMV.</p>
+<p>That’s great - but note that your tests aren’t exactly just unit tests anymore. They are now integration tests. Besides the nomenclature, there is an important distinction to take into account now: you’ll need to account for a setup of the test environment and a teardown. Usually, it’s best for the setup/teardown to be performed outside of the test code - main reason being that there may be multiple distinct packages depending on these external services. But YMMV.</p>
 <p>If you do end up separating test setup and teardown, you could go the extra mile and containerize your integration test. Hear me out!</p>
 <p>Containerized tests mean:</p>
 <ul>
@@ -556,13 +552,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -580,7 +576,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -588,7 +584,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -608,13 +606,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -632,7 +630,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -640,7 +638,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

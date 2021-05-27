@@ -6,11 +6,8 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Unit Testing vs Integration Testing - Earthly Blog</title>
-<meta name="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly.">
+<meta name="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +23,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/unit-vs-integration/">
 
 
-  <meta property="og:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly.">
+  <meta property="og:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
 
 
 
@@ -36,7 +33,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Unit Testing vs Integration Testing">
-  <meta name="twitter:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly.">
+  <meta name="twitter:description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
   <meta name="twitter:url" content="https://earthly.dev/blog/unit-vs-integration/">
 
   
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -240,7 +236,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Unit Testing vs Integration Testing">
-    <meta itemprop="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly.">
+    <meta itemprop="description" content="In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.">
     <meta itemprop="datePublished" content="2020-12-04T00:00:00-05:00">
     
 
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -295,12 +291,12 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#what-is-a-unit">What Is a Unit?</a></li><li><a href="#retroactive-unit-testing">Retroactive Unit Testing</a></li><li><a href="#what-is-an-integration-test">What Is an Integration Test?</a></li><li><a href="#when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</a></li><li><a href="#an-e-commerce-example">An E-commerce Example</a><ul><li><a href="#unit-testing">Unit Testing</a></li><li><a href="#integration-testing">Integration Testing</a></li></ul></li><li><a href="#integration-tests-vs-unit-tests">Integration Tests vs Unit Tests</a></li><li><a href="#working-software-over-idealized-testing">Working Software Over Idealized Testing</a></li><li><a href="#see-also">See Also</a></li></ul>
+              <ul class="toc__menu"><li><a href="#what-is-a-unit">What Is a Unit?</a></li><li><a href="#retroactive-unit-testing">Retroactive Unit Testing</a></li><li><a href="#what-is-an-integration-test">What Is an Integration Test?</a></li><li><a href="#when-integration-testing-gets-tricky">When Integration Testing Gets Tricky</a><ul><li><a href="#unit-testing">Unit Testing:</a></li><li><a href="#integration-testing">Integration Testing:</a></li></ul></li><li><a href="#working-software-over-idealized-testing">Working Software Over Idealized Testing</a></li><li><a href="#see-also">See Also</a></li></ul>
 
             </nav>
           </aside>
         
-        <p>In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like <a href="/blog/top-3-resources-to-learn-golang-in-2021">GoLang</a> and Rust, have incorporated testing into the compiler and standard library directly.</p>
+        <p>In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like Golang and Rust, have incorporated testing into the compiler and standard library directly.</p>
 <p>But unit testing is not the only game in town.  There are also integration tests and performance tests and much more.  In my mind, though, Integration tests and unit tests are the foundations of resilient software. So today let’s look at the differences between the two and when you might prefer one or the other.</p>
 <h2 id="what-is-a-unit">What Is a Unit?</h2>
 <figure class>
@@ -358,9 +354,9 @@
 </tr>
 </tbody>
 </table>
-<h2 id="an-e-commerce-example">An E-commerce Example</h2>
+<h1 id="an-e-commerce-example">An E-commerce Example</h1>
 <p>Imagine you are coding a simple e-commerce site, a simple miniature amazon.com. The details matter here so let’s assume that you are going to use PostgreSQL as your datastore, PayPal for payments, UPS for shipping, and Amazon Simple Email Service for emailing invoices.  </p>
-<h3 id="unit-testing">Unit Testing</h3>
+<h3 id="unit-testing">Unit Testing:</h3>
 <p>Your unit testing strategy will be testing the logic of your application, in an isolated fashion.  This may include:</p>
 <ul>
 <li>Testing that the tax calculating logic correctly calculates the taxes for various jurisdictions.  </li>
@@ -368,7 +364,7 @@
 <li>Testing that discount codes are properly applied.</li>
 </ul>
 <p>Each of these areas will likely have several tests. Each test will verify a small piece of functionality. Unit testing power comes from their number, simplicity, and their speed and ease of execution.</p>
-<h3 id="integration-testing">Integration Testing</h3>
+<h3 id="integration-testing">Integration Testing:</h3>
 <p>Your integration testing on the other hand will focus on testing where your e-commerce code interacts with other systems.  This means testing not just the integration with the data store but also with email sending services, payment services and more. These may include:</p>
 <ul>
 <li>Testing that the shipping rates can be retrieved from the external shipping service.</li>
@@ -377,7 +373,7 @@
 <li>Testing that the transactions can be sent and properly processed from the payment processor.</li>
 </ul>
 <p>Each of these will likely be verified by one or two integration tests. These tests will be slower to run and probably involve some setup and teardown steps.  The payoff is that the code coverage of each test will be quite large.  These tests will generate value by catching problems that unit tests could never catch.  However, the maintenance cost and execution time will be likely higher.</p>
-<h2 id="integration-tests-vs-unit-tests">Integration Tests vs Unit Tests</h2>
+<h1 id="integration-tests-vs-unit-tests">Integration Tests vs Unit Tests</h1>
 <figure class>
 <img src="/blog/assets/images/unit-vs-integration/unit-vs-integration.png"
        alt="comparing unit tests to integrations tests">
@@ -458,7 +454,7 @@
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -470,7 +466,7 @@
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -608,13 +604,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -632,7 +628,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -640,7 +636,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -660,13 +658,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -684,7 +682,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -692,7 +690,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

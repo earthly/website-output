@@ -6,11 +6,8 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Understanding Docker Multistage Builds - Earthly Blog</title>
-<meta name="description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+<meta name="description" content="Understanding Docker Multistage Builds">
 
 
   <meta name="author" content="Lukonde Mwila">
@@ -26,7 +23,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/docker-multistage/">
 
 
-  <meta property="og:description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+  <meta property="og:description" content="Understanding Docker Multistage Builds">
 
 
 
@@ -36,7 +33,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Understanding Docker Multistage Builds">
-  <meta name="twitter:description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
+  <meta name="twitter:description" content="Understanding Docker Multistage Builds">
   <meta name="twitter:url" content="https://earthly.dev/blog/docker-multistage/">
 
   
@@ -48,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2021-05-20T00:00:00-04:00">
+  <meta property="article:published_time" content="2021-05-21T00:00:00-04:00">
 
 
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -296,8 +292,8 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Understanding Docker Multistage Builds">
-    <meta itemprop="description" content="At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.">
-    <meta itemprop="datePublished" content="2021-05-20T00:00:00-04:00">
+    <meta itemprop="description" content="Understanding Docker Multistage Builds">
+    <meta itemprop="datePublished" content="2021-05-21T00:00:00-04:00">
     
 
     <div class="page__inner-wrap">
@@ -325,7 +321,7 @@
           7 minute read
         
         
-        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-20T00:00:00-04:00">May 20, 2021</time>
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time>
         
 
       </span>
@@ -335,7 +331,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-e5f446a5d.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-800-e5f446a5d.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-800-54fbdfe9d.png 800w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-800-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
 
           &nbsp;	&nbsp;
           Lukonde Mwila
@@ -351,12 +347,13 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#core-concepts-of-docker-multistage-builds">Core Concepts of Docker Multistage Builds</a></li><li><a href="#how-to-use-docker-multistage-builds">How to Use Docker Multistage Builds</a></li><li><a href="#problems-that-docker-multistage-builds-might-encounter">Problems That Docker Multistage Builds Might Encounter</a></li><li><a href="#more-stages">More Stages</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#understanding-docker-multistage-builds">Understanding Docker Multistage Builds</a><ul><li><a href="#core-concepts-of-docker-multistage-builds">Core Concepts of Docker Multistage Builds</a></li><li><a href="#how-to-use-docker-multistage-builds">How to Use Docker Multistage Builds</a></li><li><a href="#problems-that-docker-multistage-builds-might-encounter">Problems That Docker Multistage Builds Might Encounter</a></li><li><a href="#more-stages">More Stages</a></li><li><a href="#conclusion">Conclusion</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
-        <p>At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.</p>
+        <h1 id="understanding-docker-multistage-builds">Understanding Docker Multistage Builds</h1>
+<p>At first glance, writing Dockerfiles appears to be a straightforward process. After all, most basic examples reflect the same set of steps. However, not all Dockerfiles are created equal. There is an optimal way of writing these files to produce the kind of Docker images you want for your final product. If you were to pop the hood, you’d see that Docker images actually consist of file system layers that correlate to the individual build steps involved in the creation of the image.</p>
 <p>To build an efficient Docker image, you want to eliminate some of these layers from the final output. Optimizing an image can take a lot of effort as you attempt to filter out what you don’t need. Building these kinds of images has a lot to do with keeping them as small as possible, because large images lead to a host of other issues.</p>
 <p>One approach to keeping Docker images small is using multistage builds. A multistage build allows you to use multiple images to build a final product. In a multistage build, you have a single Dockerfile, but can define multiple images inside it to help build the final image.</p>
 <p>In this post, you’ll learn about the core concepts of multistage builds in Docker and how they help to create production-grade images. In addition, I will detail how you can create these types of files, as well as highlight some challenges that they present.</p>
@@ -364,8 +361,8 @@
 <p>Before getting to the details of multistage builds, it’s good to have an understanding of the main idea behind them. You’re already familiar with the starting point of container images, the Dockerfile. Dockerfiles are text files that make it easy to assemble all the relevant commands required to create your container image. These commands in the Dockerfile should be combined whenever possible for the sake of optimization.</p>
 <p>When I first came across this idea of building the right kind of Docker image, I asked myself a few questions that may be crossing your mind as you read this. What are the implications of <em>not</em> optimizing an image? Can it really have that much of a negative impact on your application? The answer to the latter question is yes.</p>
 <p>As for the implications, you typically end up with bigger images. The reason big images should be avoided is because <a href="https://developers.redhat.com/blog/2016/03/09/more-about-docker-images-size/" title="Keep it small: a closer look at Docker image sizing">they increase both potential security vulnerabilities and the surface area for attack</a>. You definitely want to keep things lean by ensuring you only have what your application needs to run successfully in a production environment.</p>
-<p>One way of reducing the size of your Docker images is through the use of what is informally known as the <a href="https://en.wikipedia.org/wiki/Builder_pattern" title="builder design pattern entry at Wikipedia">builder pattern</a>. The builder pattern uses two Docker images to create a base image for building assets and the second to run it. This pattern was previously implemented through the use of multiple Dockerfiles. It has become an uncommon practice since the introduction and support of multistage builds in <a href="https://www.docker.com/blog/multi-stage-builds/" title="Multi-Stage Builds">Docker 17.06 CE</a>.</p>
-<p>For context, it’s good to understand how this was typically done before multistage builds. The following example makes use of a basic React application that is first built and then has its static content served by an <a href="https://www.nginx.com/" title="Nginx web servers">Nginx virtual server</a>. Following are the two Dockerfiles used to create the optimized image. In addition, you’ll see a <a href="/blog/understanding-bash">shell script</a> that demonstrates the Docker CLI commands that have to be run in order to achieve this outcome. You can find the source code for this example in <a href="https://github.com/LukeMwila/builder-pattern-example" title="builder pattern example in Lukonde Mwila&#39;s GitHub repository">this repository</a>.</p>
+<p>One way of reducing the size of your Docker images is through the use of what is informally known as the <a href="https://en.wikipedia.org/wiki/Builder_pattern%20“builder%20design%20pattern%20entry%20at%20Wikipedia”">builder pattern</a>. The builder pattern uses two Docker images to create a base image for building assets and the second to run it. This pattern was previously implemented through the use of multiple Dockerfiles. It has become an uncommon practice since the introduction and support of multistage builds in <a href="https://www.docker.com/blog/multi-stage-builds/" title="Multi-Stage Builds">Docker 17.06 CE</a>.</p>
+<p>For context, it’s good to understand how this was typically done before multistage builds. The following example makes use of a basic React application that is first built and then has its static content served by an <a href="https://www.nginx.com/%20“Nginx%20web%20servers”">Nginx virtual server</a>. Following are the two Dockerfiles used to create the optimized image. In addition, you’ll see a shell script that demonstrates the Docker CLI commands that have to be run in order to achieve this outcome. You can find the source code for this example in <a href="https://github.com/LukeMwila/builder-pattern-example%20“builder%20pattern%20example%20in%20Lukonde%20Mwila’s%20GitHub%20repository”">this repository</a>.</p>
 <pre><code>Dockerfile.build
 FROM node:12.13.0-alpine
 WORKDIR /app
@@ -463,7 +460,7 @@ final:
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-e5f446a5d.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-240-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/lukondemwila-800-e5f446a5d.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/lukondemwila-800-54fbdfe9d.png 800w" type="image/png"><img src="/blog/generated/assets/images/authors/lukondemwila-800-54fbdfe9d.png" alt="Lukonde Mwila %"></picture>
 
       
     </div>
@@ -570,7 +567,7 @@ final:
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-20T00:00:00-04:00">May 20, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-21T00:00:00-04:00">May 21, 2021</time></p>
 
 
       </footer>
@@ -580,11 +577,11 @@ final:
       
   <nav class="pagination">
     
-      <a href="/blog/repeatable-builds-every-time/" class="pagination--pager" title="Getting a Repeatable Build, Every Time
+      <a href="/blog/continuous-integration/" class="pagination--pager" title="What Is Continuous Integration?
 ">Previous</a>
     
     
-      <a href="/blog/backward-and-forward-compatibility/" class="pagination--pager" title="Protocol Buffers Best Practices for Backward and Forward Compatibility
+      <a href="/blog/example-plot/" class="pagination--pager" title="Example Graphs
 ">Next</a>
     
   </nav>
@@ -613,13 +610,13 @@ final:
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -637,7 +634,7 @@ final:
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -645,7 +642,9 @@ final:
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -665,13 +664,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -689,7 +688,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -697,7 +696,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

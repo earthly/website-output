@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Building a Real-Time Application in the Phoenix Framework with Elixir - Earthly Blog</title>
 <meta name="description" content="The Elixir language, along with the Phoenix framework, has been growing in popularity at a quick pace, and with good reason. Phoenix offers productivity levels comparable to frameworks like Ruby on Rails while being one of the fastest web frameworks available.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -278,13 +274,6 @@
       
       
       
-      <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/allanmcgregor-240-8f818bdd2.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/allanmcgregor-240-0ae731b45.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/allanmcgregor-240-0ae731b45.jpg" alt="Allan MacGregor %"></picture>
-
-          &nbsp;	&nbsp;
-          Allan MacGregor
-      </div>
-      
     </span>
   </p>
 
@@ -329,7 +318,6 @@
 <h3 id="npm">npm</h3>
 <p>You can easily install Node.js from their <a href="https://nodejs.org/en/">official instructions</a>, but in most cases, it’s possible your system might already have Node preinstalled.</p>
 <h3 id="postgres">Postgres</h3>
-<!-- markdownlint-disable MD029 -->
 <p><a href="https://www.postgresql.org/">Postgres</a> can be a little tricky to install depending on the operating system you’re using. For this tutorial, you can leverage Docker and get a local version running by taking the following steps:</p>
 <ol type="1">
 <li>Create a folder to persist the DB data.</li>
@@ -339,11 +327,11 @@
 <li>Run a Docker container with the Postgres image.</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">-d</span> <span class="dt">\</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="at">--name</span> phoenix-psql <span class="dt">\</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="at">-e</span> POSTGRES_PASSWORD=Phoenix1234 <span class="dt">\</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="at">-v</span> <span class="va">${HOME}</span>/phoenix-postgres-data/:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> postgres</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--name</span> phoenix-psql <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> POSTGRES_PASSWORD=Phoenix1234 <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> <span class="va">${HOME}</span>/phoenix-postgres-data/:/var/lib/postgresql/data <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    postgres</span></code></pre></div>
 <ol start="3" type="1">
 <li>Validate that the container is running.</li>
 </ol>
@@ -488,16 +476,16 @@ assets/csss/custom.css</code></pre>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    live <span class="st">&quot;/&quot;</span>, <span class="cn">PageLive</span>, <span class="va">:index</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span></code></pre></div>
 <p>This is the scaffold code that was generated when you generated the application. You want to add a new route for your actions, and you can do that easily by using the <code>live</code> macro:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a> <span class="op">...</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> live <span class="st">&quot;/auction&quot;</span>, <span class="cn">AuctionLive</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    live <span class="st">&quot;/auction&quot;</span>, <span class="cn">AuctionLive</span></span></code></pre></div>
 <p>It’s important to highlight that <code>AuctionLive</code> is not a Phoenix controller. Rather, it’s a long-running LiveView process in charge of managing and tracking the state for that particular route.</p>
 <p>Go ahead and define your new module under <code>lib/phoenix_fund_web/live/auction_live.ex</code>. By convention, the LiveView modules are placed under the <code>live</code> directory.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode elixir"><code class="sourceCode elixir"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">defmodule</span> <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">AuctionLive</span> <span class="kw">do</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> <span class="im">use</span> <span class="cn">PhoenixFundWeb</span>, <span class="va">:live_view</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">def</span> mount(params, session, socket) <span class="kw">do</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  {<span class="va">:ok</span>, assign(socket, <span class="va">:raised</span>, <span class="dv">0</span>)}</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a> <span class="kw">end</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">use</span> <span class="cn">PhoenixFundWeb</span>, <span class="va">:live_view</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> mount(params, session, socket) <span class="kw">do</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        {<span class="va">:ok</span>, assign(socket, <span class="va">:raised</span>, <span class="dv">0</span>)}</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">end</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <p>This is the core of a LiveView module. <code>mount/3</code> is the entry point for each LiveView, and it will be invoked twice:</p>
 <ul>
@@ -515,13 +503,13 @@ assets/csss/custom.css</code></pre>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> render(assigns) <span class="kw">do</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>L<span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">       &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">       &lt;div id=&quot;auction&quot;&gt;</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;div class=&quot;meter&quot;&gt;</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">             &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">               $&lt;%= @raised %&gt; USD</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">             &lt;/span&gt;</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;/div&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;div id=&quot;auction&quot;&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;div class=&quot;meter&quot;&gt;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">                  $&lt;%= @raised %&gt; USD</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;/span&gt;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;/div&gt;</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;/div&gt;</span></span>
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
@@ -537,18 +525,18 @@ assets/csss/custom.css</code></pre>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> render(assigns) <span class="kw">do</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">~</span>L<span class="st">&quot;&quot;&quot;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">       &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">       &lt;div id=&quot;auction&quot;&gt;</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;div class=&quot;meter&quot;&gt;</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">             &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">               $&lt;%= @raised %&gt; USD</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">             &lt;/span&gt;</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;/div&gt;</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">           </span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;button phx-click=&quot;donate-1&quot;&gt; $1 &lt;/button&gt;</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;button phx-click=&quot;donate-5&quot;&gt; $5 &lt;/button&gt;</span></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;button phx-click=&quot;donate-10&quot;&gt; $10 &lt;/button&gt;</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">           &lt;button phx-click=&quot;donate-100&quot;&gt; $100 &lt;/button&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;h1&gt;Cabinet of Curiosities&lt;/h1&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">          &lt;div id=&quot;auction&quot;&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;div class=&quot;meter&quot;&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;span style=&quot;width: &lt;%= @raised %&gt;%&quot;&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">                  $&lt;%= @raised %&gt; USD</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">                &lt;/span&gt;</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;/div&gt;</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">              </span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-1&quot;&gt; $1 &lt;/button&gt;</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-5&quot;&gt; $5 &lt;/button&gt;</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-10&quot;&gt; $10 &lt;/button&gt;</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">              &lt;button phx-click=&quot;donate-100&quot;&gt; $100 &lt;/button&gt;</span></span>
 <span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;/div&gt;</span></span>
 <span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="st">    &quot;&quot;&quot;</span></span>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
@@ -644,7 +632,7 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="ot">@topic</span> <span class="st">&quot;auction&quot;</span></span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> mount(params, session, socket) <span class="kw">do</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>   <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>subscribe(<span class="ot">@topic</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">PhoenixFundWeb</span><span class="op">.</span><span class="cn">Endpoint</span><span class="op">.</span>subscribe(<span class="ot">@topic</span>)</span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    {<span class="va">:ok</span>, assign(socket, <span class="va">:raised</span>, <span class="dv">0</span>)}</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
@@ -704,13 +692,6 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
 <div itemscope itemtype="https://schema.org/Person">
   <!-- <h5>About The Author</h5> -->
 
-  
-    <div class="author__avatar">
-      
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/allanmcgregor-240-8f818bdd2.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/allanmcgregor-240-0ae731b45.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/allanmcgregor-240-0ae731b45.jpg" alt="Allan MacGregor %"></picture>
-
-      
-    </div>
   
 
   <div class="author__content">
@@ -857,13 +838,13 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -881,7 +862,7 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -889,7 +870,9 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -909,13 +892,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -933,7 +916,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -941,7 +924,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

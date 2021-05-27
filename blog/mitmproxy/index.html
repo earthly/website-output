@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>How to Man in the Middle HTTPS Using mitmproxy - Earthly Blog</title>
 <meta name="description" content="Have you ever wanted to see what kinds of requests a service or application on your machine is making and what kind of responses it is getting back?">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -295,7 +291,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What is mitmproxy?</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#alpine">Alpine</a></li><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What is mitmproxy?</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success!</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul>
 
             </nav>
           </aside>
@@ -449,7 +445,7 @@ QyVJfmCmjt2i=
 &gt; cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
 &gt; update-ca-certificates</code></pre>
 <p><em>We will be using these steps later when we work with docker containers on macOS and Windows.</em></p>
-<h2 id="great-success">Great Success</h2>
+<h2 id="great-success">Great Success!</h2>
 <p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.</p>
 Here is Slack making requests:
 <figure class>
@@ -477,8 +473,7 @@ Here is Slack making requests:
 </figure>
 <p>At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.</p>
 <p>On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.</p>
-<p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM.</p>
-<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or MITMWeb running).</p>
+<p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM. &gt; Before we proceed, we need to clear the proxy settings on the host network connection. We can leave mitmproxy (or MITMWeb running).</p>
 <p>On Windows and macOS, the easiest way to configure a proxy is via <code>Docker Desktop.</code> Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/18.png"
@@ -537,8 +532,7 @@ docker.io/library/couchbase:7.0.0-beta</code></pre>
 <p>mitmweb request for cloudflare.docker.com</p>
 </figcaption>
 </figure>
-<h2 id="troubleshooting"><em>Troubleshooting</em></h2>
-<p><em>If <code>docker pull</code> fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.</em></p>
+<p>## <em>Troubleshooting</em> <em>If <code>docker pull</code> fails with a certificate error or the requests don’t get proxied, make sure you have restarted docker at least once and that the proxy settings are in place.</em></p>
 <h2 id="capturing-docker-container-traffic">Capturing Docker Container Traffic</h2>
 <p>We now know how to capture traffic on our host machine and the Linux container host. But what happens when we make requests from inside a running container?</p>
 <pre><code>&gt; docker run -it ubuntu
@@ -578,8 +572,7 @@ If you&#39;d like to turn off curl&#39;s verification of the certificate, use
 <p>The solution here is a familiar one. We need to follow the steps we used above for configuring Linux to trust a certificate authority, but we need to do it inside our container.</p>
 <p>There are several ways to accomplish this.</p>
 <h2 id="solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</h2>
-<p>The simplest solution is to mount the certificate into the proper spot in our container and run <code>update-ca-certificates</code>.</p>
-<h3 id="alpine">Alpine</h3>
+<p>The simplest solution is to mount the certificate into the proper spot in our container and run <code>update-ca-certificates</code>. ### Alpine:</p>
 <pre><code># Run container and mount in our CA Cert
 &gt; docker run -it -v ~/.mitmproxy/mitmproxy-ca-cert.cer:/usr/local/share/ca-certificates/mitmproxy-ca-cert.cer alpine
 # Add ca-certificates (and curl for testing)
@@ -717,7 +710,7 @@ The document has moved
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -729,7 +722,7 @@ The document has moved
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -867,13 +860,13 @@ The document has moved
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -891,7 +884,7 @@ The document has moved
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -899,7 +892,9 @@ The document has moved
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -919,13 +914,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -943,7 +938,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -951,7 +946,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Green Vs. Brown Programming Languages - Earthly Blog</title>
 <meta name="description" content="I’ve noticed something interesting about the types of programming languages people like. It’s something that doesn’t seem to come up in various discussions of programming language preferences.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
           &nbsp;	&nbsp;
           Adam Gordon Bell
@@ -419,6 +415,7 @@ explode = (0.1, 0)
 colors = ["burlywood", "green"]
 total = 13
 
+
 # Graph two
 fig, ax2 = plt.subplots()
 ax2.set_title('Loved Languages')
@@ -441,12 +438,12 @@ Loved Languages 54% Green
 <p>This probably isn’t quite enough evidence to say for sure that having to use a language in a maintenance project causes dread, but it certainly looks like it is a factor. Many of the languages people love are too new or too historically unpopular to have many big big-ball-of-mud projects to maintain.</p>
 <p>In other words, Rust, Kotlin, and the other green languages may still be in a honeymoon phase. People’s love for working with them may have as much to do with not working in 20-year-old codebases as it does with the particular languages.</p>
 <h2 id="overcoming-bias">Overcoming Bias</h2>
-<p><img src="/blog/generated/assets/images/brown-green-language/angel-devil-wide-800-cd95144df.png" srcset="/blog/generated/assets/images/brown-green-language/angel-devil-wide-400-cd95144df.png 400w, /blog/generated/assets/images/brown-green-language/angel-devil-wide-600-cd95144df.png 600w, /blog/generated/assets/images/brown-green-language/angel-devil-wide-800-cd95144df.png 800w, /blog/generated/assets/images/brown-green-language/angel-devil-wide-1000-cd95144df.png 1000w"></p>
+<p><img src="/blog/generated/assets/images/brown-green-language/angel-devil-wide-600-402d4be31.png" srcset="/blog/generated/assets/images/brown-green-language/angel-devil-wide-400-402d4be31.png 400w, /blog/generated/assets/images/brown-green-language/angel-devil-wide-600-402d4be31.png 600w"></p>
 <p>Some newer or historically less popular programming languages might be better than older or more mainstream languages, but our ability to judge seems quite biased. In particular, developers are giving a halo to languages that are newer or were not used commonly in the past, and they are giving horns to languages that have been around longer. I think this is because nobody likes maintaining someone else’s code. And also, because of Joel’s Law: reading real-world is code hard. Building something new is fun, and new languages are used for that more often.</p>
 <h2 id="the-lifecycle-of-programming-language-hype">The Lifecycle of Programming Language Hype</h2>
 <p>I originally started digging into these numbers to establish a ranking for what languages were most used and loved by software developers. I was going to use this to guide adding more examples to our <a href="https://docs.earthly.dev/">docs</a> and our <a href="https://github.com/earthly/earthly/tree/main/examples">build examples</a>. What I came away with instead was the idea of a programming language life cycle: loved programming languages get used a lot, which leads to code maintenance, which causes people to dislike them, which leads to people looking for greener pastures and trying out a newer language. Popular frameworks probably follow this lifecycle as well.</p>
 <div class="wide">
-<p><img src="/blog/generated/assets/images/brown-green-language/hype-wide-800-26e17264b.png" alt="A graph showing hype decreasing overtime for a langauge" srcset="/blog/generated/assets/images/brown-green-language/hype-wide-400-26e17264b.png 400w, /blog/generated/assets/images/brown-green-language/hype-wide-600-26e17264b.png 600w, /blog/generated/assets/images/brown-green-language/hype-wide-800-26e17264b.png 800w, /blog/generated/assets/images/brown-green-language/hype-wide-1000-26e17264b.png 1000w"></p>
+<p><img src="/blog/generated/assets/images/brown-green-language/hype-wide-800-83ae14a13.png" alt="A graph showing hype decreasing overtime for a langauge" srcset="/blog/generated/assets/images/brown-green-language/hype-wide-400-83ae14a13.png 400w, /blog/generated/assets/images/brown-green-language/hype-wide-600-83ae14a13.png 600w, /blog/generated/assets/images/brown-green-language/hype-wide-800-83ae14a13.png 800w, /blog/generated/assets/images/brown-green-language/hype-wide-900-83ae14a13.png 900w"></p>
 <figcaption>
 The lifecycle of programming language hype
 </figcaption>
@@ -459,8 +456,8 @@ The lifecycle of programming language hype
 <li id="fn2" role="doc-endnote"><p>I came up with the criteria first. I didn’t hunt for data to back up my original idea.</p>
 <p>I did consider using language creation date to determine green vs. brown status, but some languages have been around for some time but only found usage relatively recently.</p>
 <p>TIOBE is measured like <a href="https://www.tiobe.com/tiobe-index/programming-languages-definition/">this</a> and their historical data is only available if you pay, so I am using the Wayback Machine.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>TIOBE doesn’t include HTML/CSS because it doesn’t consider them turing complete and therefore not a programming language. <a href="/blog/understanding-bash">Shell scripts</a> are measured separately by TIOBE, and VBA is not in the list of languages measured at all, as far as I can see.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4" role="doc-endnote"><p>Not all brown languages are dreaded however: Python, C#, Swift, JavaScript and SQL remain loved and I would love to hear if anyone has theories on why. Also <a href="/blog/top-5-scala-blogs">Scala</a> and Haskell, two languages I have a soft spot for, are the only green languages on the dreaded list. Is this just noise or is there something else going on there?<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>TIOBE doesn’t include HTML/CSS because it doesn’t consider them turning complete and therefore not a programming language. Shell scripts are measured separately by TIOBE, and VBA is not in the list of languages measured at all, as far as I can see.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Not all brown languages are dreaded however: Python, C#, Swift, JavaScript and SQL remain loved and I would love to hear if anyone has theories on why. Also Scala and Haskell, two languages I have a soft spot for, are the only green languages on the dreaded list. Is this just noise or is there something else going on there?<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -476,7 +473,7 @@ The lifecycle of programming language hype
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-fc29677ee.webp 512w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png 512w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-512-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
 
       
     </div>
@@ -488,7 +485,7 @@ The lifecycle of programming language hype
     
     
       <div class="author__bio" itemprop="description">
-        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast.</p>
 
       </div>
     
@@ -626,13 +623,13 @@ The lifecycle of programming language hype
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -650,7 +647,7 @@ The lifecycle of programming language hype
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -658,7 +655,9 @@ The lifecycle of programming language hype
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -678,13 +677,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -702,7 +701,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -710,7 +709,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

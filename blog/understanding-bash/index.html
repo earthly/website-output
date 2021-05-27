@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Understanding Bash - Earthly Blog</title>
 <meta name="description" content="Bash scripts give you the ability to turn a tedious series of commands into an easily runnable and repeatable script. With many real-world use cases, like using a bash script to run a continuous deployment process, create a series of files in a folder, or download the contents of several URLs, it’s worth your time to make sure bash scripting is in your programming toolbox.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-3c02a472e.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-553-3c02a472e.webp 553w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-553-f09fd8acb.jpg 553w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-553-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
 
           &nbsp;	&nbsp;
           Kasper Siig
@@ -368,8 +364,8 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 2: foo: command not found</span></code></pre></div>
 <p>The reason you may want the script to fail if a pipeline fails is the same as earlier with <code>set -u</code>. Let’s modify the scenario a bit. You have the following in your script:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">FILE_PATH</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> /tmp/path.txt <span class="kw">|</span> <span class="fu">sed</span> <span class="st">&#39;s/_/-/g)</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">rm -rf /$FILE_PATH</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">FILE_PATH</span><span class="op">=</span><span class="va">$(</span><span class="fu">cat</span> /tmp/path.txt <span class="kw">|</span> <span class="fu">sed</span> ‘s/_/-/g<span class="va">)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> /<span class="va">$FILE_PATH</span></span></code></pre></div>
 <p><em>Note: <code>sed</code> is a search-and-replace command. In this case it replaces underscores with dashes.</em></p>
 <p>The intention is that <code>/tmp/path.txt</code> contains <code>tmp_file.txt</code>. Assume that the file <code>/tmp-file.txt</code> exists on the system. In this case the script will work perfectly and delete <code>/tmp-file.txt</code>. But what if <code>/tmp/path.txt</code> doesn’t exist? <code>cat /tmp/path.txt</code> will fail, but the script won’t. Now you’ve deleted your entire filesystem, but <code>set -eo pipefail</code> will prevent this.</p>
 <h3 id="sets-in-summary">Sets in Summary</h3>
@@ -428,9 +424,9 @@ echo Hello $NAME
 <p>As you can see, <code>shellcheck</code> doesn’t just tell you what you need to change, but also why it needs to be changed. This is a valuable resource, not just for improving your scripts, but also to get better at writing them in the first place.</p>
 <p>With these tips, you’ll end up with the following script:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;What&#39;s your name?&quot;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> “What’s your name<span class="pp">?</span>”</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="at">-r</span> <span class="va">NAME</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello <span class="st">&quot;</span><span class="va">$NAME</span><span class="st">&quot;</span></span></code></pre></div>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello “<span class="va">$NAME</span>”</span></code></pre></div>
 <h2 id="understand-variable-naming-and-declaration">Understand Variable Naming and Declaration</h2>
 <p>As you saw earlier, we tried to use the <code>$TEST</code> variable. Variables can open up a whole world of opportunities, but they can also be tricky to work with. Let’s go over some of the common scenarios for working with variables.</p>
 <h3 id="assigning-variables">Assigning Variables</h3>
@@ -442,30 +438,27 @@ echo Hello $NAME
 <p>There are multiple ways to use a variable that you’ve assigned a value. As an example, we’ve assigned <code>foo=uname</code>.</p>
 <h4 id="double-quotes">Double Quotes</h4>
 <p>If you want to echo the contents of a variable, then use double quotes. It will expand what’s inside the variable and print that to the screen.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=<span class="st">&quot;uname&quot;</span></span>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=”uname”</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">uname</span></span></code></pre></div>
 <h4 id="single-quotes">Single Quotes</h4>
 <p>In some cases, you don’t want to output a variable’s contents, but maybe write an explanation of what that variable is used for. To avoid expansion, use single quotes:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=<span class="st">&quot;uname&quot;</span></span>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=”uname”</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;$foo&#39;</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="va">$foo</span></span></code></pre></div>
 <p>This also means that you don’t have to manually escape the <code>$</code> symbol, which you otherwise would need to in the case of double quotes.</p>
 <h4 id="backticks">Backticks</h4>
 <p>The third option for using a variable is backticks. Use this when you want the contents of the variable to be run as a shell command:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=<span class="st">&quot;uname&quot;</span></span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=”uname”</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="kw">`</span><span class="va">$foo</span><span class="kw">`</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span></span></code></pre></div>
 <h3 id="using-curly-brackets">Using Curly Brackets</h3>
 <p>You can get away with merely referring to a variable by writing <code>$FOO</code>. However, you may want to refer to a variable inside a string or concatenate it with another. Take a look at the following example:</p>
-<!-- markdownlint-disable MD014 -->
 <div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> World&quot;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">$FOOlo</span><span class="st"> world&quot;</span></span></code></pre></div>
 <p>In this case, bash would try to find the variable <code>$FOOlo</code>, but we just wanted to print “Hello world.” To make this work, you will have to do the following:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> FOO=<span class="st">&quot;Hel&quot;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo World&quot;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;</span><span class="va">${FOO}</span><span class="st">lo world&quot;</span></span></code></pre></div>
 <p>This is most likely useful when you want to use a variable to define a path, like <code>/opt/${ENVIRONMENT}_build.txt</code>. Without curly brackets, the script would try to look up <code>$ENVIRONMENT_build</code>.</p>
 <h2 id="properly-set-permissions">Properly Set Permissions</h2>
 <p>One of the pitfalls that I remember running into time and time again when I started making bash scripts was remembering that <a href="https://www.guru99.com/file-permissions.html">permissions</a> had to be set right. See, when you make a file with, for example, <code>touch</code>, it gives read/write permissions to the owner and read rights to everyone else. This means that you’ll get a <code>permission denied</code> error when you try to run the script.</p>
@@ -475,12 +468,12 @@ echo Hello $NAME
 <p>One of the biggest pitfalls that newcomers run into is forgetting about readability. It’s easy to get caught up in wanting to have a working script, and maybe you’re even used to running everything manually in the terminal, where you want to type as little as possible.</p>
 <p>When it comes to scripts, you want to make sure that you can still easily remember what’s happening six months down the line. An easy way to do this is by using more extended options (<code>--quiet</code> instead of <code>-q</code>), using longer variable names (<code>MESSAGE</code> instead of <code>MSG</code>), and writing comments.</p>
 <p>You can write commands using a hash mark, after which you can write your comment, like so:</p>
-<pre><code># Below line will echo &quot;Hello World!&quot;
-echo &quot;Hello World!&quot;</code></pre>
+<pre><code># Below line will echo “Hello World!”
+echo “Hello World!”</code></pre>
 <h2 id="understand-your-script-in-relation-to-cli">Understand Your Script in Relation to CLI</h2>
 <p>When reading this article, you may have noticed that many code examples are being run straight in the terminal rather than written as a bash script. There’s a good reason for that! You can write everything you write in a bash script directly in the terminal.</p>
 <p>There is one significant difference between executing a script and typing the commands in your terminal. When you run a script, it’ll start up a new, clean shell in which the script will run. This means that no variables set in your terminal will interfere with your script.</p>
-<p>For example, if you set <code>TEST="hello"</code> in your shell and run <code>echo $TEST</code> inside a script, it will print nothing to your screen.</p>
+<p>For example, if you set <code>TEST=”hello”</code> in your shell and run <code>echo $TEST</code> inside a script, it will print nothing to your screen.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>At this point, you should be ready to venture into the exciting world of bash scripting. You’ve learned about common shebangs, what <code>set</code> does, and how it can improve the error handling of your scripts, as well as understanding some general pitfalls developers run into with bash.</p>
 <p>So go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repo you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.</p>
@@ -497,7 +490,7 @@ echo &quot;Hello World!&quot;</code></pre>
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-3c02a472e.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-553-3c02a472e.webp 553w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-553-f09fd8acb.jpg 553w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-553-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
 
       
     </div>
@@ -647,13 +640,13 @@ echo &quot;Hello World!&quot;</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -671,7 +664,7 @@ echo &quot;Hello World!&quot;</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -679,7 +672,9 @@ echo &quot;Hello World!&quot;</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -699,13 +694,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -723,7 +718,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -731,7 +726,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

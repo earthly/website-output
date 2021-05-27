@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Build Your Own Ngrok Clone With AWS - Earthly Blog</title>
 <meta name="description" content="Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code.">
 
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
           &nbsp;	&nbsp;
           Corey Larson
@@ -305,14 +301,14 @@
 <p>However, it can be hard to trust fancy tools like <code>ngrok</code> until you experience how the sausage is made; at least once. It may also be hard to explan yet <em>another</em> recurring charge on the credit card to your partner. So, here is a tutorial to build yourself a DIY <code>ngrok</code> for free (at least 12 months, after that its very cheap), using the <a href="https://aws.amazon.com/free/">AWS Free Tier</a>, <a href="https://www.nginx.com/">NGINX</a>, and (of course) <a href="https://earthly.dev/">Earthly</a>. The result is a decent approximation that won’t break the bank.</p>
 <h2 id="so-how-does-ngrok-work">So, How Does <code>ngrok</code> Work?</h2>
 <p>To understand why <code>ngrok</code> is so cool, you’ll need to first understand how you would normally get traffic from the broader internet into your local machine. A typical flow would be something like this:</p>
-<div class="wide">
+<div class="wide" data-markdown="1">
 <p><img src="/blog/assets/images/build-your-own-ngrok-clone/without_ngrok.png" alt="Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine." /><br />
 </p>
 </div>
 <p>This flow is normal for most of the machines on the internet today, but it has its downsides for local development. For instance, most home and non-commerical internet connections do not have a <a href="https://whatismyipaddress.com/dynamic-static">Static IP</a> - which means you need to double-check your IP address before sending it out, or (more often) install and configure additional software to keep your DNS records up to date.</p>
 <p>Additionally, you’ll need to configure your router to forward that traffic to your machine. This configuration is typically fairly annoying to set up, and should also be turned off each time you arent using it, otherwise you are keeping your computer exposed to the internet at large! Its like putting a giant welcome mat out for hackers during their automated scans.</p>
 With this foundation, you can now understand why <code>ngrok</code> (and our DIY one) is so cool! It removes the need for all this additional configuration, while also providing better security. All you need to do is add an extra computer into the mix, like this:
-<div class="wide">
+<div class="wide" data-markdown="1">
 <p><img src="/blog/assets/images/build-your-own-ngrok-clone/with_ngrok.png" alt="Diagram showing the flow of traffic from a users web browser, through the internet, a home router, and finally the users computer. It points out that the user controls the DNS lookup, router, and their machine." /><br />
 </p>
 </div>
@@ -344,8 +340,8 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <pre><code>❯ aws ec2 create-key-pair \
     --key-name proxy-key-pair \
     &gt; key-output.json</code></pre>
-<div class="notice">
-<p><strong>❗ About the AWS CLI output</strong></p>
+<div class="notice" data-markdown="1">
+<p><strong>ℹ️ About the AWS CLI output</strong></p>
 <p>Note the <code>&gt; key-output.json</code> at the end. The <code>aws</code> CLI tool will always <a href="https://docs.aws.amazon.com/cli/latest/userguide/cliv2-migration.html#cliv2-migration-output-pager">invoke your system pager with some kind of JSON output as the result of any calls</a>. Because you don’t want to lose the key generated by <code>aws</code> for our yet-to-be-created instance, capture it here. It’s a running trend that you will see throughout this tutorial.</p>
 </div>
 <p>You can get the key directly with <code>jq</code> by <code>jq -r .KeyPairId key-output.json</code>, or via your preferred means.</p>
@@ -356,7 +352,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
     --description reverse-proxy \
     --vpc-id $VPC_ID \
     &gt; sg-output.json</code></pre>
-<div class="notice">
+<div class="notice" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Make sure you replace <code>$VPC_ID</code> with the ID for the <a href="#where-will-the-instance-live">VPC you identified earlier</a>.</p>
 </div>
@@ -374,11 +370,11 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
     --port 80 \
     --cidr 0.0.0.0/0 \
     --no-cli-pager</code></pre>
-<div class="notice">
+<div class="notice" data-markdown="1">
 <p><strong>ℹ️ Find your public IP from the command line</strong></p>
 <p>AWS has a public service that returns your IP to you. It’s super handy for scripting, because its much clearer to read than the most popular <code>dig</code>-based examples passed around on the internet. You can use it like this: <code>curl -s https://checkip.amazonaws.com</code></p>
 </div>
-<div class="notice--warning">
+<div class="notice--warning" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Make sure you replace <code>$SG_ID</code> with the ID for the security group you created earlier. If you saved the output like the sample earlier, you can get it by running <code>jq -r .GroupId sg-output.json</code>. Also, make sure you replace <code>$IP</code> with your <em>public</em> IP address.</p>
 </div>
@@ -392,15 +388,15 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
     --security-group-ids $SG_ID \
     --subnet-id $SUBNET_ID \
     &gt; ec2-output.json</code></pre>
-<div class="notice--warning">
+<div class="notice--warning" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Make sure you replace <code>$KEY_NAME</code> with the name (<em>not id</em>) of the keypair you created earlier (<code>proxy-key-pair</code>). Also make sure you replace <code>$SG_ID</code> with the ID for the security group you created earlier, and <code>$SUBNET_ID</code> with the subnet you identified before you began.</p>
 </div>
-<div class="notice">
+<div class="notice" data-markdown="1">
 <p><strong>ℹ️ EC2 is fast, but not instant</strong></p>
 <p>Although AWS can provision instances very quickly, it can <em>still</em> take a couple minutes for the instance to come up, so be patient! You can wait for the instance on the CLI (if desired) by running the following command: <code>aws ec2 wait instance-status-ok --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the instance ID from the prior step.</p>
 </div>
-<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, <a href="/blog/encrypting-data-with-ssh-keys-and-golang">SSH</a> into the box and install NGINX.</p>
+<p>Creating the instance isn’t the end of our work, however. You’ll still need to configure it to actually reverse proxy the traffic coming in from the internet to our local development machine. To that end, NGINX is a fantastic,battle-tested option. As soon the instance is ready, SSH into the box and install NGINX.</p>
 <pre><code>❯ sudo amazon-linux-extras install nginx1</code></pre>
 <p>NGINX needs to be configured to use the AWS-assigned public DNS name, and proxy traffic from port 80 to you. Heres a sample config you can use:</p>
 <pre><code>upstream tunnel {
@@ -419,7 +415,7 @@ server {
     proxy_pass http://tunnel;
   }
 }</code></pre>
-<div class="notice--warning">
+<div class="notice--warning" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Be sure to replace <code>PUBLIC_DNS</code> with the AWS public DNS name. This is <em>not</em> in the initial output from AWS, because the DNS name is not granted until the machine enters a running state. You can find itby running <code>aws ec2 describe-instances --instance-ids $EC2_ID</code>, where <code>$EC2_ID</code> is the ID of the machine you provisioned earlier. This ID <em>can</em> be found in the outputwhen you created the instance by running <code>jq -r '.Instances[0].InstanceId' ec2-output.json</code></p>
 </div>
@@ -434,7 +430,7 @@ server {
 <h3 id="using-the-proxy">Using the Proxy</h3>
 <p>Now that the instance is configured, all you will need to do to allow the internet at large to connect to a service running on your local box is to use an <code>ssh</code> reverse proxy to get data from AWS to your local machine! Start one up like this:</p>
 <pre><code>❯ ssh -i key.pem -R 8080:localhost:$LOCAL_PORT ec2-user@$PUBLIC_DNS</code></pre>
-<div class="notice--warning">
+<div class="notice--warning" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Replace <code>$LOCAL_PORT</code> with the port your application is running on, and <code>$PUBLIC_DNS</code> with the AWS-assigned public DNS name, like you did for the NGINX config.</p>
 </div>
@@ -454,11 +450,11 @@ server {
   --build-arg AWS_REGION=my_region \
   --build-arg SUBNET_ID=my_subnet \
   github.com/earthly/example-diy-ngrok:main+build-proxy</code></pre>
-<div class="notice">
+<div class="notice" data-markdown="1">
 <p><strong>ℹ️ AWS Credentials</strong></p>
 <p>The reason you’ll need to pass the credentials, is so that our scripts can use them to construct the proxy. If you are uncomfortable passing credentials to a remote target, feel free to clone and inspect the repository before using it. You could also simplify this by trying out Earthly’s experimental <a href="https://docs.earthly.dev/guides/cloud-secrets">cloud-based secrets.</a></p>
 </div>
-<div class="notice--warning">
+<div class="notice--warning" data-markdown="1">
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Replace the following:</p>
 <p><code>/home/user</code> with the directory of the AWS configuration directory (<code>.aws</code>)<br />
@@ -494,7 +490,7 @@ server {
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
       
     </div>
@@ -644,13 +640,13 @@ server {
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -668,7 +664,7 @@ server {
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -676,7 +672,9 @@ server {
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -696,13 +694,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -720,7 +718,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -728,7 +726,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

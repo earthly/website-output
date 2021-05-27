@@ -6,9 +6,6 @@
 <!-- begin _includes/seo.html -->
 
 
-
-
-
 <title>Building on Kubernetes: Ingress - Earthly Blog</title>
 <meta name="description" content="Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
@@ -30,7 +27,7 @@
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/building-on-kubernetes-ingress/header-800-0fe6e4762.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/building-on-kubernetes-ingress/header-747-6bfb10dc7.jpg">
 
 
 
@@ -41,7 +38,7 @@
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/building-on-kubernetes-ingress/header-800-0fe6e4762.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/building-on-kubernetes-ingress/header-747-6bfb10dc7.jpg">
   
 
   
@@ -70,7 +67,7 @@
     
       "@type": "Organization",
       "url": "https://earthly.dev/blog/",
-      "logo": "/assets/images/logo-header.png"
+      "logo": "/assets/images/logo.png"
     
   }
 </script>
@@ -114,8 +111,7 @@
 <![endif]-->
 
 
-  
-<!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -220,7 +216,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/building-on-kubernetes-ingress/header-400-4b7679a48.webp 400w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-600-4b7679a48.webp 600w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-800-4b7679a48.webp 800w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1000-4b7679a48.webp 1000w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1200-4b7679a48.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/building-on-kubernetes-ingress/header-400-4b7679a48.png 400w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-600-4b7679a48.png 600w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-800-4b7679a48.png 800w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1000-4b7679a48.png 1000w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1200-4b7679a48.png 1200w" type="image/png"><img src="/blog/generated/assets/images/building-on-kubernetes-ingress/header-800-4b7679a48.jpg" alt="Building on Kubernetes: Ingress"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/building-on-kubernetes-ingress/header-400-19e3b45d3.webp 400w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-600-19e3b45d3.webp 600w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-800-19e3b45d3.webp 800w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1000-19e3b45d3.webp 1000w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1200-19e3b45d3.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/building-on-kubernetes-ingress/header-400-19e3b45d3.png 400w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-600-19e3b45d3.png 600w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-800-19e3b45d3.png 800w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1000-19e3b45d3.png 1000w, /blog/generated/assets/images/building-on-kubernetes-ingress/header-1200-19e3b45d3.png 1200w" type="image/png"><img src="/blog/generated/assets/images/building-on-kubernetes-ingress/header-800-19e3b45d3.jpg" alt="Building on Kubernetes: Ingress"></picture>
 
   
   
@@ -279,7 +275,7 @@
       
       
       <div class="author__avatar_top">
-          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
           &nbsp;	&nbsp;
           Corey Larson
@@ -301,7 +297,7 @@
 It can be, if you don’t want to customize it. But the problem space there is just so large. There’re so many API objects, and so many different ways to do things that you don’t want to necessarily use them all.  Otherwise your platform just gets really complicated. So, you need to choose the bits and pieces that you want to use there. And, tons of the plugins that you use will also have custom resource definitions, their own custom definitions of API objects, that’s on top of the ones that already exist. So, you likely want to use those instead of the native Kubernetes ones if your software you’re choosing uses those. And so it’s all of that, but then there’s even more.</p>
 <p>Kubernetes doesn’t do monitoring. Kubernetes generates logs, but doesn’t do anything with them. Kubernetes doesn’t necessarily force a deployment process or an integration kind of a process onto you as well. So Kubernetes is really just an arrow in your toolkit that kind of lets you build the rest of that, in a really nice way.</p>
 <p>The platform should cover from the moment source code is pushed to get all the way up to this code is running in production.</p>
-<h2 id="kubernetes-ingest-strategies">Kubernetes Ingest Strategies</h2>
+<h3 id="kubernetes-ingest-strategies">Kubernetes Ingest Strategies:</h3>
 <p><strong>What is Ingress and how do requests get to a service inside of Kubernetes?</strong><br />
 Ingress is the networking layer of how you get requests to your services from the outside. And Kubernetes doesn’t really ship with an Ingress controller by default that actually performs all those liftings, they want you to bring your own. And there’s a ton of really interesting ones out there. There’s nginx that does that, there’s people who use Caddy to do some of that stuff. There’s newer ones that are cloud native. They’re in that giant behemoth of a chart, the cloud native compute foundation puts up, that gets memed all the time on Twitter.</p>
 <p>The way it works is a request comes from the internet and it’s going to hit some kind of a load balancer usually. We’re using one of Amazon’s application load balancers, but in the past I’ve just used even regular HAProxy or things like that. And from there, it bounces into your cluster. Your Ingress controller is going to pick it up, figure out where it should go, which services it should get routed to and route it to that service. And then, your service will generate a response and it follows these layers of the onion back out.</p>
@@ -313,7 +309,7 @@ Ingress is the networking layer of how you get requests to your services from th
 <p>Back when I first was doing some Kubernetes work, we were spinning up our first cluster. We were in Azure and we were, they didn’t have a managed offering at the time we were using some deployment script from Azure team to get it up and running. And, I don’t remember what we were using for Ingress. I remember there was the Calico networking layer in there, but… We would do things, and then suddenly the cluster would just stop routing traffic entirely. And, among other things, we chose to move off of Azure. So we went to AWS, and we actually started trying to work with the nginx proxy. And it uses your standard nginx server configuration to do a lot of configuration. Personally, I always have to Google a lot on those configuration files, cause they can get pretty complex</p>
 <p>But we tried Traefik, and it just kind of worked, and all of the options of things we wanted to do were first class citizens, in terms of route matching and everything else to get the Traefik where it needed to go. And so, we just stuck with it. At the time, the guy I was working with, he would make fun of me a lot, cause I liked to use Go. And I hesitated to suggest Traefik to them early on, because their mascot’s the go gopher with the traffic cones and everything else. And I didn’t want them to think I was more of a fan boy than I actually was. So I held off suggesting it to him for a while. So we spun our tires a little longer on nginx than we should have. And I think it’s gotten better since then, but I just have enough knowledge around how Traefik works in it.</p>
 <p><strong>Have you ever used nginx Lua scripting?</strong></p>
-<p>Infrastructure should be declarative, at least in my book. I don’t want a program that I have to then debug to figure out what my configuration actually is. For better or worse, a pile of <a href="/blog/intercal-yaml-and-other-horrible-programming-languages">YAML</a> is not going to change on you once you ship it somewhere else, and it’s not going to have bugs. It’s all there, it’s all declarative. You can put it in Git, and see who did what, when, to your infrastructure.</p>
+<p>Infrastructure should be declarative, at least in my book. I don’t want a program that I have to then debug to figure out what my configuration actually is. For better or worse, a pile of YAML is not going to change on you once you ship it somewhere else, and it’s not going to have bugs. It’s all there, it’s all declarative. You can put it in Git, and see who did what, when, to your infrastructure.</p>
 <p><strong>When do you think we would consider using a service mesh?</strong></p>
 <p>I’ve seen it used in a lot of places where people just have a ton of different microservices. I’m not a fan of services that small. I’m a much bigger fan of slightly larger services that are, right-sized, to do things. And I’ve never found something like a service mesh to be useful, that useful in that kind of an environment.</p>
 <p><strong>What are other important decisions about ingress you had to consider?</strong></p>
@@ -323,8 +319,8 @@ Ingress is the networking layer of how you get requests to your services from th
 <p>Kubernetes has a few of those baked in, where it’ll roll through and you can set how many or maximum amount available, and how many extra can I spin up to give myself headroom while I’m rolling in a deployment. But there’s more to it than that because that does let you get to, more or less zero downtime.</p>
 <p>Kubernetes will handle that, “Hey, no more traffic comes to this node.” And then we’ll spin it down as soon as all the traffic there is exhausted and spin up new ones, and let those get routed to. It’ll handle all that for you, and that’s really nice.</p>
 <p>But, there’s more to it than that because there’s the whole adventure that takes place before it’s live in production taking traffic.</p>
-<h2 id="testing-in-production">Testing in production</h2>
-<p>What I’m hoping to do for us as we’re going forward here is, that we can stick new deployments out on production in some small way, and then use our Ingress controller to send it some traffic. Then we can actually <a href="/blog/unit-vs-integration">test</a> the new version of the code in production without affecting anybody as a canary before we choose to roll that actually out to everybody.</p>
+<p><strong>Testing in production</strong></p>
+<p>What I’m hoping to do for us as we’re going forward here is, that we can stick new deployments out on production in some small way, and then use our Ingress controller to send it some traffic. Then we can actually test the new version of the code in production without affecting anybody as a canary before we choose to roll that actually out to everybody.</p>
 <p>Service meshes are a little bit better at this, then simple ingress controllers. This is one place that service meshes do succeed, but Traefik can do it well enough too, where you actually split percentages of your request volume to one deployment versus the other.</p>
 
         
@@ -339,7 +335,7 @@ Ingress is the networking layer of how you get requests to your services from th
   
     <div class="author__avatar">
       
-        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-d9707b743.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg 400w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-400-ebff39699.jpg" alt="Corey Larson %"></picture>
 
       
     </div>
@@ -504,13 +500,13 @@ Ingress is the networking layer of how you get requests to your services from th
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/jruby/header-600-625c7d5d5.webp 600w, /blog/generated/assets/images/jruby/header-800-625c7d5d5.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/jruby/header-600-032d52f6e.jpg 600w, /blog/generated/assets/images/jruby/header-800-032d52f6e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/jruby/header-800-032d52f6e.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-caed32f5a.webp 600w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg 600w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-600-3624c03a8.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/jruby/" rel="permalink">Why is JRuby Slow?
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -528,7 +524,7 @@ Ingress is the networking layer of how you get requests to your services from th
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          12 minute read
+          4 minute read
         
       </span>
     
@@ -536,7 +532,9 @@ Ingress is the networking layer of how you get requests to your services from th
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Rub...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -556,13 +554,13 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/backward-and-forward-compatibility/" rel="permalink">Protocol Buffers Best Practices for Backward and Forward Compatibility
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -580,7 +578,7 @@ Recently, I made some contributions to the continuous integration process for Je
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          1 minute read
         
       </span>
     
@@ -588,7 +586,9 @@ Recently, I made some contributions to the continuous integration process for Je
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 a...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
