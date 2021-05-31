@@ -369,7 +369,7 @@
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Step 7</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">if</span><span class="kw">:</span><span class="at"> ${{ github.event_name == &#39;pull_request&#39; &amp;&amp; github.event.action == &#39;unassigned&#39; }}</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">run</span><span class="kw">:</span><span class="at"> echo This event is a pull request that had an assignee removed.</span></span></code></pre></div>
-<p>Here is part of a Grafana <a href="deployment.yaml">Helm Chart</a>:</p>
+<p>Here is part of a Grafana <a href="https://github.com/grafana/helm-charts/blob/main/charts/grafana/templates/deployment.yaml">Helm Chart</a>:</p>
 <pre class="liquid"><code>  
   {{ if (or (not .Values.persistence.enabled) (eq .Values.persistence.type &quot;pvc&quot;)) }}
   apiVersion: apps/v1
@@ -702,7 +702,7 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-cdc40e8b9.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-cdc40e8b9.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-54bec33de.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-54bec33de.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-54bec33de.jpg"></picture>
 
       </div>
     

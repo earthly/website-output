@@ -30,7 +30,7 @@
 
 
 
-  <meta property="og:image" content="/blog/generated/assets/images/migrating-from-travis/header-800-536a62117.jpg">
+  <meta property="og:image" content="/blog/generated/assets/images/migrating-from-travis/header-800-0548b98e6.jpg">
 
 
 
@@ -41,7 +41,7 @@
 
   
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/migrating-from-travis/header-800-536a62117.jpg">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/migrating-from-travis/header-800-0548b98e6.jpg">
   
 
   
@@ -220,7 +220,7 @@
   style=" background-image: url('');"
 >
   
-      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/migrating-from-travis/header-400-6ecaa4225.webp 400w, /blog/generated/assets/images/migrating-from-travis/header-600-6ecaa4225.webp 600w, /blog/generated/assets/images/migrating-from-travis/header-800-6ecaa4225.webp 800w, /blog/generated/assets/images/migrating-from-travis/header-1000-6ecaa4225.webp 1000w, /blog/generated/assets/images/migrating-from-travis/header-1200-6ecaa4225.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/header-400-6ecaa4225.png 400w, /blog/generated/assets/images/migrating-from-travis/header-600-6ecaa4225.png 600w, /blog/generated/assets/images/migrating-from-travis/header-800-6ecaa4225.png 800w, /blog/generated/assets/images/migrating-from-travis/header-1000-6ecaa4225.png 1000w, /blog/generated/assets/images/migrating-from-travis/header-1200-6ecaa4225.png 1200w" type="image/png"><img src="/blog/generated/assets/images/migrating-from-travis/header-800-6ecaa4225.jpg" alt="Migrating Your Open Source Builds Off Of Travis CI"></picture>
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/migrating-from-travis/header-400-deb2455be.webp 400w, /blog/generated/assets/images/migrating-from-travis/header-600-deb2455be.webp 600w, /blog/generated/assets/images/migrating-from-travis/header-800-deb2455be.webp 800w, /blog/generated/assets/images/migrating-from-travis/header-1000-deb2455be.webp 1000w, /blog/generated/assets/images/migrating-from-travis/header-1200-deb2455be.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/header-400-deb2455be.png 400w, /blog/generated/assets/images/migrating-from-travis/header-600-deb2455be.png 600w, /blog/generated/assets/images/migrating-from-travis/header-800-deb2455be.png 800w, /blog/generated/assets/images/migrating-from-travis/header-1000-deb2455be.png 1000w, /blog/generated/assets/images/migrating-from-travis/header-1200-deb2455be.png 1200w" type="image/png"><img src="/blog/generated/assets/images/migrating-from-travis/header-800-deb2455be.jpg" alt="Migrating Your Open Source Builds Off Of Travis CI"></picture>
 
   
   
@@ -329,8 +329,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 </blockquote>
 <p>Many open-source projects are still using Travis and open-source maintainers are notoriously overworked.  Time spent migrating builds is time not spent on other things.  Large well-maintained projects will likely quickly transition but for many smaller projects, an abrupt change in a service they depend on is a huge challenge.</p>
 <h2 id="where-to-move-to">Where To Move To</h2>
-<p><img src="/blog/assets/images/migrating-from-travis/dartboard.png" alt="Pins on a Map" /><br />
-</p>
+<p><picture><source srcset="/blog/generated/assets/images/migrating-from-travis/dartboard-800-b79c84c10.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/dartboard-800-cb58e6b14.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/migrating-from-travis/dartboard-800-cb58e6b14.png"></picture></p>
 <p>If you maintain an open-source project that uses TravisCI and are hoping to get off it, then assuming you have the time to migrate, there are actually many viable options.</p>
 <h3 id="option-run-your-own-builds">Option: Run Your Own Builds</h3>
 <p>You can find some <a href="https://medium.com/google-developers/how-to-run-travisci-locally-on-docker-822fc6b2db2e">scattered</a> <a href="https://stackoverflow.com/a/35972902">instructions</a> <a href="https://stackoverflow.com/a/35972902">online</a> for running Travis builds yourself. There are mixed reports on the stability and feasibility of this approach, but if your adventurous you could try to setup your own Travis CI build executor on your own hardware.</p>
@@ -340,8 +339,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
 <h3 id="best-option-github-actions">Best Option: Github Actions</h3>
-<p><img src="/blog/assets/images/migrating-from-travis/trophy.png" alt="First place trophy" /><br />
-</p>
+<p><picture><source srcset="/blog/generated/assets/images/migrating-from-travis/trophy-800-c19297bf6.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/trophy-800-6abeac4a7.png 800w" type="image/png"><img width="800px" src="/blog/generated/assets/images/migrating-from-travis/trophy-800-6abeac4a7.png"></picture></p>
 <p>An even better option is <a href="/blog/continuous-integration#github-actions">Github Actions</a>, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
 <p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
@@ -372,8 +370,8 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <h2 id="dont-let-this-happen-again">Don’t Let This Happen Again</h2>
 <p>So GitHub has a generous build plan, but moving your CI process is not easy or free.  The more complex your build, the harder porting from one cloud CI to another is going to be.  If you move to GHA and then GHA stops being a viable option in the future then this whole effort will have to be repeated.  </p>
 <h2 id="neutral-build-specifications">Neutral Build Specifications</h2>
-<p><img src="/blog/assets/images/migrating-from-travis/opensign.png" alt="Open Sign" /><br />
-How can you minimize the effort of moving from build platform to another?</p>
+<p><picture><source srcset="/blog/generated/assets/images/migrating-from-travis/opensign-800-14f00aecf.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/opensign-800-363924a78.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/migrating-from-travis/opensign-800-363924a78.png"></picture></p>
+<p>How can you minimize the effort of moving from build platform to another?</p>
 <p>My suggestion is to keep as much logic as possible out of the proprietary build definition. Instead, define it in an open-source format that you can execute anywhere.</p>
 <h3 id="makefiles-and-dockerfiles">Makefiles and Dockerfiles</h3>
 <p>One way to build a CI neutral build definition is to use a makefile and a dockerfile.  The makefile contains the various steps of your build pipeline and you run it inside a docker container which installs any needed dependencies.  <a href="https://github.com/qmk/qmk_firmware">QMK</a> is a popular open-source project that uses this approach.</p>
@@ -397,7 +395,7 @@ How can you minimize the effort of moving from build platform to another?</p>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>lint: </span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a> ...</span></code></pre></div>
-<p>Example build steps for a <a href="https://github.com/earthly/earthly/blob/main/examples/go/Earthfile">go application</p>
+<p>Example build steps for a <a href="https://github.com/earthly/earthly/blob/main/examples/go/Earthfile">go application</a></p>
 <h2 id="other-interesting-options">Other Interesting Options</h2>
 <h3 id="easier-migration-from-travis-to-gha">Easier Migration from Travis to GHA</h3>
 <p>Migrating your build out of Travis might take a little work.  If you aren’t interested in a neutral format, <a href="https://github.com/marketplace/actions/run-travis-yml">this GHA action</a> might make it easier.  </p>
@@ -625,7 +623,7 @@ Recently, I made some contributions to the continuous integration process for Je
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-3406dae0b.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-3406dae0b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-6d49e244b.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-6d49e244b.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-cdc40e8b9.webp 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-cdc40e8b9.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/backward-and-forward-compatibility/header-600-54bec33de.jpg 600w, /blog/generated/assets/images/backward-and-forward-compatibility/header-800-54bec33de.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/backward-and-forward-compatibility/header-800-54bec33de.jpg"></picture>
 
       </div>
     
