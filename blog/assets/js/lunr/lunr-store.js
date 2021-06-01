@@ -280,4 +280,10 @@ var store = [{
         "tags": [],
         "url": "/blog/jruby/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Achieving Repeatability in Continuous Integration",
+        "excerpt":"In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia Continuous Integration (CI) and continuous delivery...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/achieving-repeatability/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
