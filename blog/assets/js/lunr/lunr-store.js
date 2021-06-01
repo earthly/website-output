@@ -286,4 +286,10 @@ var store = [{
         "tags": [],
         "url": "/blog/achieving-repeatability/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating and hosting your own deb packages and apt repo",
+        "excerpt":"As an Ubuntu user, I find myself typing apt install ... frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
