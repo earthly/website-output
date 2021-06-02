@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Using Autotools to Configure, Make, and Install a Program - Earthly Blog</title>
+<meta name="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+
+
+  <meta name="author" content="Kasper Siig">
+  
+  <meta property="article:author" content="Kasper Siig">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Using Autotools to Configure, Make, and Install a Program">
+<meta property="og:url" content="https://earthly.dev/blog/autoconf/">
+
+
+  <meta property="og:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/autoconf/header-800-3506da029.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Using Autotools to Configure, Make, and Install a Program">
+  <meta name="twitter:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/autoconf/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/autoconf/header-800-3506da029.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-06-08T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/autoconf/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/autoconf/header-400-7be396196.webp 400w, /blog/generated/assets/images/autoconf/header-600-7be396196.webp 600w, /blog/generated/assets/images/autoconf/header-800-7be396196.webp 800w, /blog/generated/assets/images/autoconf/header-1000-7be396196.webp 1000w, /blog/generated/assets/images/autoconf/header-1200-7be396196.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/autoconf/header-400-7be396196.png 400w, /blog/generated/assets/images/autoconf/header-600-7be396196.png 600w, /blog/generated/assets/images/autoconf/header-800-7be396196.png 800w, /blog/generated/assets/images/autoconf/header-1000-7be396196.png 1000w, /blog/generated/assets/images/autoconf/header-1200-7be396196.png 1200w" type="image/png"><img src="/blog/generated/assets/images/autoconf/header-800-7be396196.jpg" alt="Using Autotools to Configure, Make, and Install a Program"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Using Autotools to Configure, Make, and Install a Program">
+    <meta itemprop="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+    <meta itemprop="datePublished" content="2021-06-08T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Using Autotools to Configure, Make, and Install a Program
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-08T00:00:00-04:00">June 8, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-3c02a472e.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
+
+          &nbsp;	&nbsp;
+          Kasper Siig
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#components-of-autotools">Components of Autotools</a><ul><li><a href="#autoconf">Autoconf</a></li><li><a href="#automake">Automake</a></li><li><a href="#aclocal">Aclocal</a></li></ul></li><li><a href="#using-autotools">Using Autotools</a><ul><li><a href="#writing-the-source-program">Writing the Source Program</a></li><li><a href="#configuring-configure.ac">Configuring configure.ac</a></li><li><a href="#making-the-makefile">Making the Makefile</a></li><li><a href="#creating-final-scripts">Creating Final Scripts</a></li><li><a href="#distributing-the-program">Distributing the Program</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p><a href="https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html">Autotools</a> is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as <a href="https://cmake.org/">CMake</a>, <a href="https://scons.org/">SCons</a>, and <a href="https://www.boost.org/doc/libs/1_43_0/doc/html/jam/usage.html">BJam</a>, they don’t quite match Autotools in ease of use, power, and versability.</p>
+<p>At its base, Autotools can help make your application more portable, give it the versatility to be installed on many different systems, and can automatically procure scripts to check where elements are, like the compiler for your program. In this article, you will learn how to use Autotools to package up an application and ship it.</p>
+<h2 id="components-of-autotools">Components of Autotools</h2>
+<p>Autotools is made up of three unique components:</p>
+<ul>
+<li><code>autoconf</code></li>
+<li><code>automake</code></li>
+<li><code>aclocal</code></li>
+</ul>
+<p>Using these tools, you will create two files, <code>configure</code> and <code>Makefile.in</code>. These files are present in any project shipped using Autotools and are usually quite large and complex. Luckily, you don’t have to write them yourself—instead you’ll be writing the files <code>configure.ac</code> and <code>Makefile.am</code>, which will automatically generate the files you need.</p>
+<h3 id="autoconf">Autoconf</h3>
+<p>Autoconf is written in <a href="https://www.gnu.org/software/autoconf/manual/autoconf-2.60/html_node/Programming-in-M4sh.html">M4sh</a>, using <code>m4</code> macros. If you’ve heard of this before, then great! If you haven’t, no worries. <code>m4sh</code> provides some macros you can use when creating your <code>configure.ac</code> script and are part of why you can generate a massive <code>configure</code> script without having to write too much actual code.</p>
+<p>The way it works is that you create a <code>configure.ac</code> script in which you define various settings like release name, version, which compiler to use, and where it should output files. Once you’ve written your script, you run it through <code>autoconf</code> to create your final <code>configure</code> script. The purpose of <code>autoconf</code> is to collect information from your system to populate the <code>Makefile.in</code> template, which is created using <code>automake</code>.</p>
+<h3 id="automake">Automake</h3>
+<p>The <code>Makefile.am</code> script creates <code>Makefile.in</code>. The principles behind this are the same as with <code>configure.ac</code>: write a simple script in order to create a complex file. Automake is the component you’ll use to create the Makefile, a template that can then be populated with <code>autoconf</code>.</p>
+<p>Automake does so using variables and <a href="http://www.fifi.org/doc/autobook/html/autobook_37.html">primaries</a>. An example of such a primary is <code>bin_PROGRAMS = helloworld</code>, where the primary is the <code>_PROGRAMS</code> suffix. This primary gives <code>automake</code> some knowledge about your program, like where you want the produced binary to be installed.</p>
+<p>In this case, you’re telling <code>automake</code> to install the <code>helloworld</code> binary in the path defined by the <code>bindir</code>. You may notice we didn’t define a <code>bindir</code> variable, because that variable is built into <code>automake</code> and is typically the default binary directory of your system.</p>
+<p>Other examples of primaries are <code>_SCRIPTS</code>, which you can use when you want a script, rather than a binary to be installed somewhere, and <code>_DATA</code>, when you have extra data files you want included in your installation. There are many more that you will find once you start using Autotools and figure out what your needs are.</p>
+<p>One last thing to mention is that although <code>Makefile.in</code> is special in that it contains all of these primaries, it’s still a regular Makefile. Meaning you can write your own custom make targets if you want. For example, if you want to have a custom <code>clean</code> target that deletes specific files, you can do so easily.</p>
+<h3 id="aclocal">Aclocal</h3>
+<p>This is the smallest component in the Autotools suite, but it’s very important. You learned in the previous section that <code>autoconf</code> uses <code>m4</code> macros to be configured. But where do these <code>m4</code> macros come from? They’re generated by running the <code>aclocal</code> command. Simple as that. If you don’t run <code>aclocal</code> before running <code>autoconf</code>, you’ll get an error complaining about missing macros.</p>
+<h2 id="using-autotools">Using Autotools</h2>
+<p>Now that you know the basic principles of how the Autotools suite is put together, it’s time to see it all in action and create a small C program that you can compile and ship.</p>
+<h3 id="writing-the-source-program">Writing the Source Program</h3>
+<p>The first thing you need is the program you want to compile and ship. Autotools is compatible with many different projects and languages, but for this example you’ll be working in <code>C</code>, which is most commonly used. If you’re not familiar with <code>C</code>, don’t worry, it’s very simple. Here’s your sample code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;Hello World</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>As you can see, it simply includes a standard in/standard out library and then prints <code>Hello World\n</code>. Let’s start with<code>autoconf</code> to configure this project.</p>
+<h3 id="configuring-configure.ac">Configuring configure.ac</h3>
+<p>When writing your <code>configure.ac</code> file, there are a lot of options to choose from. You can get very specific about how you want your script to be configured, but some configurations need to be set. The first of these is <code>AC_INIT</code>. This tells <code>autoconf</code> what the name of your application is, what version it is, and who’s the maintainer. For this example, you’ll write:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AC_INIT</span><span class="er">(</span><span class="ex">[helloworld],</span> [0.1], [maintainer@example.com]<span class="kw">)</span></span></code></pre></div>
+<p>While <code>autoconf</code> is generally used alongside <code>automake</code>, it’s not necessary, so you need to initialize that by writing:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AM_INIT_AUTOMAKE</span></span></code></pre></div>
+<p>Now that the generic options are initialized, you can get more specific with what you want. You need to specify what compiler you want the <code>configure</code> script to use. You do this by writing:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AC_PROG_CC</span></span></code></pre></div>
+<p>This will tell the <code>configure</code> script to look for a <code>C</code> <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">compiler</a>. For other applications, you may need more dependencies to build your program. By using the <code>AC_PATH_PROG</code> macro, you can make <code>autoconf</code> look for specific programs in a user’s <code>PATH</code>. At this point, there are only two steps needed to finish your basic <code>configure.ac</code> script:</p>
+<pre><code>AC_CONFIG_FILES([Makefile])
+AC_OUTPUT</code></pre>
+<p><code>AC_CONFIG_FILES</code> tells <code>autoconf</code> that it should find a file called <code>Makefile.in</code> and replace placeholders according to what we’ve specified. This can be things like version or maintainer. <code>AC_OUTPUT</code> is the last thing you want to put in your <code>configure.ac</code> script, as it tells <code>autoconf</code> to output the final <code>configure</code> script. In the end, your <code>configure.ac</code> file should contain the following:</p>
+<pre><code>AC_INIT([helloworld], [0.1], [maintainer@example.com])
+AM_INIT_AUTOMAKE
+AC_PROG_CC
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT</code></pre>
+<h3 id="making-the-makefile">Making the Makefile</h3>
+<p>When using <code>automake</code>, you’ll have to adhere to a set of standards. One of these is that source files for a project are located in the <code>src</code> folder. In this project, you have a single <code>main.c</code> file in our root directory, so you need to tell <code>automake</code> that:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AUTOMAKE_OPTIONS</span> = foreign</span></code></pre></div>
+<p>You need to tell <code>automake</code> what you want your compiled binary to be called. In this case, you want it to be called <code>helloworld</code>, so write the following:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bin_PROGRAMS</span> = helloworld</span></code></pre></div>
+<p>Only one thing left, and that is to tell <code>automake</code> what files are needed to compile your application. Do this by writing:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">helloworld_SOURCES</span> = main.c</span></code></pre></div>
+<p>Notice how the first part is the name of your application followed by the <code>SOURCES</code> primary. Now <code>automake</code> knows all that it needs to know, and your <code>Makefile.am</code> is ready to use.</p>
+<h3 id="creating-final-scripts">Creating Final Scripts</h3>
+<p>Once you’ve written your <code>configure.ac</code> and <code>Makefile.am</code>, it’s relatively straightforward to distribute your application. Remember to start by running <code>aclocal</code> so you can run <code>autoconf</code>. Once you’ve run <code>autoconf</code>, you can run <code>automake --add-missing</code> to build your <code>Makefile.in</code>.</p>
+<p>The reason for the <code>--add-missing</code> flag is to tell <code>automake</code> to automatically generate all of the additional files required, as usually you need more than just <code>Makefile.am</code> and would have to manually enter in the other files.</p>
+<p>At this point, you have all you need to distribute your program. Before moving on on, here’s a short recap showing the commands you should’ve run by now:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aclocal</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoconf</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">automake</span> <span class="at">--add-missing</span></span></code></pre></div>
+<h3 id="distributing-the-program">Distributing the Program</h3>
+<p>Distributing your application can seem like a daunting task, but Autotools makes it super easy. All you have to do is run <code>make dist</code> after you’ve run the configure scripts above. This will produce a tarball, which you can then ship to your customers.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Now you’re able to use Autotools to compile and distribute your application, and you’re able to do it in a way that ensures it’s portable across a variety of systems. From here, you can start looking into automating this procedure and other ways to integrate Autotools directly into your daily development.</p>
+<p>The great advantage of using something like Autotools is that you’ll be using a system that has been in place for many years, is well-documented, and widely used. Many developers are comfortable installing applications using what Autotools produces, so it can make your application much more familiar and accessible.</p>
+<p>If your project becomes more complex and autotools maintenance becomes a burden, <a href="https://earthly.dev/">earthly</a> is a great solution for containerized builds.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-3c02a472e.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/kaspersiig-240-f09fd8acb.jpg" alt="Kasper Siig %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Kasper Siig</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>As a DevOps engineer, Kasper Siig is used to working with a variety of exciting technologies, from automating simple tasks to CI/CD to Docker.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorial" class="page__taxonomy-item" rel="tag">Tutorial</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-08T00:00:00-04:00">June 8, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/" class="pagination--pager" title="Creating and hosting your own deb packages and apt repo
+">Previous</a>
+    
+    
+      <a href="/blog/thought-leaders/" class="pagination--pager" title="Don’t Feed the Thought Leaders
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

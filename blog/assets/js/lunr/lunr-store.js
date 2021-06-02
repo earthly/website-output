@@ -292,4 +292,28 @@ var store = [{
         "tags": [],
         "url": "/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Using Autotools to Configure, Make, and Install a Program",
+        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/autoconf/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Don't Feed the Thought Leaders",
+        "excerpt":"Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used. Raising Objections I was a new engineering manager who’s team was starting a new small but ambitious project at a SAAS company. The company had several hundred developers, and the project was...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/thought-leaders/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
