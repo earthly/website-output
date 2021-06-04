@@ -281,15 +281,33 @@ var store = [{
         "url": "/blog/jruby/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
+        "title": "Deployment Strategies",
+        "excerpt":"There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this short guide, I’ll review software deployment options starting from the most basic and straightforward and moving towards the more complex. Recreate Deployment Strategy This is the most...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/deployment-strategies/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
         "title": "Achieving Repeatability in Continuous Integration",
         "excerpt":"In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia Continuous Integration (CI) and continuous delivery...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/achieving-repeatability/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Creating and hosting your own deb packages and apt repo",
-        "excerpt":"As an Ubuntu user, I find myself typing apt install ... frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create...","categories": ["Tutorials"],
+        "title": "Using Autotools to Configure, Make, and Install a Program",
+        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
         "tags": [],
-        "url": "/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/",
+        "url": "/blog/autoconf/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
