@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-04T14:35:40-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Achieving Repeatability in Continuous Integration</title><link href="https://earthly.dev/blog/achieving-repeatability/" rel="alternate" type="text/html" title="Achieving Repeatability in Continuous Integration" /><published>2021-06-01T00:00:00-04:00</published><updated>2021-06-01T00:00:00-04:00</updated><id>https://earthly.dev/blog/achieving-repeatability</id><content type="html" xml:base="https://earthly.dev/blog/achieving-repeatability/">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-04T17:53:20-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Achieving Repeatability in Continuous Integration</title><link href="https://earthly.dev/blog/achieving-repeatability/" rel="alternate" type="text/html" title="Achieving Repeatability in Continuous Integration" /><published>2021-06-01T00:00:00-04:00</published><updated>2021-06-01T00:00:00-04:00</updated><id>https://earthly.dev/blog/achieving-repeatability</id><content type="html" xml:base="https://earthly.dev/blog/achieving-repeatability/">&lt;blockquote&gt;
 &lt;p&gt;In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —&lt;a href=&quot;https://en.wikipedia.org/wiki/Continuous_integration&quot; title=&quot;Wikipedia article on continuous integration&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Continuous Integration (CI) and continuous delivery (CD) are some of the best practices that any DevOps team can implement. You could argue that they’re necessary for teams looking to ship quality products fast and with confidence.&lt;/p&gt;
@@ -555,96 +555,7 @@ BKaAtOSl2Jcb4eA=
 &lt;p&gt;A complete example has been created under &lt;a href=&quot;https://github.com/earthly/example-apt-repo/blob/main/Earthfile&quot;&gt;github.com/earthly/example-apt-repo/Earthfile&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:&lt;/p&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb59&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb59-1&quot;&gt;&lt;a href=&quot;#cb59-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;earthly&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-P&lt;/span&gt; github.com/earthly/example-apt-repo+test&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Alternatively, you can clone the repo and run &lt;code&gt;+test&lt;/code&gt; directly.&lt;/p&gt;</content><author><name>Alex Couture-Beil</name></author><category term="Tutorials" /><summary type="html">As an Ubuntu user, I find myself typing apt install ... frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests.</summary></entry><entry><title type="html">Deployment Strategies</title><link href="https://earthly.dev/blog/deployment-strategies/" rel="alternate" type="text/html" title="Deployment Strategies" /><published>2021-05-31T00:00:00-04:00</published><updated>2021-05-31T00:00:00-04:00</updated><id>https://earthly.dev/blog/deployment-strategies</id><content type="html" xml:base="https://earthly.dev/blog/deployment-strategies/">&lt;p&gt;There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this short guide, I’ll review software deployment options starting from the most basic and straightforward and moving towards the more complex.&lt;/p&gt;
-&lt;h2 id=&quot;recreate-deployment-strategy&quot;&gt;Recreate Deployment Strategy&lt;/h2&gt;
-&lt;p&gt;This is the most straightforward deployment strategy. It’s been the default strategy in enterprise IT for a long time and works well when updates are very infrequent and maintenance windows plentiful. You stop the old service and then start up the new service. During the teardown and spin-up process, the service is down.&lt;/p&gt;
-&lt;p&gt;In a software-as-a-service world, with frequent updates, this strategy can really only work with the use of queues and async messaging architectures. For example, when upgrading a service that sends email, the mail will queue in an outbox waiting for the upgraded version to start up.&lt;/p&gt;
-&lt;section id=&quot;pros&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Pros&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Easy&lt;/li&gt;
-&lt;li&gt;Works excellent with queues and async message buffers&lt;/li&gt;
-&lt;li&gt;Never need to run more than one version of the service in parallel&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;cons&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Cons&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Downtime to upgrade&lt;/li&gt;
-&lt;li&gt;Downtime to rollback&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;rolling-update-deployment-strategy&quot;&gt;Rolling Update Deployment Strategy&lt;/h2&gt;
-&lt;p&gt;The recreate strategy above assumes you only have one instance of your service running at a time. But if you have several with a load balancer in front, you can improve the downtime story with a rolling update strategy. You start an instance of the new version, and once it’s up, gracefully terminate one instance of the old version. Then continue this pattern until only new versions of the service are running. This strategy is ubiquitous in Kubernetes and other containerized production environments.&lt;/p&gt;
-&lt;section id=&quot;pros-1&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Pros&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Easy on Kubernetes&lt;/li&gt;
-&lt;li&gt;No Downtime on upgrade&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;cons-1&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Cons&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Multiple versions of same service active during the overlap&lt;/li&gt;
-&lt;li&gt;No warm rollback services&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;blue-green-deployment&quot;&gt;Blue-Green Deployment&lt;/h2&gt;
-&lt;p&gt;A blue-green deployment requires a bit more resources: you need two identical production environments and a load balancer. One of these environments always receives 100% of the traffic while the other version sits idle. Updates are deployed to inactive version, and once it is successfully upgraded, traffic is switched over to it. These two environments are named blue and green, respectively, and traffic alternates back and forth from green to blue and then blue to green and so on. This means that the previously deployed version is always running on the idle environment, which simplifies rollbacks.&lt;/p&gt;
-&lt;section id=&quot;pros-2&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Pros&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Eliminates upgrade downtime&lt;/li&gt;
-&lt;li&gt;Very quick rollbacks&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;cons-2&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Cons:&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;More Resources&lt;/li&gt;
-&lt;li&gt;More Deployment complexity&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;canary-deployment&quot;&gt;Canary Deployment&lt;/h2&gt;
-&lt;p&gt;A canary deployment strategy looks a lot like a blue-green deployment – a new version of the service starts up parallel to the existing version – with a slight improvement made: instead of switching all traffic over to the new version, only a percentage of traffic is initially sent. This traffic is the canary in the coal mine. Canaries were used in mining to measure air quality. The miners would bring a canary with them as they traveled down into the mine. If there was an air quality problem, the canary would die before the miners and act as an early warning signal.&lt;/p&gt;
-&lt;p&gt;In the same way, a canary deployment does not prevent downtime, but limits its impact by giving an early warning. It limits access to the new version to a subset of users. If metrics indicate that the new service is not responding well to this fraction of requests, then the roll-out can be aborted, lessening its impact. If everything looks OK, request volume is slowly ramped up until its being entirely served by the new version.&lt;/p&gt;
-&lt;p&gt;Depending on how the canary traffic is chosen, a downside to this approach is that a specific subset of users may experience most of the production issues.&lt;/p&gt;
-&lt;section id=&quot;pros-3&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Pros&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Catch Problems Early&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;cons-3&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Cons&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Deployment complexity&lt;/li&gt;
-&lt;li&gt;Canary users bear the brunt of production issues&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;shadow-deployment&quot;&gt;Shadow Deployment&lt;/h2&gt;
-&lt;p&gt;If the problems a canary deployment finds can genuinely be found with metrics alone, and if the cost of incidents is very high, then a shadow or mirrored deployment is worth considering.&lt;/p&gt;
-&lt;p&gt;In a shadow deployment, the new version of the service is started, and all traffic is mirrored by the load balancer. That is, requests are sent to the current version and the new version, but all responses come only from the existing stable version. In this way, you can monitor the latest version under load without any possibility of customer impact. This strategy is sometimes called a mirrored canary deployment.&lt;/p&gt;
-&lt;p&gt;The cost of this approach is in the implementation. A service mesh like Istio is probably needed to perform the actual request mirroring, and it gets more complex from there. If a new version of a user service backed by a relational database was shadow deployed, all users might be created twice, leading to untold ramifications. To embrace a shadow or mirrored deployment strategy, you have to think about the implications of duplicated requests, and any non-idempotent actions on downstream services may need to be mocked.&lt;/p&gt;
-&lt;section id=&quot;pros-4&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Pros&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Catch production problems without custom impact&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;cons-4&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h3&gt;Cons&lt;/h3&gt;
-&lt;/section&gt;
-&lt;ul&gt;
-&lt;li&gt;Deployment complexity&lt;/li&gt;
-&lt;li&gt;Architectural complexity&lt;/li&gt;
-&lt;/ul&gt;
-&lt;section id=&quot;summary&quot; class=&quot;no_toc_section&quot;&gt;
-&lt;h2&gt;Summary&lt;/h2&gt;
-&lt;/section&gt;
-&lt;p&gt;There are many deployment methods, from the very simple to the very complex. The deployment strategy the works best for any given situation depends on many factors. When choosing a deployment strategy balancing the cost of downtime versus the cost of deployment complexity is essential.&lt;/p&gt;
-&lt;p&gt;If there are other deployment strategies or other continuous deployment terms you would like to see covered, please reach out to us on &lt;a href=&quot;https://twitter.com/earthlytech&quot;&gt;Twitter&lt;/a&gt; or via &lt;a href=&quot;adam@earthly.dev&quot;&gt;email&lt;/a&gt;.&lt;/p&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorial" /><summary type="html">There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this short guide, I’ll review software deployment options starting from the most basic and straightforward and moving towards the more complex.</summary></entry><entry><title type="html">Why is JRuby Slow?</title><link href="https://earthly.dev/blog/jruby/" rel="alternate" type="text/html" title="Why is JRuby Slow?" /><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><id>https://earthly.dev/blog/jruby</id><content type="html" xml:base="https://earthly.dev/blog/jruby/">&lt;p&gt;Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses &lt;a href=&quot;http://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.&lt;/p&gt;
+&lt;p&gt;Alternatively, you can clone the repo and run &lt;code&gt;+test&lt;/code&gt; directly.&lt;/p&gt;</content><author><name>Alex Couture-Beil</name></author><category term="Tutorials" /><summary type="html">As an Ubuntu user, I find myself typing apt install ... frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests.</summary></entry><entry><title type="html">Why is JRuby Slow?</title><link href="https://earthly.dev/blog/jruby/" rel="alternate" type="text/html" title="Why is JRuby Slow?" /><published>2021-05-26T00:00:00-04:00</published><updated>2021-05-26T00:00:00-04:00</updated><id>https://earthly.dev/blog/jruby</id><content type="html" xml:base="https://earthly.dev/blog/jruby/">&lt;p&gt;Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses &lt;a href=&quot;http://earthly.dev/&quot;&gt;Earthly&lt;/a&gt; and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.&lt;/p&gt;
 &lt;p&gt;The build times looked like this:&lt;/p&gt;
 &lt;div class=&quot;center&quot;&gt;
 &lt;table&gt;
@@ -2003,4 +1914,527 @@ build:
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Due to better structured configurational files and multiple language support, Bazel is a viable option for your large multi-language project deployed on multiple platforms. It’s fast, and you can even optimize your slow builds &lt;a href=&quot;https://docs.bazel.build/versions/master/remote-caching.html&quot;&gt;using your own build cache&lt;/a&gt;. Google has tried and tested Bazel’s core features to validate its stability, and their extensive documentation is some compensation for the small community.&lt;/p&gt;
 &lt;p&gt;If you’d like to explore further, you can build your own React or Angular app using Bazel to see how it treats different environments of the same language. You can also try out their &lt;a href=&quot;https://docs.bazel.build/versions/0.17.2/build-javascript.html#tutorials&quot;&gt;tutorials for different languages&lt;/a&gt; to get a bigger picture of how Bazel works. And if today’s the day you’re welcoming Bazel into your project, definitely take a moment to familiarize yourself with its documented &lt;a href=&quot;https://docs.bazel.build/versions/master/best-practices.html&quot;&gt;best practices&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If the benefits of Bazel look promising but the downsides prevent you from adopting it, then take a look at &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt;. It supports monorepo and poly repos and has a gentler learning curve.&lt;/p&gt;</content><author><name>Siddhant Varma</name></author><category term="Tutorials" /><summary type="html">A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.</summary></entry></feed>
+&lt;p&gt;If the benefits of Bazel look promising but the downsides prevent you from adopting it, then take a look at &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt;. It supports monorepo and poly repos and has a gentler learning curve.&lt;/p&gt;</content><author><name>Siddhant Varma</name></author><category term="Tutorials" /><summary type="html">A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.</summary></entry><entry><title type="html">Understanding Docker Networking</title><link href="https://earthly.dev/blog/docker-networking/" rel="alternate" type="text/html" title="Understanding Docker Networking" /><published>2021-05-05T00:00:00-04:00</published><updated>2021-05-05T00:00:00-04:00</updated><id>https://earthly.dev/blog/docker-networking</id><content type="html" xml:base="https://earthly.dev/blog/docker-networking/">&lt;p&gt;Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.&lt;/p&gt;
+&lt;p&gt;Once the application is inside a container, it’s easier to scale and even runs on different cloud platforms, like AWS, GCP, and Azure. In this article, let’s focus on the &lt;a href=&quot;https://docs.docker.com/network/&quot;&gt;networking aspect of Docker&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;what-is-a-docker-network&quot;&gt;What Is a Docker Network?&lt;/h2&gt;
+&lt;p&gt;Networking is about communication among processes, and Docker’s networking is no different. Docker networking is primarily used to establish communication between Docker containers and the outside world via the host machine where the Docker daemon is running.&lt;/p&gt;
+&lt;p&gt;Docker supports different types of networks, each fit for certain use cases. We’ll be exploring the network drivers supported by Docker in general, along with some coding examples.&lt;/p&gt;
+&lt;p&gt;Docker networking differs from virtual machine (VM) or physical machine networking in a few ways:&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Virtual machines are more flexible in some ways as they can support configurations like &lt;a href=&quot;https://superuser.com/questions/227505/what-is-the-difference-between-nat-bridged-host-only-networking&quot;&gt;NAT and host networking&lt;/a&gt;. Docker typically uses a bridge network, and while it can support host networking, that option is &lt;a href=&quot;https://docs.docker.com/network/host/&quot;&gt;only available on Linux&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;When using Docker containers, network isolation is achieved using a network namespace, not an entirely separate networking stack.&lt;/li&gt;
+&lt;li&gt;You can run hundreds of containers on a single-node Docker host, so it’s required that the host can support networking at this scale. VMs usually don’t run into these network limits as they typically run fewer processes per VM.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;what-are-docker-network-drivers&quot;&gt;What Are Docker Network Drivers?&lt;/h2&gt;
+&lt;p&gt;Docker handles communication between containers by creating a default bridge network, so you often don’t have to deal with networking and can instead focus on creating and running containers. This default bridge network works in most cases, but it’s not the only option you have.&lt;/p&gt;
+&lt;p&gt;Docker allows you to create three different types of network drivers out-of-the-box: bridge, host, and none. However, they may not fit every use case, so we’ll also explore user-defined networks such as overlay and macvlan. Let’s take a closer look at each one.&lt;/p&gt;
+&lt;h3 id=&quot;the-bridge-driver&quot;&gt;The Bridge Driver&lt;/h3&gt;
+&lt;p&gt;This is the default. Whenever you start Docker, a bridge network gets created and all newly started containers will connect automatically to the default bridge network.&lt;/p&gt;
+&lt;p&gt;You can use this whenever you want your containers running in isolation to connect and communicate with each other. Since containers run in isolation, the bridge network solves the port conflict problem. Containers running in the same bridge network can communicate with each other, and Docker &lt;a href=&quot;https://docs.docker.com/network/iptables/&quot;&gt;uses iptables&lt;/a&gt; on the host machine to prevent access outside of the bridge.&lt;/p&gt;
+&lt;!-- markdownlint-disable MD029 --&gt;
+&lt;p&gt;Let’s look at some examples of how a bridge network driver works.&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Check the available network by running the &lt;code&gt;docker network ls&lt;/code&gt; command&lt;/li&gt;
+&lt;li&gt;Start two &lt;a href=&quot;https://hub.docker.com/_/busybox&quot;&gt;busybox&lt;/a&gt; containers named &lt;code&gt;busybox1&lt;/code&gt; and &lt;code&gt;busybox2&lt;/code&gt; in detached mode by passing the &lt;code&gt;-dit&lt;/code&gt; flag.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$&lt;/span&gt; docker network ls           &lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;NETWORK&lt;/span&gt; ID     NAME      DRIVER    SCOPE&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;5077a7b25ae6&lt;/span&gt;   bridge    bridge    local&lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;7e25f334b07f&lt;/span&gt;   host      host      local&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;475e50be0fe0&lt;/span&gt;   none      null      local&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker run -dit --name busybox1 busybox /bin/sh
+docker run -dit --name busybox2 busybox /bin/sh&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;3&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Run the &lt;code&gt;docker ps&lt;/code&gt; command to verify that containers are up and running.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps
+CONTAINER ID   IMAGE     COMMAND     CREATED          STATUS          PORTS     NAMES
+9e6464e82c4c   busybox   &amp;quot;/bin/sh&amp;quot;   5 seconds ago    Up 5 seconds              busybox2
+7fea14032748   busybox   &amp;quot;/bin/sh&amp;quot;   26 seconds ago   Up 26 seconds             busybox1&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;4&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Verify that the containers are attached to the bridge network.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect bridge                                                       
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;5077a7b25ae67abd46cff0fde160303476c8a9e2e1d52ad01ba2b4bf04acc0e0&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T03:25:58.232446444Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.17.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.17.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: false,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;7fea140327487b57c3cf31d7502cfaf701e4ea4314621f0c726309e396105885&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;busybox1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;05f216032784786c3315e30b3d54d50a25c1efc7d2030dc664716dda38056326&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:11:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.17.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;9e6464e82c4ca647b9fb60a85ca25e71370330982ea497d51c1238d073148f63&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;busybox2&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;3dcc24e927246c44a2063b5be30b5f5e1787dcd4d53864c6ff2bb3c561519115&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:11:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.17.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {
+            &amp;quot;com.docker.network.bridge.default_bridge&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.enable_icc&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.enable_ip_masquerade&amp;quot;: &amp;quot;true&amp;quot;,
+            &amp;quot;com.docker.network.bridge.host_binding_ipv4&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+            &amp;quot;com.docker.network.bridge.name&amp;quot;: &amp;quot;docker0&amp;quot;,
+            &amp;quot;com.docker.network.driver.mtu&amp;quot;: &amp;quot;1500&amp;quot;
+        },
+        &amp;quot;Labels&amp;quot;: {}
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;5&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Under the container’s key, you can observe that two containers (&lt;code&gt;busybox1&lt;/code&gt; and &lt;code&gt;busybox2&lt;/code&gt;) are listed with information about IP addresses. Since containers are running in the background, attach to the &lt;code&gt;busybox1&lt;/code&gt; container and try to ping to &lt;code&gt;busybox2&lt;/code&gt; with its IP address.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker attach busybox1
+/ # whoami
+root
+/ # hostname -i
+172.17.0.2
+/ # ping 172.17.0.3
+PING 172.17.0.3 (172.17.0.3): 56 data bytes
+64 bytes from 172.17.0.3: seq=0 ttl=64 time=2.083 ms
+64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.144 ms
+/ # ping busybox2
+ping: bad address &amp;#39;busybox2&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&quot;6&quot; type=&quot;1&quot;&gt;
+&lt;li&gt;Observe that the ping works by passing the IP address of &lt;code&gt;busybox2&lt;/code&gt; but fails when the container name is passed instead.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The downside with the bridge driver is that it’s not recommended for production; the containers communicate via IP address instead of automatic service discovery to resolve an IP address to the container name. Every time you run a container, a different IP address gets assigned to it. It may work well for local development or CI/CD, but it’s definitely not a sustainable approach for applications running in production.&lt;/p&gt;
+&lt;p&gt;Another reason not to use it in production is that it will allow unrelated containers to communicate with each other, which could be a security risk. I’ll cover how you can create custom bridge networks later.&lt;/p&gt;
+&lt;h3 id=&quot;the-host-driver&quot;&gt;The Host Driver&lt;/h3&gt;
+&lt;p&gt;As the name suggests, host drivers use the networking provided by the host machine. And it removes network isolation between the container and the host machine where Docker is running. For example, If you run a container that binds to port 80 and uses host networking, the container’s application is available on port 80 on the host’s IP address. You can use the host network if you don’t want to rely on Docker’s networking but instead rely on the host machine networking.&lt;/p&gt;
+&lt;p&gt;One limitation with the host driver is that it doesn’t work on Docker desktop: you need a Linux host to use it. This article focuses on Docker desktop, but I’ll show you the commands required to work with the Linux host.&lt;/p&gt;
+&lt;p&gt;The following command will start an NGINX image and listen to port 80 on the host machine:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker run --rm -d --network host --name my_nginx nginx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can access NGINX by hitting the &lt;code&gt;http://localhost:80/ url&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The downside with the host network is that you can’t run multiple containers on the same host having the same port. Ports are shared by all containers on the host machine network.&lt;/p&gt;
+&lt;h3 id=&quot;the-none-driver&quot;&gt;The None Driver&lt;/h3&gt;
+&lt;p&gt;The none network driver does not attach containers to any network. Containers do not access the external network or communicate with other containers. You can use it when you want to disable the networking on a container.&lt;/p&gt;
+&lt;h3 id=&quot;the-overlay-driver&quot;&gt;The Overlay Driver&lt;/h3&gt;
+&lt;p&gt;The Overlay driver is for multi-host network communication, as with &lt;a href=&quot;https://docs.docker.com/engine/swarm/&quot;&gt;Docker Swarm&lt;/a&gt; or &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt;. It allows containers across the host to communicate with each other without worrying about the setup. Think of an overlay network as a distributed virtualized network that’s built on top of an existing computer network.&lt;/p&gt;
+&lt;p&gt;To create an overlay network for Docker Swarm services, use the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker network create -d overlay my-overlay-network&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To create an overlay network so that standalone containers can communicate with each other, use this command:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker network create -d overlay --attachable my-attachable-overlay&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;the-macvlan-driver&quot;&gt;The Macvlan Driver&lt;/h3&gt;
+&lt;p&gt;This driver connects Docker containers directly to the physical host network. As per &lt;a href=&quot;https://docs.docker.com/network/#network-drivers&quot;&gt;the Docker documentation&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network. The Docker daemon routes traffic to containers by their MAC addresses. Using the &lt;code&gt;macvlan&lt;/code&gt; driver is sometimes the best choice when dealing with legacy applications that expect to be directly connected to the physical network, rather than routed through the Docker host’s network stack.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Macvlan networks are best for legacy applications that need to be modernized by containerizing them and running them on the cloud because they need to be attached to a physical network for performance reasons. &lt;a href=&quot;https://github.com/docker/for-mac/issues/3926&quot;&gt;A macvlan network is also not supported on Docker desktop for macOS&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;basic-docker-networking-commands&quot;&gt;Basic Docker Networking Commands&lt;/h2&gt;
+&lt;p&gt;To see which commands list, create, connect, disconnect, inspect, or remove a Docker network, use the &lt;code&gt;docker network help&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network help
+
+Usage:  docker network COMMAND
+
+Manage networks
+
+Commands:
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s run through some examples of each command, starting with &lt;code&gt;docker network connect&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;connecting-a-container-to-a-network&quot;&gt;Connecting a Container to a Network&lt;/h3&gt;
+&lt;p&gt;Let’s try to connect a container to the &lt;code&gt;mynetwork&lt;/code&gt; we have created. First, we would need a running container that can connect to &lt;code&gt;mynetwork&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker run -it ubuntu bash   
+root@0f8d7a833f42:/# &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have an Ubuntu Linux image and started a login shell as root inside it. We have the container running in interactive mode with the help of the &lt;code&gt;-it&lt;/code&gt; flags.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps     
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+0f8d7a833f42   ubuntu    &amp;quot;bash&amp;quot;    9 seconds ago   Up 7 seconds             wizardly_greider&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the &lt;code&gt;docker network connect 0f8d7a833f42&lt;/code&gt; command to connect the container named &lt;code&gt;wizardly_greider&lt;/code&gt; with &lt;code&gt;mynetwork&lt;/code&gt;. To verify that this container is connected to &lt;code&gt;mynetwork&lt;/code&gt;, use the &lt;code&gt;docker inspect&lt;/code&gt; command.&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;er&quot;&gt;&amp;quot;mynetwork&amp;quot;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-2&quot;&gt;&lt;a href=&quot;#cb12-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPAMConfig&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{},&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-3&quot;&gt;&lt;a href=&quot;#cb12-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Links&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-4&quot;&gt;&lt;a href=&quot;#cb12-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Aliases&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;ot&quot;&gt;[&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-5&quot;&gt;&lt;a href=&quot;#cb12-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                        &lt;span class=&quot;st&quot;&gt;&amp;quot;0f8d7a833f42&amp;quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-6&quot;&gt;&lt;a href=&quot;#cb12-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;ot&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-7&quot;&gt;&lt;a href=&quot;#cb12-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;NetworkID&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-8&quot;&gt;&lt;a href=&quot;#cb12-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;EndpointID&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-9&quot;&gt;&lt;a href=&quot;#cb12-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.20.0.1&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-10&quot;&gt;&lt;a href=&quot;#cb12-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;172.20.0.2&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-11&quot;&gt;&lt;a href=&quot;#cb12-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPPrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-12&quot;&gt;&lt;a href=&quot;#cb12-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;IPv6Gateway&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-13&quot;&gt;&lt;a href=&quot;#cb12-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;GlobalIPv6Address&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-14&quot;&gt;&lt;a href=&quot;#cb12-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;GlobalIPv6PrefixLen&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-15&quot;&gt;&lt;a href=&quot;#cb12-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;MacAddress&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;02:42:ac:14:00:02&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-16&quot;&gt;&lt;a href=&quot;#cb12-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                    &lt;span class=&quot;dt&quot;&gt;&amp;quot;DriverOpts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{}&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb12-17&quot;&gt;&lt;a href=&quot;#cb12-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;                &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;creating-a-network&quot;&gt;Creating a Network&lt;/h3&gt;
+&lt;p&gt;You can use &lt;code&gt;docker network create mynetwork&lt;/code&gt; to create a Docker network. Here, we’ve created a network named &lt;code&gt;mynetwork&lt;/code&gt;. Let’s run &lt;code&gt;docker network ls&lt;/code&gt; to verify that the network is created successfully.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network ls
+NETWORK ID     NAME        DRIVER    SCOPE
+b995772ac197   bridge      bridge    local
+7e25f334b07f   host        host      local
+97a158252c99   mynetwork   bridge    local
+475e50be0fe0   none        null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a new custom network named &lt;code&gt;mynetwork&lt;/code&gt;, and its type is bridge.&lt;/p&gt;
+&lt;h3 id=&quot;disconnecting-a-container-from-the-network&quot;&gt;Disconnecting a Container from the Network&lt;/h3&gt;
+&lt;p&gt;This command disconnects a Docker container from the custom &lt;code&gt;mynetwork&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker network disconnect mynetwork 0f8d7a833f42&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;inspecting-the-network&quot;&gt;Inspecting the Network&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;docker network inspect&lt;/code&gt; command displays detailed information on one or more networks.&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect mynetwork
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;mynetwork&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;97a158252c995d3632560852c62bd140984769c8714b1f990c8133a5c8ae65d3&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-02T17:36:30.090173896Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: {},
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.20.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.20.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: false,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;0f8d7a833f4283202e905e621e6fd5b29a8e3d4eccc6be6ea0f209f5cb3ca81c&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;wizardly_greider&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;db21f395ca781523c115706b11063ebe879cf5ef246c24fd128fe621a582cade&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:14:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.20.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {}
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;list-available-networks&quot;&gt;List Available Networks&lt;/h3&gt;
+&lt;p&gt;Docker installation comes with three networks: none, bridge, and host. You can verify this by running the command &lt;code&gt;docker network ls&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;removing-a-network&quot;&gt;Removing a Network&lt;/h3&gt;
+&lt;p&gt;The following are the Docker commands to remove a specific or all available networks:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network rm mynetwork
+mynetwork
+$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+b995772ac197   bridge    bridge    local
+7e25f334b07f   host      host      local
+475e50be0fe0   none      null      local&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network prune                            
+WARNING! This will remove all custom networks not used by at least one container.
+Are you sure you want to continue? [y/N] &lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;public-networking&quot;&gt;Public Networking&lt;/h2&gt;
+&lt;p&gt;Let’s talk about how to publish a container port and IP addresses to the outside world. When you start a container using the &lt;code&gt;docker run&lt;/code&gt; command, none of its ports are exposed. Your Docker container can connect to the outside world, but the outside world cannot connect to the container. To make the ports accessible for external use or with other containers not on the same network, you will have to use the &lt;code&gt;-P&lt;/code&gt; (publish all available ports) or &lt;code&gt;-p&lt;/code&gt; (publish specific ports) flag.&lt;/p&gt;
+&lt;p&gt;For example, here we’ve mapped the TCP port 80 of the container to port 8080 on the Docker host:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run -it --rm nginx -p 8080:80&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, we’ve mapped container TCP port 80 to port 8080 on the Docker host for connections to host IP 192.168.1.100:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run -p 192.168.1.100:8085:80 nginx&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can verify this by running the following curl command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ curl 192.168.1.100:8085
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;Welcome to nginx!&amp;lt;/title&amp;gt;
+&amp;lt;style&amp;gt;
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+&amp;lt;/style&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;h1&amp;gt;Welcome to nginx!&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;For online documentation and support please refer to
+&amp;lt;a href=&amp;quot;http://nginx.org/&amp;quot;&amp;gt;nginx.org&amp;lt;/a&amp;gt;.&amp;lt;br/&amp;gt;
+Commercial support is available at
+&amp;lt;a href=&amp;quot;http://nginx.com/&amp;quot;&amp;gt;nginx.com&amp;lt;/a&amp;gt;.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;em&amp;gt;Thank you for using nginx.&amp;lt;/em&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let me briefly mention DNS configuration for containers. Docker provides your containers with the ability to make basic name resolutions:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker exec busybox2 ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: seq=0 ttl=37 time=9.672 ms
+64 bytes from 216.58.216.196: seq=1 ttl=37 time=6.110 ms
+$ ping www.google.com
+PING www.google.com (216.58.216.196): 56 data bytes
+64 bytes from 216.58.216.196: icmp_seq=0 ttl=118 time=4.722 ms&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Docker containers inherit DNS settings from the host when using a bridge network, so the container will resolve DNS names just like the host by default. To add custom host records to your container, you’ll need to use the &lt;a href=&quot;https://docs.docker.com/config/containers/container-networking/#dns-services&quot;&gt;relevant &lt;code&gt;--dns*&lt;/code&gt; flags outlined here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;docker-compose-networking&quot;&gt;Docker Compose Networking&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;/blog/youre-using-docker-compose-wrong&quot;&gt;Docker Compose&lt;/a&gt; is a tool for running multi-container applications on Docker, which are defined using the compose YAML file. You can start your applications with a single command: &lt;code&gt;docker-compose up&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;By default, Docker Compose creates a single network for each container defined in the compose file. All the containers defined in the compose file connect and communicate through the default network.&lt;/p&gt;
+&lt;p&gt;If you’re not sure about the commands supported with Docker Compose, you can run the following:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker compose help
+Docker Compose
+
+Usage:
+  docker compose [command]
+
+Available Commands:
+  build       Build or rebuild services
+  convert     Converts the compose file to a cloud format (default: cloudformation)
+  down        Stop and remove containers, networks
+  logs        View output from containers
+  ls          List running compose projects
+  ps          List containers
+  pull        Pull service images
+  push        Push service images
+  run         Run a one-off command on a service.
+  up          Create and start containers
+
+Flags:
+  -h, --help   help for compose
+
+Global Flags:
+      --config DIRECTORY   Location of the client config files DIRECTORY (default &amp;quot;/Users/ashish/.docker&amp;quot;)
+  -c, --context string     context
+  -D, --debug              Enable debug output in the logs
+  -H, --host string        Daemon socket(s) to connect to
+
+Use &amp;quot;docker compose [command] --help&amp;quot; for more information about a command.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s understand this with an example. In the following &lt;code&gt;docker-compose.yaml&lt;/code&gt; file, we have a WordPress and a MySQL image.&lt;/p&gt;
+&lt;p&gt;When deploying this setup, &lt;code&gt;docker-compose&lt;/code&gt; maps the WordPress container port 80 to port 80 of the host as specified in the compose file. We haven’t defined any custom network, so it should create one for you. Run &lt;code&gt;docker-compose up -d&lt;/code&gt; to bring up the services defined in the YAML file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version: &amp;#39;3.7&amp;#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &amp;#39;--default-authentication-plugin=mysql_native_password&amp;#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see in the following output, a network named &lt;code&gt;downloads_default&lt;/code&gt; is created for you:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose up -d
+Creating network &amp;quot;downloads_default&amp;quot; with the default driver
+Creating volume &amp;quot;downloads_db_data&amp;quot; with default driver
+Pulling db (mysql:8.0.19)...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Verify that we have two containers up and running with the &lt;code&gt;docker ps&lt;/code&gt; command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                 NAMES
+f68265cd6219   wordpress:latest   &amp;quot;docker-entrypoint.s…&amp;quot;   6 minutes ago   Up 6 minutes   0.0.0.0:80-&amp;gt;80/tcp    downloads_wordpress_1
+2838f5586c73   mysql:8.0.19       &amp;quot;docker-entrypoint.s…&amp;quot;   6 minutes ago   Up 6 minutes   3306/tcp, 33060/tcp   downloads_db_1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Navigate to &lt;code&gt;http://localhost:80&lt;/code&gt; in your web browser to access WordPress.&lt;/p&gt;
+&lt;p&gt;Now let’s inspect this network with the &lt;code&gt;docker network inspect&lt;/code&gt; command. The following is the output:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect downloads_default
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;downloads_default&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;717ea814aae357ceca3972342a64335a0c910455abf160ed820018b8d6690383&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T03:43:42.541707419Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.18.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.18.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: true,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;2838f5586c735894051498c8ed0e5e103209cd22ee5718cbb29e8c6d169c9bf8&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_db_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;10033e064387892253d69ac5813be6bc820a95df1a3e19f84eff99a8d55af1bd&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:12:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.18.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;f68265cd6219fb60491c7ebbdae2d7f4c5ea4a74aec9987f5a5082c13b1ec025&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_wordpress_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;a4a673479ab3d812713955d461cc4d7032aba3806b49f50dd783a8083588aec5&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:12:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.18.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {
+            &amp;quot;com.docker.compose.network&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;com.docker.compose.project&amp;quot;: &amp;quot;downloads&amp;quot;,
+            &amp;quot;com.docker.compose.version&amp;quot;: &amp;quot;1.27.4&amp;quot;
+        }
+    }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the container sections, you can see that two containers (&lt;code&gt;downloads_db_1&lt;/code&gt; and &lt;code&gt;downloads_wordpress_1&lt;/code&gt;) are attached to the default &lt;code&gt;downloads_default&lt;/code&gt; network driver, which is the bridge type. Run the following commands to clean up everything:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose down
+Stopping downloads_wordpress_1 ... done
+Stopping downloads_db_1        ... done
+Removing downloads_wordpress_1 ... done
+Removing downloads_db_1        ... done
+Removing network downloads_default&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can observe that the network created by Compose is deleted, too:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose down -v
+Removing network downloads_default
+WARNING: Network downloads_default not found.
+Removing volume downloads_db_data&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The volume created earlier is deleted, and since the network is already deleted after running the previous command, it shows a warning that the default network is not found. That’s fine.&lt;/p&gt;
+&lt;p&gt;The example we’ve looked at so far covers the default network created by Compose, but what if we want to create our custom network and connect services to it? You will define the user-defined networks using the Compose file. The following is the &lt;code&gt;docker-compose&lt;/code&gt; YAML file:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version: &amp;#39;3.7&amp;#39;
+services:
+  db:
+    image: mysql:8.0.19
+    command: &amp;#39;--default-authentication-plugin=mysql_native_password&amp;#39;
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    networks:
+      - mynetwork
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - 80:80
+    networks:
+      - mynetwork
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+volumes:
+  db_data:
+networks:
+  mynetwork:&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I’ve defined a user-defined network under the top-level networks section at the end of the file and called the network &lt;code&gt;mynetwork&lt;/code&gt;. It’s a bridge type, meaning it’s a network on the host machine separated from the rest of the host network stack. Following each service, I added the network key to specify that these services should connect to &lt;code&gt;mynetwork&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s bring up the services again after the changing the Docker Compose YAML file:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker-compose up -d                    
+Creating network &amp;quot;downloads_mynetwork&amp;quot; with the default driver
+Creating volume &amp;quot;downloads_db_data&amp;quot; with default driver
+Creating downloads_wordpress_1 ... done
+Creating downloads_db_1        ... done&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, Docker Compose has created the new custom &lt;code&gt;mynetwork&lt;/code&gt;, started the containers, and connected them to the custom network. You can inspect it by using the Docker inspect command:&lt;/p&gt;
+&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ docker network inspect downloads_mynetwork
+[
+    {
+        &amp;quot;Name&amp;quot;: &amp;quot;downloads_mynetwork&amp;quot;,
+        &amp;quot;Id&amp;quot;: &amp;quot;cb24ed3832dfdd34ca6fdcfcf0065c8e0df6b9b72f7b29a2aaada74970835dd1&amp;quot;,
+        &amp;quot;Created&amp;quot;: &amp;quot;2021-03-05T04:23:14.354570267Z&amp;quot;,
+        &amp;quot;Scope&amp;quot;: &amp;quot;local&amp;quot;,
+        &amp;quot;Driver&amp;quot;: &amp;quot;bridge&amp;quot;,
+        &amp;quot;EnableIPv6&amp;quot;: false,
+        &amp;quot;IPAM&amp;quot;: {
+            &amp;quot;Driver&amp;quot;: &amp;quot;default&amp;quot;,
+            &amp;quot;Options&amp;quot;: null,
+            &amp;quot;Config&amp;quot;: [
+                {
+                    &amp;quot;Subnet&amp;quot;: &amp;quot;172.19.0.0/16&amp;quot;,
+                    &amp;quot;Gateway&amp;quot;: &amp;quot;172.19.0.1&amp;quot;
+                }
+            ]
+        },
+        &amp;quot;Internal&amp;quot;: false,
+        &amp;quot;Attachable&amp;quot;: true,
+        &amp;quot;Ingress&amp;quot;: false,
+        &amp;quot;ConfigFrom&amp;quot;: {
+            &amp;quot;Network&amp;quot;: &amp;quot;&amp;quot;
+        },
+        &amp;quot;ConfigOnly&amp;quot;: false,
+        &amp;quot;Containers&amp;quot;: {
+            &amp;quot;334bd5bf1689b067fa24705af0b6ab444976b288d25846349ce5b8f6914d8c19&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_wordpress_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;10674d2ddd9feb67c98e3c08fcf451f32bda58e96c9c256aee70a0487f6a4496&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:13:00:03&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.19.0.3/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            },
+            &amp;quot;9ffc94adab6896620648a1d08d215ba3d9423fee934b905b7bc2a44dd30bd74c&amp;quot;: {
+                &amp;quot;Name&amp;quot;: &amp;quot;downloads_db_1&amp;quot;,
+                &amp;quot;EndpointID&amp;quot;: &amp;quot;927943a0202bfb69692bc172a5c26e05676df6961236596eba3c3464cacbd1ab&amp;quot;,
+                &amp;quot;MacAddress&amp;quot;: &amp;quot;02:42:ac:13:00:02&amp;quot;,
+                &amp;quot;IPv4Address&amp;quot;: &amp;quot;172.19.0.2/16&amp;quot;,
+                &amp;quot;IPv6Address&amp;quot;: &amp;quot;&amp;quot;
+            }
+        },
+        &amp;quot;Options&amp;quot;: {},
+        &amp;quot;Labels&amp;quot;: {
+            &amp;quot;com.docker.compose.network&amp;quot;: &amp;quot;mynetwork&amp;quot;,
+            &amp;quot;com.docker.compose.project&amp;quot;: &amp;quot;downloads&amp;quot;,
+            &amp;quot;com.docker.compose.version&amp;quot;: &amp;quot;1.27.4&amp;quot;
+        }
+    }
+]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Inspecting the network, you can see there are now two containers connected to the custom network.&lt;/p&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;In this article, we’ve covered the what and how of Docker networking in detail, starting with Docker’s network drivers available out-of-the-box and then some advanced concepts such as overlay and macvlan. We ran through some examples of the most common Docker network commands, and then discussed some common use cases and general pitfalls of the available network drivers. We also covered port publishing, which allows the outside world to connect with containers, and how Docker resolves DNS names. Finally, we explored Docker Compose networking with some examples.&lt;/p&gt;
+&lt;p&gt;That should provide you with a decent overview of how Docker networking provides different modes of network drivers so that your containers can communicate on a single or multi-host setup. With this knowledge, you can pick and choose a network driver that fits your use case.&lt;/p&gt;</content><author><name>Ashish Choudhary</name></author><category term="Tutorials" /><summary type="html">Docker is the de facto model for building and running containers at scale in most enterprise organizations today. At a very high level, Docker is a combination of CLI and a daemon process that solves common software problems like installing, publishing, removing, and managing containers. It’s perfect for microservices, where you have many services handling a typical business functionality; Docker makes the packaging easier, enabling you to encapsulate those services in containers.</summary></entry></feed>
