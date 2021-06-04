@@ -281,6 +281,12 @@ var store = [{
         "url": "/blog/jruby/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
+        "title": "Deployment Strategies",
+        "excerpt":"There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this short guide, I’ll review software deployment options starting from the most basic and straightforward and moving towards the more complex. Recreate Deployment Strategy This is the most...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/deployment-strategies/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
         "title": "Achieving Repeatability in Continuous Integration",
         "excerpt":"In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia Continuous Integration (CI) and continuous delivery...","categories": ["Tutorials"],
         "tags": [],
