@@ -298,4 +298,34 @@ var store = [{
         "tags": [],
         "url": "/blog/autoconf/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Don't Feed the Thought Leaders",
+        "excerpt":"Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used. Raising Objections I was a new engineering manager who’s team was starting a new small but ambitious project at a SAAS company. The company had several hundred developers, and the project was...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/thought-leaders/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Deployment Strategies",
+        "excerpt":"There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this short guide, I’ll review software deployment options starting from the most basic and straightforward and moving towards the more complex. Recreate Deployment Strategy This is the most...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/deployment-strategies/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Incident Management Metrics and Key Performance Indicators",
+        "excerpt":"In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office. We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/incident-management-metrics/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
