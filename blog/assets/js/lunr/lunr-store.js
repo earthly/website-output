@@ -292,4 +292,10 @@ var store = [{
         "tags": [],
         "url": "/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Using Autotools to Configure, Make, and Install a Program",
+        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/autoconf/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
