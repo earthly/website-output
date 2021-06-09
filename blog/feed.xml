@@ -1,4 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-08T12:14:36-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Using Autotools to Configure, Make, and Install a Program</title><link href="https://earthly.dev/blog/autoconf/" rel="alternate" type="text/html" title="Using Autotools to Configure, Make, and Install a Program" /><published>2021-06-08T00:00:00-04:00</published><updated>2021-06-08T00:00:00-04:00</updated><id>https://earthly.dev/blog/autoconf</id><content type="html" xml:base="https://earthly.dev/blog/autoconf/">&lt;p&gt;&lt;a href=&quot;https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html&quot;&gt;Autotools&lt;/a&gt; is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as &lt;a href=&quot;https://cmake.org/&quot;&gt;CMake&lt;/a&gt;, &lt;a href=&quot;https://scons.org/&quot;&gt;SCons&lt;/a&gt;, and &lt;a href=&quot;https://www.boost.org/doc/libs/1_43_0/doc/html/jam/usage.html&quot;&gt;BJam&lt;/a&gt;, they don’t quite match Autotools in ease of use, power, and versability.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-09T08:28:12-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Don’t Feed the Thought Leaders</title><link href="https://earthly.dev/blog/thought-leaders/" rel="alternate" type="text/html" title="Don’t Feed the Thought Leaders" /><published>2021-06-09T00:00:00-04:00</published><updated>2021-06-09T00:00:00-04:00</updated><id>https://earthly.dev/blog/thought-leaders</id><content type="html" xml:base="https://earthly.dev/blog/thought-leaders/">&lt;p&gt;Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used.&lt;/p&gt;
+&lt;h2 id=&quot;raising-objections&quot;&gt;Raising Objections&lt;/h2&gt;
+&lt;p&gt;I was a new engineering manager who’s team was starting a new small but ambitious project at a SAAS company. The company had several hundred developers, and the project was approved. A design document and development plan existed, a working prototype had been created, and several talented people were executing the plan. All that was left to do, from my perspective, was to ‘reach alignment.’&lt;/p&gt;
+&lt;p&gt;I’m not sure if reaching alignment is a universal term that I was previously unfamiliar with or if it’s company-specific. But for this project, it worked like this: The project was approved, but there were all kinds of people vaguely horizontal to me in the organization who could ‘raise objections’ about it.&lt;/p&gt;
+&lt;p&gt;Raising objections is a process where you tell someone above me, my boss or my bosses boss or so on, that you have concerns about the project’s success. An easy way to report concerns can be a really good idea. If the SRE manager heard we were using bongoDB and had dealt with bongoDB data loss in the past, then there is no better time to speak than at the beginning of the project. And because the head of engineering doesn’t want to spend time mediating discussions about database preferences, or whatever the latest concerns are, part of my job was to make sure there were no objections to be raised.&lt;/p&gt;
+&lt;h2 id=&quot;seeking-alignment&quot;&gt;Seeking Alignment&lt;/h2&gt;
+&lt;p&gt;Preventing the raising of objections was called ‘reaching alignment.’ I find the people who might have concerns or advice, get feedback from them, and work with the developers on the team to adjust the plan based on that. It ends up feeling a lot like the office episode where Andy and Kevin must meet with the heads of every company in the office park to reach a decision about the parking spaces.&lt;/p&gt;
+&lt;div class=&quot;wide&quot;&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/blog/assets/images/thought-leaders/4-families.png&quot; alt=&quot;Everybody has advice about how to build your project&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Everybody has advice about how to build your project&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/div&gt;
+&lt;p&gt;At its worse, the conversations tended to go something like this:&lt;/p&gt;
+&lt;h3 id=&quot;the-quality-person-meeting&quot;&gt;The Quality Person Meeting&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Adam:&lt;/strong&gt; You’ve had a chance to read the design doc. What are your thoughts?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Quality Person:&lt;/strong&gt; There is nothing in here about unit-test coverage, and taking a look at your other services, they are below the 80% level we set as an H2 goal. Can you add a unit-testing strategy to the plan and set a specific coverage goal?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;the-data-person-meeting&quot;&gt;The Data Person Meeting&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Adam:&lt;/strong&gt; You’ve had a chance to read the design doc. What are your thoughts?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data Person:&lt;/strong&gt; We are currently migrating all data in Important-Project-A from springy search to beetleDB, and it is a multi-year project. All new projects should follow this, so the effort doesn’t need to be repeated.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Adam:&lt;/strong&gt; We weren’t going to use springy search, just a relational database. So I think we should be good.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data Person:&lt;/strong&gt; BeetleDB is relational database equivalent, so I would recommend using that so that you can scale.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;the-micro-services-person&quot;&gt;The Micro-Services Person&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Adam:&lt;/strong&gt; You’ve had a chance to read the design doc. What are your thoughts?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Micro-Services Person:&lt;/strong&gt; I would recommend separating the read-side from the write-side. Put them in separate services so that they can be scaled independently. That was our number one secret to scaling when I was at warble: the finer grain the services, the easier they are to scale.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I think you get the idea. If we adapt to all the feedback and we will avoid the pitfalls of the recent past. But also, the scope of the project will drastically grow, and the project will likely never get completed. It’s like a &lt;a href=&quot;https://en.wikipedia.org/wiki/Second-system_effect&quot;&gt;second-system effect&lt;/a&gt; but brought forward in time.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;div class=&quot;align-right&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-245-19bb12389.webp 245w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-245-bd3ff66f7.png 245w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-320-bd3ff66f7.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+The Solution
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;Thankfully, not all the advice I received was bad. One person, in particular, asked very pointed questions about the problems be solved and identified some potential blind spots in our plan. They also offered a great tip for dealing with advice that didn’t seem relevant to the project’s success: Create an extended product roadmap and put those items at least a year off into the future “and as long as they don’t seem relevant, you can just keep pushing them into the future.” Perversely this plan made everyone happy – everyone’s feedback is on the roadmap, and now it’s all just a question of priorities.&lt;/p&gt;
+&lt;p&gt;With that bureaucratic judo trick, the project got off the ground. But the experience stayed with me. What made the good advice valuable and the bad advice problematic? Was there some general principle behind expert advice?&lt;/p&gt;
+&lt;h2 id=&quot;contingent-advice&quot;&gt;Contingent Advice&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“All bad advice is alike, but all good advice is unique to the problem at hand.” ― Leo Tolstoy misquoted&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The problem with all the bad advice was that it was unrelated to the problem we were trying to solve. The unit-testing person will always be advocating for more unit tests. The distributed database person will always want things to go into their favorite database.&lt;/p&gt;
+&lt;p&gt;It’s sort of like Minh’s cooking advice from King of The Hill: She tastes something and then says, “Add Nutmeg”. When would nutmeg not be a good fit? Doesn’t all advice need to be contingent?&lt;/p&gt;
+&lt;div class=&quot;align-right&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-245-7afff0714.webp 245w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-245-821cf96ec.png 245w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;400px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-800-821cf96ec.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+The solution to every problem can’t be the same
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;Uncontingent advice is what I think of when I hear the term thought-leader - someone has a single solution that seems to fit every problem. Whatever problem you face, the answer is test-driven development or stream architectures or being-really-truly-agile.&lt;/p&gt;
+&lt;p&gt;I get frustrated by advice like that but is it wrong? Unit testing, streaming architectures, agile are all good things. I don’t write code in a test-driven style, but I did try it out a bit when it was the hot-thing™, and I learned a lot from the process. All of the thought-leaders are trying to move the industry forward. Still, there is some evidence that noncontingent, one-big-idea advice is less valuable than more nuanced, complicated advice.&lt;/p&gt;
+&lt;h2 id=&quot;decision-making-research&quot;&gt;Decision-Making Research&lt;/h2&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/fork-800-2b7fa89b7.webp 800w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/fork-800-16d07ab07.png 800w&quot; type=&quot;image/png&quot;&gt;&lt;img src=&quot;/blog/generated/assets/images/thought-leaders/fork-800-16d07ab07.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;One way to think about advice is as a prediction. Advocating for TDD can be viewed as a prediction that if you don’t write tests before you write code, your project will be less well-designed and harder to maintain. Stream-Process-All-Things similarly predicts that if you approach a problem as one of streams you’ll get a better result than if you didn’t. Obviously, not all advice is tied to specific and explicit predictions, and many thought-leaders would object to the idea that just because they are always talking about a thing, that is the most critical thing in every case. But I do think it’s fair to say that if your proposed solution is always a variation of “use the actor system to model concurrency” or “you need a stronger allegiance to SOLID principles” then you beleive those solutions would strongly increase desired project outcomes.&lt;/p&gt;
+&lt;h2 id=&quot;tetlocks-hedgehogs&quot;&gt;Tetlock’s Hedgehogs&lt;/h2&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hedgehog-800-a1ac11be4.webp 800w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hedgehog-800-e849e8e15.png 800w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;1200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/hedgehog-800-e849e8e15.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;It turns out that &lt;a href=&quot;https://scholar.google.com/citations?user=CJjf6H0AAAAJ&amp;amp;hl=en&quot;&gt;Philip E. Tetlock&lt;/a&gt; from the University of Pennsylvania, who has been studying the judgment and decision making of experts for most of his career, has something to say about those types of predictions. And Tetlock is an expert on experts: his &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Good_Judgment_Project&quot;&gt;Good Judgement Project&lt;/a&gt; was able to beat CIA analysts by 30% at predicting geo-political events. And the intelligence officers had access to classified information.&lt;/p&gt;
+&lt;p&gt;Tetlock’s earliest work was the study of political experts. He solicited political advice and predictions from 284 experts between 1984 and 2004, and once enough time had passed to determine the accuracy of their forecasts, he scored the results. Political punditry is different from tech thought-leadership – none of my advice-givers were explicitly predicting a project outcome – but I think his findings have a lot to teach us.&lt;/p&gt;
+&lt;p&gt;He found that experts could be split into two broad categories, the first of which he called Hedgehogs. A Hedgehog had one big idea like free-market capitalism (or nordic model capitalism or demand-side economics), which they used as a lens to look at many issues. They applied this big idea to every situation, which resulted in noncontingent and straightforward advice. You always need more freedom, nutmeg, and unit tests. Hedgehogs are “Confident forecasters”.&lt;/p&gt;
+&lt;h2 id=&quot;the-foxes&quot;&gt;The Foxes&lt;/h2&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/foxes-800-5560f7120.webp 800w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/foxes-800-b46ad7089.png 800w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;1200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/foxes-800-b46ad7089.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;When all the predictions were added up and scored hedgehogs lost out to his second category: Foxes. Foxes were the opposite of hedgehogs. They had complicated advice and were skeptical of even their own predictions. Tetlock also found that foxes were less likely to be famous because contingent advice is harder to explain in a sound bite.&lt;/p&gt;
+&lt;p&gt;Hedgehogs with predictions about the 2003 Iraq war existed on both sides of the political spectrum. They had theories based on over-arching political philosophy, but the best predictors of the outcomes were foxes who had in-depth knowledge of the region, not big theories.&lt;/p&gt;
+&lt;h3 id=&quot;ignore-universal-solutions&quot;&gt;Ignore Universal Solutions&lt;/h3&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/tools-800-1ce3fc773.webp 800w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/tools-800-af0026ab3.png 800w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;1200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/tools-800-af0026ab3.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;Tetlock’s &lt;a href=&quot;https://longnow.org/seminars/02007/jan/26/why-foxes-are-better-forecasters-than-hedgehogs/&quot;&gt;talk&lt;/a&gt; on this is subtitled “Ignore Confident Forecasters,” which I think is an excellent summary of his findings.&lt;/p&gt;
+&lt;p&gt;Software development is full of confident forecasters. We are a pretty new field, and yet everyone seems so sure that they have the best solution to whatever problem is at hand. I’d like to hear more people saying things like, “in this specific context, test-coverage seem like an important metric,” or “StopLang is great if you can afford the GC, but if you can’t then you should look at IronOre.” A great tool is not a universal tool it’s a tool well suited to a specific problem.&lt;/p&gt;
+&lt;p&gt;The more universal a solution someone claims to have to whatever software engineering problem exists, and the more confident they are that it is a fully generalized solution, the more you should question them. The more specific and contingent the advice - the more someone says ‘it depends’ or ‘YourSQL works well in a read-heavy context with the following constraints’ the more likely they are to be leading you in the right direction. At least that’s what I have found.&lt;/p&gt;
+&lt;p&gt;Here at Earthly, we’ve been talking to a lot of people about how they build software and doing a lot of writing. When meeting with someone or &lt;a href=&quot;/blog/unit-vs-integration&quot;&gt;writing down advice&lt;/a&gt;, I try to keep in mind Tetlock’s findings. I really think &lt;a href=&quot;https://earthly.dev&quot;&gt;repeatable builds&lt;/a&gt; are important, but if it’s my solution to every problem then I think I’m probably falling into the same trap. So this post is my reminder to myself: Don’t be a &lt;del&gt;hedgehog&lt;/del&gt; thought-leader.&lt;/p&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Articles" /><summary type="html">Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used.</summary></entry><entry><title type="html">Using Autotools to Configure, Make, and Install a Program</title><link href="https://earthly.dev/blog/autoconf/" rel="alternate" type="text/html" title="Using Autotools to Configure, Make, and Install a Program" /><published>2021-06-08T00:00:00-04:00</published><updated>2021-06-08T00:00:00-04:00</updated><id>https://earthly.dev/blog/autoconf</id><content type="html" xml:base="https://earthly.dev/blog/autoconf/">&lt;p&gt;&lt;a href=&quot;https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html&quot;&gt;Autotools&lt;/a&gt; is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as &lt;a href=&quot;https://cmake.org/&quot;&gt;CMake&lt;/a&gt;, &lt;a href=&quot;https://scons.org/&quot;&gt;SCons&lt;/a&gt;, and &lt;a href=&quot;https://www.boost.org/doc/libs/1_43_0/doc/html/jam/usage.html&quot;&gt;BJam&lt;/a&gt;, they don’t quite match Autotools in ease of use, power, and versability.&lt;/p&gt;
 &lt;p&gt;At its base, Autotools can help make your application more portable, give it the versatility to be installed on many different systems, and can automatically procure scripts to check where elements are, like the compiler for your program. In this article, you will learn how to use Autotools to package up an application and ship it.&lt;/p&gt;
 &lt;h2 id=&quot;components-of-autotools&quot;&gt;Components of Autotools&lt;/h2&gt;
 &lt;p&gt;Autotools is made up of three unique components:&lt;/p&gt;
@@ -1738,250 +1809,4 @@ docker rm output-artifacts&lt;/code&gt;&lt;/pre&gt;
     github.com/dchw/earthly-dos-gaming:main+play&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Make sure you replace the tag, URL, and args as appropriate.&lt;/p&gt;
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;It’s neat that we can make independent, offline bundles, similar to those shareware floppy disks from back in the day. To see the project as a whole, check out the &lt;a href=&quot;https://github.com/earthly/example-dos-gaming&quot;&gt;repository&lt;/a&gt;. Thanks for reading!&lt;/p&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Distributing shareware from the 90's in modern Docker images.</summary></entry><entry><title type="html">Building a Monorepo with Bazel</title><link href="https://earthly.dev/blog/monorepo-with-bazel/" rel="alternate" type="text/html" title="Building a Monorepo with Bazel" /><published>2021-05-11T00:00:00-04:00</published><updated>2021-05-11T00:00:00-04:00</updated><id>https://earthly.dev/blog/monorepo-with-bazel</id><content type="html" xml:base="https://earthly.dev/blog/monorepo-with-bazel/">&lt;p&gt;A &lt;em&gt;&lt;a href=&quot;/blog/monorepo-vs-polyrepo&quot;&gt;monorepo&lt;/a&gt;&lt;/em&gt; is perhaps what you would expect from the name: a single code repository for your entire codebase.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Monorepo&quot;&gt;Wikipedia&lt;/a&gt; describes it as a decade-old software development strategy for storing all your code in a single repository, but you can also think of it as a higher-level architecture pattern for governing loosely tied applications. For instance, if you have a full-stack web application stored in one repository and an Android client in another, a monorepo would essentially wrap them in the same repository codebase.&lt;/p&gt;
-&lt;h2 id=&quot;who-uses-monorepos-and-why&quot;&gt;Who Uses Monorepos and Why?&lt;/h2&gt;
-&lt;p&gt;Google is one of the most notable adopters of the monorepo pattern, and &lt;a href=&quot;https://bazel.build/users.html#whos-using-bazel&quot;&gt;companies&lt;/a&gt; like Dropbox, LinkedIn, and Uber use monorepos to manage their large codebases. This is because large-scale projects having little or no dependency on each other can be developed, tested, and built without bisecting them into smaller projects.&lt;/p&gt;
-&lt;p&gt;If you’re from a JavaScript or &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt; background, you can think of a monorepo as a project having a single &lt;code&gt;package.json&lt;/code&gt; file for managing all your project dependencies. It also allows you to easily share code between multiple environments using isolated modules as published packages. You can configure a single bundler for performing unit tests, integration tests, and other configurations without worrying about language and ecosystem-specific configurations.&lt;/p&gt;
-&lt;h2 id=&quot;the-efficiency-of-building-a-monorepo-with-bazel&quot;&gt;The Efficiency of Building a Monorepo with Bazel&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/bazel-overview.html&quot;&gt;Bazel&lt;/a&gt; is an open-source build tool developed by Google to give power and life to your monorepo. It’s similar to other build tools like &lt;a href=&quot;https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html&quot;&gt;Maven&lt;/a&gt;, &lt;a href=&quot;https://gradle.org/&quot;&gt;Gradle&lt;/a&gt;, and &lt;a href=&quot;https://buck.build/&quot;&gt;Buck&lt;/a&gt;, but it has a number of advantages:&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;Bazel supports multiple languages (Java, JavaScript, Go, C++, to name a few) and platforms (Linux, macOS, and Windows).&lt;/li&gt;
-&lt;li&gt;It’s built with &lt;a href=&quot;https://docs.rs/starlark/0.3.1/starlark/&quot;&gt;Starlark&lt;/a&gt;, a high-level language similar to Python that allows it to perform complex operations on binaries, scripts, and data sets.&lt;/li&gt;
-&lt;li&gt;Even for large source files, Bazel is blazingly fast at building, as it caches previous work and rebuilds only the code that needs to be.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This article will walk you through the core concepts of Bazel and set you up for building and compiling your own monorepo in JavaScript.&lt;/p&gt;
-&lt;h2 id=&quot;bazel-basics&quot;&gt;Bazel Basics&lt;/h2&gt;
-&lt;p&gt;First, some vocabulary.&lt;/p&gt;
-&lt;h3 id=&quot;workspace&quot;&gt;Workspace&lt;/h3&gt;
-&lt;p&gt;Bazel calls your top-level source file a &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#workspace&quot;&gt;workspace&lt;/a&gt;, which contains other source files in a nested fashion. Your workspace is what builds your entire software by taking a set of inputs and generating the desired output.&lt;/p&gt;
-&lt;h3 id=&quot;packages&quot;&gt;Packages&lt;/h3&gt;
-&lt;p&gt;A &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#packages&quot;&gt;package&lt;/a&gt; contains all your related files and dependencies and a file named &lt;code&gt;BUILD&lt;/code&gt;. Subdirectories falling under a package are called subpackages.&lt;/p&gt;
-&lt;p&gt;Consider the following directory tree:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;src/app/BUILD
-src/app/core/input.txt
-src/app/tests/BUILD&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It has two packages: &lt;code&gt;app&lt;/code&gt;, and a subpackage, &lt;code&gt;app/tests&lt;/code&gt;, since both contain their own BUILD files. Note that &lt;code&gt;app/core&lt;/code&gt; is not a package but a regular directory inside &lt;code&gt;app&lt;/code&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;targets&quot;&gt;Targets&lt;/h3&gt;
-&lt;p&gt;Elements of a package are called &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#targets&quot;&gt;targets&lt;/a&gt;, which can be categorized as &lt;em&gt;files&lt;/em&gt; and &lt;em&gt;rules&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Files can either be source files containing the code of a developer or &lt;em&gt;generated files&lt;/em&gt; generated by Bazel according to a specific set of rules. A rule specifies the relationship between a set of inputs and outputs along with the necessary steps to derive the latter from the former.&lt;/p&gt;
-&lt;h3 id=&quot;labels&quot;&gt;Labels&lt;/h3&gt;
-&lt;p&gt;The name of a target is its &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#labels&quot;&gt;label&lt;/a&gt;, which uniquely identifies it and always starts with &lt;code&gt;//&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;@repo//app/main:app_binary&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Each label has two parts: a package name (&lt;code&gt;app/main&lt;/code&gt;) and a target name (&lt;code&gt;app_binary&lt;/code&gt;).&lt;/p&gt;
-&lt;h3 id=&quot;dependencies&quot;&gt;Dependencies&lt;/h3&gt;
-&lt;p&gt;Target X is considered a dependency for target Y, if Y needs X at build or execution time. The dependency relation produces a &lt;a href=&quot;https://en.wikipedia.org/wiki/Directed_acyclic_graph&quot;&gt;Directed Acyclic Graph&lt;/a&gt; (DAG) called a &lt;em&gt;dependency graph&lt;/em&gt;, which is used to classify these dependencies further. You can read more about &lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#dependencies&quot;&gt;these types and their definitions here&lt;/a&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;build-files&quot;&gt;Build Files&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://docs.bazel.build/versions/4.0.0/build-ref.html#BUILD_files&quot;&gt;Build files&lt;/a&gt; contain the top-level program that describes the set of declared rules. These files are periodically updated with respect to changes in the dependencies being used.&lt;/p&gt;
-&lt;h3 id=&quot;bazel-basic-commands&quot;&gt;Bazel Basic Commands&lt;/h3&gt;
-&lt;p&gt;You can check if you have Bazel installed on your system by running the &lt;code&gt;version&lt;/code&gt; command.&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ bazel --version
-bazel 4.0.0&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The primary &lt;code&gt;build&lt;/code&gt; command builds your project’s targets, and &lt;code&gt;analyze-profile&lt;/code&gt; can analyze your builds. You can also remove output files and close the server using the &lt;code&gt;clean&lt;/code&gt; command. You can get a list of all these basic commands along with their use cases by running:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;$ bazel help 
-Usage: bazel &amp;lt;command&amp;gt; &amp;lt;options&amp;gt; ...
-
-Available commands:
-  analyze-profile     Analyzes build profile data.
-...&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;how-to-build-a-monorepo-with-bazel&quot;&gt;How to Build a Monorepo with Bazel&lt;/h2&gt;
-&lt;p&gt;Once you have the &lt;a href=&quot;https://nodejs.org/en/&quot;&gt;Node.js&lt;/a&gt; installed on your system, you can run the following command to install Bazel globally:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install -g @bazel/bazelisk &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can also install &lt;a href=&quot;https://docs.bazel.build/versions/master/build-javascript.html#installing-ibazel&quot;&gt;iBazel&lt;/a&gt; to enable hot reloading. This lets you see your changes live in real time.&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install --save-dev @bazel/ibazel
-npm install --global @bazel/ibazel&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;configuring-the-bazel.rc-file&quot;&gt;Configuring the &lt;code&gt;bazel.rc&lt;/code&gt; File&lt;/h3&gt;
-&lt;p&gt;You can write build options in a &lt;a href=&quot;https://docs.bazel.build/versions/master/guide.html#bazelrc&quot;&gt;&lt;code&gt;bazel.rc&lt;/code&gt; file&lt;/a&gt; to apply them on every build. You can use the same settings for your project by creating a &lt;code&gt;tools/bazel.rc&lt;/code&gt; file at the root of your Bazel workspace.&lt;/p&gt;
-&lt;p&gt;If you don’t want to share these settings, you can move out the &lt;code&gt;.bazel.rc&lt;/code&gt; file to the root directory and add it to your &lt;code&gt;.gitignore&lt;/code&gt; list instead. You can also personalize these settings locally by moving it in your home directory.&lt;/p&gt;
-&lt;p&gt;The following is a generic &lt;code&gt;bazel.rc&lt;/code&gt; file that you can modify according to your needs:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode .rc&quot;&gt;&lt;code class=&quot;sourceCode xml&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Directory structure         #&lt;/span&gt;
-&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Artifacts are typically placed in a directory called &amp;quot;dist&amp;quot;&lt;/span&gt;
-&lt;span id=&quot;cb7-6&quot;&gt;&lt;a href=&quot;#cb7-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Be aware that this setup will still create a bazel-out symlink in&lt;/span&gt;
-&lt;span id=&quot;cb7-7&quot;&gt;&lt;a href=&quot;#cb7-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# your project directory, which you must exclude from version control and your&lt;/span&gt;
-&lt;span id=&quot;cb7-8&quot;&gt;&lt;a href=&quot;#cb7-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# editor&amp;#39;s search path.&lt;/span&gt;
-&lt;span id=&quot;cb7-9&quot;&gt;&lt;a href=&quot;#cb7-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;build --symlink_prefix=dist/&lt;/span&gt;
-&lt;span id=&quot;cb7-10&quot;&gt;&lt;a href=&quot;#cb7-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-11&quot;&gt;&lt;a href=&quot;#cb7-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-12&quot;&gt;&lt;a href=&quot;#cb7-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Output                      #&lt;/span&gt;
-&lt;span id=&quot;cb7-13&quot;&gt;&lt;a href=&quot;#cb7-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-14&quot;&gt;&lt;a href=&quot;#cb7-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-15&quot;&gt;&lt;a href=&quot;#cb7-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# A more useful default output mode for bazel query, which&lt;/span&gt;
-&lt;span id=&quot;cb7-16&quot;&gt;&lt;a href=&quot;#cb7-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# prints &amp;quot;ng_module rule //foo:bar&amp;quot; instead of just &amp;quot;//foo:bar&amp;quot;.&lt;/span&gt;
-&lt;span id=&quot;cb7-17&quot;&gt;&lt;a href=&quot;#cb7-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;query --output=label_kind&lt;/span&gt;
-&lt;span id=&quot;cb7-18&quot;&gt;&lt;a href=&quot;#cb7-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-19&quot;&gt;&lt;a href=&quot;#cb7-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# By default, failing tests don&amp;#39;t print any output, it&amp;#39;s logged to a&lt;/span&gt;
-&lt;span id=&quot;cb7-20&quot;&gt;&lt;a href=&quot;#cb7-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# file instead.&lt;/span&gt;
-&lt;span id=&quot;cb7-21&quot;&gt;&lt;a href=&quot;#cb7-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;test --test_output=errors&lt;/span&gt;
-&lt;span id=&quot;cb7-22&quot;&gt;&lt;a href=&quot;#cb7-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-23&quot;&gt;&lt;a href=&quot;#cb7-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-24&quot;&gt;&lt;a href=&quot;#cb7-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Typescript / Angular / Sass #&lt;/span&gt;
-&lt;span id=&quot;cb7-25&quot;&gt;&lt;a href=&quot;#cb7-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;###############################&lt;/span&gt;
-&lt;span id=&quot;cb7-26&quot;&gt;&lt;a href=&quot;#cb7-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Make TypeScript and Angular compilation fast by keeping a few&lt;/span&gt;
-&lt;span id=&quot;cb7-27&quot;&gt;&lt;a href=&quot;#cb7-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# copies of the compiler running as daemons, and cache SourceFile&lt;/span&gt;
-&lt;span id=&quot;cb7-28&quot;&gt;&lt;a href=&quot;#cb7-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# ASTs to reduce parse time.&lt;/span&gt;
-&lt;span id=&quot;cb7-29&quot;&gt;&lt;a href=&quot;#cb7-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;build --strategy=TypeScriptCompile=worker --strategy=AngularTemplateCompile=worker&lt;/span&gt;
-&lt;span id=&quot;cb7-30&quot;&gt;&lt;a href=&quot;#cb7-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-31&quot;&gt;&lt;a href=&quot;#cb7-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;# Enable debugging tests with --config=debug&lt;/span&gt;
-&lt;span id=&quot;cb7-32&quot;&gt;&lt;a href=&quot;#cb7-32&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;test:debug --test_arg=--node_options=--inspect-brk --test_output=streamed --test_strategy=exclusive --test_timeout=9999 --nocache_test_results&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;adding-the-buildifier-dependency-to-your-project&quot;&gt;Adding the &lt;code&gt;buildifier&lt;/code&gt; Dependency to Your Project&lt;/h3&gt;
-&lt;p&gt;Buildifier is a formatting tool that ensures all &lt;code&gt;BUILD&lt;/code&gt; files are formatted in a similar fashion. It creates a standardized formatting for all your &lt;code&gt;BUILD&lt;/code&gt; and &lt;code&gt;.bzl&lt;/code&gt; files. It also has a linter out of the box to help you detect issues in your code and automatically fix them. You can add the &lt;code&gt;buildifier&lt;/code&gt; dependency to your project either using npm:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install --save-dev @bazel/buildifier&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;or Yarn:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;yarn add -D @bazel/buildifier&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You will need the following scripts inside your &lt;code&gt;package.json&lt;/code&gt; file to run the &lt;code&gt;buildifier&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;er&quot;&gt;&amp;quot;scripts&amp;quot;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb10-2&quot;&gt;&lt;a href=&quot;#cb10-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:format&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;find . -type f &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;( -name &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;*.bzl&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;) ! -path &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;*/node_modules/*&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb10-3&quot;&gt;&lt;a href=&quot;#cb10-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:lint&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;yarn bazel:format --lint=warn&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb10-4&quot;&gt;&lt;a href=&quot;#cb10-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;bazel:lint-fix&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;yarn bazel:format --lint=fix&amp;quot;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb10-5&quot;&gt;&lt;a href=&quot;#cb10-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;buildingcompiling-code&quot;&gt;Building/Compiling Code&lt;/h3&gt;
-&lt;p&gt;In this example, you’ll start from a new empty directory and build and compile a simple Node.js application using Bazel. You’ll end up with the following structure:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;  WORKSPACE     
-  BUILD.bazel    
-  es5.babelrc  
-  app.js    
-  package-lock.json  
-  package.json    
-  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Instead of manually configuring everything, you can use the following commands to get started:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode sh&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;npm&lt;/span&gt; init @bazel bazel_build_nodejs  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Or if you’re using Yarn:&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;yarn create @bazel bazel_build_nodejs  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The previous commands use &lt;a href=&quot;https://www.npmjs.com/package/@bazel/create&quot;&gt;&lt;code&gt;@bazel/create&lt;/code&gt;&lt;/a&gt; under the hood to set up your monorepo with some minimal configurations. This means that it automatically creates &lt;code&gt;package.json&lt;/code&gt;, &lt;code&gt;WORKSPACE&lt;/code&gt;, and &lt;code&gt;BUILD.bazel&lt;/code&gt; files for you.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;package.json&lt;/code&gt; is exactly how it’s created when you’re initializing any Node.js project using the &lt;code&gt;npm init&lt;/code&gt; command. It contains some development time dependencies and some scripts through which you can run your build.&lt;/p&gt;
-&lt;p&gt;Also notice how it automatically adds &lt;code&gt;buildifier&lt;/code&gt; to your project so you can avoid manually setting it up. This is only a starting point though, and you would need to manually set up a &lt;code&gt;buildifier&lt;/code&gt; depending on the requirements of your project.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode json&quot;&gt;&lt;code class=&quot;sourceCode json&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-2&quot;&gt;&lt;a href=&quot;#cb14-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel_build_nodejs&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-3&quot;&gt;&lt;a href=&quot;#cb14-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;version&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;0.1.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-4&quot;&gt;&lt;a href=&quot;#cb14-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;private&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-5&quot;&gt;&lt;a href=&quot;#cb14-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;devDependencies&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-6&quot;&gt;&lt;a href=&quot;#cb14-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/bazelisk&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-7&quot;&gt;&lt;a href=&quot;#cb14-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/ibazel&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-8&quot;&gt;&lt;a href=&quot;#cb14-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;@bazel/buildifier&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-9&quot;&gt;&lt;a href=&quot;#cb14-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;},&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-10&quot;&gt;&lt;a href=&quot;#cb14-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;&amp;quot;scripts&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;{&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-11&quot;&gt;&lt;a href=&quot;#cb14-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;build&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel build //...&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-12&quot;&gt;&lt;a href=&quot;#cb14-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;        &lt;span class=&quot;dt&quot;&gt;&amp;quot;test&amp;quot;&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;bazel test //...&amp;quot;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-13&quot;&gt;&lt;a href=&quot;#cb14-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-14&quot;&gt;&lt;a href=&quot;#cb14-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;}&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb14-15&quot;&gt;&lt;a href=&quot;#cb14-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Let’s install these packages and a few more like &lt;a href=&quot;https://babeljs.io/&quot;&gt;Babel&lt;/a&gt; to &lt;a href=&quot;https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them&quot;&gt;transpile&lt;/a&gt; your JavaScript code.&lt;/p&gt;
-&lt;pre class=&quot;shell&quot;&gt;&lt;code&gt;npm install @babel/core @babel/cli @babel/preset-env  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A &lt;code&gt;package-lock.json&lt;/code&gt; file will also be automatically created for you. Your &lt;code&gt;WORKSPACE.bazel&lt;/code&gt; file should look like this:&lt;/p&gt;
-&lt;pre class=&quot;text&quot;&gt;&lt;code&gt;# Bazel workspace created by @bazel/create 3.4.1  
-  
-# Declares that this directory is the root of a Bazel workspace.  
-# See https://docs.bazel.build/versions/master/build-ref.html#workspace  
-workspace(  
-    # How this workspace would be referenced with absolute labels from another workspace  
-    name = &amp;quot;bazel_build_nodejs&amp;quot;,  
-    # Map the @npm bazel workspace to the node_modules directory.  
-    # This lets Bazel use the same node_modules as other local tooling.  
-    managed_directories = {&amp;quot;@npm&amp;quot;: [&amp;quot;node_modules&amp;quot;]},  
-)  
-  
-# Install the nodejs &amp;quot;bootstrap&amp;quot; package  
-# This provides the basic tools for running and packaging Node.js programs in Bazel  
-load(&amp;quot;@bazel_tools//tools/build_defs/repo:http.bzl&amp;quot;, &amp;quot;http_archive&amp;quot;)  
-http_archive(  
-    name = &amp;quot;build_bazel_rules_nodejs&amp;quot;,  
-    sha256 = &amp;quot;a160d9ac88f2aebda2aa995de3fa3171300c076f06ad1d7c2e1385728b8442fa&amp;quot;,  
-    urls = [&amp;quot;https://github.com/bazelbuild/rules_nodejs/releases/download/3.4.1/rules_nodejs-3.4.1.tar.gz&amp;quot;],  
-)  
-  
-# The npm_install rule runs Yarn anytime the package.json or package-lock.json file changes.  
-# It also extracts any Bazel rules distributed in an npm package.  
-load(&amp;quot;@build_bazel_rules_nodejs//:index.bzl&amp;quot;, &amp;quot;npm_install&amp;quot;)  
-npm_install(  
-    # Name this npm so that Bazel Label references look like @npm//package  
-    name = &amp;quot;npm&amp;quot;,  
-    package_json = &amp;quot;//:package.json&amp;quot;,  
-    package_lock_json = &amp;quot;//:package-lock.json&amp;quot;,  
-)  
-  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It basically tells Bazel where to pull the tools for running your project and fetches all the required rules to create a build. You also need to tell Bazel to use auto-generated rules. Add the following line to the top of your &lt;code&gt;BUILD.bazel&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;load(&amp;quot;@npm//@babel/cli:index.bzl&amp;quot;, &amp;quot;babel&amp;quot;)  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let’s add a simple console statement inside &lt;code&gt;app.js&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;#39;NodeJS Built using Bazel!&amp;#39;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Next add the following code inside &lt;code&gt;es5.babelrc&lt;/code&gt; to configure Babel for transpiling JavaScript code:&lt;/p&gt;
-&lt;pre class=&quot;babelrc&quot;&gt;&lt;code&gt;{  
-    &amp;quot;sourceMaps&amp;quot;: &amp;quot;inline&amp;quot;,  
-    &amp;quot;presets&amp;quot;: [  
-      [  
-        &amp;quot;@babel/preset-env&amp;quot;,  
-        {  
-          &amp;quot;modules&amp;quot;: &amp;quot;systemjs&amp;quot;  
-        }  
-      ]  
-    ]  
-  }  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Finally, you need to tell Bazel how to take JavaScript inputs and convert them to transpiled or &lt;a href=&quot;https://johnpapa.net/es5-es2015-typescript/&quot;&gt;ES5&lt;/a&gt; output. Add the following code inside &lt;code&gt;BUILD.bazel&lt;/code&gt; file after the previous load statement:&lt;/p&gt;
-&lt;pre class=&quot;bazel&quot;&gt;&lt;code&gt;babel(  
-    name = &amp;quot;compile&amp;quot;,  
-    data = [  
-        &amp;quot;app.js&amp;quot;,  
-        &amp;quot;es5.babelrc&amp;quot;,  
-        &amp;quot;@npm//@babel/preset-env&amp;quot;,  
-    ],  
-    outs = [&amp;quot;app.es5.js&amp;quot;],  
-    args = [  
-        &amp;quot;app.js&amp;quot;,  
-        &amp;quot;--config-file&amp;quot;,  
-        &amp;quot;./$(execpath es5.babelrc)&amp;quot;,  
-        &amp;quot;--out-file&amp;quot;,  
-        &amp;quot;$(execpath app.es5.js)&amp;quot;,  
-    ],  
-)  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Run the following command to build and compile your JavaScript code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;npm run build  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In case you run into an error, try renaming your &lt;code&gt;WORKSPACE.bazel&lt;/code&gt; file to simply &lt;code&gt;WORKSPACE&lt;/code&gt;. If all goes well, you should see something similar to the following screenshot on your terminal:&lt;/p&gt;
-&lt;figure&gt;
-&lt;img src=&quot;/blog/assets/images/monorepo-with-bazel/RhmR1Xx.png&quot; alt=&quot;Terminal log of the build command&quot; /&gt;&lt;figcaption aria-hidden=&quot;true&quot;&gt;Terminal log of the build command&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;You will see &lt;code&gt;bazel-out&lt;/code&gt; and a &lt;code&gt;dist&lt;/code&gt; directory where your output files will be present.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/blog/assets/images/monorepo-with-bazel/Ffu5zoQ.png&quot; height=&quot;400&quot; alt=&quot;Output directories&quot; /&gt;&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;If you check inside &lt;code&gt;dist/bin/app.es5.js&lt;/code&gt;, you should see your transpiled ES5 JavaScript code as shown:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb22&quot;&gt;&lt;pre class=&quot;sourceCode javascript&quot;&gt;&lt;code class=&quot;sourceCode javascript&quot;&gt;&lt;span id=&quot;cb22-1&quot;&gt;&lt;a href=&quot;#cb22-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;System&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;register&lt;/span&gt;([]&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt; (_export&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt; _context) {  &lt;/span&gt;
-&lt;span id=&quot;cb22-2&quot;&gt;&lt;a href=&quot;#cb22-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;st&quot;&gt;&amp;quot;use strict&amp;quot;&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb22-3&quot;&gt;&lt;a href=&quot;#cb22-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb22-4&quot;&gt;&lt;a href=&quot;#cb22-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;cf&quot;&gt;return&lt;/span&gt; {  &lt;/span&gt;
-&lt;span id=&quot;cb22-5&quot;&gt;&lt;a href=&quot;#cb22-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;setters&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; []&lt;span class=&quot;op&quot;&gt;,&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb22-6&quot;&gt;&lt;a href=&quot;#cb22-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;dt&quot;&gt;execute&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;function&lt;/span&gt; () {  &lt;/span&gt;
-&lt;span id=&quot;cb22-7&quot;&gt;&lt;a href=&quot;#cb22-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;      &lt;span class=&quot;bu&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;log&lt;/span&gt;(&lt;span class=&quot;st&quot;&gt;&amp;#39;NodeJS Built using Bazel!&amp;#39;&lt;/span&gt;)&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb22-8&quot;&gt;&lt;a href=&quot;#cb22-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    }  &lt;/span&gt;
-&lt;span id=&quot;cb22-9&quot;&gt;&lt;a href=&quot;#cb22-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  }&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;
-&lt;span id=&quot;cb22-10&quot;&gt;&lt;a href=&quot;#cb22-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;})&lt;span class=&quot;op&quot;&gt;;&lt;/span&gt;  &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;setting-up-continuous-integration&quot;&gt;Setting Up Continuous Integration&lt;/h3&gt;
-&lt;p&gt;Bazel recommends using container environments like the &lt;a href=&quot;https://hub.docker.com/r/angular/ngcontainer/&quot;&gt;ngcontainer Docker image&lt;/a&gt; for continuous integration (CI). You can easily add specific CI settings using the &lt;code&gt;build:ci&lt;/code&gt; or &lt;code&gt;test:ci&lt;/code&gt; prefixes to your &lt;code&gt;bazel.rc&lt;/code&gt; file.&lt;/p&gt;
-&lt;p&gt;If you’re using &lt;a href=&quot;/blog/continuous-integration#circleci&quot;&gt;CircleCI&lt;/a&gt;, you can use &lt;a href=&quot;https://github.com/angular/angular-bazel-example/blob/master/.circleci/config.yml&quot;&gt;this example&lt;/a&gt; as a reference. If you’re using GitLab, you can set up CI in minutes using the following scripts:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;variables:  
-  BAZEL_DIGEST_VERSION: &amp;quot;f670e9aec235aa23a5f068566352c5850a67eb93de8d7a2350240c68fcec3b25&amp;quot; # Bazel 3.4.1  
-  
-build:  
-  image:  
-    name: gcr.io/cloud-marketplace-containers/google/bazel@sha256:$BAZEL_DIGEST_VERSION  
-    entrypoint: [&amp;quot;&amp;quot;]  
-  stage: build  
-  script:  
-    - bazel --output_base output build //main/...  
-  artifacts:  
-    paths:  
-      - bazel-bin/main/hello-world  
-  cache:  
-    key: $BAZEL_DIGEST_VERSION  
-    paths:  
-      - output  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The above scripts define the build outputs and cache directory and also ensures immutability. Luckily the GitLab team has a &lt;a href=&quot;https://about.gitlab.com/blog/2020/09/01/using-bazel-to-speed-up-gitlab-ci-builds/&quot;&gt;dedicated article&lt;/a&gt; on this for the best reference.&lt;/p&gt;
-&lt;h2 id=&quot;downsides-of-bazel-and-the-monorepo-pattern&quot;&gt;Downsides of Bazel and the Monorepo Pattern&lt;/h2&gt;
-&lt;p&gt;The monorepo pattern is trendy these days, but there are some trade-offs you should be aware of. For a large and diverse team working on a monorepo, it might not be a great idea to expose every ounce of that codebase to novice developers.&lt;/p&gt;
-&lt;p&gt;Besides someone messing things up accidentally, keeping open access to all your config files, API keys, and so on might pose an issue from a security standpoint. On similar lines, you can understand why open-source projects aren’t living inside monorepos yet.&lt;/p&gt;
-&lt;p&gt;While Bazel definitely does some magic to ease out this pain for developers, it doesn’t have a large open-source community backing it yet. Having all your source code in one place could slow down the general process of approving pull requests and running the build scripts every now and then.&lt;/p&gt;
-&lt;p&gt;Bazel also promotes a strict demarcation between your dependencies and source code, while modern languages and frameworks have dedicated directories for bookkeeping dependencies. For instance, an npm project will always have its dependencies in a &lt;code&gt;node_modules&lt;/code&gt; directory inside the root directory. Diverging away from that pattern can present a steep learning curve, or at minimum an uncomfortable change.&lt;/p&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;Due to better structured configurational files and multiple language support, Bazel is a viable option for your large multi-language project deployed on multiple platforms. It’s fast, and you can even optimize your slow builds &lt;a href=&quot;https://docs.bazel.build/versions/master/remote-caching.html&quot;&gt;using your own build cache&lt;/a&gt;. Google has tried and tested Bazel’s core features to validate its stability, and their extensive documentation is some compensation for the small community.&lt;/p&gt;
-&lt;p&gt;If you’d like to explore further, you can build your own React or Angular app using Bazel to see how it treats different environments of the same language. You can also try out their &lt;a href=&quot;https://docs.bazel.build/versions/0.17.2/build-javascript.html#tutorials&quot;&gt;tutorials for different languages&lt;/a&gt; to get a bigger picture of how Bazel works. And if today’s the day you’re welcoming Bazel into your project, definitely take a moment to familiarize yourself with its documented &lt;a href=&quot;https://docs.bazel.build/versions/master/best-practices.html&quot;&gt;best practices&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;If the benefits of Bazel look promising but the downsides prevent you from adopting it, then take a look at &lt;a href=&quot;https://earthly.dev/&quot;&gt;Earthly&lt;/a&gt;. It supports monorepo and poly repos and has a gentler learning curve.&lt;/p&gt;</content><author><name>Siddhant Varma</name></author><category term="Tutorials" /><summary type="html">A monorepo is perhaps what you would expect from the name: a single code repository for your entire codebase.</summary></entry></feed>
+&lt;p&gt;It’s neat that we can make independent, offline bundles, similar to those shareware floppy disks from back in the day. To see the project as a whole, check out the &lt;a href=&quot;https://github.com/earthly/example-dos-gaming&quot;&gt;repository&lt;/a&gt;. Thanks for reading!&lt;/p&gt;</content><author><name>Corey Larson</name></author><category term="Tutorials" /><summary type="html">Distributing shareware from the 90's in modern Docker images.</summary></entry></feed>
