@@ -300,7 +300,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Don't Feed the Thought Leaders",
-        "excerpt":"Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used. Raising Objections I was a new engineering manager who’s team was starting a new small but ambitious project at a SAAS company. The company had several hundred developers, and the project was...","categories": ["Articles"],
+        "excerpt":"Here is a somewhat fictionalized personal story. I’ve changed the names of the people and the technology used. Raising Objections I was a new engineering manager whose team was starting a new small but ambitious project at a SAAS company. The company had several hundred developers, and the project was...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/thought-leaders/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
