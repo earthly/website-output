@@ -310,4 +310,10 @@ var store = [{
         "tags": [],
         "url": "/blog/deployment-strategies/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Incident Management Metrics and Key Performance Indicators",
+        "excerpt":"In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office. We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had...","categories": ["Tutorial"],
+        "tags": [],
+        "url": "/blog/incident-management-metrics/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
