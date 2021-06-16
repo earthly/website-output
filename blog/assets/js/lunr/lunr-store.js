@@ -316,4 +316,10 @@ var store = [{
         "tags": [],
         "url": "/blog/incident-management-metrics/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Git Branching Strategies and The Greek Revival",
+        "excerpt":"Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that. I’m going to explain various git branching strategies with a story. We will start with something...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/git-branching/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
