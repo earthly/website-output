@@ -316,4 +316,28 @@ var store = [{
         "tags": [],
         "url": "/blog/incident-management-metrics/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "The 15-Minute Project",
+        "excerpt":"Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning. What is City Planning? According to Wikipedia, city planning is “…a technical and political...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/15-minute-project/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read Outloud Write 5 or more titles and pick the best on Create header image in canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply) Add...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/checklist/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
