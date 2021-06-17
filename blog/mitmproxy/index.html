@@ -430,7 +430,7 @@ QyVJfmCmjt2i=
 <img src="/blog/assets/images/mitmproxy/10.png"
        alt="Getting a Certificate signed by an unknown certificate authority">
 </figure>
-<p>You will be prompted for your credentials, and the certificate will be added as ‘untrusted’.</p>
+<p>You will be prompted for your credentials, and the certificate will be added as <code>untrusted</code>.</p>
 <p>Double-click on the certificate in the Keychain list and set the ‘Secure Sockets Layer’ drop down to ‘Always Trust’</p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/11.png"
@@ -450,7 +450,7 @@ QyVJfmCmjt2i=
 &gt; update-ca-certificates</code></pre>
 <p><em>We will be using these steps later when we work with docker containers on macOS and Windows.</em></p>
 <h2 id="great-success">Great Success</h2>
-<p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.</p>
+<p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or mitmweb) window.</p>
 Here is Slack making requests:
 <figure class>
 <img src="/blog/assets/images/mitmproxy/14.png"
@@ -478,7 +478,7 @@ Here is Slack making requests:
 <p>At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.</p>
 <p>On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.</p>
 <p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM.</p>
-<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or MITMWeb running).</p>
+<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or mitmweb running).</p>
 <p>On Windows and macOS, the easiest way to configure a proxy is via <code>Docker Desktop.</code> Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/18.png"
@@ -534,7 +534,7 @@ docker.io/library/couchbase:7.0.0-beta</code></pre>
 <img src="/blog/assets/images/mitmproxy/20.png"
        alt="">
 <figcaption>
-<p>mitmweb request for cloudflare.docker.com</p>
+<p>mitmweb request for Cloudflare.docker.com</p>
 </figcaption>
 </figure>
 <h2 id="troubleshooting"><em>Troubleshooting</em></h2>

@@ -308,7 +308,7 @@
 <p>Our server will allow users to set and get data from a key/value store.</p>
 <figure class>
 <img src="/blog/assets/images/protobufs-and-grpc/server.png"
-       alt="handddrawn cartoon for a person talking to a computer server">
+       alt="hand drawn cartoon for a person talking to a computer server">
 <figcaption>
 <p>Interacting with the server</p>
 </figcaption>
@@ -343,7 +343,7 @@
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">message</span> GetReply {</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>      <span class="dt">string</span> value = <span class="dv">1</span>;</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div>
-<p>Next we need to compile this proto file into Go code. On a Mac one might be tempted to run <em>brew install protobuf</em>, or if you’re on linux you might want to see if <em>apt-get install protoc</em> will magically work, but rather than do that, we will use earthly to containerize these tools. This will allow you to share this code with other developers, and ensure everyone can compile proto files across multiple platforms using the same version to eliminate compatibility issues.</p>
+<p>Next we need to compile this proto file into Go code. On a Mac one might be tempted to run <em>brew install protobuf</em>, or if you’re on Linux you might want to see if <em>apt-get install protoc</em> will magically work, but rather than do that, we will use earthly to containerize these tools. This will allow you to share this code with other developers, and ensure everyone can compile proto files across multiple platforms using the same version to eliminate compatibility issues.</p>
 <p>Here’s what an Earthfile would look like for installing Google protobufs inside an Ubuntu image, and generating the protobuf code using the protoc-gen-go-grpc tool:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> ubuntu:20.10</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WORKDIR</span> /defs</span>
@@ -366,7 +366,7 @@
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>          --go-grpc_out=/defs/go-api /defs/api.proto</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      SAVE ARTIFACT ./go-api /go-pb AS LOCAL go-pb</span></code></pre></div>
 <p>This will then produce two go files under the go-pb directory: api.pb.go and api_grpc.pb.go which contains the auto generated protobuf and grpc code respectively.</p>
-<p>At this point, assuming that earth is already <a href="https://docs.earthly.dev/installation">installed</a>, give it a try for yourself with code from our <a href="https://github.com/earthly/example-grpc-key-value-store">example repo</a>:</p>
+<p>At this point, assuming that earth is already <a href="https://docs.earthly.dev/installation">installed</a>, give it a try for yourself with code from our <a href="https://github.com/earthly/example-grpc-key-value-store">example repository</a>:</p>
 <pre><code>    git clone https://github.com/earthly/example-grpc-key-value-store.git
     cd example-grpc-key-value-store/proto
     earth +proto-go</code></pre>
@@ -457,7 +457,7 @@
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">COPY</span> +kvserver/kvserver /kvserver</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ENTRYPOINT</span> /kvserver</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        SAVE IMAGE as kvserver:latest</span></code></pre></div>
-<p>You can give it a try on your own by using our example code in our GitHub repo, just run:</p>
+<p>You can give it a try on your own by using our example code in our GitHub repository, just run:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> clone https://github.com/earthly/example-grpc-key-value-store.git</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> example-grpc-key-value-store/go-server</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">earth</span> +kvserver-docker</span></code></pre></div>
@@ -586,7 +586,7 @@ And if all went well, it’ll tell you that it’s sunny outside.
 <p>It’s Sunny Outside</p>
 </figcaption>
 </figure>
-<p>So there we go.  You can find the code for the server and the two clients in <a href="https://github.com/earthly/example-grpc-key-value-store">github here</a>.</p>
+<p>So there we go.  You can find the code for the server and the two clients in <a href="https://github.com/earthly/example-grpc-key-value-store">GitHub here</a>.</p>
 
         
       </section>

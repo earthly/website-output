@@ -12,7 +12,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.0 Released",
-        "excerpt":"Changes: global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. rename build.earth to Earthfile gitlab support ability to change cache path (previously it was hardcoded to /tmp/earthly; now defaults to /var/cache/earthly on linux or ~/Library/Caches/earthly...","categories": ["News"],
+        "excerpt":"Changes: global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. rename build.earth to Earthfile GitLab support ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -30,7 +30,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.0 Released",
-        "excerpt":"Changes: New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails. New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example. New Significant speed improvement on Mac (builds are now almost 3x faster). New Built-in arg EARTHLY_TARGET_TAG_DOCKER. It is similar...","categories": ["News"],
+        "excerpt":"Changes: New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails. New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example. New Significant speed improvement on Mac (builds are now almost 3x faster). New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -186,7 +186,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Build Your Own Ngrok Clone With AWS",
-        "excerpt":"Introduction Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code. Just a simple ./ngrok http 3000, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for...","categories": ["Tutorials"],
+        "excerpt":"Introduction ngrok is a tool that allows you to create secure, publicly accessible URLs for your locally running code. Just a simple ./ngrok http 3000, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/build-your-own-ngrok-clone/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -258,7 +258,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Getting a Repeatable Build, Every Time",
-        "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to Reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
+        "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
         "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
         "url": "/blog/repeatable-builds-every-time/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -294,7 +294,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Using Autotools to Configure, Make, and Install a Program",
-        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
+        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
         "tags": [],
         "url": "/blog/autoconf/",
         "teaser": "/blog/assets/images/default-teaser.jpg"

@@ -313,7 +313,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>Then, on Nov 2, 2020, Travis CI announced the end of its unlimited support for open-source projects:</p>
 <blockquote>
 <p>For those of you who have been building on public repositories (on travis-ci.com, with no paid subscription), we will upgrade you to our trial (free) plan with a 10K credit allotment.</p>
-<p><strong>When your credit allotment runs out - we’d love for you to consider which of our plans will meet your needs.</strong> - <a href="https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing">Travis CI blogpost</a></p>
+<p><strong>When your credit allotment runs out - we’d love for you to consider which of our plans will meet your needs.</strong> - <a href="https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing">Travis CI blog post</a></p>
 </blockquote>
 <p>The reason behind the change is stated to be abuse by crypto-miners:</p>
 <blockquote>
@@ -338,10 +338,10 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>A better option is <a href="/blog/continuous-integration#circleci">Circle CI</a> , a Travis CI competitor which still offers a free plan.  </p>
 <p>Circle CI offers 400,000 build credits per month to any open-source public repository.  This is their free plan and limits concurrency to 1 job at a time. They also have an easy GitHub integration and no application process.  </p>
 <p>They also allow use of the free plan with private repositories. This makes it a great choice if your project is not actually open-source. More details <a href="https://circleci.com/open-source/">can be found here</a>.</p>
-<h3 id="best-option-github-actions">Best Option: Github Actions</h3>
+<h3 id="best-option-github-actions">Best Option: GitHub Actions</h3>
 <p><picture><source srcset="/blog/generated/assets/images/migrating-from-travis/trophy-800-c19297bf6.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/migrating-from-travis/trophy-800-6abeac4a7.png 800w" type="image/png"><img width="800px" src="/blog/generated/assets/images/migrating-from-travis/trophy-800-6abeac4a7.png"></picture></p>
-<p>An even better option is <a href="/blog/continuous-integration#github-actions">Github Actions</a>, a cloud CI system directly from GitHub.  Github is at the center of many open source projects and this makes it a natural choice for CI.  </p>
-<p>Github Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
+<p>An even better option is <a href="/blog/continuous-integration#github-actions">GitHub Actions</a>, a cloud CI system directly from GitHub.  GitHub is at the center of many open source projects and this makes it a natural choice for CI.  </p>
+<p>GitHub Actions (GHA) is newer than either TravisCI or Circle CI, having launched in late 2018.</p>
 <p>GHA offers very generous build credits, 20 concurrent build jobs per project and no limit on build time used.   If your pipeline can be run in parallel this concurrency can really be a great enabler.  The only limitation I was able to find is that the build may last no longer than 6 hours in total.</p>
 <p>If your project is hosted on GitHub, then to me, GHA seems like the best bet right now. More details about the open-source plan can <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/usage-limits-billing-and-administration">be found here</a>.</p>
 <h3 id="summary-of-open-source-plans">Summary of Open Source Plans</h3>
@@ -374,7 +374,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <p>How can you minimize the effort of moving from build platform to another?</p>
 <p>My suggestion is to keep as much logic as possible out of the proprietary build definition. Instead, define it in an open-source format that you can execute anywhere.</p>
 <h3 id="makefiles-and-dockerfiles">Makefiles and Dockerfiles</h3>
-<p>One way to build a CI neutral build definition is to use a makefile and a dockerfile.  The makefile contains the various steps of your build pipeline and you run it inside a docker container which installs any needed dependencies.  <a href="https://github.com/qmk/qmk_firmware">QMK</a> is a popular open-source project that uses this approach.</p>
+<p>One way to build a CI neutral build definition is to use a Makefile and a dockerfile.  The Makefile contains the various steps of your build pipeline and you run it inside a docker container which installs any needed dependencies.  <a href="https://github.com/qmk/qmk_firmware">QMK</a> is a popular open-source project that uses this approach.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> qmkfm/base_container</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">VOLUME</span> /qmk_firmware</span>
@@ -384,8 +384,8 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> make all:default</span></code></pre></div>
 <p><a href="https://github.com/qmk/qmk_firmware/blob/master/Dockerfile">QMK</a> Docker File for executing the full build</p>
 <h3 id="earthly">Earthly</h3>
-<p>This is the Earthly blog, and I am an Earthly contributor, but in my totally biased opinion, it deserves a mention as an neurtal format for defining a build. The Elixir web framework <a href="https://github.com/phoenixframework/phoenix/blob/master/Earthfile">Phoenix is a great example to take a look at</a>.</p>
-<p>Earthly is like a makefile where each step is containerized and dependencies are explicitly declared.  </p>
+<p>This is the Earthly blog, and I am an Earthly contributor, but in my totally biased opinion, it deserves a mention as an neutral format for defining a build. The Elixir web framework <a href="https://github.com/phoenixframework/phoenix/blob/master/Earthfile">Phoenix is a great example to take a look at</a>.</p>
+<p>Earthly is like a Makefile where each step is containerized and dependencies are explicitly declared.  </p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> golang:1.13-alpine3.11</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>build:</span>
@@ -404,7 +404,7 @@ So apparently Travis CI is being strip-mined immediately after their acquisition
 </blockquote>
 <h3 id="serverless-builds">Serverless Builds</h3>
 <p>Another interesting option if you are feeling adventurous is using AWS lambda as your build executor.  I have no idea how feasible this is, however, <a href="https://github.com/StanfordSNR/gg">the gg project</a> from Stanford looks interesting.  It attempts to use AWS lambdas for running builds at the maximum possible parallelism.  </p>
-<h2 id="take-aways">Take Aways</h2>
+<h2 id="take-aways">Take-Aways</h2>
 <p>You probably need to move your open-source project’s builds off of Travis CI. If you host it on GitHub, GitHub Actions is probably a good choice.</p>
 <p>There is a risk that the GHA offer will disappear as well.  You can protect yourself from that by defining your build in an open format that is easy to move around.  All build problems can be solved by another layer of abstraction.</p>
 <p>If you are going that route, I think <a href="https://earthly.dev/">Earthly</a> is a great option, but as I said, I am biased.</p>

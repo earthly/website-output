@@ -314,7 +314,7 @@
 <li>✅ iTerm (native)</li>
 <li>✅ Earthly (<code>v0.5.1+</code> now supports M1 natively - just <code>brew install earthly</code>)</li>
 </ul>
-<p>I should also mention that during the first few weeks I had some issues with audio skips when using Bluetooth, but an OS update fixed it (just like <a href="https://www.imore.com/fix-way-m1-mac-bluetooth-problems">Apple promissed</a>).</p>
+<p>I should also mention that during the first few weeks I had some issues with audio skips when using Bluetooth, but an OS update fixed it (just like <a href="https://www.imore.com/fix-way-m1-mac-bluetooth-problems">Apple promised</a>).</p>
 <p>I also use a ✅ YubiKey 5C Nano and a bunch of random peripherals like a ✅ USB microphone and a ✅ dock plugged into Ethernet.</p>
 <p>Languages and frameworks I’ve tested - most of them in Docker containers:</p>
 <ul>
@@ -339,7 +339,7 @@
 <figure>
 <img src="/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img2.png" alt="Activity Monitor showing Spotify as an Intel process" /><figcaption aria-hidden="true">Activity Monitor showing Spotify as an Intel process</figcaption>
 </figure>
-<p>If you’re not sure about the terminal you’re using, you can type <code>uname -m</code>. It’ll say either <code>X86_64</code>, <code>arm64</code> (mac) or <code>aarch64</code> (linux). <code>arm64</code> and <code>aarch64</code> are both ARM - <code>uname</code> on Mac just reports it differently compared to Linux.</p>
+<p>If you’re not sure about the terminal you’re using, you can type <code>uname -m</code>. It’ll say either <code>X86_64</code>, <code>arm64</code> (Mac) or <code>aarch64</code> (Linux). <code>arm64</code> and <code>aarch64</code> are both ARM - <code>uname</code> on Mac just reports it differently compared to Linux.</p>
 <figure>
 <img src="/blog/assets/images/using-apple-silicon-m1-as-a-cloud-engineer-two-months-in/img3.png" alt="Terminal showing the output of uname -m as arm64" /><figcaption aria-hidden="true">Terminal showing the output of <code>uname -m</code> as <code>arm64</code></figcaption>
 </figure>
@@ -349,7 +349,8 @@
 <p>Back to fixing the issue now. Using <code>brew doctor</code> I was able to find out that Xcode needed a (re)install. Easy: <code>xcode-select --install</code>. However, the issue was still there. On the MacStadium instance, I was able to just uninstall brew and reinstall it and everything was fine. I was not as comfortable doing that on my laptop after having installed so much via casks. Instead, I was able to just remove the brew <code>git</code> via <code>brew uninstall git</code> and simply rely on <code>git</code> from Xcode, which seems to work just fine. (If anyone reading this knows what’s up with my brew’s git and can tell me how to fix it, ping me on Twitter: <span class="citation" data-cites="vladaionescu">[@vladaionescu]</span>(https://twitter.com/VladAIonescu))</p>
 <h2 id="using-docker">Using Docker</h2>
 <p>The Docker preview worked almost flawlessly for me from day 1. Making use of multi-platform images seems daunting at first, but really it’s actually pretty simple.</p>
-<p>The Docker for Mac app comes packed with <a href="https://www.qemu.org/">QEMU</a> out of the box - so Docker is able to run either arm64 and amd64 images. Most official images are now supported on arm64 too. If you’re building an image, by default it’ll use your native architecture to execute the build (arm64) and most things will magically just work. Your mileage may vary, however, if you are <code>curl</code>ing some binary that may need to switch from <code>X86_64</code> to <code>aarch64</code> in its URL, or if you’re doing lower-level stuff. I also noticed that some alpine packages are also not available for ARM (eg <code>shellcheck</code>).</p>
+<!-- vale Vale.Spelling = NO -->
+<p>The Docker for Mac app comes packed with <a href="https://www.qemu.org/">QEMU</a> out of the box - so Docker is able to run either arm64 and amd64 images. Most official images are now supported on arm64 too. If you’re building an image, by default it’ll use your native architecture to execute the build (arm64) and most things will magically just work. Your mileage may vary, however, if you are <code>curl</code>ing some binary that may need to switch from <code>X86_64</code> to <code>aarch64</code> in its URL, or if you’re doing lower-level stuff. I also noticed that some alpine packages are also not available for ARM (eg <code>shellcheck</code>). <!-- vale Vale.Spelling = YES --></p>
 <p>To build an image for a different architecture, you can use <code>docker buildx build --platform=linux/amd64 .</code> instead of the usual <code>docker build .</code>. For more details on building multi-platform images see <a href="https://medium.com/nttlabs/buildx-multiarch-2c6c2df00ca2">Akihiro Suda’s blog</a>.</p>
 <p>If you <code>docker pull</code> an image from the registry, it will again default to your native architecture (if available), unless you specify <code>--platform=linux/amd64</code>.</p>
 <p>If you <code>docker run</code> an image, it will default to whatever version of the image you have available locally or it will attempt to pull the arm64 version from the registry. You can also override the platform via <code>--platform=linux/amd64</code> if you’d like to run the amd64 version specifically.</p>
@@ -374,7 +375,8 @@
 <p>One of the things I noticed about my new laptop is that everything opens up really fast and the awake from sleep time is also really low. These are sub-second differences though so you might not notice it - or maybe it’s a placebo acting up on me and there’s no real difference :-)</p>
 <p>Docker is currently slower, however, as mentioned above, due to the multi-core issue. As far as I can tell the difference is approximately 1.75X compared to an Intel MacBook Pro. I would assume that this will be fixed in a future preview of the Docker for Mac app.</p>
 <h2 id="battery-life">Battery life</h2>
-<p>Battery life on the M1 is really really really good - half a day of Zoom meetings + email only took 20% of my battery. I work from home a lot, so I don’t use this much. But it’s great to know it really lasts for a serious coding session if I needed it on the go.</p>
+<!-- vale Vale.Repetition = NO -->
+<p>Battery life on the M1 is really really really good - half a day of Zoom meetings + email only took 20% of my battery. I work from home a lot, so I don’t use this much. But it’s great to know it really lasts for a serious coding session if I needed it on the go. <!-- vale Vale.Repetition = YES --></p>
 <h2 id="cost">Cost</h2>
 <p>I can’t talk about the M1 without mentioning the cost of the setup. It has very similar specs to the Intel MBP I bought last year, but it’s a whole $1000 cheaper. It’s crazy. I don’t know why - it feels really performant for the most part, it has 100% fewer fans and a long-lasting battery. Why would anyone buy the old version anymore?</p>
 <p>The only downside is that it only has two Thunderbolt ports, rather than four. But it’s not a huge deal for me as I use a dock.</p>

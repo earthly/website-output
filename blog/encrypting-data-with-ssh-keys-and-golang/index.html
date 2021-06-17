@@ -437,8 +437,7 @@
     QjQOuFshp/TZ5jGkv7t2iVBh1whOOpaOmODMKAhueey+NGU47/Ww5vUgwVX/+WJQ
     HddCttBCyHl0vj+Ok4U4JjH05La+7Yrm/5q9wG2KptFe8c+RbeE=
     -----END RSA PRIVATE KEY-----</code></pre>
-<p>Perfect! Now I can generate a public and private key via Go. I wonder how I can encrypt a message using a public key which can only be decrypted by someone with the private key. Let’s try out some more code:</p>
-<p>I want to keep my function signature as basic as possible for the purpose of learning, so we will pass in the public key as the regular base64-encoded id_rsa keyformat, and let that function handle parsing it:</p>
+<p>Perfect! Now I can generate a public and private key via Go. I wonder how I can encrypt a message using a public key which can only be decrypted by someone with the private key. Let’s try out some more code: <!-- vale off --> I want to keep my function signature as basic as possible for the purpose of learning, so we will pass in the public key as the regular base64-encoded id_rsa keyformat, and let that function handle parsing it: <!-- vale on --></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> encrypt<span class="op">(</span>msg<span class="op">,</span> publicKey <span class="dt">string</span><span class="op">)</span> <span class="op">(</span><span class="dt">string</span><span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     parsed<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> _<span class="op">,</span> err <span class="op">:=</span> ssh<span class="op">.</span>ParseAuthorizedKey<span class="op">([]</span><span class="dt">byte</span><span class="op">(</span>publicKey<span class="op">))</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="kw">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
@@ -487,7 +486,7 @@
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
 <p>Try it out <a href="https://play.golang.org/p/a5u9PYWEjgs">here</a></p>
 <p>So there we have a end-to-end example of how to generate a new public/private key, and encrypt and decrypt data all in <a href="/blog/top-3-resources-to-learn-golang-in-2021">GoLang</a>.</p>
-<p>Based on my experimentation with private/public key encryption in go, I put together a small program that allows users to share encrypted data between parties using a rather simple <a href="https://github.com/alexcb/secretshare">command line tool on my personal repo</a></p>
+<p>Based on my experimentation with private/public key encryption in go, I put together a small program that allows users to share encrypted data between parties using a rather simple <a href="https://github.com/alexcb/secretshare">command line tool on my personal repository</a></p>
 <p>Our server’s authentication process is slightly different from the above code – we create a digital signature using the private key, which I’ll be covering in a future blog post.</p>
 
         

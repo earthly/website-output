@@ -360,7 +360,7 @@
 <p><strong>ℹ️ Note</strong></p>
 <p><code>GAME_ARGS</code> is the command for DOSBox (which is inside JS-DOS) to start once it is loaded. The CLI arguments should line up with what a regular installation of DOSBox would expect. If your game requires additional arguments, please provide them in a comma-separated list.</p>
 </div>
-<p>Copy this html file into the same directory as your JS-DOS files and your game. Now all you need to do is start a server within our Docker container to serve this webpage. For this, I used <a href="https://www.npmjs.com/package/serve"><code>serve</code></a>, because it was quick and easy to script (you may have noticed installing this dependency alongside JS-DOS earlier). Heres how I add the server to the container:</p>
+<p>Copy this HTML file into the same directory as your JS-DOS files and your game. Now all you need to do is start a server within our Docker container to serve this webpage. For this, I used <a href="https://www.npmjs.com/package/serve"><code>serve</code></a>, because it was quick and easy to script (you may have noticed installing this dependency alongside JS-DOS earlier). Heres how I add the server to the container:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ARG</span> GAME_ARGS</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> index.html .</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> sed -i s/GAME_ARGS/$GAME_ARGS/ index.html</span>
@@ -377,7 +377,7 @@
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
 <h2 id="going-further">Going Further</h2>
-<p>Using Earthly, we can even go a step further! Earhly lets us separate some of the concerns within the Dockerfile:</p>
+<p>Using Earthly, we can even go a step further! Earthly lets us separate some of the concerns within the Dockerfile:</p>
 <div class="notice--info">
 <p><strong>ℹ️ About Earthly</strong></p>
 <p><a href="https://earthly.dev/">Earthly</a> makes creating Docker images easier. <a href="https://docs.earthly.dev/basics">Take it for a spin!</a></p>
@@ -422,7 +422,7 @@
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/agent.png" title="fig:" alt="Screenshot of Apogee’s Secret Agent running in a web browser." />
 <figcaption>
-<code>earthly github.com/dchw/earthly-dos-gaming:main+cosmo</code>
+<code>earthly github.com/cosmo/earthly-dos-gaming:main+cosmo</code>
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/cosmo.png" title="fig:" alt="Screenshot of Apogee’s Cosmos Cosmic Adventure running in a web browser." />
 <figcaption>
