@@ -308,7 +308,7 @@
 <p>The most common shebang is the one referring to the <code>bash</code> executable:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
 <p>Essentially it tells your terminal that when you run the script it should use <code>bash</code> to execute it. It can be vital since you may be using a different shell in your machine (<code>zsh</code>, <code>fish</code>, <code>sh</code>, etc.), but you designed the script to work specifically with bash. In many cases, it doesn’t matter what shell you’re using, but there can be some very noteworthy differences in how they work, leading a script to work in <code>bash</code> but not <code>sh</code>, for example.</p>
-<h3 id="userbinenv-bash">#!/user/bin/env bash</h3>
+<h3 id="userbinenv-bash"><code>#!/user/bin/env bash</code></h3>
 <p>If you use the previous shebang, it’s crucial that you give the executable’s absolute path. You should be aware of this since there is an alternative, where you use the <code>bash</code> executable found in the <code>$PATH</code>. You can do so by writing:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/user/bin/env bash</span></span></code></pre></div>
 <p>Some people like to customize their systems, either their personal system or production servers, resulting in the <code>bash</code> executable not being located in <code>/bin/bash</code> every time. Use the above line if you can’t be sure that the <code>bash</code> executable will be located in the same path when this script is run.</p>
@@ -354,7 +354,7 @@
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> Hello World</span></code></pre></div>
 <p><strong>Output:</strong></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 3: foo: command not found</span></code></pre></div>
-<h3 id="set--eo-pipefail">set -eo pipefail</h3>
+<h3 id="set--eo-pipefail"><code>set -eo pipefail</code></h3>
 <p>Finally, we can make the script fail if a command in a pipeline fails. Usually, bash only looks for the exit code from the last command in a pipeline. If that’s 0, it’ll continue just fine. Exit code 0 is what we want, since in bash that means success.</p>
 <p>Let’s use the following script as an example:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
@@ -373,6 +373,7 @@
 <p><em>Note: <code>sed</code> is a search-and-replace command. In this case it replaces underscores with dashes.</em></p>
 <p>The intention is that <code>/tmp/path.txt</code> contains <code>tmp_file.txt</code>. Assume that the file <code>/tmp-file.txt</code> exists on the system. In this case the script will work perfectly and delete <code>/tmp-file.txt</code>. But what if <code>/tmp/path.txt</code> doesn’t exist? <code>cat /tmp/path.txt</code> will fail, but the script won’t. Now you’ve deleted your entire filesystem, but <code>set -eo pipefail</code> will prevent this.</p>
 <h3 id="sets-in-summary">Sets in Summary</h3>
+<!-- vale Vale.Spelling = NO -->
 <table>
 <thead>
 <tr class="header">
@@ -404,6 +405,7 @@
 </tr>
 </tbody>
 </table>
+<!-- vale Vale.Spelling = YES -->
 <h2 id="use-error-checking-tools">Use Error Checking Tools</h2>
 <p>Although you may be familiar with all the best practices, it can be tough to remember them all when your script is coming to life. Luckily there are tools available to help, like <a href="https://www.shellcheck.net/#">ShellCheck</a>. ShellCheck has both a browser version and a command-line tool, but for this article, let’s work with the command-line version. You can find <a href="https://github.com/koalaman/shellcheck#installing">installation instructions here</a>.</p>
 <p>We’ll use the following script as an example:</p>
@@ -483,7 +485,7 @@ echo &quot;Hello World!&quot;</code></pre>
 <p>For example, if you set <code>TEST="hello"</code> in your shell and run <code>echo $TEST</code> inside a script, it will print nothing to your screen.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>At this point, you should be ready to venture into the exciting world of bash scripting. You’ve learned about common shebangs, what <code>set</code> does, and how it can improve the error handling of your scripts, as well as understanding some general pitfalls developers run into with bash.</p>
-<p>So go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repo you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.</p>
+<p>So go ahead and automate those annoying commands you’ve been typing out every day. Tired of manually going into your browser and finding the git repository you’re working on? Make a script to parse the remote git URL and open it automatically. Maybe you have to rename a bunch of files. Make a script that can loop through them and rename them. The world is your oyster.</p>
 
         
       </section>
@@ -647,13 +649,13 @@ echo &quot;Hello World!&quot;</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -671,7 +673,7 @@ echo &quot;Hello World!&quot;</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -679,7 +681,10 @@ echo &quot;Hello World!&quot;</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -699,13 +704,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -723,7 +728,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -731,8 +736,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

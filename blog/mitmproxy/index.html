@@ -430,7 +430,7 @@ QyVJfmCmjt2i=
 <img src="/blog/assets/images/mitmproxy/10.png"
        alt="Getting a Certificate signed by an unknown certificate authority">
 </figure>
-<p>You will be prompted for your credentials, and the certificate will be added as ‘untrusted’.</p>
+<p>You will be prompted for your credentials, and the certificate will be added as <code>untrusted</code>.</p>
 <p>Double-click on the certificate in the Keychain list and set the ‘Secure Sockets Layer’ drop down to ‘Always Trust’</p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/11.png"
@@ -450,7 +450,7 @@ QyVJfmCmjt2i=
 &gt; update-ca-certificates</code></pre>
 <p><em>We will be using these steps later when we work with docker containers on macOS and Windows.</em></p>
 <h2 id="great-success">Great Success</h2>
-<p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or MITMWeb) window.</p>
+<p>At this point, assuming you still have mitmproxy running and you still have your network interface setup to proxy through <code>localhost:8080</code>, you should be able to view all the HTTP and HTTPS network requests your machine is making in the mitmproxy (or mitmweb) window.</p>
 Here is Slack making requests:
 <figure class>
 <img src="/blog/assets/images/mitmproxy/14.png"
@@ -478,7 +478,7 @@ Here is Slack making requests:
 <p>At this point, we can successfully capture traffic on our host operating system. Unfortunately, this is insufficient for capturing docker container traffic on macOS and Windows. So let’s move on to proxying traffic on the Linux Container Host.</p>
 <p>On macOS and Windows, Linux containers do not run on the host OS. They can’t because they need a Linux host to run. Instead, they run on the Linux Container Host, a VM that Docker Desktop manages.</p>
 <p>To see the docker daemon’s incoming and outgoing requests, we need to get our proxy settings and our certificate authority into that VM.</p>
-<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or MITMWeb running).</p>
+<p>Before we proceed, we need to clear the proxy settings on the <a href="/blog/docker-networking">host network</a> connection. We can leave mitmproxy (or mitmweb running).</p>
 <p>On Windows and macOS, the easiest way to configure a proxy is via <code>Docker Desktop.</code> Configure the proxy settings under <code>Preferences -&gt; Resources -&gt; Proxies.</code></p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/18.png"
@@ -534,7 +534,7 @@ docker.io/library/couchbase:7.0.0-beta</code></pre>
 <img src="/blog/assets/images/mitmproxy/20.png"
        alt="">
 <figcaption>
-<p>mitmweb request for cloudflare.docker.com</p>
+<p>mitmweb request for Cloudflare.docker.com</p>
 </figcaption>
 </figure>
 <h2 id="troubleshooting"><em>Troubleshooting</em></h2>
@@ -867,13 +867,13 @@ The document has moved
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -891,7 +891,7 @@ The document has moved
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -899,7 +899,10 @@ The document has moved
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -919,13 +922,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -943,7 +946,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -951,8 +954,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

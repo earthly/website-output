@@ -304,20 +304,20 @@
 <p><strong>Reason:</strong> Hope that you can get non-programmers to code review your business logic.</p>
 <p><strong>Reality check:</strong> the DSL you embedded in your config file isn’t as “human readable” as you think it is.</p>
 </blockquote>
-<h2 id="dhall-is-strange">DHALL is Strange</h2>
+<h2 id="dhall-is-strange">Dhall is Strange</h2>
 <p><a href="https://lobste.rs/s/1nxt6g/intercal_yaml_other_horrible#c_pc0dt6">AndyC</a> thought that Dhall was not the right answer to the YAML problem:</p>
 <blockquote>
 <p>I agree with the problem, but disagree with the solution. Total languages don’t give you any useful engineering properties, but lack of side effects do (and Dhall also offers that).</p>
 <p>From the surface, it seems like HCL, jsonnet, and Cue, are just as suitable as Dhall, and probably more familiar (to varying degrees).</p>
 </blockquote>
-<p>This is an excellent point. <a href="https://github.com/hashicorp/hcl">HCL</a> does look a bit less strange to outsiders, and Hashicorp already has mindshare in the DevOps community, and it certainly beats config templates.</p>
+<p>This is an excellent point. <a href="https://github.com/hashicorp/hcl">HCL</a> does look a bit less strange to outsiders, and HashiCorp already has mind share in the DevOps community, and it certainly beats config templates.</p>
 <h2 id="dsl-creation-story">DSL Creation Story</h2>
-<p>Reddit user <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopf8fj/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">XANi_</a> explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; &gt; * We don’t want config to be turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.</p>
+<p>reddit user <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopf8fj/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">XANi_</a> explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; &gt; * We don’t want config to be Turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.</p>
 <h2 id="rake-webpack-and-groovy">Rake, Webpack, and Groovy</h2>
 <!-- markdownlint-disable MD028 -->
 <p>Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:</p>
 <blockquote>
-<p>I always thought it was weird that a lot of web technologies take config files that are executable javascript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopq0uv/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">Bunny</a></p>
+<p>I always thought it was weird that a lot of web technologies take config files that are executable JavaScript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/gopq0uv/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">Bunny</a></p>
 </blockquote>
 <blockquote>
 <p>It’s fairly common in Pythonland [ to just use Python] …</p>
@@ -329,9 +329,9 @@
 <h2 id="writing-a-parser">Writing a Parser</h2>
 <p>Hillel Wayne wrote a <a href="https://buttondown.email/hillelwayne/archive/a3fe2688-464d-4f98-ae6b-207e7b5a1255">great newsletter</a> on YAML, and the ways it’s abused. He pointed out that the main competition for embedding your DSL into YAML is writing a parser, and using YAML is just easier.</p>
 <blockquote>
-<p>[YAML] preparses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language</p>
+<p>[YAML] pre-parses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language</p>
 </blockquote>
-<p>You can see the full commentary on the orginal article on <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/">Reddit</a>, on <a href="https://news.ycombinator.com/item?id=26271582">Hacker News</a> and on <a href="https://lobste.rs/s/1nxt6g/intercal_yaml_other_horrible">Lobste.rs</a>.</p>
+<p>You can see the full commentary on the original article on <a href="https://www.reddit.com/r/programming/comments/ls6tgm/intercal_yaml_and_other_horrible_programming/">reddit</a>, on <a href="https://news.ycombinator.com/item?id=26271582">Hacker News</a> and on <a href="https://lobste.rs/s/1nxt6g/intercal_yaml_other_horrible">Lobste.rs</a>.</p>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
@@ -516,13 +516,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -540,7 +540,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -548,7 +548,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -568,13 +571,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -592,7 +595,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -600,8 +603,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

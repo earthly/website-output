@@ -10,7 +10,7 @@
 
 
 <title>Using Autotools to Configure, Make, and Install a Program - Earthly Blog</title>
-<meta name="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+<meta name="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility.">
 
 
   <meta name="author" content="Kasper Siig">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/autoconf/">
 
 
-  <meta property="og:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+  <meta property="og:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility.">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Using Autotools to Configure, Make, and Install a Program">
-  <meta name="twitter:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+  <meta name="twitter:description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility.">
   <meta name="twitter:url" content="https://earthly.dev/blog/autoconf/">
 
   
@@ -240,7 +240,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Using Autotools to Configure, Make, and Install a Program">
-    <meta itemprop="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability.">
+    <meta itemprop="description" content="Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility.">
     <meta itemprop="datePublished" content="2021-06-08T00:00:00-04:00">
     
 
@@ -300,7 +300,7 @@
             </nav>
           </aside>
         
-        <p><a href="https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html">Autotools</a> is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as <a href="https://cmake.org/">CMake</a>, <a href="https://scons.org/">SCons</a>, and <a href="https://www.boost.org/doc/libs/1_43_0/doc/html/jam/usage.html">BJam</a>, they don’t quite match Autotools in ease of use, power, and versability.</p>
+        <p><a href="https://www.gnu.org/software/automake/manual/html_node/Autotools-Introduction.html">Autotools</a> is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as <a href="https://cmake.org/">CMake</a>, <a href="https://scons.org/">SCons</a>, and <a href="https://www.boost.org/doc/libs/1_43_0/doc/html/jam/usage.html">BJam</a>, they don’t quite match Autotools in ease of use, power, and versatility.</p>
 <p>At its base, Autotools can help make your application more portable, give it the versatility to be installed on many different systems, and can automatically procure scripts to check where elements are, like the compiler for your program. In this article, you will learn how to use Autotools to package up an application and ship it.</p>
 <h2 id="components-of-autotools">Components of Autotools</h2>
 <p>Autotools is made up of three unique components:</p>
@@ -319,7 +319,7 @@
 <p>In this case, you’re telling <code>automake</code> to install the <code>helloworld</code> binary in the path defined by the <code>bindir</code>. You may notice we didn’t define a <code>bindir</code> variable, because that variable is built into <code>automake</code> and is typically the default binary directory of your system.</p>
 <p>Other examples of primaries are <code>_SCRIPTS</code>, which you can use when you want a script, rather than a binary to be installed somewhere, and <code>_DATA</code>, when you have extra data files you want included in your installation. There are many more that you will find once you start using Autotools and figure out what your needs are.</p>
 <p>One last thing to mention is that although <code>Makefile.in</code> is special in that it contains all of these primaries, it’s still a regular Makefile. Meaning you can write your own custom make targets if you want. For example, if you want to have a custom <code>clean</code> target that deletes specific files, you can do so easily.</p>
-<h3 id="aclocal">Aclocal</h3>
+<h3 id="aclocal"><code>Aclocal</code></h3>
 <p>This is the smallest component in the Autotools suite, but it’s very important. You learned in the previous section that <code>autoconf</code> uses <code>m4</code> macros to be configured. But where do these <code>m4</code> macros come from? They’re generated by running the <code>aclocal</code> command. Simple as that. If you don’t run <code>aclocal</code> before running <code>autoconf</code>, you’ll get an error complaining about missing macros.</p>
 <h2 id="using-autotools">Using Autotools</h2>
 <p>Now that you know the basic principles of how the Autotools suite is put together, it’s time to see it all in action and create a small C program that you can compile and ship.</p>
@@ -370,7 +370,7 @@ AC_OUTPUT</code></pre>
 <h2 id="conclusion">Conclusion</h2>
 <p>Now you’re able to use Autotools to compile and distribute your application, and you’re able to do it in a way that ensures it’s portable across a variety of systems. From here, you can start looking into automating this procedure and other ways to integrate Autotools directly into your daily development.</p>
 <p>The great advantage of using something like Autotools is that you’ll be using a system that has been in place for many years, is well-documented, and widely used. Many developers are comfortable installing applications using what Autotools produces, so it can make your application much more familiar and accessible.</p>
-<p>If your project becomes more complex and autotools maintenance becomes a burden, <a href="https://earthly.dev/">earthly</a> is a great solution for containerized builds.</p>
+<p>If your project becomes more complex and Autotools maintenance becomes a burden, <a href="https://earthly.dev/">earthly</a> is a great solution for containerized builds.</p>
 
         
       </section>
@@ -534,13 +534,13 @@ AC_OUTPUT</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -558,7 +558,7 @@ AC_OUTPUT</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -566,7 +566,10 @@ AC_OUTPUT</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -586,13 +589,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -610,7 +613,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -618,8 +621,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

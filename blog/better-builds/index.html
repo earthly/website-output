@@ -305,8 +305,8 @@
 <p>Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in <a href="/blog/slow-performance-in-jenkins">Jenkins</a> vs running in locally.</p>
 <p>Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.</p>
 <h2 id="a-scala-example">A Scala Example</h2>
-<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">dockerfile</a> mixed with a makefile you wouldn’t be far off.  </p>
-<p>Let’s walk through creating an Earthfile for a scala project:</p>
+<p>Earthly uses Earthfiles to encapsulate your build.  If you imagine a <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">dockerfile</a> mixed with a Makefile you wouldn’t be far off.  </p>
+<p>Let’s walk through creating an Earthfile for a Scala project:</p>
 <pre><code>├── build.sbt 
 └── src/main
     ├── Main.scala
@@ -354,7 +354,7 @@ Earthfile
 <blockquote>
 <p>You may have noticed the first time you build an sbt project, it takes a while to pull down all the project dependencies.  This <code>deps</code> target is helping us avoid paying that cost every build.   Calling <code>sbt update</code> and then <code>SAVE IMAGE</code> ensures that these steps are cached and can be used in further build steps.  Earthly will only need to be rerun this step if our build files change.</p>
 </blockquote>
-<p>We can test out the deps step like this:</p>
+<p>We can test out the <code>deps</code> step like this:</p>
 <figure class>
 <img src="/blog/assets/images/better-builds/run.gif"
        alt="running earthly at command line">
@@ -398,7 +398,7 @@ Earthfile continued
 </figcaption>
 </figure>
 <h3 id="containerize-it">Containerize It</h3>
-<p>The final step in our build is to build a docker container, so we can send this application off to run in Kuberenetes or EKS or whatever production happens to look like.</p>
+<p>The final step in our build is to build a docker container, so we can send this application off to run in Kubernetes or EKS or whatever production happens to look like.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>docker:</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">COPY</span> src src</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">RUN</span> sbt assembly</span>
@@ -429,7 +429,7 @@ Earthfile continued
 <p>If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .</p>
 <h2 id="but-wait-theres-more">But wait there’s more</h2>
 <p>We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.  </p>
-<p>For now, you can find more details, such as how to install earthly and many more examples on <strong><a href="https://github.com/earthly/earthly/blob/master/README.md">github</a>.  </strong></p>
+<p>For now, you can find more details, such as how to install earthly and many more examples on <strong><a href="https://github.com/earthly/earthly/blob/master/README.md">GitHub</a>.  </strong></p>
 
         
       </section>
@@ -593,13 +593,13 @@ Earthfile continued
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -617,7 +617,7 @@ Earthfile continued
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -625,7 +625,10 @@ Earthfile continued
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -645,13 +648,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -669,7 +672,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -677,8 +680,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

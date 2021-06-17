@@ -333,7 +333,7 @@
 <h3 id="create-numerical-order">Create (Numerical) Order</h3>
 <p>From a compatibility perspective, unique field numbers are the most vital piece of the message declaration. These numbers (the <code>= 1</code> after the name declaration) are used as identifiers for fields after they are converted to binary. When the message is decoded, a crucial step for compatibility is allowing the parser to skip fields it doesn’t recognize so it’s possible to add new fields without breaking programs that weren’t designed to look for them.</p>
 <p>The unique field number is combined with a wire type corresponding to the data type of the field. This identifier and type combination form the key of every field in a message. These fields combined give the receiver the ability to uniquely identify fields and determine the length of the field, so it knows when to start looking for the next field.</p>
-<p>This means once a unique field number or length is set, it cannot be changed. Any program consuming or serizalizing protobuf data needs the number to be fixed forever, or both the sender and all the receivers must be updated.</p>
+<p>This means once a unique field number or length is set, it cannot be changed. Any program consuming or serializing protobuf data needs the number to be fixed forever, or both the sender and all the receivers must be updated.</p>
 <p>Encoding the numbers 1 through 15 takes one byte to encode, 16 through 2047 take two bytes, and so on. In situations where the size of messages is important, the most frequently exchanged data should have the smallest field numbers. The language is designed to effectively handle new fields, but because you can’t change the identifier of fields, it may be wise to leave yourself a couple gaps in these high-efficiency identifier ranges in case a very common field pops up in the future.</p>
 <p>One of the best ways to prevent problems with overlapping or misunderstood field numbers is to use the <code>reserved</code> keyword. If you wanted to remove the <code>type</code> field in your <code>Sample</code> message, any applications running the protobuf version that contained that field would break if the identifier was removed and then reused for some other field.</p>
 <p>To get around these compatibility issues, you can reserve identifiers. You can also reserve ranges of identifiers; here you’re reserving a range and the removed value of <code>1</code>:</p>
@@ -364,6 +364,7 @@
 <h3 id="dont-destroy-deprecate">Don’t Destroy, Deprecate</h3>
 <p>Protocol Buffer compatibility problems generally start when you need to change the length of or remove existing fields. There are a whole host of rules about how fields can <a href="https://developers.google.com/protocol-buffers/docs/proto3#updating" title="Protobuf3 update fields">change</a>.</p>
 <p>Largely, maintaining backward and forward compatibility comes down to maintaining a consistent wire type. You can’t change the wire type or alter the length of fields and expect old code to properly send or receive messages—the sender’s and receiver’s understanding of the exact length of each element in the transmitted messages needs to be precise.</p>
+<!-- vale Vale.Spelling = NO -->
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -410,6 +411,7 @@
 </tr>
 </tbody>
 </table>
+<!-- vale Vale.Spelling = YES -->
 <figcaption>
 Protobuf Wire Types
 </figcaption>
@@ -580,13 +582,13 @@ Protobuf Wire Types
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -604,7 +606,7 @@ Protobuf Wire Types
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -612,7 +614,10 @@ Protobuf Wire Types
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -632,13 +637,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -656,7 +661,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -664,8 +669,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

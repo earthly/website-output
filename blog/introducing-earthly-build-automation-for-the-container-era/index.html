@@ -306,11 +306,11 @@
 <p><img src="/blog/assets/images/introducing-earthly-build-automation-for-the-container-era/logo.png" alt="Earthly Logo" /><br />
 </p>
 <p>With the purpose of bringing these modern capabilities to people out in the real world, today we are announcing the release of <a href="https://www.earthly.dev/">Earthly: a build automation tool for the container era</a>.</p>
-<p><strong>Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it</strong>. It does not replace your Gradle, your Maven, your NPM, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.</p>
+<p><strong>Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it</strong>. It does not replace your Gradle, your Maven, your npm, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.</p>
 <p><strong>Earthly runs all build targets containerized: they get container isolation and layer caching</strong>. Nothing is shared between build targets, other than clearly defined, immutable build artifacts and Docker images.</p>
 <p><strong>No sharing means that you get parallelization for free</strong>. You don’t need to do anything to get it and you never have to debug race conditions. It just works.</p>
 <p><strong>But most importantly, all builds are completely reproducible</strong>. You get a guarantee that the build succeeds on its own and not because of your local dependencies or some environmental config that you’re not aware of. Thus, it becomes an order of magnitude easier to iterate on and debug broken CI builds.</p>
-<p><img src="/blog/assets/images/introducing-earthly-build-automation-for-the-container-era/commits.png" alt="Screenshot of commmits for a failing build" /><br />
+<p><img src="/blog/assets/images/introducing-earthly-build-automation-for-the-container-era/commits.png" alt="Screenshot of commits for a failing build" /><br />
 </p>
 <p><strong>A familiar Dockerfile-like syntax is used</strong> , to help new users get up-to-speed quickly. It’s like Dockerfile and Makefile had a baby. However, in contrast to Dockerfiles, you can also output regular artifacts (jars, packages, binaries, arbitrary files), in addition to Docker images.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> golang:1.13-alpine3.11</span>
@@ -326,7 +326,7 @@
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ENTRYPOINT</span> [<span class="st">&quot;/go-example/go-example&quot;</span>]</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  SAVE IMAGE go-example:latest</span></code></pre></div>
 <p>Earthly in the future will be about much more: for example, cloud-based build parallelization that has never been possible before. For now, you can run it on top of your existing CI, and you can run it locally for development. You still get the other benefits mentioned above.</p>
-<p>There are many other goodies that Earthly provides. For more information and also installation instructions, see the <a href="https://github.com/vladaionescu/earthly#earthly---build-automation-for-the-container-era"><strong>Earthly Readme on GitHub</strong></a>.</p>
+<p>There are many other goodies that Earthly provides. For more information and also installation instructions, see the <a href="https://github.com/vladaionescu/earthly#earthly---build-automation-for-the-container-era"><strong>Earthly ReadMe on GitHub</strong></a>.</p>
 <p>This is the first release of Earthly. We will continue to iterate, make improvements and, most importantly, incorporate user feedback. We can’t wait to see what you build with it!</p>
 <script id="asciicast-314104" src="https://asciinema.org/a/314104.js" async></script>
 
@@ -491,13 +491,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -515,7 +515,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -523,7 +523,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -543,13 +546,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -567,7 +570,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -575,8 +578,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

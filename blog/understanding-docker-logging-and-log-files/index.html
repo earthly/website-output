@@ -344,7 +344,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introduction-to-docker-logging">Introduction to Docker Logging</a></li><li><a href="#docker-logging-commands">Docker Logging Commands</a></li><li><a href="#logging-drivers-supported-by-docker">Logging Drivers Supported by Docker</a><ul><li><a href="#configuring-the-logging-driver">Configuring the Logging Driver</a></li><li><a href="#choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver">Choosing the Delivery Mode of Log Messages From Container to Log Driver</a></li></ul></li><li><a href="#understanding-logging-strategies">Understanding Logging Strategies</a><ul><li><a href="#application-logging">1. Application Logging</a></li><li><a href="#data-volumes">2. Data Volumes</a></li><li><a href="#docker-logging-driver">3. Docker Logging Driver</a></li><li><a href="#dedicated-logging-container">4. Dedicated Logging Container</a></li><li><a href="#sidecar-logging-container">5. Sidecar Logging Container</a></li><li><a href="#third-party-logging-services">6. Third-party Logging Services</a></li></ul></li><li><a href="#limitations-and-challenges-of-docker-logging">Limitations and Challenges of Docker Logging</a><ul><li><a href="#the-only-compatible-driver-is-json-file">The Only Compatible Driver Is json-file</a></li><li><a href="#docker-syslog-impacts-container-deployment">Docker Syslog Impacts Container Deployment</a></li><li><a href="#potential-loss-of-logs-with-docker-syslog-driver">Potential Loss of Logs with Docker Syslog Driver</a></li><li><a href="#multiline-logs-not-supported">Multiline Logs Not Supported</a></li><li><a href="#multiple-logging-drivers-not-supported">Multiple Logging Drivers Not Supported</a></li><li><a href="#logs-can-miss-or-skip">Logs Can Miss or Skip</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction-to-docker-logging">Introduction to Docker Logging</a></li><li><a href="#docker-logging-commands">Docker Logging Commands</a></li><li><a href="#logging-drivers-supported-by-docker">Logging Drivers Supported by Docker</a><ul><li><a href="#configuring-the-logging-driver">Configuring the Logging Driver</a></li><li><a href="#choosing-the-delivery-mode-of-log-messages-from-container-to-log-driver">Choosing the Delivery Mode of Log Messages From Container to Log Driver</a></li></ul></li><li><a href="#understanding-logging-strategies">Understanding Logging Strategies</a><ul><li><a href="#application-logging">1. Application Logging</a></li><li><a href="#data-volumes">2. Data Volumes</a></li><li><a href="#docker-logging-driver">3. Docker Logging Driver</a></li><li><a href="#dedicated-logging-container">4. Dedicated Logging Container</a></li><li><a href="#sidecar-logging-container">5. Sidecar Logging Container</a></li><li><a href="#third-party-logging-services">6. Third-party Logging Services</a></li></ul></li><li><a href="#limitations-and-challenges-of-docker-logging">Limitations and Challenges of Docker Logging</a><ul><li><a href="#the-only-compatible-driver-is-json-file">The Only Compatible Driver Is json-file</a></li><li><a href="#docker-syslog-impacts-container-deployment">Docker Syslog Impacts Container Deployment</a></li><li><a href="#potential-loss-of-logs-with-docker-syslog-driver">Potential Loss of Logs with Docker Syslog Driver</a></li><li><a href="#multi-line-logs-not-supported">Multi-line Logs Not Supported</a></li><li><a href="#multiple-logging-drivers-not-supported">Multiple Logging Drivers Not Supported</a></li><li><a href="#logs-can-miss-or-skip">Logs Can Miss or Skip</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -355,16 +355,16 @@
 <p>Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A <a href="https://www.sumologic.com/glossary/log-analysis/">log analysis</a> then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.</p>
 <p>In <a href="https://www.docker.com/">Docker</a>, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:</p>
 <p><strong>1. Containers are transient.</strong> When a Docker container broadcasts logs, it sends them to the application’s <code>stdout</code> and <code>stderr</code> output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (<a href="https://docs.docker.com/config/containers/logging/json-file/"><code>json-file</code> is the default logging driver used by Docker</a>). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.</p>
-<p><strong>2. Containers are multileveled.</strong> There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in <code>/var/log</code>. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.</p>
+<p><strong>2. Containers are multi-leveled.</strong> There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in <code>/var/log</code>. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.</p>
 <p>In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.</p>
 <h2 id="docker-logging-commands">Docker Logging Commands</h2>
-<p><code>docker logs</code> is a command that shows all the information logged by a running container. The <code>docker service logs</code> command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: STDIN, STDOUT, and STDERR. And the default is set to show only STDOUT and STDERR.</p>
+<p><code>docker logs</code> is a command that shows all the information logged by a running container. The <code>docker service logs</code> command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: stdin, stdout, and stderr. And the default is set to show only stdout and stdout.</p>
 <ul>
-<li>STDIN is the command’s input stream, which may include input from the keyboard or input from another command.</li>
-<li>STDOUT is usually a command’s normal output.</li>
-<li>STDERR is typically used to output error messages.</li>
+<li>stdin is the command’s input stream, which may include input from the keyboard or input from another command.</li>
+<li>stdout is usually a command’s normal output.</li>
+<li>stderr is typically used to output error messages.</li>
 </ul>
-<p>The <code>docker logs</code> command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of STDOUT and STDERR. With <code>docker logs &lt;CONTAINER_ID&gt;</code>, you can see all the logs broadcasted by a specific container identified by a unique ID.</p>
+<p>The <code>docker logs</code> command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of stdout and stderr. With <code>docker logs &lt;CONTAINER_ID&gt;</code>, you can see all the logs broadcast by a specific container identified by a unique ID.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--name</span> test <span class="at">-d</span> busybox sh <span class="at">-c</span> <span class="st">&quot;while true; do </span><span class="va">$(</span><span class="bu">echo</span> date<span class="va">)</span><span class="st">; sleep 1; done&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> date</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Tue</span> 06 Feb 2020 00:00:00 UTC</span>
@@ -401,6 +401,7 @@
 <h2 id="logging-drivers-supported-by-docker">Logging Drivers Supported by Docker</h2>
 <p>Logging drivers, or log-drivers, are mechanisms for getting information from running containers and services, and Docker has lots of them available for you. Every Docker daemon has a default logging driver, which each container uses. Docker uses the json-file logging driver as its default driver.</p>
 <p>Currently, Docker supports the following logging drivers:</p>
+<!-- vale off -->
 <table>
 <colgroup>
 <col style="width: 43%" />
@@ -463,6 +464,7 @@
 </tr>
 </tbody>
 </table>
+<!-- vale on -->
 <h3 id="configuring-the-logging-driver">Configuring the Logging Driver</h3>
 <p>To configure the Docker daemon to a logging driver, you need to set the value of <code>log-driver</code> to the name of the logging driver in the daemon.json configuration file. Then you need to restart Docker for the changes to take effect for all the newly created containers. All the existing containers will remain as they are.</p>
 <p>For example, let’s set up a default logging driver with some additional options.</p>
@@ -483,7 +485,7 @@
 <p>You can override the default driver by adding the <code>--log-driver</code> option to the docker run command that creates a container.</p>
 <p>The following command will start using the Splunk driver:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--log-driver</span> splunk httpd</span></code></pre></div>
-<p>Modify the <code>daemon.json</code> file, to pass the address of the splunk host to the driver:</p>
+<p>Modify the <code>daemon.json</code> file, to pass the address of the Splunk host to the driver:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-driver&quot;</span><span class="fu">:</span> <span class="st">&quot;splunk&quot;</span><span class="fu">,</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;log-opts&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -522,7 +524,7 @@
 <p>In this logging strategy, your container’s directory gets links to one of the host machine directories that will hold all the data for you. Containers can now be terminated or shut down, and access logs from multiple containers.</p>
 <p>A regular backup is a good idea in order to prevent data corruption or loss in case of a failure. But if you want to shift the containers on different hosts without loss of data, then the data volumes strategy will make that difficult.</p>
 <h3 id="docker-logging-driver">3. Docker Logging Driver</h3>
-<p>Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s <code>stdout</code> or <code>stderr</code> streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like fluentd, Splunk, and awslogs.</p>
+<p>Docker has a bunch of logging drivers that can be used in your logging strategy. The configured driver reads the data broadcast by the container’s <code>stdout</code> or <code>stderr</code> streams and writes it to a file on the host machine. By default, the host machine holds the log files, but you can forward these events using the available drivers, like Fluentd, Splunk, and awslogs.</p>
 <p>Note that the <code>docker log</code> command will not work if you use anything other than the <code>json-file</code> driver. And if log forwarding over a TCP connection fails or becomes unreachable, the containers will shut down.</p>
 <h3 id="dedicated-logging-container">4. Dedicated Logging Container</h3>
 <p>Here, you need to set up a dedicated container whose only job is to collect and manage logs within a Docker ecosystem. It’ll aggregate, monitor, and analyze logs from containers and forward them to a central repository. The log dependency on the host machine is no longer an issue, and it’s best suited for microservices architecture.</p>
@@ -549,12 +551,12 @@
 <h3 id="the-only-compatible-driver-is-json-file">The Only Compatible Driver Is json-file</h3>
 <p>The json-file driver is the only one that works with the <code>docker logs</code> command, a limitation of Docker logs. When you start using any other logging drivers, such as Fluentd or Splunk, the <code>docker logs</code> command shows an error and the Docker logs API calls will fail. Also, you won’t be able to check the container logs in this situation.</p>
 <h3 id="docker-syslog-impacts-container-deployment">Docker Syslog Impacts Container Deployment</h3>
-<p>The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail ife a connection is not made.</p>
+<p>The reliable way to deliver logs is via Docker Syslog with TCP or TLS. But this driver needs an established TCP connection to the Syslog server whenever a container starts up. And the container will fail if a connection is not made.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker:</span> Error response from daemon: Failed to initialize logging driver: dial tcp</span></code></pre></div>
 <p>Your container deployment will be affected if you face network problems or latency issues. And it’s not recommended that you restart the Syslog server because this will drop all the connections from the containers to a central Syslog server.</p>
 <h3 id="potential-loss-of-logs-with-docker-syslog-driver">Potential Loss of Logs with Docker Syslog Driver</h3>
 <p>The Docker syslog driver needs an established TCP or TLS connection to deliver logs. Note that when the connection is down or not reachable, you’ll start losing the logs until the connection reestablished.</p>
-<h3 id="multiline-logs-not-supported">Multiline Logs Not Supported</h3>
+<h3 id="multi-line-logs-not-supported">Multi-line Logs Not Supported</h3>
 <p>Generally, either of two patterns is followed for logging: single-line per log or multiple lines with extended information per log, like stack traces or exceptions. But with Docker logging, this is a moot point, because containers always broadcast logs to the same output: <code>stdout</code>.</p>
 <h3 id="multiple-logging-drivers-not-supported">Multiple Logging Drivers Not Supported</h3>
 <p>It’s mandatory that you use only a single driver for all of your logging needs. Scenarios where you can store logs locally and push it to remote servers are not supported.</p>
@@ -737,13 +739,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -761,7 +763,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -769,7 +771,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -789,13 +794,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -813,7 +818,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -821,8 +826,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 
