@@ -360,7 +360,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <p><strong>❗ Don’t Forget</strong></p>
 <p>Make sure you replace <code>$VPC_ID</code> with the ID for the <a href="#where-will-the-instance-live">VPC you identified earlier</a>.</p>
 </div>
-<p>By default, AWS security groups are configured to disallow all traffic coming in (ingress), and to allow all traffic out (egress). While an instance that doesn’t allow traffic in is fairly secure, it also doesn’t do you much good. You will need to open up port 22 (ssh) for traffic from our current IP only, and port 80 (http) for traffic from the internet at large. By restricting SSH to your current IP address, you prevent external entities from attempting to SSH into your proxy.</p>
+<p>By default, AWS security groups are configured to disallow all traffic coming in (ingress), and to allow all traffic out (egress). While an instance that doesn’t allow traffic in is fairly secure, it also doesn’t do you much good. You will need to open up port 22 (ssh) for traffic from our current IP only, and port 80 (HTTP) for traffic from the internet at large. By restricting SSH to your current IP address, you prevent external entities from attempting to SSH into your proxy.</p>
 <pre><code>❯ aws ec2 authorize-security-group-ingress \
     --group-id $SG_ID \
     --protocol tcp \

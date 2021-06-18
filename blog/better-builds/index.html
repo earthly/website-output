@@ -369,7 +369,7 @@ Earthfile
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">COPY</span> src src</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">RUN</span> sbt compile</span></code></pre></div>
 <figcaption>
-earthfile continued
+Earthfile continued
 </figcaption>
 <p>Inside the <code>build:</code> target we copy in our source files, and run our familiar <code>sbt compile</code>.  We use <code>FROM +deps</code> to tell earthly that this step is dependent upon the output of our <code>deps</code> step above.</p>
 <p>We can run the build like this:</p>

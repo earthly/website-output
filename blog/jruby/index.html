@@ -375,7 +375,7 @@ Building This blog is 10x slower
 <p>Set a specific project to use JRuby:</p>
 <pre><code>rbenv local jruby-9.2.16.0</code></pre>
 <h2 id="why-do-people-use-jruby">Why Do People Use JRuby?</h2>
-<!-- vale Vale.Spelling = NO -->
+<!-- vale HouseStyle.Spelling = NO -->
 <blockquote class="twitter-tweet">
 <p lang="en" dir="ltr">
 OMG <a href="https://twitter.com/hashtag/JRuby?src=hash&amp;ref_src=twsrc%5Etfw">#JRuby</a> +Java.util.concurrent FTW! Doing a recursive backtrace through billion+, I've made it 30,000x faster than 1.9.3. 30 THOUSAND.
@@ -383,7 +383,7 @@ OMG <a href="https://twitter.com/hashtag/JRuby?src=hash&amp;ref_src=twsrc%5Etfw"
 — /dave/null (<span class="citation" data-cites="bokmann">@bokmann</span>) <a href="https://twitter.com/bokmann/status/381422498170273792?ref_src=twsrc%5Etfw">September 21, 2013</a>
 </blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-<!-- vale Vale.Spelling = YES -->
+<!-- vale HouseStyle.Spelling = YES -->
 <p>There are several reasons people might choose JRuby, several of which have to do with performance.</p>
 <h3 id="getting-past-the-gil">Getting Past the GIL</h3>
 <p>MRI Ruby, much like Python, has a global interpreter lock. This means that although you can have many threads in a single Ruby process, only one will ever be running at a time. If you look at <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/fannkuchredux.html">many</a> of the benchmark shout-out results, parallel multi-core solutions dominate. JRuby lets you sidestep the GIL as a bottleneck, at the cost of having to worry about writing thread-safe code.</p>

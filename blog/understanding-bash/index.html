@@ -373,7 +373,7 @@
 <p><em>Note: <code>sed</code> is a search-and-replace command. In this case it replaces underscores with dashes.</em></p>
 <p>The intention is that <code>/tmp/path.txt</code> contains <code>tmp_file.txt</code>. Assume that the file <code>/tmp-file.txt</code> exists on the system. In this case the script will work perfectly and delete <code>/tmp-file.txt</code>. But what if <code>/tmp/path.txt</code> doesn’t exist? <code>cat /tmp/path.txt</code> will fail, but the script won’t. Now you’ve deleted your entire filesystem, but <code>set -eo pipefail</code> will prevent this.</p>
 <h3 id="sets-in-summary">Sets in Summary</h3>
-<!-- vale Vale.Spelling = NO -->
+<!-- vale HouseStyle.Spelling = NO -->
 <table>
 <thead>
 <tr class="header">
@@ -405,7 +405,7 @@
 </tr>
 </tbody>
 </table>
-<!-- vale Vale.Spelling = YES -->
+<!-- vale HouseStyle.Spelling = YES -->
 <h2 id="use-error-checking-tools">Use Error Checking Tools</h2>
 <p>Although you may be familiar with all the best practices, it can be tough to remember them all when your script is coming to life. Luckily there are tools available to help, like <a href="https://www.shellcheck.net/#">ShellCheck</a>. ShellCheck has both a browser version and a command-line tool, but for this article, let’s work with the command-line version. You can find <a href="https://github.com/koalaman/shellcheck#installing">installation instructions on GitHub</a>.</p>
 <p>We’ll use the following script as an example:</p>

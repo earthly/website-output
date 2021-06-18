@@ -364,7 +364,7 @@
 <h3 id="dont-destroy-deprecate">Don’t Destroy, Deprecate</h3>
 <p>Protocol Buffer compatibility problems generally start when you need to change the length of or remove existing fields. There are a whole host of rules about how fields can <a href="https://developers.google.com/protocol-buffers/docs/proto3#updating" title="Protobuf3 update fields">change</a>.</p>
 <p>Largely, maintaining backward and forward compatibility comes down to maintaining a consistent wire type. You can’t change the wire type or alter the length of fields and expect old code to properly send or receive messages—the sender’s and receiver’s understanding of the exact length of each element in the transmitted messages needs to be precise.</p>
-<!-- vale Vale.Spelling = NO -->
+<!-- vale HouseStyle.Spelling = NO -->
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -411,7 +411,7 @@
 </tr>
 </tbody>
 </table>
-<!-- vale Vale.Spelling = YES -->
+<!-- vale HouseStyle.Spelling = YES -->
 <figcaption>
 Protobuf Wire Types
 </figcaption>

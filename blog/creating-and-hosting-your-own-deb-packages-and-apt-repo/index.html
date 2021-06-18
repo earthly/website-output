@@ -423,7 +423,7 @@ Description: A program that prints hello</code></pre>
 <div class="notice--info">
 <p>if you had multiple deb files, you would have an entry for each package</p>
 </div>
-<p>The contents of the Packages file is a list of all available packages along with metadata from the <code>DEBIAN/control</code> file, and some hashes which can be used to validate the integrety of the package.</p>
+<p>The contents of the Packages file is a list of all available packages along with metadata from the <code>DEBIAN/control</code> file, and some hashes which can be used to validate the integrity of the package.</p>
 <p>Next we will create a Release file. Unfortunately <code>dpkg-scanpackages</code> does not create Release files. Some people use programs like <code>apt-ftparchive</code>; however in this example I’ll cover an alternative to <code>apt-ftparchive</code> by using a small bash script.</p>
 <p>First let’s look at an example of a Release file, which can be broken up into two parts:</p>
 <ol type="1">
@@ -494,7 +494,7 @@ SHA256:
 <p>Next let’s run the <code>generate-release.sh</code> script with:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/example/apt-repo/dists/stable</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">~/example/generate-release.sh</span> <span class="op">&gt;</span> Release</span></code></pre></div>
-<p>At this point, you can try hosting this repo for yourself. In this example we’ll use python’s simple http server; however in practice you’ll want to use a production-ready server. Here’s how you can start it up for testing:</p>
+<p>At this point, you can try hosting this repo for yourself. In this example we’ll use python’s simple HTTP server; however in practice you’ll want to use a production-ready server. Here’s how you can start it up for testing:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/example</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> http.server</span></code></pre></div>
 <p>Then configure this apt repository:</p>
@@ -517,7 +517,7 @@ Install these packages without verification? [y/N]</code></pre>
 <p>In order to sign the apt repo, all we must do is sign the Release file.</p>
 <h3 id="pgp-gpg-and-gnupgp">PGP, GPG, and GnuPGP</h3>
 <p><em>PGP, OpenPGP, GnuPG, GPG, (and careful not to typo PHP).</em></p>
-<p>Software has a lot of accronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.</p>
+<p>Software has a lot of acronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.</p>
 <p>OpenPGP is only a specification, that’s where GNU Privacy Guard (GPG) fits in: GPG is an implementation of (Open)PGP. So is it a PGP key, or a GPG key? I don’t know, I’ve seen it called both, I’m going to call it a PGP because that’s what is contained in the first line of the armoured text: <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code>.</p>
 <h4 id="creating-a-new-publicprivate-pgp-key-pair">Creating a New Public/Private PGP Key Pair</h4>
 <p>Let’s start with generating a PGP key pair. We will use the <code>--batch</code> feature of <code>gpg</code> rather than using the interactive prompt. This has the benefit of generating keys in a repeatable way. First create a batch template by copying and pasting the following into your terminal:</p>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-18T11:19:43-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Git Branching Strategies and The Greek Revival</title><link href="https://earthly.dev/blog/git-branching/" rel="alternate" type="text/html" title="Git Branching Strategies and The Greek Revival" /><published>2021-06-16T00:00:00-04:00</published><updated>2021-06-16T00:00:00-04:00</updated><id>https://earthly.dev/blog/git-branching</id><content type="html" xml:base="https://earthly.dev/blog/git-branching/">&lt;p&gt;Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-18T14:29:09-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Git Branching Strategies and The Greek Revival</title><link href="https://earthly.dev/blog/git-branching/" rel="alternate" type="text/html" title="Git Branching Strategies and The Greek Revival" /><published>2021-06-16T00:00:00-04:00</published><updated>2021-06-16T00:00:00-04:00</updated><id>https://earthly.dev/blog/git-branching</id><content type="html" xml:base="https://earthly.dev/blog/git-branching/">&lt;p&gt;Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that.&lt;/p&gt;
 &lt;p&gt;I’m going to explain various git branching strategies with a story. We will start with something straightforward and add complexity as we go. Eventually, we will end up back simple again.&lt;/p&gt;
 &lt;p&gt;I hope that explaining things this way will give you a deeper understanding of when to use specific branching and merging strategies. So instead of telling you how to cherry-pick a bug fix into a hotfix branch using GitFlow work, I can describe the conditions that would lead to adopting that process. Once you understand the whys, the hows will be easier.&lt;/p&gt;
 &lt;h2 id=&quot;ashelysoft-2006&quot;&gt;AshelySoft 2006&lt;/h2&gt;
@@ -746,7 +746,7 @@ Description: A program that prints hello&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&quot;notice--info&quot;&gt;
 &lt;p&gt;if you had multiple deb files, you would have an entry for each package&lt;/p&gt;
 &lt;/div&gt;
-&lt;p&gt;The contents of the Packages file is a list of all available packages along with metadata from the &lt;code&gt;DEBIAN/control&lt;/code&gt; file, and some hashes which can be used to validate the integrety of the package.&lt;/p&gt;
+&lt;p&gt;The contents of the Packages file is a list of all available packages along with metadata from the &lt;code&gt;DEBIAN/control&lt;/code&gt; file, and some hashes which can be used to validate the integrity of the package.&lt;/p&gt;
 &lt;p&gt;Next we will create a Release file. Unfortunately &lt;code&gt;dpkg-scanpackages&lt;/code&gt; does not create Release files. Some people use programs like &lt;code&gt;apt-ftparchive&lt;/code&gt;; however in this example I’ll cover an alternative to &lt;code&gt;apt-ftparchive&lt;/code&gt; by using a small bash script.&lt;/p&gt;
 &lt;p&gt;First let’s look at an example of a Release file, which can be broken up into two parts:&lt;/p&gt;
 &lt;ol type=&quot;1&quot;&gt;
@@ -817,7 +817,7 @@ SHA256:
 &lt;p&gt;Next let’s run the &lt;code&gt;generate-release.sh&lt;/code&gt; script with:&lt;/p&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/apt-repo/dists/stable&lt;/span&gt;
 &lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;~/example/generate-release.sh&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; Release&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;At this point, you can try hosting this repo for yourself. In this example we’ll use python’s simple http server; however in practice you’ll want to use a production-ready server. Here’s how you can start it up for testing:&lt;/p&gt;
+&lt;p&gt;At this point, you can try hosting this repo for yourself. In this example we’ll use python’s simple HTTP server; however in practice you’ll want to use a production-ready server. Here’s how you can start it up for testing:&lt;/p&gt;
 &lt;div class=&quot;sourceCode&quot; id=&quot;cb28&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb28-1&quot;&gt;&lt;a href=&quot;#cb28-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example&lt;/span&gt;
 &lt;span id=&quot;cb28-2&quot;&gt;&lt;a href=&quot;#cb28-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;python3&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-m&lt;/span&gt; http.server&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Then configure this apt repository:&lt;/p&gt;
@@ -840,7 +840,7 @@ Install these packages without verification? [y/N]&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In order to sign the apt repo, all we must do is sign the Release file.&lt;/p&gt;
 &lt;h3 id=&quot;pgp-gpg-and-gnupgp&quot;&gt;PGP, GPG, and GnuPGP&lt;/h3&gt;
 &lt;p&gt;&lt;em&gt;PGP, OpenPGP, GnuPG, GPG, (and careful not to typo PHP).&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Software has a lot of accronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.&lt;/p&gt;
+&lt;p&gt;Software has a lot of acronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.&lt;/p&gt;
 &lt;p&gt;OpenPGP is only a specification, that’s where GNU Privacy Guard (GPG) fits in: GPG is an implementation of (Open)PGP. So is it a PGP key, or a GPG key? I don’t know, I’ve seen it called both, I’m going to call it a PGP because that’s what is contained in the first line of the armoured text: &lt;code&gt;-----BEGIN PGP PUBLIC KEY BLOCK-----&lt;/code&gt;.&lt;/p&gt;
 &lt;h4 id=&quot;creating-a-new-publicprivate-pgp-key-pair&quot;&gt;Creating a New Public/Private PGP Key Pair&lt;/h4&gt;
 &lt;p&gt;Let’s start with generating a PGP key pair. We will use the &lt;code&gt;--batch&lt;/code&gt; feature of &lt;code&gt;gpg&lt;/code&gt; rather than using the interactive prompt. This has the benefit of generating keys in a repeatable way. First create a batch template by copying and pasting the following into your terminal:&lt;/p&gt;
@@ -1167,7 +1167,7 @@ Building This blog is 10x slower
 &lt;p&gt;Set a specific project to use JRuby:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;rbenv local jruby-9.2.16.0&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&quot;why-do-people-use-jruby&quot;&gt;Why Do People Use JRuby?&lt;/h2&gt;
-&lt;!-- vale Vale.Spelling = NO --&gt;
+&lt;!-- vale HouseStyle.Spelling = NO --&gt;
 &lt;blockquote class=&quot;twitter-tweet&quot;&gt;
 &lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
 OMG &lt;a href=&quot;https://twitter.com/hashtag/JRuby?src=hash&amp;amp;ref_src=twsrc%5Etfw&quot;&gt;#JRuby&lt;/a&gt; +Java.util.concurrent FTW! Doing a recursive backtrace through billion+, I've made it 30,000x faster than 1.9.3. 30 THOUSAND.
@@ -1175,7 +1175,7 @@ OMG &lt;a href=&quot;https://twitter.com/hashtag/JRuby?src=hash&amp;amp;ref_src=
 — /dave/null (&lt;span class=&quot;citation&quot; data-cites=&quot;bokmann&quot;&gt;@bokmann&lt;/span&gt;) &lt;a href=&quot;https://twitter.com/bokmann/status/381422498170273792?ref_src=twsrc%5Etfw&quot;&gt;September 21, 2013&lt;/a&gt;
 &lt;/blockquote&gt;
 &lt;script async src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;!-- vale Vale.Spelling = YES --&gt;
+&lt;!-- vale HouseStyle.Spelling = YES --&gt;
 &lt;p&gt;There are several reasons people might choose JRuby, several of which have to do with performance.&lt;/p&gt;
 &lt;h3 id=&quot;getting-past-the-gil&quot;&gt;Getting Past the GIL&lt;/h3&gt;
 &lt;p&gt;MRI Ruby, much like Python, has a global interpreter lock. This means that although you can have many threads in a single Ruby process, only one will ever be running at a time. If you look at &lt;a href=&quot;https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/fannkuchredux.html&quot;&gt;many&lt;/a&gt; of the benchmark shout-out results, parallel multi-core solutions dominate. JRuby lets you sidestep the GIL as a bottleneck, at the cost of having to worry about writing thread-safe code.&lt;/p&gt;
@@ -1526,7 +1526,7 @@ my_jruby.eval_script(ruby_code)&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;dont-destroy-deprecate&quot;&gt;Don’t Destroy, Deprecate&lt;/h3&gt;
 &lt;p&gt;Protocol Buffer compatibility problems generally start when you need to change the length of or remove existing fields. There are a whole host of rules about how fields can &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#updating&quot; title=&quot;Protobuf3 update fields&quot;&gt;change&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Largely, maintaining backward and forward compatibility comes down to maintaining a consistent wire type. You can’t change the wire type or alter the length of fields and expect old code to properly send or receive messages—the sender’s and receiver’s understanding of the exact length of each element in the transmitted messages needs to be precise.&lt;/p&gt;
-&lt;!-- vale Vale.Spelling = NO --&gt;
+&lt;!-- vale HouseStyle.Spelling = NO --&gt;
 &lt;table&gt;
 &lt;colgroup&gt;
 &lt;col style=&quot;width: 33%&quot; /&gt;
@@ -1573,7 +1573,7 @@ my_jruby.eval_script(ruby_code)&lt;/code&gt;&lt;/pre&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;!-- vale Vale.Spelling = YES --&gt;
+&lt;!-- vale HouseStyle.Spelling = YES --&gt;
 &lt;figcaption&gt;
 Protobuf Wire Types
 &lt;/figcaption&gt;
