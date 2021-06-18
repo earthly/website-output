@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</a></li><li><a href="#mttr-mean-time-to-recovery">MTTR: Mean Time to Recovery</a></li><li><a href="#mttre-mean-time-to-resolve">MTTRe: Mean Time to Resolve</a></li><li><a href="#mtta-mean-time-to-acknowledge">MTTA: Mean Time to Acknowledge</a></li><li><a href="#summary">Summary</a></li></ul>
+              <ul class="toc__menu"><li><a href="#mean-time-between-failures-mtbf">Mean Time Between Failures (MTBF)</a></li><li><a href="#mean-time-to-recovery-mttr">Mean Time to Recovery (MTTR)</a></li><li><a href="#mean-time-to-resolve-mttre">Mean Time to Resolve (MTTRe)</a></li><li><a href="#mean-time-to-acknowledge-mtta">Mean Time to Acknowledge (MTTA)</a></li><li><a href="#summary">Summary</a></li></ul>
 
             </nav>
           </aside>
@@ -305,7 +305,7 @@
 <p>We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.</p>
 <p>Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. <a href="/blog/unit-vs-integration">Testing</a> was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.</p>
 <p>This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.</p>
-<h2 id="mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</h2>
+<h2 id="mean-time-between-failures-mtbf">Mean Time Between Failures (MTBF)</h2>
 <p>When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.</p>
 <p>Mean time between failures is a metric from the field of <a href="/blog/achieving-repeatability">reliability</a> engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.</p>
 <section id="calculating-mtbf" class="notice--big--primary">
@@ -334,7 +334,7 @@
 </dd>
 </dl>
 </section>
-<h2 id="mttr-mean-time-to-recovery">MTTR: Mean Time to Recovery</h2>
+<h2 id="mean-time-to-recovery-mttr">Mean Time to Recovery (MTTR)</h2>
 <p>Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.</p>
 <p>If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.</p>
 <section id="calculating-mean-time-to-recovery" class="notice--big--primary">
@@ -389,7 +389,7 @@
 </dd>
 </dl>
 </section>
-<h2 id="mttre-mean-time-to-resolve">MTTRe: Mean Time to Resolve</h2>
+<h2 id="mean-time-to-resolve-mttre">Mean Time to Resolve (MTTRe)</h2>
 <div class="notice--info">
 <p>ℹ️ Acronyms Collision Alert</p>
 <p>Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.</p>
@@ -464,7 +464,7 @@
 </dd>
 </dl>
 </section>
-<h2 id="mtta-mean-time-to-acknowledge">MTTA: Mean Time to Acknowledge</h2>
+<h2 id="mean-time-to-acknowledge-mtta">Mean Time to Acknowledge (MTTA)</h2>
 <p>An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.</p>
 <p>MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.</p>
 <section id="calculating-mean-time-to-acknowledge" class="notice--big--primary">
@@ -528,8 +528,8 @@
 </dl>
 </section>
 <h2 id="summary">Summary</h2>
-<p>There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your SDLC, find ways to collect aggregate metrics like these and choose one or two to target for improvement.</p>
-<p>Invest in improving these metrics and you’ll make up for it in time saved fighting fires. Also focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.</p>
+<p>There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.</p>
+<p>Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.</p>
 <p>If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s <a href="http://earthly.dev/">free and open build tool</a>.</p>
 
         
@@ -694,65 +694,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          11 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-
-
-
-
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/deployment-strategies/header-600-e2ee32f44.webp 600w, /blog/generated/assets/images/deployment-strategies/header-800-e2ee32f44.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/deployment-strategies/header-600-88b65c09f.jpg 600w, /blog/generated/assets/images/deployment-strategies/header-800-88b65c09f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/deployment-strategies/header-800-88b65c09f.jpg"></picture>
-
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/blog/deployment-strategies/" rel="permalink">Deployment Strategies
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -778,7 +726,64 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
-There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this shor...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

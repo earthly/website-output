@@ -355,14 +355,14 @@
 <p>Developers, DevOps professionals, and product stakeholders all apply knowledge gained from logging to improve a system’s performance and reliability. Much of what an application, server, or OS does should be recorded in the logs and aggregated in an easily accessible location. A <a href="https://www.sumologic.com/glossary/log-analysis/">log analysis</a> then uses all the log events and audit trails to help chalk out a clear picture of events that happen across your application.</p>
 <p>In <a href="https://www.docker.com/">Docker</a>, containers are isolated and bundled with software, libraries, and configuration files. In a traditional single-server setup log analysis is centralized on a single node, but with a stateless containerized setup logging becomes more complex. Why? Two reasons:</p>
 <p><strong>1. Containers are transient.</strong> When a Docker container broadcasts logs, it sends them to the application’s <code>stdout</code> and <code>stderr</code> output streams. The underlying container logging driver can start accessing these streams, and the logs are stored on the Docker host in JSON files (<a href="https://docs.docker.com/config/containers/logging/json-file/"><code>json-file</code> is the default logging driver used by Docker</a>). It writes JSON-formatted logs to a file on the host where the container is running. Any logs stored in the container will be deleted when it is terminated or shut down.</p>
-<p><strong>2. Containers are multi-leveled.</strong> There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (eg, system logs, Docker daemon logs), which are generally located in <code>/var/log</code>. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.</p>
+<p><strong>2. Containers are multi-leveled.</strong> There are two levels of aggregation in Docker logging. One refers to the logs from inside the container in your Dockerized application, and the second refers to the logs from the host servers (that is system logs or Docker daemon logs), which are generally located in <code>/var/log</code>. A log aggregator that has access to the host pulls application log files and accesses the file system inside the container to collect the logs. Later, you’d need to correlate these log events for analysis.</p>
 <p>In this article, you’ll learn about different logging strategies you can use in a Dockerized application—how you can access logs and understand Docker logging commands, drivers, configuration, and management to build a highly performant and reliable infrastructure.</p>
 <h2 id="docker-logging-commands">Docker Logging Commands</h2>
 <p><code>docker logs</code> is a command that shows all the information logged by a running container. The <code>docker service logs</code> command shows information logged by all the containers participating in a service. By default, the output of these commands, as it would appear if you run the command in a terminal, opens up three I/O streams: stdin, stdout, and stderr. And the default is set to show only stdout and stdout.</p>
 <ul>
-<li>stdin is the command’s input stream, which may include input from the keyboard or input from another command.</li>
-<li>stdout is usually a command’s normal output.</li>
-<li>stderr is typically used to output error messages.</li>
+<li><code>stdin</code> is the command’s input stream, which may include input from the keyboard or input from another command.</li>
+<li><code>stdout</code> is usually a command’s normal output.</li>
+<li><code>stderr</code> is typically used to output error messages.</li>
 </ul>
 <p>The <code>docker logs</code> command may not be useful in cases when a logging driver is configured to send logs to a file, database, or an external host/backend, or if the image is configured to send logs to a file instead of stdout and stderr. With <code>docker logs &lt;CONTAINER_ID&gt;</code>, you can see all the logs broadcast by a specific container identified by a unique ID.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--name</span> test <span class="at">-d</span> busybox sh <span class="at">-c</span> <span class="st">&quot;while true; do </span><span class="va">$(</span><span class="bu">echo</span> date<span class="va">)</span><span class="st">; sleep 1; done&quot;</span></span>
@@ -517,7 +517,7 @@
 <p>If you have multiple containers, you need to add an identifier at each container level, so you can uniquely determine the container and its respective logs. But as the size of the logs increases, this will start creating a load on the application process. Due to the transient nature of containers, the logs will be wiped out when a container is terminated or shut down.</p>
 <p>To address this, you have two options:</p>
 <ul>
-<li>Configure steady storage to hold these logs, i.e. disks/data volumes.</li>
+<li>Configure steady storage to hold these logs, for example, disks/data volumes.</li>
 <li>Forward these logs to a log management solution.</li>
 </ul>
 <h3 id="data-volumes">2. Data Volumes</h3>
@@ -739,13 +739,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -763,7 +763,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -771,7 +771,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -791,13 +794,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -815,7 +818,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -823,8 +826,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

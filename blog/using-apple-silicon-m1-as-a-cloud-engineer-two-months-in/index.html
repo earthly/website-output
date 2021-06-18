@@ -350,7 +350,7 @@
 <h2 id="using-docker">Using Docker</h2>
 <p>The Docker preview worked almost flawlessly for me from day 1. Making use of multi-platform images seems daunting at first, but really it’s actually pretty simple.</p>
 <!-- vale HouseStyle.Spelling = NO -->
-<p>The Docker for Mac app comes packed with <a href="https://www.qemu.org/">QEMU</a> out of the box - so Docker is able to run either arm64 and amd64 images. Most official images are now supported on arm64 too. If you’re building an image, by default it’ll use your native architecture to execute the build (arm64) and most things will magically just work. Your mileage may vary, however, if you are <code>curl</code>ing some binary that may need to switch from <code>X86_64</code> to <code>aarch64</code> in its URL, or if you’re doing lower-level stuff. I also noticed that some alpine packages are also not available for ARM (eg <code>shellcheck</code>). <!-- vale HouseStyle.Spelling = YES --></p>
+<p>The Docker for Mac app comes packed with <a href="https://www.qemu.org/">QEMU</a> out of the box - so Docker is able to run either arm64 and amd64 images. Most official images are now supported on arm64 too. If you’re building an image, by default it’ll use your native architecture to execute the build (arm64) and most things will magically just work. Your mileage may vary, however, if you are <code>curl</code>ing some binary that may need to switch from <code>X86_64</code> to <code>aarch64</code> in its URL, or if you’re doing lower-level stuff. I also noticed that some alpine packages are also not available for ARM (eg <code>shellcheck</code>).</p>
 <p>To build an image for a different architecture, you can use <code>docker buildx build --platform=linux/amd64 .</code> instead of the usual <code>docker build .</code>. For more details on building multi-platform images see <a href="https://medium.com/nttlabs/buildx-multiarch-2c6c2df00ca2">Akihiro Suda’s blog</a>.</p>
 <p>If you <code>docker pull</code> an image from the registry, it will again default to your native architecture (if available), unless you specify <code>--platform=linux/amd64</code>.</p>
 <p>If you <code>docker run</code> an image, it will default to whatever version of the image you have available locally or it will attempt to pull the arm64 version from the registry. You can also override the platform via <code>--platform=linux/amd64</code> if you’d like to run the amd64 version specifically.</p>
@@ -375,8 +375,8 @@
 <p>One of the things I noticed about my new laptop is that everything opens up really fast and the awake from sleep time is also really low. These are sub-second differences though so you might not notice it - or maybe it’s a placebo acting up on me and there’s no real difference :-)</p>
 <p>Docker is currently slower, however, as mentioned above, due to the multi-core issue. As far as I can tell the difference is approximately 1.75X compared to an Intel MacBook Pro. I would assume that this will be fixed in a future preview of the Docker for Mac app.</p>
 <h2 id="battery-life">Battery Life</h2>
-<!-- vale Vale.Repetition = NO -->
-<p>Battery life on the M1 is really really really good - half a day of Zoom meetings + email only took 20% of my battery. I work from home a lot, so I don’t use this much. But it’s great to know it really lasts for a serious coding session if I needed it on the go. <!-- vale Vale.Repetition = YES --></p>
+<!-- vale HouseStyle.Repetition = NO -->
+<p>Battery life on the M1 is really really really good - half a day of Zoom meetings + email only took 20% of my battery. I work from home a lot, so I don’t use this much. But it’s great to know it really lasts for a serious coding session if I needed it on the go. <!-- vale HouseStyle.Repetition = YES --></p>
 <h2 id="cost">Cost</h2>
 <p>I can’t talk about the M1 without mentioning the cost of the setup. It has very similar specs to the Intel MBP I bought last year, but it’s a whole $1000 cheaper. It’s crazy. I don’t know why - it feels really performant for the most part, it has 100% fewer fans and a long-lasting battery. Why would anyone buy the old version anymore?</p>
 <p>The only downside is that it only has two Thunderbolt ports, rather than four. But it’s not a huge deal for me as I use a dock.</p>
@@ -573,13 +573,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -597,7 +597,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -605,7 +605,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -625,13 +628,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -649,7 +652,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -657,8 +660,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 
