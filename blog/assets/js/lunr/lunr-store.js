@@ -12,19 +12,19 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.0 Released",
-        "excerpt":"Changes: global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. rename build.earth to Earthfile GitLab support ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
+        "excerpt":"Changes: Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. Rename build.earth to Earthfile GitLab support Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.1 Released",
-        "excerpt":"Changes:   fixes handling of sockets between different targets (#115) fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   Fixes handling of sockets between different targets (#115) Fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-1/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.2 Released",
-        "excerpt":"Changes:   fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   Fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -36,13 +36,13 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.2 Released",
-        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, e.g. FROM DOCKERFILE +gen-dockerfile/ #219 Support for COPY...","categories": ["News"],
+        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, for example FROM DOCKERFILE +gen-dockerfile/ #219 Support...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.3 Released",
-        "excerpt":"Changes   new earth bootstrap command can be run to setup bash and zsh shell completion  Release Page  ","categories": ["News"],
+        "excerpt":"Changes   New earth bootstrap command can be run to set up bash and zsh shell completion  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-3-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -54,7 +54,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Earthly 0.3.6 Released",
-        "excerpt":"Release Notes: introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) pass along user terminal environment variable to interactive debugger (fixes #293) support for in-line comments (fixes #288) fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
+        "excerpt":"Release Notes: Introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) Pass along user terminal environment variable to interactive debugger (fixes #293) Support for in-line comments (fixes #288) Fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
         "tags": [],
         "url": "/blog/earthly-0-3-6-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"

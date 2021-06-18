@@ -328,7 +328,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 </ul>
 <p>Optionally, you may also want to install:</p>
 <ul>
-<li><a href="https://stedolan.github.io/jq/">jq</a></li>
+<li><a href="https://stedolan.github.io/jq/"><code>jq</code></a></li>
 </ul>
 <p>With those in hand, it’s time to get started!</p>
 <h3 id="where-will-the-instance-live">Where Will the Instance Live?</h3>
@@ -476,7 +476,7 @@ server {
 <p>To see everything it can do, run <code>docker run proxy:latest</code> for a list.</p>
 <h2 id="shortcomings">Shortcomings</h2>
 <p>This approach to a free, simple ngrok alternative isn’t without its shortcomings. For instance, it can’t do <code>https</code> without a self-signed certificate, because issuers like Let’s Encrypt won’t issue certificates for AWS public DNS names. Also, it can’t handle a ton of traffic since its a small <code>t2.micro</code> capped at low bandwidth.</p>
-<p>It also requires non-trivial IAM permissions in AWS to setup and teardown. If you don’t have that kind of access to an account, you may end up waiting on others to set it up for you.</p>
+<p>It also requires non-trivial IAM permissions in AWS to set up and tear down. If you don’t have that kind of access to an account, you may end up waiting on others to set it up for you.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Turns out it’s pretty simple to get something basic up and running, just like <code>ngrok</code> does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.</p>
 <p>Thanks for following along with us! <a href="https://github.com/earthly/example-diy-ngrok">Visit the example repository, with all scripts available on GitHub.</a></p>

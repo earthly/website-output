@@ -282,20 +282,20 @@
         
         <p>Changes:</p>
 <ul>
-<li>global configuration file for git credentials, cache location and size, no loop device, and others; see <a href="https://docs.earthly.dev/earth-config">Configuration Reference</a> in the docs for more details.</li>
-<li>rename <code>build.earth</code> to <code>Earthfile</code></li>
+<li>Global configuration file for git credentials, cache location and size, no loop device, and others; see <a href="https://docs.earthly.dev/earth-config">Configuration Reference</a> in the docs for more details.</li>
+<li>Rename <code>build.earth</code> to <code>Earthfile</code></li>
 <li>GitLab support</li>
-<li>ability to change cache path (previously it was hard-coded to <code>/tmp/earthly</code>; now defaults to <code>/var/cache/earthly</code> on Linux or <code>~/Library/Caches/earthly</code> on macOS)</li>
+<li>Ability to change cache path (previously it was hard-coded to <code>/tmp/earthly</code>; now defaults to <code>/var/cache/earthly</code> on Linux or <code>~/Library/Caches/earthly</code> on macOS)</li>
 <li><code>HEALTHCHECK</code> command support</li>
-<li>fixed out of disk space error</li>
-<li>fixed support for stdout reset control characters (which are used for installation progress bars)</li>
-<li>added Scala, c++, dot net examples</li>
+<li>Fixed out of disk space error</li>
+<li>Fixed support for stdout reset control characters (which are used for installation progress bars)</li>
+<li>Added Scala, c++, dot net examples</li>
 </ul>
 <p>Upgrade instructions:</p>
 <ul>
 <li><code>docker stop earthly-buildkitd</code></li>
 <li><code>sudo rm -rf /tmp/earthly</code></li>
-<li>re-run the install command for your OS</li>
+<li>Re-run the install command for your OS</li>
 </ul>
 
         

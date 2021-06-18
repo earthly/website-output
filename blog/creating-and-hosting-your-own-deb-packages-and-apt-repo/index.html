@@ -300,7 +300,9 @@
             </nav>
           </aside>
         
-        <!-- markdownlint-disable MD032 -->
+        <!-- vale HouseStyle.TLA = NO -->
+<!-- vale HouseStyle.ListStart = NO -->
+<!-- markdownlint-disable MD032 -->
 <p>As an Ubuntu user, I find myself typing <code>apt install ...</code> frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests. <!-- markdownlint-enable MD032 --></p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>This tutorial assumes you are using Ubuntu, and that the following packages are installed:</p>
@@ -769,7 +771,7 @@ BKaAtOSl2Jcb4eA=
 <p>A complete example has been created under <a href="https://github.com/earthly/example-apt-repo/blob/main/Earthfile">github.com/earthly/example-apt-repo/Earthfile</a>.</p>
 <p>This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">earthly</span> <span class="at">-P</span> github.com/earthly/example-apt-repo+test</span></code></pre></div>
-<p>Alternatively, you can clone the repo and run <code>+test</code> directly.</p>
+<p>Alternatively, you can clone the repo and run <code>+test</code> directly. <!-- vale HouseStyle.TLA = YES --> <!-- vale HouseStyle.ListStart = YES --></p>
 
         
       </section>
