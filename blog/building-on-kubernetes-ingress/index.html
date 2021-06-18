@@ -323,7 +323,7 @@ Ingress is the networking layer of how you get requests to your services from th
 <p>Kubernetes has a few of those baked in, where it’ll roll through and you can set how many or maximum amount available, and how many extra can I spin up to give myself headroom while I’m rolling in a deployment. But there’s more to it than that because that does let you get to, more or less zero downtime.</p>
 <p>Kubernetes will handle that, “Hey, no more traffic comes to this node.” And then we’ll spin it down as soon as all the traffic there is exhausted and spin up new ones, and let those get routed to. It’ll handle all that for you, and that’s really nice.</p>
 <p>But, there’s more to it than that because there’s the whole adventure that takes place before it’s live in production taking traffic.</p>
-<h2 id="testing-in-production">Testing in production</h2>
+<h2 id="testing-in-production">Testing in Production</h2>
 <p>What I’m hoping to do for us as we’re going forward here is, that we can stick new deployments out on production in some small way, and then use our Ingress controller to send it some traffic. Then we can actually <a href="/blog/unit-vs-integration">test</a> the new version of the code in production without affecting anybody as a canary before we choose to roll that actually out to everybody.</p>
 <p>Service meshes are a little bit better at this, then simple ingress controllers. This is one place that service meshes do succeed, but Traefik can do it well enough too, where you actually split percentages of your request volume to one deployment versus the other.</p>
 
@@ -504,13 +504,13 @@ Ingress is the networking layer of how you get requests to your services from th
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -528,7 +528,7 @@ Ingress is the networking layer of how you get requests to your services from th
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -536,7 +536,10 @@ Ingress is the networking layer of how you get requests to your services from th
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -556,13 +559,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -580,7 +583,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -588,8 +591,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

@@ -60,7 +60,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Hacktoberfest 2020",
-        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What is it The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
+        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What Is It? The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
         "tags": [],
         "url": "/blog/hacktoberfest-2020/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -321,5 +321,29 @@ var store = [{
         "excerpt":"Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that. I’m going to explain various git branching strategies with a story. We will start with something...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/git-branching/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "The 15-Minute Project",
+        "excerpt":"Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning. What Is City Planning? According to Wikipedia, city planning is “…a technical and political...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/15-minute-project/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read out loud Write 5 or more titles and pick the best on Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply)...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/checklist/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to Install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libraries: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

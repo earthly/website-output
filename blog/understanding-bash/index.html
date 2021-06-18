@@ -304,7 +304,7 @@
 <p>When you’re done with this article, you’ll not only be able to write bash scripts, but you’ll be able to write them using today’s accepted best practices.</p>
 <h2 id="use-the-right-shebang">Use the Right Shebang</h2>
 <p>The very first thing you’ll see at the top of every (well-written) bash script is what’s called a <a href="https://www.in-ulm.de/~mascheck/various/shebang/"><em>shebang</em></a>. I’ll walk you through a couple of them here.</p>
-<h3 id="binbash">#!/bin/bash</h3>
+<h3 id="binbash"><code>#!/bin/bash</code></h3>
 <p>The most common shebang is the one referring to the <code>bash</code> executable:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
 <p>Essentially it tells your terminal that when you run the script it should use <code>bash</code> to execute it. It can be vital since you may be using a different shell in your machine (<code>zsh</code>, <code>fish</code>, <code>sh</code>, etc.), but you designed the script to work specifically with bash. In many cases, it doesn’t matter what shell you’re using, but there can be some very noteworthy differences in how they work, leading a script to work in <code>bash</code> but not <code>sh</code>, for example.</p>
@@ -315,7 +315,7 @@
 <h2 id="understand-common-sets">Understand Common Sets</h2>
 <p>When you run a bash script, it will always run in a new <em>subshell</em>. This means that any unique configurations you have in your current setup will not be used within the script execution. It also means that you can customize the environment that the script is running in without worrying about how your terminal will be affected.</p>
 <p>One way to change this environment is to use the <code>set</code> command. I’ll go over the four most common ones and where they’re useful. I’ll show the short form for these sets in the examples throughout this article, but keep in mind that there are also long-form versions. I’ll mention those briefly.</p>
-<h3 id="set--u">set -u</h3>
+<h3 id="set--u"><code>set -u</code></h3>
 <p>By default, bash doesn’t do a lot of error handling. That’s left up to you. So if you want to have your script exit at a certain point, you have to define it. For example, you may have the following script:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$TEST</span></span>
@@ -331,7 +331,7 @@
 <p><strong>Output:</strong></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">line</span> 3: TEST: unbound variable</span></code></pre></div>
 <p>Without <code>set -u</code>, bash will use an empty string instead of the unset variable. When running <code>echo $TEST</code>, that isn’t too dangerous. However, you may be running a command like <code>rm -rf /$TEST</code> to define a path you want to delete. In this case, without <code>set -u</code>, you would end up deleting your entire file system (which there’s no way to recover by default).</p>
-<h3 id="set--x">set -x</h3>
+<h3 id="set--x"><code>set -x</code></h3>
 <p>You’ll likely at some point have a big script where it’s tough to keep track of not just which commands are running what, but also which commands are outputting what. This is where <code>set -x</code> comes to the rescue. Alternatively, you can write this as its long form, <code>set -o xtrace</code>.</p>
 <p>When using <code>set -x</code>, you get the following script and output.</p>
 <p><strong>Script:</strong></p>
@@ -344,8 +344,8 @@
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Hi</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">+</span> echo Hello World</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> World</span></code></pre></div>
-<h3 id="set--e">set -e</h3>
-<p>Sometimes you want to make sure that the entire script fails if one of the commands fails. This is not the default behavior in bash. You can see <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">here</a> that without any set options, bash is running without much error handling.</p>
+<h3 id="set--e"><code>set -e</code></h3>
+<p>Sometimes you want to make sure that the entire script fails if one of the commands fails. This is not the default behavior in bash. You can see <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">in the manual</a> that without any set options, bash is running without much error handling.</p>
 <p>To make sure the script fails, you should use <code>set -e</code> (also known as <code>set -o errexit</code>), probably the most common one.</p>
 <p><strong>Script:</strong></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
@@ -407,7 +407,7 @@
 </table>
 <!-- vale Vale.Spelling = YES -->
 <h2 id="use-error-checking-tools">Use Error Checking Tools</h2>
-<p>Although you may be familiar with all the best practices, it can be tough to remember them all when your script is coming to life. Luckily there are tools available to help, like <a href="https://www.shellcheck.net/#">ShellCheck</a>. ShellCheck has both a browser version and a command-line tool, but for this article, let’s work with the command-line version. You can find <a href="https://github.com/koalaman/shellcheck#installing">installation instructions here</a>.</p>
+<p>Although you may be familiar with all the best practices, it can be tough to remember them all when your script is coming to life. Luckily there are tools available to help, like <a href="https://www.shellcheck.net/#">ShellCheck</a>. ShellCheck has both a browser version and a command-line tool, but for this article, let’s work with the command-line version. You can find <a href="https://github.com/koalaman/shellcheck#installing">installation instructions on GitHub</a>.</p>
 <p>We’ll use the following script as an example:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;What&#39;s your name?&quot;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">read</span> <span class="va">NAME</span></span>
@@ -649,13 +649,13 @@ echo &quot;Hello World!&quot;</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -673,7 +673,7 @@ echo &quot;Hello World!&quot;</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -681,7 +681,10 @@ echo &quot;Hello World!&quot;</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -701,13 +704,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -725,7 +728,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -733,8 +736,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

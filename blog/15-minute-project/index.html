@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>The 15-Minute Project - Earthly Blog</title>
+<meta name="description" content="Applying city planning to software development">
+
+
+  <meta name="author" content="Corey Larson">
+  
+  <meta property="article:author" content="Corey Larson">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="The 15-Minute Project">
+<meta property="og:url" content="https://earthly.dev/blog/15-minute-project/">
+
+
+  <meta property="og:description" content="Applying city planning to software development">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/15-minute-project/header-800-3fdc6bf02.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="The 15-Minute Project">
+  <meta name="twitter:description" content="Applying city planning to software development">
+  <meta name="twitter:url" content="https://earthly.dev/blog/15-minute-project/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/15-minute-project/header-800-3fdc6bf02.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-06-22T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/15-minute-project/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/15-minute-project/header-400-4f2ef9b86.webp 400w, /blog/generated/assets/images/15-minute-project/header-600-4f2ef9b86.webp 600w, /blog/generated/assets/images/15-minute-project/header-800-4f2ef9b86.webp 800w, /blog/generated/assets/images/15-minute-project/header-1000-4f2ef9b86.webp 1000w, /blog/generated/assets/images/15-minute-project/header-1200-4f2ef9b86.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/15-minute-project/header-400-4f2ef9b86.png 400w, /blog/generated/assets/images/15-minute-project/header-600-4f2ef9b86.png 600w, /blog/generated/assets/images/15-minute-project/header-800-4f2ef9b86.png 800w, /blog/generated/assets/images/15-minute-project/header-1000-4f2ef9b86.png 1000w, /blog/generated/assets/images/15-minute-project/header-1200-4f2ef9b86.png 1200w" type="image/png"><img src="/blog/generated/assets/images/15-minute-project/header-800-4f2ef9b86.jpg" alt="The 15-Minute Project"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="The 15-Minute Project">
+    <meta itemprop="description" content="Applying city planning to software development">
+    <meta itemprop="datePublished" content="2021-06-22T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">The 15-Minute Project
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-22T00:00:00-04:00">June 22, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+
+          &nbsp;	&nbsp;
+          Corey Larson
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-is-city-planning">What Is City Planning?</a></li><li><a href="#the-built-environment">The Built Environment</a></li><li><a href="#building-a-built-environment">Building A Built Environment</a></li><li><a href="#what-does-this-have-to-do-with-software-development">What Does This Have To Do With Software Development?</a></li><li><a href="#the-15-minute-project">The 15-Minute Project?</a></li><li><a href="#how-do-we-get-there">How Do We Get There?</a><ul><li><a href="#zoning">Zoning</a></li><li><a href="#building-codes">Building Codes</a></li><li><a href="#transportation">Transportation</a></li><li><a href="#equity">Equity</a></li><li><a href="#taxes">Taxes</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning.</p>
+<h2 id="what-is-city-planning">What Is City Planning?</h2>
+<p>According to Wikipedia, city planning is <a href="https://en.wikipedia.org/wiki/Urban_planning">“…a technical and political process that is focused on the development and design of land use and the built environment…”</a>. It includes basically everything, from air, and water to transportation and accessibility. Seems like a fairly broad and ill-specified discipline!</p>
+<p>In a typical American city or town, there is a city planning board that controls development and design. They meet regularly, and in public at their city hall. During 2020, many of these meetings became much more accessible and easy to observe through video calls. It was very interesting to watch how this big, broad concept of “city planning” was boiled down to actual, concrete actions that affected my day-to-day life.</p>
+<h2 id="the-built-environment">The Built Environment</h2>
+<p>One phrase I kept hearing over and over in planning meetings, in videos on YouTube<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and other literature is that of the “built environment”. Tuns out that the phrase “built environment” is actually a well defined, distinct concept! It even has <a href="https://en.wikipedia.org/wiki/Built_environment">its own Wikipedia page, too</a>!</p>
+<p>Simply put, the built environment is the stuff we’ve “built” around us; like roads, sidewalks, buildings, parks, and utilities. Feels tautological; but the built environment also encompasses <em>how</em> these things affect us in our day-to-day life.</p>
+<p>The built environment is <em>why</em> some areas are more desirable than others, and <em>how</em> you can improve the lives of people within a city.</p>
+<h2 id="building-a-built-environment">Building A Built Environment</h2>
+<p>City planners are very concerned with designing the built environment within a city. To this end, they have many tools to guide development in a way that is (hopefully) beneficial and equitable to the community. Things like zoning, building codes, affordable housing, and traffic management can all influence the built environment in very consequential ways.</p>
+<p>But, a planning commission can’t design a built environment without a goal. Or, at least if they try, it won’t create the kind of built environment that people want to live in. Cities need targets and goals to help them design the places that people want to make their home.</p>
+<p>One model that I really like is that of the “<a href="https://www.cnu.org/publicsquare/2021/02/08/defining-15-minute-city">15 Minute City</a>”. Originally conceived in 2016, it has since become a global movement; with many cities around the world adopting variations of the concept into their future planning goals. The idea behind a 15-minute city is that <em>most</em> residents should be able to satisfy <em>most</em> of their needs within a 15 minute bike ride from their home. This promotes a well-mixed, accessible, and human scale to target when designing a built environment.</p>
+<h2 id="what-does-this-have-to-do-with-software-development">What Does This Have To Do With Software Development?</h2>
+<p>At the risk of falling into the analogy trap, I think we can learn a lot by applying the “built environment” to our software projects. The code, tooling, and infrastructure we use constitutes the physical component, and the contributors working on the project are the citizens living within it.</p>
+<p>After all, <a href="http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/index.html#catbmain">the cathedral <em>and</em> the bazaar</a> both have to exist <em>somewhere</em>.</p>
+<h2 id="the-15-minute-project">The 15-Minute Project?</h2>
+<p>Like cities may strive to become a “15-minute city”, I propose that software projects should strive to be “15-minute projects”. To become a 15-minute project, any blocked contributor should be able to find what they need to continue progressing within 15 minutes. Finding what you need could involve any piece of your project - the code, documentation, or the community.</p>
+<p>Yes, software is <em>hard</em>. But so is city planning. Just as no city will achieve a “100% 15-minute city” goal, no software project will either. But, keeping this goal top of mind will do wonders for your project, and make it a desirable place for contributors to congregate.</p>
+<h2 id="how-do-we-get-there">How Do We Get There?</h2>
+<p>Before we begin, I am well aware that city planners are not perfect; and that cities quite often make poor decisions. For this analogy, we are considering the platonic ideal of a city and of the planners within it. Frictionless cities with perfectly spherical planners, if you will.</p>
+<p>From this, there are some lessons we can learn when applying city planning concepts to software projects. Below are a couple that I feel can really make a difference to the built environment within your project, and help inch closer to that 15-minute ideal.</p>
+<h3 id="zoning">Zoning</h3>
+<p>While we can <a href="https://www.urban.org/debates/land-use-regulation-whats-it-worth-anyway">argue about the necessity and efficacy of zoning</a> within a city plan, having a general plan for your software project can make life a lot easier. If you have a general idea of what will go where, eventually, you can make intelligent decisions about what gets built <em>now</em>. In a city, these plans are typically public, and can be viewed by everyone. So too should they be in a software project.</p>
+<p>Just like software, requirements for cities also tend to drift (just on a longer timescale). To this end, general plans should also be revisited and re-approved on a regular basis.</p>
+<h3 id="building-codes">Building Codes</h3>
+<p>Just like new construction within a city is governed by a <a href="https://codes.iccsafe.org/content/IBC2021P1">building code</a>, so too should new contributions. Building codes typically get very verbose for safety reasons, but ours don’t need to be quite that strict (well, unless your code actually <em>is</em> safety critical). Often, listing what tools and languages are to be used is sufficient. Most importantly, the building code for your software project should also be public and accessible.</p>
+<p>You can take this even further and codify the languages and tools. One approach I have seen is to use tools like <code>eslint</code> on a Git commit hook to keep the code looking uniform, so things like formatting aren’t even a question. (This is why the author loves Go, for instance.) Earthly is a great tool to help you codify all parts of your pipeline.</p>
+<h3 id="transportation">Transportation</h3>
+<p>Getting people from place to place efficiently is a challenge that most cities face. Proper planning can help mitigate the inevitable traffic jam. Roads, public transit, and sidewalks are all part of the infrastructure that keeps a city moving.</p>
+<p>Likewise, our choices in communication tools affect the transportation of ideas and contributions within a project. Different tools are appropriate for different projects, because they have different citizens. But, if your project’s Slack channels and JIRA boards feel like rush hour in LA, then perhaps it is time to consider improvements.</p>
+<h3 id="equity">Equity</h3>
+<p>Cities and towns should be places for people from all walks of life, not just the “elites”. One common way to accomplish this is by enforcing affordable housing in new developments, and by making sure general improvements are evenly distributed across the city.</p>
+<p>Software projects, like cities, should try to improve the lives of all contributors, not just an insular group with the most control. Reserving “easy” issues for first time contributors, keeping documentation up to date, and making decisions in public can go a long way toward leveling the playing field for all contributors.</p>
+<p>A project that is known for being clear, fair, and equitable will end up with a more vibrant community that can carry it far further than it could otherwise travel on its own. A rising tide lifts all boats.</p>
+<h3 id="taxes">Taxes</h3>
+<p>Public infrastructure isn’t free. Cities levy taxes, typically in the form of property taxes, to pay for installation and ongoing maintenance. If the city is responsible, the taxes aren’t too onerous and the infrastructure isn’t too extravagant.</p>
+<p>In our software projects, there is also some form of “tax” to be paid for the shared infrastructure. The tax is paid in updating and maintaining shared resources, from build scripts, to CI/CD, to documentation.</p>
+<p>By keeping this shared infrastructure well maintained and right-sized for the project, you can also keep your takes low and the benefits high.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At this point, I think we’ve mined this analogy for almost all its worth. It really is fascinating how applicable some of these concepts are to two domains that initially appear entirely separate. For me, it has certainly opened my eyes and changed how I approach new and existing projects, and I hope it will for you too.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>You would be surprised at how many <a href="https://www.youtube.com/channel/UCGc8ZVCsrR3dAuhvUbkbToQ">beautiful</a> <a href="https://www.youtube.com/channel/UC0intLFzLaudFG-xAvUEO-A">channels</a> <a href="https://www.youtube.com/channel/UCqdUXv9yQiIhspWPYgp8_XA">there</a> <a href="https://www.youtube.com/user/strongtowns">are</a> in this space!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-d9707b743.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/coreylarson-240-ebff39699.jpg" alt="Corey Larson %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Corey Larson</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Eats, runs, and codes. Dad. Engineer. Progressive. LDS. Disneyland fanatic.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-22T00:00:00-04:00">June 22, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/git-branching/" class="pagination--pager" title="Git Branching Strategies and The Greek Revival
+">Previous</a>
+    
+    
+      <a href="/blog/checklist/" class="pagination--pager" title="Put Your Best Title Here
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

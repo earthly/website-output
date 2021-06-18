@@ -318,12 +318,12 @@ Simple Release Distribution
 <h2>Cutting a Release</h2>
 <p>There was a time before modern source control when creating a release branch was an expensive process that had to be planned. “Cutting a Release” was the name for this process, which involved locking down the source and starting the lengthy process of ‘cutting a release branch off the trunk’. People still use the phrase today.</p>
 <blockquote>
-<p>“Well, the performance was so bad that when they wanted to cut a branch, they would announce it ahead of time. They would schedule the branching because you didn’t want anybody else committing while you were branching, because that would totally screw things up. Right? And I said,”Okay, Friday at 2:00 PM, we’re going to cut the branch." Then all activity would stop, access to the server would be cut off."</p>
+<p>“Well, the performance was so bad that when they wanted to cut a branch, they would announce it ahead of time. They would schedule the branching because you didn’t want anybody else committing while you were branching, because that would totally screw things up. Right? And I said,”Okay, Friday at 2:00 pm., we’re going to cut the branch." Then all activity would stop, access to the server would be cut off."</p>
 <p>And it would take 45 minutes to cut this branch. And then you’d say, “Okay, we’ve opened up the branch. Everybody can start working again.”</p>
 <p><a href="https://corecursive.com/software-that-doesnt-suck-with-jim-blandy/">Jim Blandy</a> creator of Subversion</p>
 </blockquote>
 </section>
-<h2 id="hot-fixes-and-the-multiverse">Hot Fixes and The Multiverse</h2>
+<h2 id="hot-fixes-and-the-multiverse">Hot Fixes and the Multiverse</h2>
 <p>This is all working great. Ashley starts scaling the development team, and they start shipping more features. Unfortunately, while each monthly release now contains more cool new features, more regressions and bugs start slipping into the releases as well.</p>
 <p>Some customers respond to this by not upgrading right away. If they are well-served by the current product, they can stay two releases back and get active support while giving the latest release time to stabilize. Bugs do show up in the old versions, though, and this is where things get interesting.</p>
 <p>Up until now, time, as viewed by AshelySoft’s source control, moves forward in a single line. There is one <code>main</code> branch that represents one linear release timeline. But now, when bugs are found, they need to be addressed in multiple versions of the product. And you can’t simply ask people to upgrade because they are still on a supported version, and they are correctly worried about the quality of the latest release. They want the version they have plus the bug fixes, with no new development.</p>
@@ -333,7 +333,7 @@ Simple Release Distribution
 <h2 id="the-develop-branch">The <code>develop</code> Branch</h2>
 <p>The cost of shipping bugs has now increased for AshelySoft. In the worse case, a bug isn’t discovered until it’s in all active versions of the software and the code between versions has changed enough that the fix is slightly different in each version, tripling the bug fix cost.</p>
 <p>Fortunately, a solution for this does exist: Continuing with our time travel/multiverse analogy, we need to travel back in time and stop the bug before our releases branches off the main timeline. Unfortunately, AshelySoft does not have access to literal time travel machines, but Ashley has a more straightforward idea: Catch the bugs before they are released.</p>
-<h2 id="gitflow-to-the-rescue">GitFlow To The Rescue</h2>
+<h2 id="gitflow-to-the-rescue">GitFlow to the Rescue</h2>
 <p>A popular branching method called <a href="https://nvie.com/posts/a-successful-git-branching-model/">GitFlow</a> has excellent suggestions for achieving this: you create a <code>develop</code> branch. So now all new work goes into <code>develop,</code> and instead of 4 weeks of development in each release, you spend the last week stabilizing <code>develop</code>. You make sure <code>develop</code> has no bugs as best you can, and when it seems stable, you merge it into main and then cut a release branch off main.</p>
 <blockquote>
 <p>“We consider origin/develop to be the main branch where the source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the”integration branch“. This is where any automatic nightly builds are built from.”</p>
@@ -503,7 +503,8 @@ Simple Release Distribution
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/blog/15-minute-project/" class="pagination--pager" title="The 15-Minute Project
+">Next</a>
     
   </nav>
 
@@ -531,13 +532,13 @@ Simple Release Distribution
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -564,7 +565,9 @@ Simple Release Distribution
 
     <p class="archive__item-excerpt" itemprop="description">
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -584,13 +587,13 @@ In 2008, I got my first job at a software-as-a-service company. We built learnin
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/deployment-strategies/header-600-e2ee32f44.webp 600w, /blog/generated/assets/images/deployment-strategies/header-800-e2ee32f44.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/deployment-strategies/header-600-88b65c09f.jpg 600w, /blog/generated/assets/images/deployment-strategies/header-800-88b65c09f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/deployment-strategies/header-800-88b65c09f.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/deployment-strategies/" rel="permalink">Deployment Strategies
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -608,7 +611,7 @@ In 2008, I got my first job at a software-as-a-service company. We built learnin
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          4 minute read
+          1 minute read
         
       </span>
     
@@ -616,7 +619,9 @@ In 2008, I got my first job at a software-as-a-service company. We built learnin
 
 
     <p class="archive__item-excerpt" itemprop="description">
-There are many ways to deploy applications to a production server environment, and the terminology around deploy strategies is often confusing. In this shor...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 

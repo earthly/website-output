@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What is mitmproxy?</a></li><li><a href="#installing-it">Installing it</a></li><li><a href="#start-it-up">#1 Start it up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What is a man in the middle</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert On MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test it</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#alpine">Alpine</a></li><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But wait, there’s more</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#what-is-mitmproxy">What Is mitmproxy?</a></li><li><a href="#installing-it">Installing It</a></li><li><a href="#start-it-up">#1 Start It Up</a></li><li><a href="#proxy-our-connection">#2 Proxy Our Connection</a></li><li><a href="#adding-mitmproxy-as-a-certificate-authority">Adding mitmproxy as A Certificate Authority</a><ul><li><a href="#what-is-a-man-in-the-middle">What Is a Man in the Middle?</a></li></ul></li><li><a href="#how-to-add-a-trusted-certificate-authority-certificate">How to add a Trusted Certificate Authority Certificate</a></li><li><a href="#add-the-cert-on-macos">Add the Cert on MacOS</a></li><li><a href="#installing-the-trusted-root-certificate-on-windows">Installing the Trusted Root Certificate On Windows</a></li><li><a href="#installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</a></li><li><a href="#great-success">Great Success</a></li><li><a href="#mitm-the-docker-linux-container-host-on-macos-windows">MITM the Docker Linux Container Host on macOS &amp; Windows</a></li><li><a href="#docker-mitm-on-linux">Docker MITM on Linux</a><ul><li><a href="#test-it">Test It</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#capturing-docker-container-traffic">Capturing Docker Container Traffic</a></li><li><a href="#adding-the-ca-cert-to-our-linux-container">Adding the CA Cert to our Linux Container</a></li><li><a href="#solution-1-volume-mount-the-cert">Solution #1: Volume Mount The Cert</a><ul><li><a href="#alpine">Alpine</a></li><li><a href="#ubuntu">Ubuntu</a></li></ul></li><li><a href="#solution-2-extend-the-image">Solution #2: Extend the Image</a></li><li><a href="#extending-an-alpine-image-to-add-a-certificate-authority">Extending an Alpine Image to Add a Certificate Authority</a></li><li><a href="#extending-an-ubuntu-image-to-add-a-certificate-authority">Extending an Ubuntu Image to Add a Certificate Authority</a></li><li><a href="#but-wait-theres-more">But Wait, There’s More</a></li></ul>
 
             </nav>
           </aside>
@@ -303,13 +303,13 @@
         <h2 id="introduction">Introduction</h2>
 <p>Have you ever wanted to see what kinds of requests a service or application on your machine is making and what kind of responses it is getting back? Have you ever tried and failed to capture this traffic or modify it to investigate how something works (or doesn’t work). If you have, then mitmproxy might be what you need. Being able to scan through and observe HTTP protocol traffic easily is a great debugging aid.</p>
 <p>This guide will walk you through installing and using mitmproxy to capture HTTPS requests. We will start with macOS traffic capture, then touch on Linux and Windows and then finally show how to capture docker daemon traffic and docker container traffic.</p>
-<h2 id="what-is-mitmproxy">What is mitmproxy?</h2>
+<h2 id="what-is-mitmproxy">What Is mitmproxy?</h2>
 <p>mitmproxy is a command-line tool that acts as a HTTP and HTTPS proxy and records all the traffic. You can easily see what requests are being made and even replay them. It’s great for diagnosing problems.</p>
-<h2 id="installing-it">Installing it</h2>
+<h2 id="installing-it">Installing It</h2>
 <p>On Mac, mitmproxy is easy to install with brew:</p>
 <pre><code>brew install mitmproxy</code></pre>
 <p>On Windows and Linux, <a href="https://docs.mitmproxy.org/stable/overview-installation/">download the binary release</a> and place it somewhere in your path.</p>
-<h2 id="start-it-up">#1 Start it up</h2>
+<h2 id="start-it-up">#1 Start It Up</h2>
 <p>To start up mitmproxy, type <code>mitmproxy</code>, and it will start up bound to port 8080.</p>
 <pre><code>&gt;mitmproxy</code></pre>
 The command-line interface (CLI) has VIM-like keybindings. <code>q</code> will quit, and arrow keys or <code>h</code>, <code>j</code>, <code>k</code>, <code>l</code> will move you up and down through the request list. <code>?</code> will load the help, and <code>&lt;&lt;enter&gt;&gt;</code> will drill in on a specific request.
@@ -331,7 +331,7 @@ The command-line interface (CLI) has VIM-like keybindings. <code>q</code> will q
 </figure>
 <p>We will use both throughout the tutorial. Whichever you choose, start it up and leave it running.</p>
 <h2 id="proxy-our-connection">#2 Proxy Our Connection</h2>
-<p>Let’s set up our internet connection to use this proxy. On macOS, Under <code>Setting -&gt; Network</code>, select your connection and click advanced.</p>
+<p>Let’s set up our internet connection to use this proxy. On macOS, Under <code>Setting -&gt; Network</code>, choose your connection and select advanced.</p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/4.png"
        alt="Setting -> Network on macOS">
@@ -359,7 +359,7 @@ The command-line interface (CLI) has VIM-like keybindings. <code>q</code> will q
 </figcaption>
 </figure>
 <p>Chrome is warning us that we might be subject to a man in the middle attack.</p>
-<h3 id="what-is-a-man-in-the-middle">What is a man in the middle</h3>
+<h3 id="what-is-a-man-in-the-middle">What Is a Man in the Middle?</h3>
 <p>A man in middle attack (MITM) is a security threat where an attacker can get between incoming and outgoing requests. You think you are talking to Twitter.com, but you are talking to the man in the middle, who is talking to Twitter for you. This MITM can view everything you send and even change what you receive.</p>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/7.png"
@@ -423,7 +423,7 @@ K2k43zCas8fHIU5o+0XoFQ7JoA+1AV3S9LYVD2rHfeOMMY/VzTP+b67/KY7H/Wl+
 QyVJfmCmjt2i=
 -----END PRIVATE KEY-----</code></pre>
 <p><em>Note: Once we instruct our machine to trust this certificate, someone with the private key who controlled your internet connection, like your ISP, could use it to MITM your connection. For this reason, don’t share your MITM private key, or any private key, with others.</em></p>
-<h2 id="add-the-cert-on-macos">Add the Cert On MacOS</h2>
+<h2 id="add-the-cert-on-macos">Add the Cert on MacOS</h2>
 <p>On macOS, the easiest way to add a new CA is to copy it to the desktop and then double-click it.</p>
 <pre><code>cp ~/.mitmproxy/mitmproxy-ca-cert.cer ~/Desktop</code></pre>
 <figure class>
@@ -441,7 +441,7 @@ QyVJfmCmjt2i=
 <img src="/blog/assets/images/mitmproxy/13.png"
        alt="mitmproxy certificate proxy always trusted">
 </figure>
-<h2 id="installing-the-trusted-root-certificate-on-windows">Installing The Trusted Root Certificate On Windows</h2>
+<h2 id="installing-the-trusted-root-certificate-on-windows">Installing the Trusted Root Certificate On Windows</h2>
 <p>If you are on Windows, follow this guide <a href="https://docs.microsoft.com/en-us/skype-sdk/sdn/articles/installing-the-trusted-root-certificate">to add the MITM root certificate as a trusted root certificate authority</a>.</p>
 <h2 id="installing-the-cert-on-debian-based-linux-distributions">Installing The Cert on Debian Based Linux Distributions</h2>
 <p>On Debian-based Linux distributions, follow these steps:</p>
@@ -467,7 +467,7 @@ Here is Slack making requests:
 <p>Google.com now shows a mitmproxy signed certificate</p>
 </figcaption>
 </figure>
-<h2 id="mitm-the-docker-linux-container-host-on-macos-windows">MITM The Docker Linux Container Host on macOS &amp; Windows</h2>
+<h2 id="mitm-the-docker-linux-container-host-on-macos-windows">MITM the Docker Linux Container Host on macOS &amp; Windows</h2>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/16.png"
        alt="Diagram of docker runtime on macOS and Windows">
@@ -503,7 +503,7 @@ Here is Slack making requests:
 }</code></pre>
 <pre><code>&gt; sudo service docker restart
 </code></pre>
-<h3 id="test-it">Test it</h3>
+<h3 id="test-it">Test It</h3>
 <p>After restarting, we can test the proxying by performing a docker pull for a random image</p>
 <pre><code>➜  ~ docker pull couchbase:7.0.0-beta
 7.0.0-beta: Pulling from library/couchbase
@@ -696,7 +696,7 @@ The document has moved
 &lt;A HREF=&quot;https://www.google.com/&quot;&gt;here&lt;/A&gt;.
 &lt;/BODY&gt;&lt;/HTML&gt;
 # Success</code></pre>
-<h2 id="but-wait-theres-more">But wait, there’s more</h2>
+<h2 id="but-wait-theres-more">But Wait, There’s More</h2>
 <figure class>
 <img src="/blog/assets/images/mitmproxy/22.png"
        alt="man in the middle diagram">
@@ -867,13 +867,13 @@ The document has moved
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -891,7 +891,7 @@ The document has moved
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -899,7 +899,10 @@ The document has moved
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -919,13 +922,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -943,7 +946,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -951,8 +954,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

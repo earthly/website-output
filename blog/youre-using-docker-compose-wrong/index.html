@@ -348,7 +348,8 @@
         </header>
       
         
-        <p>Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.</p>
+        <!-- vale HouseStyle.H2 = NO -->
+<p>Tell me if this sounds familiar? You were introduced to docker-compose either by choice or by force. You’ve been using it for a while, but you find it clunky. I’m here to tell you, you are probably using it wrong.</p>
 <p>Ok, that might be an exaggeration. I don’t think there’s actually a 100% right or wrong way to use it: home-grown build and dev setups tend to have all kinds of <a href="/blog/dont-be-weird">weird</a> requirements and so the standard doesn’t always match the needs. Please take the article with the appropriate skepticism if your situation doesn’t quite fit.</p>
 <p>I, myself, have been guilty of each of these in the past and I might be in the future as well!!</p>
 <p>In any case, here is a rundown of some of the cardinal sins that I found myself making while using docker-compose.</p>
@@ -392,7 +393,7 @@
 <p>Ok, ok - calling this out as being wrong isn’t entirely fair. There are many situations where not containerizing is preferable. As a simple example, many languages have deep IDE integrations which make inserting a container between the language and the IDE pretty much impossible. There are many valid productivity reasons not to do this.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Docker Compose can be an amazing tool for local development purposes. Although it has a few gotchas, it usually brings a lot of productivity benefits to many engineering teams, especially when used in conjunction with integration tests.</p>
-<p>If you’re looking for more flexibility in defining containerized tests than docker-compose alone can provide, take a <a href="https://github.com/earthly/earthly/blob/0f48f14/examples/integration-test/Earthfile#L38-L44">look</a> at <a href="https://docs.earthly.dev/guides/integration">integration test support</a> in <a href="https://earthly.dev/">Earthly</a>.</p>
+<p>If you’re looking for more flexibility in defining containerized tests than docker-compose alone can provide, take a <a href="https://github.com/earthly/earthly/blob/0f48f14/examples/integration-test/Earthfile#L38-L44">look</a> at <a href="https://docs.earthly.dev/guides/integration">integration test support</a> in <a href="https://earthly.dev/">Earthly</a>. <!-- vale HouseStyle.H2 = YES --></p>
 
         
       </section>
@@ -556,13 +557,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -580,7 +581,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -588,7 +589,10 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -608,13 +612,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -632,7 +636,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -640,8 +644,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

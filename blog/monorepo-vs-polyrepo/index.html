@@ -294,7 +294,7 @@
         
         <p>The decision of whether to use a monorepo or a polyrepo structure for your source code can be a very emotional (maybe even religious!) battle. On its surface, it’s not much different than “tabs vs spaces” or “vim vs emacs”. Or is it?</p>
 <p>In the following, I will attempt to draw objective, logical arguments for both approaches and also throw in a very popular third option: the hybrid.</p>
-<h2 id="quick-intro">Quick intro</h2>
+<h2 id="quick-intro">Quick Intro</h2>
 <p>The <strong>monorepo layout</strong> consists of a single code repository where multiple projects coexist in a hierarchical directory structure. For example:</p>
 <pre><code>├── lib
 |   ├── lib
@@ -349,7 +349,7 @@ github.com/myorg/lib1
 └── src</code></pre>
 <p>Each repository is focused on specific functionality. The structure of the repository is usually heavily influenced by the best practices of the language they host.</p>
 <p>A third alternative that some people use is the <strong>hybrid repository layout</strong>, whereby some components coexist in one or more monorepos, while others are separated in their own isolated, smaller repositories. Deciding which component goes where may be influenced by team ownership, the language of the code, whether the component is open or closed source, and other factors.</p>
-<h2 id="judging-criteria">Judging criteria</h2>
+<h2 id="judging-criteria">Judging Criteria</h2>
 <p>The structure of your source code empowers or impedes various engineering processes. It is the lifeblood of your technical product and it needs to account for all the possible ways it can be used. To avoid boiling the ocean with this article, however, we will focus on the most popular use-cases and characteristics:</p>
 <ul>
 <li>Ease of importing</li>
@@ -361,7 +361,7 @@ github.com/myorg/lib1
 <li>Issue tracking</li>
 </ul>
 <p>Further, we will make certain assumptions about the underlying technologies used: for example, we will assume that you are using GitHub for the repositories and the issue tracking. The considerations typically apply to most other setups that do not necessarily use these technologies. They work similarly.</p>
-<h2 id="lets-take-a-look">Let’s take a look</h2>
+<h2 id="lets-take-a-look">Let’s Take a Look</h2>
 <h3 id="imports">Imports</h3>
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/kyCNGGKCvyw.jpg" alt="Overhead view of shipping containers" /><br />
 </p>
@@ -370,7 +370,7 @@ github.com/myorg/lib1
 <p>In Java, on the other hand, you cannot simply import a GitHub repository - you have to first publish a JAR to an repository, and then reference that JAR in your Java-specific build file. So it becomes far easier to reference a package in the same repository than across repositories setup-wise. But the code can become unwieldy. For this reason, some Java monorepo layouts tend to stick with segmenting the code across separate modules, each possibly producing separate artifacts. See for example <a href="https://maven.apache.org/guides/mini/guide-multiple-modules.html">multi-module Maven builds</a>.</p>
 <p>JavaScript tends to be spread across multiple repositories typically. To use a package from one repository to another, however, the package needs to be published to npm. It’s less popular to use a monorepo layout with JavaScript, however, if you would like to experiment, there are a number of tools to help out with the directory organization, such that each project gets its own separate <code>package.json</code>. <a href="https://github.com/lerna/lerna">Lerna</a> is one such tool.</p>
 <p><strong>Verdict</strong>: It depends heavily on the language. Even if the language requires a package repository in the middle when referencing code across source repositories, it still seems like polyrepos are more popular. When using a monorepo layout, it’s often preferable to create distinct modules of each project and some communities have developed tools to help with that.</p>
-<h3 id="contributions-within-the-same-project">Contributions within the same project</h3>
+<h3 id="contributions-within-the-same-project">Contributions Within the Same Project</h3>
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/cKQkMFzXHAI.jpg" alt="People talking around a table" /><br />
 </p>
 <p>Making changes to source code can be isolated to one specific area, or it can span multiple functional concerns and thus need to cross-project boundaries. The developer experience may vary depending on how the code is laid out.</p>
@@ -378,7 +378,7 @@ github.com/myorg/lib1
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/history.png" alt="Click on History" /><br />
 </p>
 <p><strong>Verdict</strong>: Managing contributions within the same project is easier with a polyrepo layout, as it is easier to track the history of changes per-repository rather than per-directory.</p>
-<h3 id="contributions-across-projects">Contributions across projects</h3>
+<h3 id="contributions-across-projects">Contributions Across Projects</h3>
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/26MJGnCM0Wc.jpg" alt="Two people working at a whiteboard" /><br />
 </p>
 <p>When making contributions across multiple projects, there is a significant distinction. Arguably, this is one of the main reasons to use the monorepo layout. When everything is in a single repository, many cross-cutting concerns can be modified and submitted as a single, atomic PR. For example, you could write code for a new feature and make adjustments end-to-end: UI, backend, API, DB schema migration, documentation, etc. The simplicity of the dev-test and contribution process really shines in monorepos, when done right <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Atomic PRs also help to visualize changes for review. It is easier to see a feature take shape when the changes across projects are visible in one place.</p>
@@ -409,9 +409,9 @@ github.com/myorg/lib1
 <p>However, there are still use-cases that cannot be easily accommodated: for example, if you make a change in a dependency, it is difficult to automatically rebuild all the dependants to ensure that nothing was affected. This additional verification needs to be performed manually in practice (and more often than not, it is never done at all). This particular limitation becomes apparent when needing to develop <a href="/blog/unit-vs-integration">integration testing</a> or end-to-end testing. A collection of microservices might be started altogether to perform a complex task as part of a test. If the test resides in repository A, and the microservices reside in repositories B, C, and D, then changes to B, C and D should automatically trigger the integration test to be re-run. To achieve this automated interoperability, each of these dependencies needs to be manually wired via <a href="https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event">custom API calls</a> (if these are supported by your CI vendor).</p>
 <p>A third possibility also exists, which I call the <em>hybrid layout</em>. Because monorepo builds are difficult to scale, some development teams reach a compromise in the middle: keep some projects grouped together in a single repository and others separately. Criteria for grouping together repositories may include language, level of inter-dependencies, team ownership, and others. As a distinct example, if a group of projects evolves closely together and there is high interoperability between them (for example, they use a set of common routines or data structures), it might make sense to group them in a single repository, while keeping everything else separately. If the monorepo does not grow to an endless number of projects, then traditional build tools meant for polyrepo setups could still fair well enough.</p>
 <p><strong>Verdict</strong>: If you are a very large organization, systems like Bazel and others can offer a platform for very advanced build features in a monorepo setup - assuming that the entire engineering team adopts it. Small and medium organizations, or large organizations with fragmented builds generally benefit from polyrepo setups more, due to the existing build ecosystem available as open-source or commercial-off-the-shelf (COTS). Hybrid setups could also be used as a compromise, assuming the monorepo(s) are not too large to require special build considerations.</p>
-<h4 id="a-note-on-earthly">A note on Earthly</h4>
+<h4 id="a-note-on-earthly">A Note on Earthly</h4>
 <p><a href="https://earthly.dev">Earthly</a> supports cross-project builds for either monorepo and polyrepo layouts. It solves for some of the challenges outlined above. In fact, these challenges were the main <a href="https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/">source of inspiration</a> when Earthly was started.</p>
-<h3 id="code-ownership">Code ownership</h3>
+<h3 id="code-ownership">Code Ownership</h3>
 <blockquote>
 <p>“Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization’s communication structure.” — <a href="https://en.wikipedia.org/wiki/Conway%27s_law">Melvin E. Conway</a></p>
 </blockquote>
@@ -421,13 +421,13 @@ github.com/myorg/lib1
 <p>To turn to monorepo setups, although you don’t have the same level of permission granularity, GitHub provides a <a href="https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners">CODEOWNERS</a> feature. Via CODEOWNERS, you could develop different access rights for each directory. The owners of that directory get push rights, while others need to seek code reviews from the owners. A common setup is to use a branch protection rule of one code review minimum, plus the code owners (sometimes a single code owner can satisfy both of these constraints). For example, if two microservices need to be changed to add a certain feature, a cross-cutting PR would require reviews from both teams in order to allow for that feature to make it into the main branch.</p>
 <p>If for any reason certain parts of your codebase are highly confidential, there is no way to hide a subdirectory from the rest of the team in a monorepo setup.</p>
 <p><strong>Verdict</strong>: It depends. If you would like to leave control of the engineering process enforcement to the individual teams, then polyrepo gives the most granular permission flexibility. If, on the other hand, you would like to enforce certain rules for everyone, a monorepo setup makes that the easiest.</p>
-<h3 id="issue-tracking">Issue tracking</h3>
+<h3 id="issue-tracking">Issue Tracking</h3>
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/Oalh2MojUuk.jpg" alt="Team sprint planning in front of a white board" /><br />
 </p>
 <p>In a polyrepo setup, each repository gets its own issue tracking. This is often preferable so that issues related to separate projects can be tracked in independent pools. Sometimes issues need to be tracked across projects too - in such cases, you could use another repository that is only used for issue tracking and where all the higher-level issues are tracked. The challenge with this setup is often the lack of discoverability of issues. The GitHub issue search across repositories is significantly inferior to the one that can be used within a single repository. In addition, it is hard to reuse certain labels, as each repository needs to (re-)define its own set.</p>
 <p>On the other hand, in a monorepo setup, all issues are mixed in a single pool. This can become confusing after a certain scale, at which point you would likely need a more specialized issue tracking service. If the team is not too large, however, GitHub issues in a single monorepo can help with bringing everyone together.</p>
 <p><strong>Verdict</strong>: For medium and large organizations, monorepo issue tracking does not scale well. For small organizations, monorepo issue tracking helps the team coordinate better.</p>
-<h3 id="open-source">Open-source</h3>
+<h3 id="open-source">Open-Source</h3>
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/fkFNBCQ6kQA.jpg" alt="People’s hands placed together" /><br />
 </p>
 <p>If your organization develops a mix of closed source and open-source code, there is absolutely no way to make a monorepo work. It is impossible to only show a subdirectory of the code to the outside world. You might think you could perhaps create a mirror of a subdirectory from the monorepo to a public repository, however, this does not go truly with the open-source spirit. How would you merge external contributions back to the main repository?</p>
@@ -439,7 +439,7 @@ github.com/myorg/lib1
 <p>In general, open-source and COTS tooling is far better suited for polyrepo setups. Monorepo builds, in particular, are difficult to scale and sometimes require the adoption of specialized build technology that is very alien to the rest of us.</p>
 <p>Although the tooling to work with monorepos is more limited or sometimes more difficult to manage, it encourages cross-team collaboration as the hurdles specific to contributing across repositories and managing the dependency chain is lifted.</p>
 <p>Hybrid setups tend to come as a compromise between the two approaches. They can be useful when a few projects present a higher level of cohesion: usually when they need to evolve together quickly and they are written in the same language. Hybrid setups can also be the answer when some parts need to be open-sourced and thus cannot be part of the main monorepo.</p>
-<h3 id="my-own-take">My own take</h3>
+<h3 id="my-own-take">My Own Take</h3>
 <p>As a bit of personal opinion, I have always aimed to optimize for cross-team collaboration in my engineering teams. Developers don’t naturally gravitate towards unknown code or unknown technologies, so anything you can do to encourage close collaboration helps bridge this gap. The result can be a really agile engineering organization.</p>
 <p>It is usually the integration of components together that is the most time-consuming, the most prone to bugs, and the cause for unexpected surprises when working in production. If everyone is left to contribute in their own little box, they will not build the right tools and processes to effectively contribute across. As Andy Grove suggests in <a href="https://www.amazon.com/dp/0679762884/ref=cm_sw_em_r_mt_dp_d.4bGbH1VS8VW">High Output Management</a> to design around the <a href="https://charles.io/high-output-management/">limiting factor</a> (in this case, the limiting factor being cross-team contribution), I have always gravitated towards monorepo whenever possible. However, realistically pure monorepo hasn’t always been truly feasible, so for one reason or another, we always ended up with a hybrid. This is one of the reasons I started <a href="https://earthly.dev">Earthly</a>.</p>
 <section class="footnotes" role="doc-endnotes">
@@ -631,13 +631,13 @@ github.com/myorg/lib1
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -655,7 +655,7 @@ github.com/myorg/lib1
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -663,7 +663,10 @@ github.com/myorg/lib1
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -683,13 +686,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -707,7 +710,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -715,8 +718,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 
