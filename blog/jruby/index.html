@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#what-is-jruby">What is JRuby?</a><ul><li><a href="#install-jruby">Install JRuby</a></li></ul></li><li><a href="#why-do-people-use-jruby">Why do people use JRuby?</a><ul><li><a href="#getting-past-the-gil">Getting past the GIL</a></li><li><a href="#library-access-and-environment-access">Library Access and Environment Access</a></li><li><a href="#long-running-process-performance">Long-Running Process Performance</a></li></ul></li><li><a href="#why-is-my-jruby-program-slow">Why is my JRuby Program Slow?</a><ul><li><a href="#inside---dev">Inside --dev</a></li></ul></li><li><a href="#why-is-my-jruby-program-wrong">Why is my JRuby Program Wrong?</a></li><li><a href="#what-is-truffleruby">What is TruffleRuby?</a><ul><li><a href="#install-truffleruby">Install TruffleRuby</a></li></ul></li><li><a href="#performance-shoot-out">Performance Shoot-out</a><ul><li><a href="#failure-of-fork">Failure Of Fork</a></li><li><a href="#test-with-rubyspy">Test with RubySpy</a><ul><li><a href="#jekyll-test-1">Jekyll Test 1</a></li><li><a href="#jekyll-test-2">Jekyll Test 2</a></li></ul></li></ul></li><li><a href="#performance-advice">Performance Advice</a></li><li><a href="#updates">Updates</a></li><li><a href="#more-resources">More Resources</a></li></ul>
+              <ul class="toc__menu"><li><a href="#what-is-jruby">What Is JRuby?</a><ul><li><a href="#install-jruby">Install JRuby</a></li></ul></li><li><a href="#why-do-people-use-jruby">Why Do People Use JRuby?</a><ul><li><a href="#getting-past-the-gil">Getting Past the GIL</a></li><li><a href="#library-access-and-environment-access">Library Access and Environment Access</a></li><li><a href="#long-running-process-performance">Long-Running Process Performance</a></li></ul></li><li><a href="#why-is-my-jruby-program-slow">Why Is my JRuby Program Slow?</a><ul><li><a href="#inside---dev">Inside --dev</a></li></ul></li><li><a href="#why-is-my-jruby-program-wrong">Why Is my JRuby Program Wrong?</a></li><li><a href="#what-is-truffleruby">What Is TruffleRuby?</a><ul><li><a href="#install-truffleruby">Install TruffleRuby</a></li></ul></li><li><a href="#performance-shoot-out">Performance Shoot-Out</a><ul><li><a href="#failure-of-fork">Failure of Fork</a></li><li><a href="#test-with-rubyspy">Test With RubySpy</a><ul><li><a href="#jekyll-test-1">Jekyll Test 1</a></li><li><a href="#jekyll-test-2">Jekyll Test 2</a></li></ul></li></ul></li><li><a href="#performance-advice">Performance Advice</a></li><li><a href="#updates">Updates</a></li><li><a href="#more-resources">More Resources</a></li></ul>
 
             </nav>
           </aside>
@@ -359,7 +359,7 @@ Building This blog is 10x slower
 </figcaption>
 </div>
 <p>So why is JRuby slow in these examples? It turns out that the answer is complicated.</p>
-<h2 id="what-is-jruby">What is JRuby?</h2>
+<h2 id="what-is-jruby">What Is JRuby?</h2>
 <blockquote>
 <p>I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind</p>
 </blockquote>
@@ -374,7 +374,7 @@ Building This blog is 10x slower
 <pre><code>rbenv install jruby-9.2.16.0</code></pre>
 <p>Set a specific project to use JRuby:</p>
 <pre><code>rbenv local jruby-9.2.16.0</code></pre>
-<h2 id="why-do-people-use-jruby">Why do people use JRuby?</h2>
+<h2 id="why-do-people-use-jruby">Why Do People Use JRuby?</h2>
 <!-- vale Vale.Spelling = NO -->
 <blockquote class="twitter-tweet">
 <p lang="en" dir="ltr">
@@ -385,13 +385,13 @@ OMG <a href="https://twitter.com/hashtag/JRuby?src=hash&amp;ref_src=twsrc%5Etfw"
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <!-- vale Vale.Spelling = YES -->
 <p>There are several reasons people might choose JRuby, several of which have to do with performance.</p>
-<h3 id="getting-past-the-gil">Getting past the GIL</h3>
+<h3 id="getting-past-the-gil">Getting Past the GIL</h3>
 <p>MRI Ruby, much like Python, has a global interpreter lock. This means that although you can have many threads in a single Ruby process, only one will ever be running at a time. If you look at <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/fannkuchredux.html">many</a> of the benchmark shout-out results, parallel multi-core solutions dominate. JRuby lets you sidestep the GIL as a bottleneck, at the cost of having to worry about writing thread-safe code.</p>
 <h3 id="library-access-and-environment-access">Library Access and Environment Access</h3>
 <p>A common driver for JRuby usage is the need for a Java-based library or the need to target the JVM. You could be trying to write an Android app or a Swing app using JRuby, or maybe you already have an existing Ruby codebase but need it to run on the JVM. My 2 cents is that if you start from scratch and need to target the JVM, JRuby should not be the first option you consider. If you do choose JRuby, be warned that you will need a good grasp of Java, the JVM, and Ruby: if you’re coming to the JVM for java libraries and functionality, then JRuby won’t save you from having to read Java.</p>
 <h3 id="long-running-process-performance">Long-Running Process Performance</h3>
 <p>MRI Ruby is known to be slow, as compared to the JVM or even Node.js. According to <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/pidigits.html">The Computer Language Benchmarks Game</a>, it’s often 5-10x slower than a similar Java solution. Small performance benchmarks are often not the best way to assess practical performance, but one place the JVM is known to perform very well compared to interpreted languages is in long-running server applications, where <a href="https://jakubstransky.com/2018/08/28/hotspot-jvm-jit-optimisation-techniques/">adaptive optimizations</a> can make a big difference.</p>
-<h2 id="why-is-my-jruby-program-slow">Why is my JRuby Program Slow?</h2>
+<h2 id="why-is-my-jruby-program-slow">Why Is my JRuby Program Slow?</h2>
 <p>The JVM might be fast at running Java in benchmark games, but that doesn’t necessarily carry over to JRuby. The JVM makes different performance trade-offs than MRI Ruby. Notably, an untuned JVM process has a slow start-up time, and with JRuby, this can get even worse as lots of standard library code is loaded on start-up. The JVM starts by working as a byte code interpreter and compiles “hot” code as it goes but in a large Ruby project, with lots of gems, the overhead of JITing all the Ruby code to bytecode can lead to a significantly slower start-up time.</p>
 <p>If you are using JRuby at the command line or starting lots of short-lived JRuby processes, then it is likely that JRuby will be slower than MRI Ruby. However, the JVM is extensively tunable, and it’s possible to tune things to behave more like standard Ruby. If you want your JRuby to behave more like MRI Ruby, you probably want to set the <code>--dev</code> flag. Either like this:</p>
 <pre><code> ENV JRUBY_OPTS=&quot;--dev&quot;</code></pre>
@@ -422,10 +422,10 @@ OMG <a href="https://twitter.com/hashtag/JRuby?src=hash&amp;ref_src=twsrc%5Etfw"
 </figcaption>
 </div>
 <h3 id="inside---dev">Inside <code>--dev</code></h3>
-<p>The <code>--dev</code> flag indicates to JRuby that you are running it in as a developer and would prefer quick startup time over absolute performance. JRuby, in turn, tells the JVM only do a single level jit (<code>-J-XX:TieredStopAtLevel=1</code>) and to not worry about verifying the bytecode (<code>-J-Xverify:none</code>). More details on the flag can found <a href="http://blog.headius.com/2019/09/jruby-startup-time-exploration.html">here</a>.</p>
-<h2 id="why-is-my-jruby-program-wrong">Why is my JRuby Program Wrong?</h2>
+<p>The <code>--dev</code> flag indicates to JRuby that you are running it in as a developer and would prefer quick startup time over absolute performance. JRuby, in turn, tells the JVM only do a single level jit (<code>-J-XX:TieredStopAtLevel=1</code>) and to not worry about verifying the bytecode (<code>-J-Xverify:none</code>). More details on the flag can found <a href="http://blog.headius.com/2019/09/jruby-startup-time-exploration.html">on hedius’s blog</a>.</p>
+<h2 id="why-is-my-jruby-program-wrong">Why Is my JRuby Program Wrong?</h2>
 <p>Ruby’s built-in types were built with the GIL in mind and are not thread-safe on the JVM. If you move the JRuby to sidestep the GIL, keep in mind that you may be introducing threading bugs. If you get unexpected or non-deterministic results in your concurrent array usage, you should look at concurrent data structures for the JVM like ConcurrentHashMap or ConcurrentSkipListMap. You may find that they not only fix the threading issues but could be <a href="https://gist.github.com/bokmann/6652776">orders of magnitude faster</a> than the idiomatic Ruby way. Jekyll is not multi-threaded, however, so this is not an issue I needed to worry about.</p>
-<h2 id="what-is-truffleruby">What is TruffleRuby?</h2>
+<h2 id="what-is-truffleruby">What Is TruffleRuby?</h2>
 <p><a href="https://www.graalvm.org/">GraalVM</a> is a JVM with different goals than the standard Java virtual machine.<br />
 According to Wikipedia, these goals are:</p>
 <ul>
@@ -478,7 +478,7 @@ rbenv local truffleruby+graalvm-21.0.0  </code></pre>
 truffleruby 21.0.0, like ruby 2.7.2, GraalVM CE Native [x86_64-darwin]</code></pre>
 <p>Set mode to <code>--native</code></p>
 <pre><code>ENV TRUFFLERUBYOPT=&#39;--native&#39;</code></pre>
-<h2 id="performance-shoot-out">Performance Shoot-out</h2>
+<h2 id="performance-shoot-out">Performance Shoot-Out</h2>
 TruffleRuby is significantly better in CPU heavy performance tests than JRuby, whose performance is significantly better than MRI Ruby. <a href="https://pragtob.wordpress.com/2020/08/24/the-great-rubykon-benchmark-2020-cruby-vs-jruby-vs-truffleruby/">PragToby</a> has a great breakdown:
 <div class="wide">
 <figure>
@@ -491,7 +491,7 @@ TruffleRuby is significantly better in CPU heavy performance tests than JRuby, w
 <li>Real-World projects like Jekyll involve a lot more code, and JITing that code has a high start-up cost.</li>
 <li>Real-world code like Jekyll or Rails is optimized for MRI Ruby, and many of those optimizations don’t help or actively hinder the JVM.</li>
 </ol>
-<h3 id="failure-of-fork">Failure Of Fork</h3>
+<h3 id="failure-of-fork">Failure of Fork</h3>
 <p>The most obvious place where you see this difference is multi-process Ruby programs. The GIL is not an issue across processes and the comparatively fast start time of MRI Ruby is an advantage when forking a new process. On the other hand, JVM Programs are often written in a multi-threading style where code only has to be JIT’d once, and the start-up cost is shared across threads. And in fact, if you ignore language shoot-out games, where everything is a single process and instead compare an MRI multi-process approach to a TruffleRuby multi-threading approach, many advantages of the JVM seem to disappear.</p>
 <div class="wide">
 <figure>
@@ -500,7 +500,7 @@ TruffleRuby is significantly better in CPU heavy performance tests than JRuby, w
 </div>
 <p>This chart comes from <a href="https://github.com/eregon">Benoit Daloze</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, the TruffleRuby lead. The benchmark in question is a long-running server-side application using a minimal web framework. It is in the sweet spot of the Graal and TruffleRuby, with little code to JIT and much time to make up for a slow start. But even so, MRIRuby does well.</p>
 <p>Which brings me back to my original question: Why is JRuby slow for Jekyll? I do not see similar times but significantly slower times. Jekyll is not forking processes, so that is not the issue. hugo, the static site builder for Go, is <a href="https://forestry.io/blog/hugo-and-jekyll-compared/#performance-1">significantly</a> faster than Jekyll. So we know that Jekyll is not at the limits of hardware where there is simply no more performance to squeeze out.</p>
-<h3 id="test-with-rubyspy">Test with RubySpy</h3>
+<h3 id="test-with-rubyspy">Test With RubySpy</h3>
 <p>To dig into this, let’s take a look at a flame-graph of the Jekyll build for this blog using RubySpy:</p>
 <div class="center">
 <table>
@@ -615,7 +615,7 @@ A larger Jekyll Site
 <section id="update-2" class="no_toc_section">
 <h3>Update #2</h3>
 </section>
-<p>The area where JRuby and TruffleRuby shine are long running processes that have had time to warm up. Based on suggestions I put together a repository of a simple small Jekyll build being built 20 times by the same process <a href="https://github.com/agbell/jekyll-perf">here</a>. After 20 builds with the same running process the build times do start to converge, but even after that MRI Ruby is still fastest.</p>
+<p>The area where JRuby and TruffleRuby shine are long running processes that have had time to warm up. Based on suggestions I put together a repository of a simple small Jekyll build being built 20 times by the same process <a href="https://github.com/agbell/jekyll-perf">on GitHub</a>. After 20 builds with the same running process the build times do start to converge, but even after that MRI Ruby is still fastest.</p>
 <section id="update-3" class="no_toc_section">
 <h3>Update #3</h3>
 </section>

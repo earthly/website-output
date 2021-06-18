@@ -306,7 +306,7 @@
 <li><a href="https://earthly.dev/">Earthly</a> (Optional, but I think it’s neat!)</li>
 </ul>
 <h2 id="putting-it-together">Putting It Together</h2>
-<p>First, we will need to acquire JS-DOS. JS-DOS is a wrapper around an Emscripten-compiled version of <a href="https://www.dosbox.com">DOSBox</a>, so it can run in a browser. You can get the latest versions of the files <a href="https://js-dos.com/#js-dos-622-archives">here</a>. Download and place these files into a project directory. Here’s how I’m doing it, using Docker:</p>
+<p>First, we will need to acquire JS-DOS. JS-DOS is a wrapper around an Emscripten-compiled version of <a href="https://www.dosbox.com">DOSBox</a>, so it can run in a browser. You can get the latest versions of the files <a href="https://js-dos.com/#js-dos-622-archives">on js-dos.com</a>. Download and place these files into a project directory. Here’s how I’m doing it, using Docker:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> site</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> wget https://js-dos.com/6.22/current/js-dos.js &amp;&amp; \</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    wget https://js-dos.com/6.22/current/wdosbox.js &amp;&amp; \</span>

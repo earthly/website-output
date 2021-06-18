@@ -351,7 +351,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-an-image-from-ecr">Pulling an Image from ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a><ul><li><a href="#eks-manifest">EKS Manifest</a></li></ul></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#docker-hub-where-many-start">Docker Hub: Where Many Start</a></li><li><a href="#introducing-amazon-elastic-container-registry-ecr">Introducing Amazon Elastic Container Registry (ECR)</a><ul><li><a href="#pricing">Pricing</a></li><li><a href="#why-ecr">Why ECR?</a></li><li><a href="#iam-identity-and-access-management">IAM (Identity and Access Management)</a></li><li><a href="#eks-elastic-kubernetes-service">EKS (Elastic Kubernetes Service)</a></li><li><a href="#ecs-elastic-container-service">ECS (Elastic Container Service)</a></li></ul></li><li><a href="#using-elastic-container-registry">Using Elastic Container Registry</a><ul><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#creating-a-new-repository">Creating a New Repository</a></li><li><a href="#configuring-your-repository">Configuring Your Repository</a></li><li><a href="#pushing-an-image-to-the-repository">Pushing an Image to the Repository</a></li><li><a href="#adding-your-ecr-credentials-to-the-docker-cli">Adding Your ECR Credentials to the Docker CLI</a></li><li><a href="#pushing-an-image-to-ecr">Pushing an Image to ECR</a></li><li><a href="#pulling-a-image-from-ecr">Pulling a Image From ECR</a></li><li><a href="#using-ecr-images-in-a-dockerfile">Using ECR Images in a Dockerfile</a></li><li><a href="#using-ecr-images-in-production-deployments">Using ECR Images in Production Deployments</a><ul><li><a href="#eks-manifest">EKS Manifest</a></li></ul></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -370,7 +370,7 @@
 <li><strong>Private Repositories</strong>: As a part of the AWS free tier, you get 500 MB of storage for one year for private repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage for private repositories.</li>
 <li><strong>Public Repositories</strong>: ECR offers 50 GB-month of free storage and 500 GB to 5 TB (depending on whether you authenticate with AWS or not) for public repositories. Beyond that, the storage cost is $0.10 per GB-month of data storage.</li>
 </ul>
-<p>There may be additional costs depending on your region and usage, so be sure to check the pricing <a href="https://aws.amazon.com/ecr/pricing/">here</a>.</p>
+<p>There may be additional costs depending on your region and usage, so be sure to check the <a href="https://aws.amazon.com/ecr/pricing/">pricing</a>.</p>
 <h3 id="why-ecr">Why ECR?</h3>
 <p>If you’re already bought into the Amazon ecosystem, ECR is an obvious choice for your container registry as you won’t have to add a new service to your budget. Besides saving you money, ECR integrates with other standard AWS services, which will hopefully improve developer experience as well.</p>
 <h3 id="iam-identity-and-access-management"><a href="https://aws.amazon.com/iam">IAM (Identity and Access Management)</a></h3>
@@ -439,7 +439,7 @@ CMD echo &#39;Hello world&#39;</code></pre>
 <p>Your image is now ready to push to ECR:</p>
 <pre><code>docker push &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
 <p>And just like that, you have pushed our first image to a repository on Elastic Container Registry. In the next section, you’ll see how you can use these images for local or remote deployments.</p>
-<h3 id="pulling-an-image-from-ecr">Pulling an Image from ECR</h3>
+<h3 id="pulling-a-image-from-ecr">Pulling a Image From ECR</h3>
 <p>Whether you want to pull an image from a public ECR repository or your company has private images stored in ECR, pulling works in the same way it does in any container registry. After you’ve authenticated (using the same steps above), you can use <a href="https://docs.docker.com/engine/reference/commandline/pull/"><code>docker pull</code></a>:</p>
 <pre><code>docker pull &lt;account-id&gt;.dkr.ecr.&lt;account-region&gt;.amazonaws.com/&lt;repository-name&gt;:&lt;image-version&gt;</code></pre>
 <p>Now you can run this image locally.</p>
@@ -466,7 +466,7 @@ spec: template:
           image: 123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1 
           args: [&quot;s3&quot;, &quot;ls&quot;] 
       restartPolicy: Never</code></pre>
-<p>When deployed, it will create a job with the name <code>eks-iam-test-s3</code> using the <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code> image. To see the complete step-by-step process for deploying this job to EKS, see <a href="https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html">the AWS documentation here</a>.</p>
+<p>When deployed, it will create a job with the name <code>eks-iam-test-s3</code> using the <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code> image. To see the complete step-by-step process for deploying this job to EKS, see <a href="https://docs.amazonaws.cn/en_us/AmazonECR/latest/userguide/ECR_on_EKS.html">the AWS documentation</a>.</p>
 <h5 id="ecs-task-definition">ECS Task Definition</h5>
 <p>ECR images can also be used in ECS task definition files to define your containers:</p>
 <pre><code>{
@@ -482,7 +482,7 @@ spec: template:
   &quot;family&quot;: &quot;example_task_3&quot;,
   &quot;taskRoleArn&quot;: &quot;arn:aws:iam::123456789012:role/AmazonECSTaskS3BucketRole&quot;
 }</code></pre>
-<p>This definition will deploy a container named <code>sample-app</code> using image <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code>. More detailed steps are <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition.html">available in the ECS documentation here</a>.</p>
+<p>This definition will deploy a container named <code>sample-app</code> using image <code>123456789012.dkr.ecr.us-west-2.amazonaws.com/aws-nodejs-sample:v1</code>. More detailed steps are <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-task-definition.html">available in the ECS documentation</a>.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>In this tutorial, you learned the basics of containers and container registries. You learned about the differences between Docker Hub and Amazon ECR for public and private repository hosting, and you saw how to set up and use ECR to store your images.</p>
 <p>Whether you’re using Docker images in production or not, ECR is a useful tool if you’re already embedded in the AWS ecosystem. It gives you the advantage of working well with other Amazon services like IAM for security and ECS or EKS for deployments.</p>

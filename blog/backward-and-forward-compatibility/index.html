@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#what-exactly-are-protocol-buffers">What Exactly Are Protocol Buffers?</a><ul><li><a href="#understanding-backward-and-forward-compatibility">Understanding Backward and Forward Compatibility</a></li><li><a href="#getting-started-with-buffers">Getting Started with Buffers</a></li></ul></li><li><a href="#tips-for-maintaining-compatibility">Tips for Maintaining Compatibility</a><ul><li><a href="#create-numerical-order">Create (Numerical) Order</a></li><li><a href="#beware-of-required-fields">Beware of Required Fields</a></li><li><a href="#avoid-groups">Avoid Groups</a></li><li><a href="#adding-new-fields">Adding New Fields</a></li><li><a href="#keep-an-eye-on-compatibility-when-changing-field-types">Keep an Eye on Compatibility When Changing Field Types</a></li><li><a href="#dont-destroy-deprecate">Don’t Destroy, Deprecate</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#what-exactly-are-protocol-buffers">What Exactly Are Protocol Buffers?</a><ul><li><a href="#understanding-backward-and-forward-compatibility">Understanding Backward and Forward Compatibility</a></li><li><a href="#getting-started-with-buffers">Getting Started With Buffers</a></li></ul></li><li><a href="#tips-for-maintaining-compatibility">Tips for Maintaining Compatibility</a><ul><li><a href="#create-numerical-order">Create (Numerical) Order</a></li><li><a href="#beware-of-required-fields">Beware of Required Fields</a></li><li><a href="#avoid-groups">Avoid Groups</a></li><li><a href="#adding-new-fields">Adding New Fields</a></li><li><a href="#keep-an-eye-on-compatibility-when-changing-field-types">Keep an Eye on Compatibility When Changing Field Types</a></li><li><a href="#dont-destroy-deprecate">Don’t Destroy, Deprecate</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -317,7 +317,7 @@
 <p>If a message is changed and a non-updated client can still understand and process the message then the message change is forward compatible. Forward compatibility is being able to understand messages from a future version.</p>
 </section>
 <p>With Protocol buffers, if a sender is upgraded, the receiver can still understand messages if it is forward compatible. It can accept input crafted by later versions of protobuf. The sender is backward compatible because it’s creating output that can be consumed by earlier versions. So long as you’re careful about when and how you change and remove fields, your protobuf will be forward and backward compatible.</p>
-<h3 id="getting-started-with-buffers">Getting Started with Buffers</h3>
+<h3 id="getting-started-with-buffers">Getting Started With Buffers</h3>
 <p>The first step to making a Protocol Buffer is to define data structures in a <code>.proto</code> file. For each data structure you want to create, you’ll make a <code>message</code> that contains a name and data type for each field it contains.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode protobuf"><code class="sourceCode protobuf"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>syntax = <span class="st">&quot;proto3&quot;</span>;</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> tutorial;</span>

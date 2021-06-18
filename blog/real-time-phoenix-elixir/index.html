@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introducing-phoenix-liveview">Introducing Phoenix LiveView</a></li><li><a href="#explaining-todays-tutorial">Explaining Today’s Tutorial</a></li><li><a href="#pre-build-setup">Pre-build Setup</a><ul><li><a href="#npm">npm</a></li><li><a href="#postgres">Postgres</a></li></ul></li><li><a href="#setting-up-phoenix">Setting Up Phoenix</a><ul><li><a href="#mix-archives">Mix Archives</a></li><li><a href="#creating-a-new-project">Creating a New Project</a></li></ul></li><li><a href="#adding-your-auction-route">Adding Your Auction Route</a></li><li><a href="#handling-events">Handling Events</a></li><li><a href="#understanding-the-liveview-life-cycle">Understanding the LiveView Life Cycle</a></li><li><a href="#broadcasting-with-pubsub">Broadcasting with PubSub</a><ul><li><a href="#configure-phoenix-pubsub">Configure Phoenix PubSub</a></li><li><a href="#subscribing-to-a-topic">Subscribing to a Topic</a></li><li><a href="#broadcasting-to-all-subscribers">Broadcasting to All Subscribers</a></li></ul></li><li><a href="#in-summary">In Summary</a><ul><li><a href="#additional-resources">Additional Resources</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#introducing-phoenix-liveview">Introducing Phoenix LiveView</a></li><li><a href="#explaining-todays-tutorial">Explaining Today’s Tutorial</a></li><li><a href="#pre-build-setup">Pre-Build Setup</a><ul><li><a href="#npm">npm</a></li><li><a href="#postgres">Postgres</a></li></ul></li><li><a href="#setting-up-phoenix">Setting Up Phoenix</a><ul><li><a href="#mix-archives">Mix Archives</a></li><li><a href="#creating-a-new-project">Creating a New Project</a></li></ul></li><li><a href="#adding-your-auction-route">Adding Your Auction Route</a></li><li><a href="#handling-events">Handling Events</a></li><li><a href="#understanding-the-liveview-life-cycle">Understanding the LiveView Life Cycle</a></li><li><a href="#broadcasting-with-pubsub">Broadcasting With PubSub</a><ul><li><a href="#configure-phoenix-pubsub">Configure Phoenix PubSub</a></li><li><a href="#subscribing-to-a-topic">Subscribing to a Topic</a></li><li><a href="#broadcasting-to-all-subscribers">Broadcasting to All Subscribers</a></li></ul></li><li><a href="#in-summary">In Summary</a><ul><li><a href="#additional-resources">Additional Resources</a></li></ul></li></ul>
 
             </nav>
           </aside>
@@ -318,7 +318,7 @@
 <figure>
 <img src="/blog/assets/images/real-time-phoenix-elixir/q0L1xth.gif" alt="The Crowdfunding App" /><figcaption aria-hidden="true">The Crowdfunding App</figcaption>
 </figure>
-<h2 id="pre-build-setup">Pre-build Setup</h2>
+<h2 id="pre-build-setup">Pre-Build Setup</h2>
 <p>For this tutorial, make sure you have a good working Elixir environment. The easiest way to do this is to follow the <a href="https://elixir-lang.org/install.html">official Elixir instructions</a>, which will give you a couple of options for:</p>
 <ul>
 <li>Local installation on Linux, Windows, and macOS</li>
@@ -466,7 +466,7 @@
 </ol>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span></code></pre></div>
 <ol start="3" type="1">
-<li>Copy <a href="https://gist.github.com/amacgregor/1369927cb4555803fa359c5ad9104fa9">the webpack and Tailwind configuration from here</a> into your assets directory:</li>
+<li>Copy <a href="https://gist.github.com/amacgregor/1369927cb4555803fa359c5ad9104fa9">the webpack and Tailwind configuration from this gist</a> into your assets directory:</li>
 </ol>
 <pre><code>assets/tailwind.config.js
 assets/webpack.config.js
@@ -626,7 +626,7 @@ State: %{components: {%{}, %{}, 0}, join_ref: &quot;4&quot;, serializer: Phoenix
 </ol>
 <p>It is in this life cycle where one of the more powerful and interesting features of LiveView lies. As mentioned, LiveView is listening to your socket for updates but <em>it will only rerender the portions of the page that needed updating</em>. In the case of this tutorial, the meter is the only piece that gets an update.</p>
 <p>This is one of the key features that makes Phoenix and LiveView extremely well suited for real-time applications.</p>
-<h2 id="broadcasting-with-pubsub">Broadcasting with PubSub</h2>
+<h2 id="broadcasting-with-pubsub">Broadcasting With PubSub</h2>
 <p>So far, you’ve built an app that can leverage Phoenix LiveView to allow users to donate in real time, but so far, there’s a caveat: updates are not shared across users or even tabs. Wouldn’t it be nice to get the donations to show in real time for everyone who has the page open?</p>
 <p>Next, you’ll leverage <a href="https://github.com/phoenixframework/phoenix_pubsub">PubSub</a> to broadcast real-time updates to all LiveView clients, not just the one that triggers the event.</p>
 <blockquote>

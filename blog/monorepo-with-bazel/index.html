@@ -332,7 +332,7 @@ src/app/tests/BUILD</code></pre>
 <pre><code>@repo//app/main:app_binary</code></pre>
 <p>Each label has two parts: a package name (<code>app/main</code>) and a target name (<code>app_binary</code>).</p>
 <h3 id="dependencies">Dependencies</h3>
-<p>Target X is considered a dependency for target Y, if Y needs X at build or execution time. The dependency relation produces a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">Directed Acyclic Graph</a> (DAG) called a <em>dependency graph</em>, which is used to classify these dependencies further. You can read more about <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#dependencies">these types and their definitions here</a>.</p>
+<p>Target X is considered a dependency for target Y, if Y needs X at build or execution time. The dependency relation produces a <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">Directed Acyclic Graph</a> (DAG) called a <em>dependency graph</em>, which is used to classify these dependencies further. You can read more about <a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#dependencies">these types and their definitions</a>.</p>
 <h3 id="build-files">Build Files</h3>
 <p><a href="https://docs.bazel.build/versions/4.0.0/build-ref.html#BUILD_files">Build files</a> contain the top-level program that describes the set of declared rules. These files are periodically updated with respect to changes in the dependencies being used.</p>
 <h3 id="bazel-basic-commands">Bazel Basic Commands</h3>

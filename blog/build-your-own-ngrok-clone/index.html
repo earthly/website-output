@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#so-how-does-ngrok-work">So, How Does ngrok Work?</a></li><li><a href="#lets-build-it">Lets Build It</a><ul><li><a href="#where-will-the-instance-live">Where will the instance live?</a></li><li><a href="#ssh-key-pair">SSH Key Pair</a></li><li><a href="#security-group">Security Group</a></li><li><a href="#ec2-instance">EC2 Instance</a></li><li><a href="#using-the-proxy">Using the Proxy</a></li></ul></li><li><a href="#teardown">Teardown</a></li><li><a href="#create-using-earthly">Create using Earthly</a></li><li><a href="#shortcomings">Shortcomings</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#introduction">Introduction</a></li><li><a href="#so-how-does-ngrok-work">So, How Does ngrok Work?</a></li><li><a href="#lets-build-it">Lets Build It</a><ul><li><a href="#where-will-the-instance-live">Where Will the Instance Live?</a></li><li><a href="#ssh-key-pair">SSH Key Pair</a></li><li><a href="#security-group">Security Group</a></li><li><a href="#ec2-instance">EC2 Instance</a></li><li><a href="#using-the-proxy">Using the Proxy</a></li></ul></li><li><a href="#teardown">Teardown</a></li><li><a href="#create-using-earthly">Create Using Earthly</a></li><li><a href="#shortcomings">Shortcomings</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -322,7 +322,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <h2 id="lets-build-it">Lets Build It</h2>
 <p>You will need the following to complete the rest of this tutorial:</p>
 <ul>
-<li>An active AWS account <a href="https://portal.aws.amazon.com/billing/signup#/start">(If you don’t have one, you can sign up here)</a></li>
+<li>An active AWS account <a href="https://portal.aws.amazon.com/billing/signup#/start">(If you don’t have one, you can sign up on aws)</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html">Installed the AWS CLI</a></li>
 <li><a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html">Configured AWS credentials</a></li>
 </ul>
@@ -331,7 +331,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 <li><a href="https://stedolan.github.io/jq/">jq</a></li>
 </ul>
 <p>With those in hand, it’s time to get started!</p>
-<h3 id="where-will-the-instance-live">Where will the instance live?</h3>
+<h3 id="where-will-the-instance-live">Where Will the Instance Live?</h3>
 <p>Before creating anything in the cloud, you’ll need to make sure that you have some information about the VPC and subnet the instance will be assigned to. This information can be found in the console, or on the command-line via <code>aws ec2 describe-subnets</code>. It will list all your subnets, and the VPCs they belong to.</p>
 <p>If your cloud is like most peoples, you likely have quite a few of these lying around, which makes it difficult to find the one you want to place your proxy in. I like to add <code>jq</code> into the mix to make it easier to parse, like this:</p>
 <pre><code>❯ aws ec2 describe-subnets \
@@ -350,7 +350,7 @@ With this foundation, you can now understand why <code>ngrok</code> (and our DIY
 </div>
 <p>You can get the key directly with <code>jq</code> by <code>jq -r .KeyPairId key-output.json</code>, or via your preferred means.</p>
 <h3 id="security-group">Security Group</h3>
-<p>Now that you have a key pair, you will also need to create a security group for the instance to reside in. To oversimplify, a security group is essentially a firewall for your instance, constraining what ports traffic is allowed to enter or leave on. <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html#VPCSecurityGroups">You can read more about security groups here, for a longer and more complete explanation.</a> Getting this right is important, so your proxy is less likely to be compromised.</p>
+<p>Now that you have a key pair, you will also need to create a security group for the instance to reside in. To oversimplify, a security group is essentially a firewall for your instance, constraining what ports traffic is allowed to enter or leave on. <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html#VPCSecurityGroups">You can read more about security groups on aws, for a longer and more complete explanation.</a> Getting this right is important, so your proxy is less likely to be compromised.</p>
 <pre><code>❯ aws ec2 create-security-group \
     --group-name reverse-proxy \
     --description reverse-proxy \
@@ -446,7 +446,7 @@ server {
 ❯ aws ec2 delete-key-pair --no-cli-pager --key-pair-id $KEY_ID &amp;&amp; \
   aws ec2 delete-security-group --no-cli-pager --group-id $SG_ID</code></pre>
 <p>Note that the instance could take a couple minutes to finish terminating. You will not be able to remove the key or security group before the instance has been terminated.</p>
-<h2 id="create-using-earthly">Create using Earthly</h2>
+<h2 id="create-using-earthly">Create Using Earthly</h2>
 <p>If you don’t want to deal with manual setup or teardown, we’ve created an <code>Earthfile</code> that should automate all of this for you. It can create a proxy just like this, from scratch, in under five minutes! To start up a proxy using <code>earthly</code>, execute this <em>single</em> command.</p>
 <pre><code>❯ earthly \
   --secret-file config=/home/user/.aws/config \
@@ -479,7 +479,7 @@ server {
 <p>It also requires non-trivial IAM permissions in AWS to setup and teardown. If you don’t have that kind of access to an account, you may end up waiting on others to set it up for you.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Turns out it’s pretty simple to get something basic up and running, just like <code>ngrok</code> does. But, if you find yourself relying on this kind of tooling every day, it may be better to pay for a service that can do it better.</p>
-<p>Thanks for following along with us! <a href="https://github.com/earthly/example-diy-ngrok">Visit the example repository, with all scripts available here.</a></p>
+<p>Thanks for following along with us! <a href="https://github.com/earthly/example-diy-ngrok">Visit the example repository, with all scripts available on GitHub.</a></p>
 <!--kg-card-end: markdown-->
 
         

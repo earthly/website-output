@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</a></li><li><a href="#mttr-mean-time-to-recovery">MTTR: Mean Time To Recovery</a></li><li><a href="#mttre-mean-time-to-resolve">MTTRe: Mean Time To Resolve</a></li><li><a href="#mtta-mean-time-to-acknowledge">MTTA: Mean Time To Acknowledge</a></li><li><a href="#summary">Summary</a></li></ul>
+              <ul class="toc__menu"><li><a href="#mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</a></li><li><a href="#mttr-mean-time-to-recovery">MTTR: Mean Time to Recovery</a></li><li><a href="#mttre-mean-time-to-resolve">MTTRe: Mean Time to Resolve</a></li><li><a href="#mtta-mean-time-to-acknowledge">MTTA: Mean Time to Acknowledge</a></li><li><a href="#summary">Summary</a></li></ul>
 
             </nav>
           </aside>
@@ -334,11 +334,11 @@
 </dd>
 </dl>
 </section>
-<h2 id="mttr-mean-time-to-recovery">MTTR: Mean Time To Recovery</h2>
+<h2 id="mttr-mean-time-to-recovery">MTTR: Mean Time to Recovery</h2>
 <p>Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.</p>
 <p>If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.</p>
 <section id="calculating-mean-time-to-recovery" class="notice--big--primary">
-<h3>Calculating Mean Time To Recovery</h3>
+<h3>Calculating Mean Time to Recovery</h3>
 <table>
 <thead>
 <tr class="header">
@@ -349,11 +349,11 @@
 <tbody>
 <tr class="odd">
 <td>Reported</td>
-<td>10:00 AM</td>
+<td>10:00 am.</td>
 </tr>
 <tr class="even">
 <td>Recovered</td>
-<td>12:00 PM</td>
+<td>12:00 pm.</td>
 </tr>
 <tr class="odd">
 <td>Recovery Time</td>
@@ -371,11 +371,11 @@
 <tbody>
 <tr class="odd">
 <td>Reported</td>
-<td>10:00 AM</td>
+<td>10:00 am.</td>
 </tr>
 <tr class="even">
 <td>Recovered</td>
-<td>2 days later at 10:00 am</td>
+<td>2 days later at 10:00 am.</td>
 </tr>
 <tr class="odd">
 <td>Recovery Time</td>
@@ -389,7 +389,7 @@
 </dd>
 </dl>
 </section>
-<h2 id="mttre-mean-time-to-resolve">MTTRe: Mean Time To Resolve</h2>
+<h2 id="mttre-mean-time-to-resolve">MTTRe: Mean Time to Resolve</h2>
 <div class="notice--info">
 <p>ℹ️ Acronyms Collision Alert</p>
 <p>Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.</p>
@@ -397,7 +397,7 @@
 <p>Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.</p>
 <p>The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.</p>
 <section id="calculating-mean-time-to-resolve" class="notice--big--primary">
-<h3>Calculating Mean Time To Resolve</h3>
+<h3>Calculating Mean Time to Resolve</h3>
 <table>
 <thead>
 <tr class="header">
@@ -464,11 +464,11 @@
 </dd>
 </dl>
 </section>
-<h2 id="mtta-mean-time-to-acknowledge">MTTA: Mean Time To Acknowledge</h2>
+<h2 id="mtta-mean-time-to-acknowledge">MTTA: Mean Time to Acknowledge</h2>
 <p>An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.</p>
 <p>MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.</p>
 <section id="calculating-mean-time-to-acknowledge" class="notice--big--primary">
-<h3>️Calculating Mean Time To Acknowledge</h3>
+<h3>️Calculating Mean Time to Acknowledge</h3>
 <table>
 <thead>
 <tr class="header">

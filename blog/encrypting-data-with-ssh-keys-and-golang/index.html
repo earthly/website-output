@@ -464,7 +464,7 @@
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>EncodeToString<span class="op">(</span>encryptedBytes<span class="op">),</span> <span class="ot">nil</span></span>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
-<p>Try out the complete example <a href="https://play.golang.org/p/KjvwPoJ6wT4">here</a></p>
+<p>Try out the <a href="https://play.golang.org/p/KjvwPoJ6wT4">complete example</a></p>
 <p>Finally, how do we decrypt it?</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">func</span> decrypt<span class="op">(</span>data<span class="op">,</span> priv <span class="dt">string</span><span class="op">)</span> <span class="op">(</span><span class="dt">string</span><span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>     data2<span class="op">,</span> err <span class="op">:=</span> base64<span class="op">.</span>StdEncoding<span class="op">.</span>DecodeString<span class="op">(</span>data<span class="op">)</span></span>
@@ -484,7 +484,7 @@
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>     <span class="kw">return</span> <span class="dt">string</span><span class="op">(</span>decrypted<span class="op">),</span> <span class="ot">nil</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
-<p>Try it out <a href="https://play.golang.org/p/a5u9PYWEjgs">here</a></p>
+<p><a href="https://play.golang.org/p/a5u9PYWEjgs">Try it out</a></p>
 <p>So there we have a end-to-end example of how to generate a new public/private key, and encrypt and decrypt data all in <a href="/blog/top-3-resources-to-learn-golang-in-2021">GoLang</a>.</p>
 <p>Based on my experimentation with private/public key encryption in go, I put together a small program that allows users to share encrypted data between parties using a rather simple <a href="https://github.com/alexcb/secretshare">command line tool on my personal repository</a></p>
 <p>Our server’s authentication process is slightly different from the above code – we create a digital signature using the private key, which I’ll be covering in a future blog post.</p>

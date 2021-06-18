@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#solving-reproducible-builds">Solving Reproducible Builds</a></li><li><a href="#a-scala-example">A Scala Example</a><ul><li><a href="#setup">Setup</a></li><li><a href="#build-it">Build It</a></li><li><a href="#test-it">Test It</a></li><li><a href="#containerize-it">Containerize It</a></li><li><a href="#did-we-solve-it">Did we solve it?</a></li></ul></li><li><a href="#but-wait-theres-more">But wait there’s more</a></li></ul>
+              <ul class="toc__menu"><li><a href="#solving-reproducible-builds">Solving Reproducible Builds</a></li><li><a href="#a-scala-example">A Scala Example</a><ul><li><a href="#setup">Setup</a></li><li><a href="#build-it">Build It</a></li><li><a href="#test-it">Test It</a></li><li><a href="#containerize-it">Containerize It</a></li><li><a href="#did-we-solve-it">Did We Solve It?</a></li></ul></li><li><a href="#but-wait-theres-more">But Wait There’s More</a></li></ul>
 
             </nav>
           </aside>
@@ -416,8 +416,8 @@ Earthfile continued
 <p>Running <code>earthly +docker</code></p>
 </figcaption>
 </figure>
-<p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example here</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
-<h3 id="did-we-solve-it">Did we solve it?</h3>
+<p>You can find the <a href="https://github.com/earthly/earthly-example-scala/blob/simple/simple/earthfile">full example on GitHub</a>. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.  </p>
+<h3 id="did-we-solve-it">Did We Solve It?</h3>
 <p>We now have our <code>deps</code>, <code>build</code>, <code>test</code> and <code>docker</code> targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our <a href="/blog/continuous-integration">CI</a> builds.  We used earthly to encapsulate the build steps.</p>
 <figure class>
 <img src="/blog/assets/images/better-builds/diagram.png"
@@ -427,7 +427,7 @@ Earthfile continued
 </figcaption>
 </figure>
 <p>If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .</p>
-<h2 id="but-wait-theres-more">But wait there’s more</h2>
+<h2 id="but-wait-theres-more">But Wait There’s More</h2>
 <p>We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.  </p>
 <p>For now, you can find more details, such as how to install earthly and many more examples on <strong><a href="https://github.com/earthly/earthly/blob/master/README.md">GitHub</a>.  </strong></p>
 

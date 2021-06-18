@@ -60,7 +60,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Hacktoberfest 2020",
-        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What is it The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
+        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What Is It? The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
         "tags": [],
         "url": "/blog/hacktoberfest-2020/",
         "teaser": "/blog/assets/images/default-teaser.jpg"

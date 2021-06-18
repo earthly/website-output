@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#step-0-creating-a-simple-hello-world-program">Step 0: creating a simple hello world program</a></li><li><a href="#step-1-creating-a-deb-package">Step 1: Creating a deb package</a></li><li><a href="#step-2-creating-an-apt-repository">Step 2: Creating an apt repository</a></li><li><a href="#step-3-signing-your-apt-repository-with-gpg">Step 3: Signing your apt repository with GPG</a><ul><li><a href="#pgp-gpg-and-gnupgp">PGP, GPG, and GnuPGP</a><ul><li><a href="#creating-a-new-publicprivate-pgp-key-pair">Creating a new public/private PGP key pair</a></li><li><a href="#signing-the-release-file">Signing the Release file</a></li><li><a href="#testing-it-out">Testing it out</a></li><li><a href="#keeping-your-private-key-secure">Keeping your private key secure</a></li></ul></li></ul></li><li><a href="#appendix-a-a-complete-example-using-earthly">Appendix A: A complete example using Earthly</a></li></ul>
+              <ul class="toc__menu"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#step-0-creating-a-simple-hello-world-program">Step 0: Creating a Simple Hello World Program</a></li><li><a href="#step-1-creating-a-deb-package">Step 1: Creating a deb Package</a></li><li><a href="#step-2-creating-an-apt-repository">Step 2: Creating an apt Repository</a></li><li><a href="#step-3-signing-your-apt-repository-with-gpg">Step 3: Signing your apt Repository With GPG</a><ul><li><a href="#pgp-gpg-and-gnupgp">PGP, GPG, and GnuPGP</a><ul><li><a href="#creating-a-new-publicprivate-pgp-key-pair">Creating a New Public/Private PGP Key Pair</a></li><li><a href="#signing-the-release-file">Signing the Release File</a></li><li><a href="#testing-it-out">Testing It Out</a></li><li><a href="#keeping-your-private-key-secure">Keeping Your Private Key Secure</a></li></ul></li></ul></li><li><a href="#appendix-a-a-complete-example-using-earthly">Appendix A: A Complete Example using Earthly</a></li></ul>
 
             </nav>
           </aside>
@@ -305,7 +305,7 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>This tutorial assumes you are using Ubuntu, and that the following packages are installed:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> gcc dpkg-dev gpg</span></code></pre></div>
-<h2 id="step-0-creating-a-simple-hello-world-program">Step 0: creating a simple hello world program</h2>
+<h2 id="step-0-creating-a-simple-hello-world-program">Step 0: Creating a Simple Hello World Program</h2>
 <p>Before getting started with packaging, let’s create a basic hello world program under <code>~/example/hello-world-program</code>. To do this, you can copy and paste the following commands into your terminal:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/example/hello-world-program</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -318,7 +318,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/example/hello-world-program</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gcc</span> <span class="at">-o</span> hello-world hello.c</span></code></pre></div>
 <p>There’s no technical reason for picking C for this example – the language doesn’t matter. It’s the binary we will be distributing in our deb package.</p>
-<h2 id="step-1-creating-a-deb-package">Step 1: Creating a deb package</h2>
+<h2 id="step-1-creating-a-deb-package">Step 1: Creating a <code>deb</code> Package</h2>
 <p>Debian, and Debian-based Linux distributions use <code>.deb</code> packages to package and distribute programs. To start we will create a directory in the form:</p>
 <pre><code>&lt;package-name&gt;_&lt;version&gt;-&lt;release-number&gt;_&lt;architecture&gt;</code></pre>
 <p>where the</p>
@@ -388,7 +388,7 @@ drwxrwxr-x alex/alex         0 2021-05-17 16:18 ./usr/bin/
 <p>Finally, if you want to remove it, you can run:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get remove hello-world</span></code></pre></div>
 <p>This concludes the first step of building a <code>.deb</code> package. If you have access to an existing apt repository, you could submit the deb to the repository maintainer, and call it a day.</p>
-<h2 id="step-2-creating-an-apt-repository">Step 2: Creating an apt repository</h2>
+<h2 id="step-2-creating-an-apt-repository">Step 2: Creating an <code>apt</code> Repository</h2>
 <p>In this step, we will show how to create your own apt repository which can be used to host one or more deb packages.</p>
 <p>Let’s start with creating a directory to hold our debs:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/example/apt-repo/pool/main/</span></code></pre></div>
@@ -511,7 +511,7 @@ N: See apt-secure(8) manpage for repository creation and user configuration deta
   hello-world
 Install these packages without verification? [y/N]</code></pre>
 <p>Fortunately in the next section we’ll cover generating a PGP key, and signing our repository with it, which will allow users to verify the repository contents have not been tampered with.</p>
-<h2 id="step-3-signing-your-apt-repository-with-gpg">Step 3: Signing your apt repository with GPG</h2>
+<h2 id="step-3-signing-your-apt-repository-with-gpg">Step 3: Signing your <code>apt</code> Repository With GPG</h2>
 <p>In the previous step, we generated a <code>Release</code> file, which referenced one or more <code>Packages</code> files along with it’s corresponding md5, sha1, and sha256 hashes. The <code>Packages</code> file in turns references a deb package along with it’s md5, sha1, and sha256 hashes.</p>
 <p>As of 2021, md5 and sha1 hashes are no longer considered secure; however sha256 is still considered to be secure. Therefore if a user can verify that the initial Release file has not been tampered with, then they could make use of the sha256 to verify the Packages file, then use the sha256 contained in the Packages file to verify the deb file.</p>
 <p>In order to sign the apt repo, all we must do is sign the Release file.</p>
@@ -519,7 +519,7 @@ Install these packages without verification? [y/N]</code></pre>
 <p><em>PGP, OpenPGP, GnuPG, GPG, (and careful not to typo PHP).</em></p>
 <p>Software has a lot of accronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.</p>
 <p>OpenPGP is only a specification, that’s where GNU Privacy Guard (GPG) fits in: GPG is an implementation of (Open)PGP. So is it a PGP key, or a GPG key? I don’t know, I’ve seen it called both, I’m going to call it a PGP because that’s what is contained in the first line of the armoured text: <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code>.</p>
-<h4 id="creating-a-new-publicprivate-pgp-key-pair">Creating a new public/private PGP key pair</h4>
+<h4 id="creating-a-new-publicprivate-pgp-key-pair">Creating a New Public/Private PGP Key Pair</h4>
 <p>Let’s start with generating a PGP key pair. We will use the <code>--batch</code> feature of <code>gpg</code> rather than using the interactive prompt. This has the benefit of generating keys in a repeatable way. First create a batch template by copying and pasting the following into your terminal:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;%echo Generating an example PGP key</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="st">Key-Type: RSA</span></span>
@@ -666,7 +666,7 @@ rRYC0Psjil8wZAHa/sJePBtn+9Ol0atZ6QDvyr2r3fMHQiEe+mB0cpKnBw==
 <p>The above is a burner-key I created for this article. It’s never been used for anything aside from this article. You should be generating your own key, don’t use this one.</p>
 </div>
 <p>Now that we’ve generated a PGP key pair, let’s move on to signing files with them.</p>
-<h4 id="signing-the-release-file">Signing the Release file</h4>
+<h4 id="signing-the-release-file">Signing the Release File</h4>
 <p>Before we start signing with out keys, let’s make sure that we can import the backup we made. To do that, we will create a new GPG keyring location:</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GNUPGHOME</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="fu">mktemp</span> <span class="at">-d</span> ~/example/pgpkeys-XXXXXX<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
 <p>and then verify that it is empty:</p>
@@ -747,7 +747,7 @@ ZCE34ksK8W67GOtQuzy0Z8NlTJY1Mkzp7IsUt60owyv6dQVZFIPYwGEisGFSOCNk
 BKaAtOSl2Jcb4eA=
 =3Hft
 -----END PGP SIGNATURE-----</code></pre>
-<h4 id="testing-it-out">Testing it out</h4>
+<h4 id="testing-it-out">Testing It Out</h4>
 <p>We need to tell apt which public pgp key to use when verifying the apt repository. We will add a new <code>signed-by</code> attribute to our apt config:</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;deb [arch=amd64 signed-by=</span><span class="va">$HOME</span><span class="st">/example/pgp-key.public] http://127.0.0.1:8000/apt-repo stable main&quot;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/apt/sources.list.d/example.list</span></code></pre></div>
 <div class="notice--info">
@@ -761,11 +761,11 @@ BKaAtOSl2Jcb4eA=
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install hello-world</span></code></pre></div>
 <p>This time you shouldn’t see any security warnings.</p>
-<h4 id="keeping-your-private-key-secure">Keeping your private key secure</h4>
+<h4 id="keeping-your-private-key-secure">Keeping Your Private Key Secure</h4>
 <p>If you followed this tutorial to the tee, and your web server is still running, what happens if we try running:</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://127.0.0.1:8000/pgp-key.private</span></code></pre></div>
 <p>Oh no! we just leaked our private key. Now’s the time to regenerate it but using a real name and email address other than <code>example@example.com</code>. Maybe you can store it in earthly’s <a href="https://docs.earthly.dev/docs/guides/cloud-secrets">secret store</a> instead?</p>
-<h2 id="appendix-a-a-complete-example-using-earthly">Appendix A: A complete example using Earthly</h2>
+<h2 id="appendix-a-a-complete-example-using-earthly">Appendix A: A Complete Example using Earthly</h2>
 <p>A complete example has been created under <a href="https://github.com/earthly/example-apt-repo/blob/main/Earthfile">github.com/earthly/example-apt-repo/Earthfile</a>.</p>
 <p>This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">earthly</span> <span class="at">-P</span> github.com/earthly/example-apt-repo+test</span></code></pre></div>

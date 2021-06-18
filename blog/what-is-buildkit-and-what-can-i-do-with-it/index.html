@@ -351,7 +351,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where are `FROM’s from</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What is runc?</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</a></li><li><a href="#buildkit-output-types">BuildKit Output Types</a></li><li><a href="#what-is-in-from-scratch">What is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+              <ul class="toc__menu"><li><a href="#history">History</a></li><li><a href="#install-buildkit">Install BuildKit</a><ul><li><a href="#buildctl">buildctl</a></li><li><a href="#buildkitd">buildkitd</a></li></ul></li><li><a href="#building-an-image">Building an Image</a></li><li><a href="#tangent-where-are-froms-from">Tangent: Where Are FROM’s From?</a></li><li><a href="#watching-it-build">Watching It Build</a><ul><li><a href="#what-is-runc">What Is runc?</a></li></ul></li><li><a href="#how-to-see-docker-processes-on-macos-and-windows">How to See Docker Processes on macOS and Windows</a></li><li><a href="#buildkit-output-types">BuildKit Output Types</a></li><li><a href="#what-is-in-from-scratch">What Is in FROM scratch</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
 
             </nav>
           </aside>
@@ -473,7 +473,7 @@ CMD [&quot;/bin/sh&quot;]</code></pre>
 <pre><code>➜ docker run -it agbell/test
 / # cat file
 built with BuildKit!</code></pre>
-<h2 id="tangent-where-are-froms-from">Tangent: Where are `FROM’s from</h2>
+<h2 id="tangent-where-are-froms-from">Tangent: Where Are <code>FROM</code>’s From?</h2>
 <p>If we have an image locally on our machine, can we use it in a <code>FROM</code> to build something based on it? Let’s find out by altering our <code>FROM</code> to use a local image:</p>
 <pre><code>FROM agbell/test:local
 RUN echo &quot;BuildKit built&quot;&gt;  file
@@ -507,7 +507,7 @@ RUN update-ca-certificates
 <p>We can see a <code>404</code>, and this confirms buildkitd is expecting registry that it can access over the network using the docker registry v2 api.</p>
 <h2 id="watching-it-build">Watching It Build</h2>
 <p><code>buildkitd</code> is responsible for building the image, but <code>runc</code> does the actual execution of each step. <code>runc</code> executes each <code>RUN</code> command in your dockerfile in a separate process. runc requires Linux kernel 5.2 or later with support for cgroups, and is why buildkitd can’t run natively on macOS or Windows.</p>
-<h3 id="what-is-runc">What is <code>runc</code>?</h3>
+<h3 id="what-is-runc">What Is <code>runc</code>?</h3>
 <blockquote>
 <p>“Please note that runc is a low-level tool not designed with an end-user in mind. It is mostly employed by other higher-level container software. Therefore, unless there is some specific use case that prevents the use of tools like Docker or Podman, it is not recommended to use runc directly.” - <a href="https://github.com/opencontainers/runc">runc readme</a></p>
 </blockquote>
@@ -515,7 +515,7 @@ RUN update-ca-certificates
 <figure>
 <img src="/blog/assets/images/what-is-buildkit-and-what-can-i-do-with-it/3.png" alt="Diagram of BuildKit running and pstree showing the process tree of buildkitd" /><figcaption aria-hidden="true">Diagram of BuildKit running and pstree showing the process tree of buildkitd</figcaption>
 </figure>
-<h2 id="how-to-see-docker-processes-on-macos-and-windows">How to see Docker Processes on macOS and Windows</h2>
+<h2 id="how-to-see-docker-processes-on-macos-and-windows">How to See Docker Processes on macOS and Windows</h2>
 <p>On macOS and Windows, Docker processes run on a separate virtual machine (VM). If you’re using the default and recommended Docker Desktop, this VM is the Linux container host.</p>
 <p><em>Note: Docker Machine is an earlier approach to running Docker on macOS and Windows where the Docker VM runs in VirtualBox or VMware. Docker Machine steps may differ.</em></p>
 <p>The above <code>exec</code> trick lets us see the processes inside a specific container, but to see all the processes running across all the containers, we need a different technique. To do that, we can use <code>docker run</code> and <code>nsenter</code>:</p>
@@ -587,7 +587,7 @@ open /var/lib/docker/tmp/docker-import-013443725/bin/json: no such file or direc
 <figure>
 <img src="/blog/assets/images/what-is-buildkit-and-what-can-i-do-with-it/4.png" alt="tree view of alpine image showing space used in each directory" /><figcaption aria-hidden="true">tree view of alpine image showing space used in each directory</figcaption>
 </figure>
-<h2 id="what-is-in-from-scratch">What is in <code>FROM scratch</code></h2>
+<h2 id="what-is-in-from-scratch">What Is in <code>FROM scratch</code></h2>
 <p>One thing we can do with our newfound powers is investigate the <code>scratch</code> keyword. The scratch keyword doesn’t correspond to an actual image. We can’t run it:</p>
 <pre><code>docker run scratch
 Unable to find image&#39; scratch:latest&#39; locally

@@ -334,7 +334,7 @@
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>As you can see, it simply includes a standard in/standard out library and then prints <code>Hello World\n</code>. Let’s start with<code>autoconf</code> to configure this project.</p>
-<h3 id="configuring-configure.ac">Configuring configure.ac</h3>
+<h3 id="configuring-configure.ac">Configuring <code>configure.ac</code></h3>
 <p>When writing your <code>configure.ac</code> file, there are a lot of options to choose from. You can get very specific about how you want your script to be configured, but some configurations need to be set. The first of these is <code>AC_INIT</code>. This tells <code>autoconf</code> what the name of your application is, what version it is, and who’s the maintainer. For this example, you’ll write:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">AC_INIT</span><span class="er">(</span><span class="ex">[helloworld],</span> [0.1], [maintainer@example.com]<span class="kw">)</span></span></code></pre></div>
 <p>While <code>autoconf</code> is generally used alongside <code>automake</code>, it’s not necessary, so you need to initialize that by writing:</p>
