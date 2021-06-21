@@ -300,9 +300,7 @@
             </nav>
           </aside>
         
-        <!-- vale HouseStyle.TLA = NO -->
-<!-- vale HouseStyle.ListStart = NO -->
-<!-- markdownlint-disable MD032 -->
+        <!-- markdownlint-disable MD032 -->
 <p>As an Ubuntu user, I find myself typing <code>apt install ...</code> frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests. <!-- markdownlint-enable MD032 --></p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>This tutorial assumes you are using Ubuntu, and that the following packages are installed:</p>
@@ -770,8 +768,8 @@ BKaAtOSl2Jcb4eA=
 <h2 id="appendix-a-a-complete-example-using-earthly">Appendix A: A Complete Example using Earthly</h2>
 <p>A complete example has been created under <a href="https://github.com/earthly/example-apt-repo/blob/main/Earthfile">github.com/earthly/example-apt-repo/Earthfile</a>.</p>
 <p>This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">earthly</span> <span class="at">-P</span> github.com/earthly/example-apt-repo+test</span></code></pre></div>
-<p>Alternatively, you can clone the repo and run <code>+test</code> directly. <!-- vale HouseStyle.TLA = YES --> <!-- vale HouseStyle.ListStart = YES --></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">earthly</span> <span class="at">-P</span> github.com/earthly/example-apt-repo:main+test</span></code></pre></div>
+<p>Alternatively, you can clone the repo and run <code>+test</code> directly.</p>
 
         
       </section>
@@ -797,7 +795,7 @@ BKaAtOSl2Jcb4eA=
     
     
       <div class="author__bio" itemprop="description">
-        <p>Alex enjoys writting code, growing vegetables, and the great outdoors.</p>
+        <p>Alex enjoys writing code, growing vegetables, and the great outdoors.</p>
 
       </div>
     
@@ -935,13 +933,13 @@ BKaAtOSl2Jcb4eA=
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -959,7 +957,7 @@ BKaAtOSl2Jcb4eA=
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -967,7 +965,10 @@ BKaAtOSl2Jcb4eA=
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -987,13 +988,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -1011,7 +1012,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -1019,8 +1020,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 

@@ -12,19 +12,19 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.0 Released",
-        "excerpt":"Changes: Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. Rename build.earth to Earthfile GitLab support Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
+        "excerpt":"Changes: global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. rename build.earth to Earthfile GitLab support ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.1 Released",
-        "excerpt":"Changes:   Fixes handling of sockets between different targets (#115) Fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   fixes handling of sockets between different targets (#115) fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-1/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.2 Released",
-        "excerpt":"Changes:   Fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -36,13 +36,13 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.2 Released",
-        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, for example FROM DOCKERFILE +gen-dockerfile/ #219 Support...","categories": ["News"],
+        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, e.g. FROM DOCKERFILE +gen-dockerfile/ #219 Support for COPY...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.3 Released",
-        "excerpt":"Changes   New earth bootstrap command can be run to set up bash and zsh shell completion  Release Page  ","categories": ["News"],
+        "excerpt":"Changes   new earth bootstrap command can be run to setup bash and zsh shell completion  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-3-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -54,7 +54,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Earthly 0.3.6 Released",
-        "excerpt":"Release Notes: Introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) Pass along user terminal environment variable to interactive debugger (fixes #293) Support for in-line comments (fixes #288) Fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
+        "excerpt":"Release Notes: introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) pass along user terminal environment variable to interactive debugger (fixes #293) support for in-line comments (fixes #288) fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
         "tags": [],
         "url": "/blog/earthly-0-3-6-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -321,5 +321,35 @@ var store = [{
         "excerpt":"Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that. I’m going to explain various git branching strategies with a story. We will start with something...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/git-branching/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "The 15-Minute Project",
+        "excerpt":"Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning. What Is City Planning? According to Wikipedia, city planning is “…a technical and political...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/15-minute-project/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating and hosting your own rpm packages and yum repo",
+        "excerpt":"This tutorial is a follow up to creating and hosting your own deb and apt repo, but is written for creating rpm packages for redhat-based Linux distributions such as Fedora, CentOS, and Rocky Linux. Prerequisites This tutorial assumes you are using CentOS 8, and that the following packages are installed:...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read out loud Write 5 or more titles and pick the best on Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply)...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/checklist/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to Install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libraries: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

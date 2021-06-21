@@ -393,7 +393,7 @@ github.com/myorg/lib1
 <p><img src="/blog/assets/images/monorepo-vs-polyrepo/y8TMoCzw87E.jpg" alt="Container Ship At Sea" /><br />
 </p>
 <p>One of the key deciding factors of the source code layout is the structure of the releases. Depending on the deliverable type (library, app), the release might have multiple forms: an artifact, a language-specific package, a Docker image, an installer, etc.</p>
-<p>For polyrepo layouts, you typically have one deliverable per repository. Whether that’s a repository for microservice (for example a Docker image) or a library to perform some reusable functionality (like an artifact), you typically only have one of these. This allows for each repository to have its own release cycle and to manage its own tags. This is especially great when different projects are managed by different teams, each with their own distinct style or release requirements.</p>
+<p>For polyrepo layouts, you typically have one deliverable per repository. Whether that’s a repository for microservice (e.g. deliverable: Docker image) or a library to perform some reusable functionality (e.g. deliverable: artifact), you typically only have one of these. This allows for each repository to have its own release cycle and to manage its own tags. This is especially great when different projects are managed by different teams, each with their own distinct style or release requirements.</p>
 <p>In monorepo layouts, a typical tendency is to release everything at the same time. This is usually a mistake. It is not mandatory for monorepo setups to use this tactic, but it is an especially attractive one due to its apparent simplicity. In such a situation, the entire repository is tagged once for everything and pushed to production at the same time. This type of monolithic releasing can be very problematic for release agility and for maintaining a low mean-time-to-resolution (MTTR), in case of failures. In modern cloud development, releases need to happen weekly, daily or even on every merge to main. If something critical is broken, you also want to be able to ship fixes in less than an hour - maybe even less than 10 minutes. If you have a critical fix to push to production, but some unrelated test is failing in a different project, then a monolithic release cycle is getting in the way. In larger teams, monolithic releases are virtually impossible due to the ever-changing state of the build across projects. (The only thing a big bang guarantees is a big boom!)</p>
 <p>An alternative approach to monolithic releases is for each project in a monorepo to have its own release cycle, despite coexisting in the same repository. This is key to allowing releases in monorepos to work properly. This might mean that you have independent tags for each project (e.g. <code>projecta-v1.2.3</code>, <code>projectb-v4.5.6</code>, <code>projectc-v7.8.9</code>) or no tags at all - just use <code>main</code> branch commit hashes - or a global auto-incrementing tag, that increases the version number on each commit (really, this last option is similar to using <code>main</code> commit hashes, except that more human-readable tags are used instead). In this case, each project executes a release based on the tags on independent schedules. This strategy relies on every merge to <code>main</code> to be considered as “ready for production”, however, this is generally a good practice anyway.</p>
 <p>The takeaway here is that for monorepos, you should not think that atomic PRs mean atomic releases. That is unrealistic in typical production environments. At the development level, yes you get to group together cross-cutting changes and merge as an atomic unit. At the release and production level, however, you still need another layer of indirection for allowing services to be updated independently. A very common such layer is the Docker image repository (or in more traditional environments, a package repository). If each <code>main</code> branch build produces tagged Docker images, then these images can be pushed to production separately, according to independent schedules.</p>
@@ -631,13 +631,13 @@ github.com/myorg/lib1
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/git-branching/header-600-c16fe48a0.webp 600w, /blog/generated/assets/images/git-branching/header-800-c16fe48a0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/git-branching/header-600-d1f1669c4.jpg 600w, /blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/git-branching/header-800-d1f1669c4.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/git-branching/" rel="permalink">Git Branching Strategies and The Greek Revival
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -655,7 +655,7 @@ github.com/myorg/lib1
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          11 minute read
+          4 minute read
         
       </span>
     
@@ -663,7 +663,10 @@ github.com/myorg/lib1
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or remove...</p>
+
+This post is in the future, and won’t show up in the published site
+
+</p>
   </article>
 </div>
 
@@ -683,13 +686,13 @@ Some modern development practices are easiest to understand from a historical pe
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-e219bfa7f.webp 600w, /blog/generated/assets/images/incident-management-metrics/header-800-e219bfa7f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/incident-management-metrics/header-600-4dcf24754.jpg 600w, /blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/incident-management-metrics/header-800-4dcf24754.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/incident-management-metrics/" rel="permalink">Incident Management Metrics and Key Performance Indicators
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -707,7 +710,7 @@ Some modern development practices are easiest to understand from a historical pe
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          1 minute read
         
       </span>
     
@@ -715,8 +718,9 @@ Some modern development practices are easiest to understand from a historical pe
 
 
     <p class="archive__item-excerpt" itemprop="description">
+You can embedded graphs into the markdown like this:
 
-In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connec...</p>
+</p>
   </article>
 </div>
 
