@@ -322,4 +322,34 @@ var store = [{
         "tags": [],
         "url": "/blog/git-branching/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "The 15-Minute Project",
+        "excerpt":"Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning. What Is City Planning? According to Wikipedia, city planning is “…a technical and political...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/15-minute-project/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Linting Markdown And Documentation",
+        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["+","Tutorials"],
+        "tags": [],
+        "url": "/blog/markdown-lint/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read out loud Write 5 or more titles and pick the best on Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply)...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/checklist/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to Install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libraries: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/example-plot/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
