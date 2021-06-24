@@ -1,4 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-23T14:56:07-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">The 15-Minute Project</title><link href="https://earthly.dev/blog/15-minute-project/" rel="alternate" type="text/html" title="The 15-Minute Project" /><published>2021-06-22T00:00:00-04:00</published><updated>2021-06-22T00:00:00-04:00</updated><id>https://earthly.dev/blog/15-minute-project</id><content type="html" xml:base="https://earthly.dev/blog/15-minute-project/">&lt;p&gt;Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-24T14:37:59-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Creating and hosting your own rpm packages and yum repo</title><link href="https://earthly.dev/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/" rel="alternate" type="text/html" title="Creating and hosting your own rpm packages and yum repo" /><published>2021-06-24T00:00:00-04:00</published><updated>2021-06-24T00:00:00-04:00</updated><id>https://earthly.dev/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo</id><content type="html" xml:base="https://earthly.dev/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/">&lt;div class=&quot;narrow-code&quot;&gt;
+&lt;p&gt;This tutorial is a follow up to &lt;a href=&quot;/blog/creating-and-hosting-your-own-deb-and-apt-repo&quot;&gt;creating and hosting your own deb and apt repo&lt;/a&gt;, but is written for creating rpm packages for redhat-based Linux distributions such as Fedora, CentOS, and Rocky Linux.&lt;/p&gt;
+&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;This tutorial assumes you are using CentOS 8, and that the following packages are installed:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; yum install &lt;span class=&quot;at&quot;&gt;-y&lt;/span&gt; createrepo rpm-build rpm-sign wget gcc python3 yum-utils&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;If you don’t have a CentOS machine, you can still follow along using docker, just run&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;docker&lt;/span&gt; run &lt;span class=&quot;at&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--rm&lt;/span&gt; centos:8 /bin/bash&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;to create a temporary CentOS environment to follow along with.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;step-0-creating-a-simple-hello-world-program&quot;&gt;Step 0: Creating a Simple Hello World Program&lt;/h2&gt;
+&lt;p&gt;We will be using the same basic hello world program that was used in the &lt;a href=&quot;/blog/creating-and-hosting-your-own-deb-and-apt-repo&quot;&gt;previous tutorial&lt;/a&gt;. In this tutorial, we will assume you have a binary located under &lt;code&gt;~/example/hello-world-program/hello-world&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;To quickly create a hello world binary using C, run:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/hello-world-program&lt;/span&gt;
+&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;int main() {&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-4&quot;&gt;&lt;a href=&quot;#cb3-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    printf(&amp;quot;Hello World!\\n&amp;quot;);&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-5&quot;&gt;&lt;a href=&quot;#cb3-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    return 0;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb3-6&quot;&gt;&lt;a href=&quot;#cb3-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;}&amp;#39;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;gcc&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-o&lt;/span&gt; ~/example/hello-world-program/hello-world &lt;span class=&quot;at&quot;&gt;-x&lt;/span&gt; c &lt;span class=&quot;at&quot;&gt;-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This tutorial will only cover distributing binaries in rpm packages and will not cover creating source-based &lt;code&gt;rpm&lt;/code&gt;s. There’s other &lt;a href=&quot;https://www.thegeekstuff.com/2015/02/rpm-build-package-example/&quot;&gt;tutorials&lt;/a&gt; that cover creating spec files – the main goal of this tutorial is to document how to package a pre-compiled binary, and show how to generate your own self-hosted yum repository.&lt;/p&gt;
+&lt;h2 id=&quot;step-1-creating-a-rpm-package&quot;&gt;Step 1: Creating a &lt;code&gt;rpm&lt;/code&gt; Package&lt;/h2&gt;
+&lt;p&gt;Redhat-based Linux distributions use &lt;code&gt;.rpm&lt;/code&gt; packages to package and distribute programs.&lt;/p&gt;
+&lt;p&gt;let’s start by making a directory to work out of:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb4&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb4-1&quot;&gt;&lt;a href=&quot;#cb4-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/rpm-work-dir&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Inside this directory, we will create a &lt;code&gt;spec&lt;/code&gt; file which contains package metadata such as the name, and summary of the package:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/rpm-work-dir&lt;/span&gt;
+&lt;span id=&quot;cb5-2&quot;&gt;&lt;a href=&quot;#cb5-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Summary: A simple program that prints hello&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-3&quot;&gt;&lt;a href=&quot;#cb5-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Name: hello-world&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-4&quot;&gt;&lt;a href=&quot;#cb5-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Version: 1.0.0&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-5&quot;&gt;&lt;a href=&quot;#cb5-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Release: 1&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-6&quot;&gt;&lt;a href=&quot;#cb5-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;URL: https://example.com&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-7&quot;&gt;&lt;a href=&quot;#cb5-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Group: System&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-8&quot;&gt;&lt;a href=&quot;#cb5-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;License: example # https://fedoraproject.org/wiki/Licensing:Main?rd=Licensing#Software_License_List&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-9&quot;&gt;&lt;a href=&quot;#cb5-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Packager: Example Team&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-10&quot;&gt;&lt;a href=&quot;#cb5-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Requires: bash&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-11&quot;&gt;&lt;a href=&quot;#cb5-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;BuildRoot: ~/example/rpm-work-dir # this should be replaced with your working directory where the spec is saved&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-12&quot;&gt;&lt;a href=&quot;#cb5-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-13&quot;&gt;&lt;a href=&quot;#cb5-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%description&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-14&quot;&gt;&lt;a href=&quot;#cb5-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;An example package containing a hello-world binary&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-15&quot;&gt;&lt;a href=&quot;#cb5-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-16&quot;&gt;&lt;a href=&quot;#cb5-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%install&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-17&quot;&gt;&lt;a href=&quot;#cb5-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;mkdir -p %{buildroot}/usr/bin/&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-18&quot;&gt;&lt;a href=&quot;#cb5-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;cp ~/example/hello-world-program/hello-world %{buildroot}/usr/bin/hello-world&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-19&quot;&gt;&lt;a href=&quot;#cb5-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-20&quot;&gt;&lt;a href=&quot;#cb5-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%files&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-21&quot;&gt;&lt;a href=&quot;#cb5-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;/usr/bin/hello-world&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-22&quot;&gt;&lt;a href=&quot;#cb5-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-23&quot;&gt;&lt;a href=&quot;#cb5-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%changelog&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-24&quot;&gt;&lt;a href=&quot;#cb5-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;* Thu Jun 17 2021 alex &amp;lt;alex@earthly.dev&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-25&quot;&gt;&lt;a href=&quot;#cb5-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;- initial example&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb5-26&quot;&gt;&lt;a href=&quot;#cb5-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; hello-world.spec&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, we will use &lt;code&gt;rpmbuild&lt;/code&gt; to produce the &lt;code&gt;rpm&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;rpmbuild&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--target&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;x86_64&amp;quot;&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-bb&lt;/span&gt; hello-world.spec&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This will output an rpm under &lt;code&gt;/root/rpmbuild/RPMS/x86_64/hello-world-1.0.0-1.x86_64.rpm&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can inspect the contents with:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;rpm&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-qpivl&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--changelog&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--nomanifest&lt;/span&gt; /root/rpmbuild/RPMS/x86_64/hello-world-1.0.0-1.x86_64.rpm&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;which will output something similar to:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Name        : hello-world
+Version     : 1.0.0
+Release     : 1
+Architecture: x86_64
+Install Date: (not installed)
+Group       : System
+Size        : 10832
+License     : example # https://fedoraproject.org/wiki/Licensing:Main?rd=Licensing#Software_License_List
+Signature   : (none)
+Source RPM  : hello-world-1.0.0-1.src.rpm
+Build Date  : Fri 18 Jun 2021 09:21:39 PM UTC
+Build Host  : 83f4a9d4e295
+Relocations : (not relocatable)
+Packager    : Example Team
+URL         : https://example.com
+Summary     : A simple program that prints hello
+Description :
+An example package containing a hello-world binary
+* Thu Jun 17 2021 alex &amp;lt;alex@earthly.dev&amp;gt;
+- initial example
+
+-rwxr-xr-x    1 root    root                    10832 Jun 18 21:21 /usr/bin/hello-world
+drwxr-xr-x    2 root    root                        0 Jun 18 21:21 /usr/lib/.build-id
+drwxr-xr-x    2 root    root                        0 Jun 18 21:21 /usr/lib/.build-id/b9
+lrwxrwxrwx    1 root    root                       31 Jun 18 21:21 /usr/lib/.build-id/b9/fea765874fcd0863841bc8f5d1aa1d65396751 -&amp;gt; ../../../../usr/bin/hello-world&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;You can also inspect the content via &lt;code&gt;less /root/rpmbuild/RPMS/x86_64/hello-world-1.0.0-1.x86_64.rpm&lt;/code&gt;. Under the hood &lt;code&gt;less&lt;/code&gt; will invoke &lt;code&gt;/usr/bin/lesspipe.sh&lt;/code&gt;. You can perform a global regular expression print (grep) against the script to find the same command being used:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;grep&lt;/span&gt; rpm /usr/bin/lesspipe.sh&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This should print the line where the same &lt;code&gt;rpm -qpivl ...&lt;/code&gt; command is being invoked:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;*.rpm&lt;/span&gt;&lt;span class=&quot;er&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;rpm&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-qpivl&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--changelog&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--nomanifest&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;kw&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;bu&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;$?&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;;;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Next, we can install our &lt;code&gt;rpm&lt;/code&gt; via:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;yum install -y /root/rpmbuild/RPMS/x86_64/hello-world-1.0.0-1.x86_64.rpm&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then finally, we can test it was installed by running&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;hello-world&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;which should print&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Hello World!&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;step-2-creating-a-yum-repository&quot;&gt;Step 2: Creating a &lt;code&gt;yum&lt;/code&gt; Repository&lt;/h2&gt;
+&lt;p&gt;Next we’re going to create a yum repository which can be uploaded to a server to make it easier to share your package with other users.&lt;/p&gt;
+&lt;p&gt;Our first step will be to import a pgp key which we will be using to sign our rpm packages and repo, to allow our users to verify the packages have not been tampered. Creating pgp keys was covered in our &lt;a href=&quot;/blog/creating-and-hosting-your-own-deb-and-apt-repo&quot;&gt;previous tutorial&lt;/a&gt;; in particular, we will assume you have public and private keys stored under &lt;code&gt;~/example/pgp-key.public&lt;/code&gt; and &lt;code&gt;~/example/pgp-key.private&lt;/code&gt; respectively.&lt;/p&gt;
+&lt;p&gt;First let’s import our private key, so we have access to it for signing the repo:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--import&lt;/span&gt; ~/example/pgp-key.private&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This should output something similar to:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;gpg: directory &amp;#39;/root/.gnupg&amp;#39; created
+gpg: keybox &amp;#39;/root/.gnupg/pubring.kbx&amp;#39; created
+gpg: /root/.gnupg/trustdb.gpg: trustdb created
+gpg: key E1933532750E9EEF: public key &amp;quot;example &amp;lt;example@example.com&amp;gt;&amp;quot; imported
+gpg: key E1933532750E9EEF: secret key imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+gpg:       secret keys read: 1
+gpg:   secret keys imported: 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We will then configure the rpm tools to use this key for signing our packages and repository:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb16&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb16-1&quot;&gt;&lt;a href=&quot;#cb16-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;%_signature gpg&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb16-2&quot;&gt;&lt;a href=&quot;#cb16-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%_gpg_name E1933532750E9EEF&amp;quot;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; /root/.rpmmacros&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;Don’t forget to replace &lt;code&gt;E1933532750E9EEF&lt;/code&gt; with your key’s ID.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Let’s create a directory for our packages:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb17&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb17-1&quot;&gt;&lt;a href=&quot;#cb17-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/packages/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then copy our rpm(s) into this directory:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cp&lt;/span&gt; /root/rpmbuild/RPMS/x86_64/hello-world-1.0.0-1.x86_64.rpm ~/example/packages/.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Since we didn’t configure a key in step 1, the rpm we created was not signed. We can add a signature to it by running:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb19&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb19-1&quot;&gt;&lt;a href=&quot;#cb19-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;rpm&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--addsign&lt;/span&gt; ~/example/packages/&lt;span class=&quot;pp&quot;&gt;*&lt;/span&gt;.rpm&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;If you forgot to create &lt;code&gt;/root/.rpmmacros&lt;/code&gt;, or forgot to update the key ID, you might see an error such as &lt;code&gt;You must set &quot;%_gpg_name&quot; in your macro file&lt;/code&gt; or &lt;code&gt;gpg: signing failed: No secret key&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;Once all the packages are signed, we will use &lt;code&gt;createrepo&lt;/code&gt; to create the repository:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb20&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb20-1&quot;&gt;&lt;a href=&quot;#cb20-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/packages/&lt;/span&gt;
+&lt;span id=&quot;cb20-2&quot;&gt;&lt;a href=&quot;#cb20-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;createrepo&lt;/span&gt; .&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, we will sign the repodata metadata by running:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb21&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb21-1&quot;&gt;&lt;a href=&quot;#cb21-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--detach-sign&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--armor&lt;/span&gt; repodata/repomd.xml&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;step-3-testing-the-repository&quot;&gt;Step 3: Testing the Repository&lt;/h2&gt;
+&lt;p&gt;We are going to use python to temporarily create a web server to serve the contents of our repository:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb22&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb22-1&quot;&gt;&lt;a href=&quot;#cb22-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example&lt;/span&gt;
+&lt;span id=&quot;cb22-2&quot;&gt;&lt;a href=&quot;#cb22-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;python3&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-m&lt;/span&gt; http.server&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We will create a config for this server:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb23&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb23-1&quot;&gt;&lt;a href=&quot;#cb23-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;[example-repo]&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb23-2&quot;&gt;&lt;a href=&quot;#cb23-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;name=Example Repo&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb23-3&quot;&gt;&lt;a href=&quot;#cb23-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;baseurl=http://127.0.0.1:8000/packages&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb23-4&quot;&gt;&lt;a href=&quot;#cb23-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;enabled=1&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb23-5&quot;&gt;&lt;a href=&quot;#cb23-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;gpgcheck=1&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb23-6&quot;&gt;&lt;a href=&quot;#cb23-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;gpgkey=http://127.0.0.1:8000/pgp-key.public&amp;quot;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/example.repo&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next let’s configure our machine to use this new repository:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb24&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb24-1&quot;&gt;&lt;a href=&quot;#cb24-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;yum-config-manager&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--add-repo&lt;/span&gt; http://127.0.0.1:8000/example.repo&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then we can install our package from the self-hosted repository with:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb25&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb25-1&quot;&gt;&lt;a href=&quot;#cb25-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;yum&lt;/span&gt; install &lt;span class=&quot;at&quot;&gt;-y&lt;/span&gt; hello-world&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;notice--info&quot;&gt;
+&lt;p&gt;In this example, we were hosting the entire contents of &lt;code&gt;~/example&lt;/code&gt;, which may include your private key if you followed this tutorial completely and created it under &lt;code&gt;~/example/pgp-key.private&lt;/code&gt;. In practice, you would never serve a directory containing your private key.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;appendix-a-a-complete-example-using-earthly&quot;&gt;Appendix A: A Complete Example using Earthly&lt;/h2&gt;
+&lt;p&gt;A complete example has been created under &lt;a href=&quot;https://github.com/earthly/example-yum-repo/blob/main/Earthfile&quot;&gt;github.com/earthly/example-yum-repo/Earthfile&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;earthly&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-P&lt;/span&gt; github.com/earthly/example-yum-repo:main+test&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Alternatively, you can clone the repo and run &lt;code&gt;+test&lt;/code&gt; directly.&lt;/p&gt;
+&lt;/div&gt;</content><author><name>Alex Couture-Beil</name></author><category term="Tutorials" /><summary type="html"></summary></entry><entry><title type="html">The 15-Minute Project</title><link href="https://earthly.dev/blog/15-minute-project/" rel="alternate" type="text/html" title="The 15-Minute Project" /><published>2021-06-22T00:00:00-04:00</published><updated>2021-06-22T00:00:00-04:00</updated><id>https://earthly.dev/blog/15-minute-project</id><content type="html" xml:base="https://earthly.dev/blog/15-minute-project/">&lt;p&gt;Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning.&lt;/p&gt;
 &lt;h2 id=&quot;what-is-city-planning&quot;&gt;What Is City Planning?&lt;/h2&gt;
 &lt;p&gt;According to Wikipedia, city planning is &lt;a href=&quot;https://en.wikipedia.org/wiki/Urban_planning&quot;&gt;“…a technical and political process that is focused on the development and design of land use and the built environment…”&lt;/a&gt;. It includes basically everything, from air, and water to transportation and accessibility. Seems like a fairly broad and ill-specified discipline!&lt;/p&gt;
 &lt;p&gt;In a typical American city or town, there is a city planning board that controls development and design. They meet regularly, and in public at their city hall. During 2020, many of these meetings became much more accessible and easy to observe through video calls. It was very interesting to watch how this big, broad concept of “city planning” was boiled down to actual, concrete actions that affected my day-to-day life.&lt;/p&gt;
@@ -1509,122 +1661,4 @@ my_jruby.eval_script(ruby_code)&lt;/code&gt;&lt;/pre&gt;
 &lt;li id=&quot;fn1&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;The work behind JRuby, TruffleRuby, and especially GraalVM is terrific. The TruffleRuby benchmark numbers for CPU heavy work continue to improve year upon year. I’m not trying to dunk on the great work done, merely trying to investigate the numbers I am seeing.&lt;a href=&quot;#fnref1&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li id=&quot;fn2&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;I’d especially love to hear how to get a flame graph out of TruffleRuby. I didn’t get anywhere getting &lt;a href=&quot;https://github.com/jvm-profiling-tools/async-profiler&quot;&gt;async-profiler&lt;/a&gt; to attach.&lt;a href=&quot;#fnref2&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorial" /><summary type="html">Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.</summary></entry><entry><title type="html">Protocol Buffers Best Practices for Backward and Forward Compatibility</title><link href="https://earthly.dev/blog/backward-and-forward-compatibility/" rel="alternate" type="text/html" title="Protocol Buffers Best Practices for Backward and Forward Compatibility" /><published>2021-05-21T00:00:00-04:00</published><updated>2021-05-21T00:00:00-04:00</updated><id>https://earthly.dev/blog/backward-and-forward-compatibility</id><content type="html" xml:base="https://earthly.dev/blog/backward-and-forward-compatibility/">&lt;p&gt;&lt;a href=&quot;https://developers.google.com/protocol-buffers&quot; title=&quot;Protocol Buffers Documentation&quot;&gt;Protocol Buffers&lt;/a&gt; serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.&lt;/p&gt;
-&lt;p&gt;Protocol Buffers are compiled to a series of strictly arranged bytes, so they can be transmitted very efficiently. After reconstitution, they can also be understood by a wide range of languages. Let’s examine protobufs first at a high level, then do a deep dive into best practices for working with them to see if they’re a fit for your expanding data workflow.&lt;/p&gt;
-&lt;h2 id=&quot;what-exactly-are-protocol-buffers&quot;&gt;What Exactly Are Protocol Buffers?&lt;/h2&gt;
-&lt;p&gt;Protocol Buffers are designed with the concept of extensibility at their core. You can add fields without a care, though you do have to be attentive when modifying or removing fields. This article will go through how you can manage your messages to maintain forward and backward compatibility.&lt;/p&gt;
-&lt;p&gt;Protocol Buffers are most useful when regularly sharing small pieces of data (generally under 1 MB) between two computers on a regular basis. It’s designed for extracting and sharing that data, but it’s also very effective at storing data that will have to be shared between systems using different languages or controlled by different organizations.&lt;/p&gt;
-&lt;p&gt;Protocol Buffers are also great at persisting blobs of data, particularly in languages like C++ where you can use protobuf as a data struct. If you’re communicating with lots of computers a little at a time, Protocol Buffers will save you network bandwidth.&lt;/p&gt;
-&lt;h3 id=&quot;understanding-backward-and-forward-compatibility&quot;&gt;Understanding Backward and Forward Compatibility&lt;/h3&gt;
-&lt;p&gt;Both backward and forward compatibility is important for any project you expect will run for a long time. There are at least two parts to any protobuf system, the sender and the receiver. If either one can be upgraded to a new message format, and the system functionality continues uninterrupted then the message protocol is both forward and backward compatible.&lt;/p&gt;
-&lt;section id=&quot;backward-compatibility&quot; class=&quot;notice notice--big&quot;&gt;
-&lt;h4&gt;Backward Compatibility&lt;/h4&gt;
-&lt;p&gt;If a client that was updated to a new message type but is still able to understand the previous message type then the message change is backward compatible. Backward compatibility is being able to understand messages from a previous version.&lt;/p&gt;
-&lt;/section&gt;
-&lt;section id=&quot;forward-compatibility&quot; class=&quot;notice notice--big&quot;&gt;
-&lt;h4&gt;Forward Compatibility&lt;/h4&gt;
-&lt;p&gt;If a message is changed and a non-updated client can still understand and process the message then the message change is forward compatible. Forward compatibility is being able to understand messages from a future version.&lt;/p&gt;
-&lt;/section&gt;
-&lt;p&gt;With Protocol buffers, if a sender is upgraded, the receiver can still understand messages if it is forward compatible. It can accept input crafted by later versions of protobuf. The sender is backward compatible because it’s creating output that can be consumed by earlier versions. So long as you’re careful about when and how you change and remove fields, your protobuf will be forward and backward compatible.&lt;/p&gt;
-&lt;h3 id=&quot;getting-started-with-buffers&quot;&gt;Getting Started With Buffers&lt;/h3&gt;
-&lt;p&gt;The first step to making a Protocol Buffer is to define data structures in a &lt;code&gt;.proto&lt;/code&gt; file. For each data structure you want to create, you’ll make a &lt;code&gt;message&lt;/code&gt; that contains a name and data type for each field it contains.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode protobuf&quot;&gt;&lt;code class=&quot;sourceCode protobuf&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;syntax = &lt;span class=&quot;st&quot;&gt;&amp;quot;proto3&amp;quot;&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;package&lt;/span&gt; tutorial;&lt;/span&gt;
-&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;message&lt;/span&gt; Sample{&lt;/span&gt;
-&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; content = &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;int32&lt;/span&gt; id = &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; situation = &lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;These declarations in the &lt;code&gt;.proto&lt;/code&gt; file are shared with both the message sender and receiver to construct immutable getters and setters that allow data to be read into and accessed from binary using a &lt;a href=&quot;/blog/compiling-containers-dockerfiles-llvm-and-buildkit&quot;&gt;compiler&lt;/a&gt;, then accessed in a variety of programming languages.&lt;/p&gt;
-&lt;h2 id=&quot;tips-for-maintaining-compatibility&quot;&gt;Tips for Maintaining Compatibility&lt;/h2&gt;
-&lt;p&gt;Compatibility starts with defining the syntax and version of protobuf the sender and receiver are using. The &lt;code&gt;package&lt;/code&gt; makes sure your code is namespaced to avoid any collisions. It is possible to have a sender using &lt;code&gt;proto3&lt;/code&gt; while a receiver uses &lt;code&gt;proto2&lt;/code&gt; (or any other combination) as long as you’re careful about what fields you include. Both the sender and receiver have strict definitions of existing fields—you can make changes as long as you don’t disturb those definitions.&lt;/p&gt;
-&lt;h3 id=&quot;create-numerical-order&quot;&gt;Create (Numerical) Order&lt;/h3&gt;
-&lt;p&gt;From a compatibility perspective, unique field numbers are the most vital piece of the message declaration. These numbers (the &lt;code&gt;= 1&lt;/code&gt; after the name declaration) are used as identifiers for fields after they are converted to binary. When the message is decoded, a crucial step for compatibility is allowing the parser to skip fields it doesn’t recognize so it’s possible to add new fields without breaking programs that weren’t designed to look for them.&lt;/p&gt;
-&lt;p&gt;The unique field number is combined with a wire type corresponding to the data type of the field. This identifier and type combination form the key of every field in a message. These fields combined give the receiver the ability to uniquely identify fields and determine the length of the field, so it knows when to start looking for the next field.&lt;/p&gt;
-&lt;p&gt;This means once a unique field number or length is set, it cannot be changed. Any program consuming or serializing protobuf data needs the number to be fixed forever, or both the sender and all the receivers must be updated.&lt;/p&gt;
-&lt;p&gt;Encoding the numbers 1 through 15 takes one byte to encode, 16 through 2047 take two bytes, and so on. In situations where the size of messages is important, the most frequently exchanged data should have the smallest field numbers. The language is designed to effectively handle new fields, but because you can’t change the identifier of fields, it may be wise to leave yourself a couple gaps in these high-efficiency identifier ranges in case a very common field pops up in the future.&lt;/p&gt;
-&lt;p&gt;One of the best ways to prevent problems with overlapping or misunderstood field numbers is to use the &lt;code&gt;reserved&lt;/code&gt; keyword. If you wanted to remove the &lt;code&gt;type&lt;/code&gt; field in your &lt;code&gt;Sample&lt;/code&gt; message, any applications running the protobuf version that contained that field would break if the identifier was removed and then reused for some other field.&lt;/p&gt;
-&lt;p&gt;To get around these compatibility issues, you can reserve identifiers. You can also reserve ranges of identifiers; here you’re reserving a range and the removed value of &lt;code&gt;1&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode protobuf&quot;&gt;&lt;code class=&quot;sourceCode protobuf&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;message&lt;/span&gt; Sample{&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  reserved &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;dv&quot;&gt;5&lt;/span&gt; to &lt;span class=&quot;dv&quot;&gt;8&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;int32&lt;/span&gt; id = &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; text = &lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id=&quot;beware-of-required-fields&quot;&gt;Beware of Required Fields&lt;/h3&gt;
-&lt;p&gt;Another tricky part of compatibility is the required modifier preceding the data type. In the second version of protobuf, there were three modifiers to choose from: &lt;code&gt;optional&lt;/code&gt;, &lt;code&gt;repeated&lt;/code&gt;, and &lt;code&gt;required&lt;/code&gt;. The &lt;code&gt;required&lt;/code&gt; option was removed in &lt;code&gt;protobuf3&lt;/code&gt;, because it requires careful planning to ensure compatibility. If a required field is missing from a message, readers will consider the message incomplete and return an error.&lt;/p&gt;
-&lt;p&gt;Instead, consider writing custom validation or use default values within your application to handle required fields. In &lt;code&gt;protobuf2&lt;/code&gt;, you were able to set &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto#optional&quot; title=&quot;Default fields in protobuf2&quot;&gt;default values&lt;/a&gt;, in &lt;code&gt;protobuf3&lt;/code&gt;, every field type has a &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#default&quot; title=&quot;Default fields in protobuf3&quot;&gt;fixed default value&lt;/a&gt;.&lt;/p&gt;
-&lt;h3 id=&quot;avoid-groups&quot;&gt;Avoid Groups&lt;/h3&gt;
-&lt;p&gt;Another feature of &lt;code&gt;protobuf2&lt;/code&gt; that should be avoided to ensure compatibility is Groups. These enable nesting information inside method definitions. A Group combines a nested message type and a field into a single declaration using the &lt;code&gt;group&lt;/code&gt; keyword.&lt;/p&gt;
-&lt;p&gt;The recommended way to nest messages is to nest them, then call them:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode protobuf&quot;&gt;&lt;code class=&quot;sourceCode protobuf&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;message&lt;/span&gt; SampleContainer {&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;message&lt;/span&gt; Sample{&lt;/span&gt;
-&lt;span id=&quot;cb3-3&quot;&gt;&lt;a href=&quot;#cb3-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;optional&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;int32&lt;/span&gt; id = &lt;span class=&quot;dv&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb3-4&quot;&gt;&lt;a href=&quot;#cb3-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;  &lt;span class=&quot;kw&quot;&gt;optional&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;string&lt;/span&gt; text = &lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb3-5&quot;&gt;&lt;a href=&quot;#cb3-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;
-&lt;span id=&quot;cb3-6&quot;&gt;&lt;a href=&quot;#cb3-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;   &lt;span class=&quot;kw&quot;&gt;repeated&lt;/span&gt; Sample samples = &lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;
-&lt;span id=&quot;cb3-7&quot;&gt;&lt;a href=&quot;#cb3-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The difference between nested message types and Groups is the wire format they use.&lt;/p&gt;
-&lt;h3 id=&quot;adding-new-fields&quot;&gt;Adding New Fields&lt;/h3&gt;
-&lt;p&gt;New fields can be safely added in any version of protobuf, but there are still compatibility considerations to be aware of. Pay attention to the depreciation of the &lt;code&gt;required&lt;/code&gt; fields and transition from user-specified defaults to protobuf-specified defaults. The application receiving protobuf data has to be responsible for handling the &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#default&quot;&gt;default values&lt;/a&gt; for any new fields.&lt;/p&gt;
-&lt;p&gt;You generally can freely change the name and order of fields. However, when you’re producing JSON serialized data with protobuf, the field names are also reserved by the receiver. This requires users to reserve &lt;strong&gt;field identifiers and names&lt;/strong&gt; when removing or deprecating fields.&lt;/p&gt;
-&lt;h3 id=&quot;keep-an-eye-on-compatibility-when-changing-field-types&quot;&gt;Keep an Eye on Compatibility When Changing Field Types&lt;/h3&gt;
-&lt;p&gt;Because field types are also used to determine when the receiver ends a field, changing field types across versions without carefully checking for compatibility can also cause problems. There are many specific &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#updating&quot; title=&quot;Rule for updating fields&quot;&gt;rules&lt;/a&gt; about how to change field types, but a good standard is to avoid ever changing the wire type of any field. If you’re in a situation where you need to change a field type, the best path forward is to deprecate the existing field and put the new information into a new field.&lt;/p&gt;
-&lt;h3 id=&quot;dont-destroy-deprecate&quot;&gt;Don’t Destroy, Deprecate&lt;/h3&gt;
-&lt;p&gt;Protocol Buffer compatibility problems generally start when you need to change the length of or remove existing fields. There are a whole host of rules about how fields can &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#updating&quot; title=&quot;Protobuf3 update fields&quot;&gt;change&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Largely, maintaining backward and forward compatibility comes down to maintaining a consistent wire type. You can’t change the wire type or alter the length of fields and expect old code to properly send or receive messages—the sender’s and receiver’s understanding of the exact length of each element in the transmitted messages needs to be precise.&lt;/p&gt;
-&lt;!-- vale HouseStyle.Spelling = NO --&gt;
-&lt;table&gt;
-&lt;colgroup&gt;
-&lt;col style=&quot;width: 33%&quot; /&gt;
-&lt;col style=&quot;width: 33%&quot; /&gt;
-&lt;col style=&quot;width: 33%&quot; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr class=&quot;header&quot;&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Meaning&lt;/th&gt;
-&lt;th&gt;Used For&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;td&gt;Varint&lt;/td&gt;
-&lt;td&gt;int32, int64, uint32, uint64, sint32, sint64, bool, enum&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;64-bit&lt;/td&gt;
-&lt;td&gt;fixed64, sfixed64, double&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;Length-delimited&lt;/td&gt;
-&lt;td&gt;string, bytes, embedded messages, packed repeated fields&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;Start group&lt;/td&gt;
-&lt;td&gt;groups (deprecated)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;odd&quot;&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;End group&lt;/td&gt;
-&lt;td&gt;groups (deprecated)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr class=&quot;even&quot;&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;td&gt;32-bit&lt;/td&gt;
-&lt;td&gt;fixed32, sfixed32, float&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;!-- vale HouseStyle.Spelling = YES --&gt;
-&lt;figcaption&gt;
-Protobuf Wire Types
-&lt;/figcaption&gt;
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;The biggest problems when upgrading are mismatching required fields or a need to change field types. In the short term, adding other fields is a viable solution, but at a certain point, the marginal cost of that solution becomes more of a burden than auditing and upgrading your services.&lt;/p&gt;
-&lt;p&gt;Protocol Buffers are a relatively young technology, so changes now will have long-lasting implications. Compatibility issues do exist between versions, but they’re possible to step around if you’re careful. As always, make life simpler by planning out your data structures in advance. Once things eventually do change, the safest method for modifying fields is to add a new one and deprecate the old field.&lt;/p&gt;
-&lt;p&gt;To deprecate a field, you can change the name to something deprecated or remove it and reserve the identifier. If you really want to change a field type, and you’re able to follow the correct version of &lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/proto3#updating&quot; title=&quot;Updating messages&quot;&gt;the rules&lt;/a&gt;, remember to never change the numerical identifier for that field. Plan well, and it’ll be easy to maintain backward and forward compatibility for your Protocol Buffer deployment.&lt;/p&gt;</content><author><name>John Gramila</name></author><category term="Tutorials" /><summary type="html">Protocol Buffers serialize structured data so it can be efficiently stored or shared over a network. They were designed for internal use at Google in 2001 and released to the public under an open-source license in 2008.</summary></entry></feed>
+&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Tutorial" /><summary type="html">Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.</summary></entry></feed>

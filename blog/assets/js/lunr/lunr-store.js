@@ -328,4 +328,10 @@ var store = [{
         "tags": [],
         "url": "/blog/15-minute-project/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating and hosting your own rpm packages and yum repo",
+        "excerpt":"This tutorial is a follow up to creating and hosting your own deb and apt repo, but is written for creating rpm packages for redhat-based Linux distributions such as Fedora, CentOS, and Rocky Linux. Prerequisites This tutorial assumes you are using CentOS 8, and that the following packages are installed:...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
