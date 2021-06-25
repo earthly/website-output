@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Linting Markdown And Documentation - Earthly Blog</title>
+<meta name="description" content="Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Linting Markdown And Documentation">
+<meta property="og:url" content="https://earthly.dev/blog/markdown-lint/">
+
+
+  <meta property="og:description" content="Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/markdown-lint/header-800-845c2a2e4.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Linting Markdown And Documentation">
+  <meta name="twitter:description" content="Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/markdown-lint/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/markdown-lint/header-800-845c2a2e4.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-06-25T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/markdown-lint/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/markdown-lint/header-400-5d8f524ec.webp 400w, /blog/generated/assets/images/markdown-lint/header-600-5d8f524ec.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-5d8f524ec.webp 800w, /blog/generated/assets/images/markdown-lint/header-1000-5d8f524ec.webp 1000w, /blog/generated/assets/images/markdown-lint/header-1200-5d8f524ec.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-400-5d8f524ec.png 400w, /blog/generated/assets/images/markdown-lint/header-600-5d8f524ec.png 600w, /blog/generated/assets/images/markdown-lint/header-800-5d8f524ec.png 800w, /blog/generated/assets/images/markdown-lint/header-1000-5d8f524ec.png 1000w, /blog/generated/assets/images/markdown-lint/header-1200-5d8f524ec.png 1200w" type="image/png"><img src="/blog/generated/assets/images/markdown-lint/header-800-5d8f524ec.jpg" alt="Linting Markdown And Documentation"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Linting Markdown And Documentation">
+    <meta itemprop="description" content="Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.">
+    <meta itemprop="datePublished" content="2021-06-25T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Linting Markdown And Documentation
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-25T00:00:00-04:00">June 25, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <p>Many linting, code formatting, and static analysis tools exist for code. You can use <code>eslint</code>, <code>gofmt</code>, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.</p>
+<p>Many tools exist for finding problems in text files. You can use this list as a starting point for finding the markdown and prose linting tools that best fit your needs.</p>
+<div class="notice--success notice--big">
+<p><strong>Docs as Code</strong></p>
+<p>The movement behind testing and linting prose is known as <a href="https://www.writethedocs.org/guide/docs-as-code/">Docs as Code</a>, and the <a href="https://www.writethedocs.org/">Writing The Docs</a> website is a great place to learn more.</p>
+</div>
+<h2 id="criteria">Criteria</h2>
+<p>For Ease of skimming, I’ll rate each tool based on this criteria:</p>
+<ul>
+<li><strong>Formatting:</strong> The ability to find errors in the formatting of text files (markdown, txt, asciidoc).</li>
+<li><strong>Spelling:</strong> The ability to find spelling mistakes.</li>
+<li><strong>Grammar:</strong> The ability to detect grammar errors.</li>
+<li><strong>Clarity:</strong> The ability to suggest changes that can improve writing clarity.</li>
+</ul>
+<p>Additionally, I will rate tools based on their feature set:</p>
+<ul>
+<li><strong>Remediation:</strong> The ability to fix errors without manual intervention.</li>
+<li><strong>Customization:</strong> How well the tool can be customized to fit your use case. If you can’t exclude a rule or disable a warning, CI usage may be challenging. The most robust tools support custom rules and documentation style guides.</li>
+<li><strong>Integrated Developer Environment (IDE) support:</strong> Ability to use in common code editors</li>
+<li><strong>Continuous Integration (CI) / Command Line Interface (CLI) Usage:</strong> Ability to be used at the command line and in a continuous integration environment.</li>
+</ul>
+<h2 id="markdown-lint"><a href="https://github.com/DavidAnson/markdownlint">Markdown Lint</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/markdownlint4-800-99dd9fb9b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/markdownlint4-800-6efec2026.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/markdownlint4-800-6efec2026.png"></picture></p>
+</div>
+<p><code>markdownlint</code> is a node.js markdown linter that is easy to install and easy to customize. It is based on an earlier Ruby tool, also called <a href="https://github.com/markdownlint/markdownlint">markdownlint</a>. Both are great, but the Node.js tool is easy to install and easy to customize.</p>
+<p>You can disable specific rules inline ( <code>&lt;!-- markdownlint-disable-file MD001 --&gt;</code> ) and set up a per-project config in a <code>.markdownlintrc</code> file. It also supports writing custom rules in JavaScript and can remediate many problems itself with the <code>fix</code> option:</p>
+<pre><code>markdownlint --fix &quot;./_posts/*.md&quot;</code></pre>
+<p>It doesn’t handle spelling, grammar, or sentence structure, but it can’t be beaten for dealing with markdown structure and it has a great online <a href="https://dlaa.me/markdownlint/">demo site</a>.</p>
+<h3 id="coverage">Coverage</h3>
+<ul>
+<li>Formatting: 5</li>
+<li>Spelling: 0</li>
+<li>Grammar: 0</li>
+<li>Clarity: 0</li>
+</ul>
+<h3 id="features">Features</h3>
+<ul>
+<li>Ease of Use: 5</li>
+<li>Remediation: 5</li>
+<li>Customization: 5</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 5</li>
+</ul>
+<h2 id="mdspell"><a href="https://www.npmjs.com/package/markdown-spellcheck">mdspell</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/mdspell1-800-4bbda79e3.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/mdspell1-800-bd48f06c2.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/mdspell1-800-bd48f06c2.png"></picture></p>
+</div>
+<p><code>mdspell</code> is a tool specifically for spelling checking markdown documents. Install it like this:</p>
+<pre><code>npm i markdown-spellcheck -g    </code></pre>
+<p>You can run it on markdown files in an interactive mode that builds up a custom dictionary of exceptions. You can then use that list later in a continuous integration process.</p>
+<pre><code>mdspell -n -a --en-us  ./blog/_posts/2021-02-11-mitmproxy.md</code></pre>
+<p>The downsides of <code>mdspell</code> are that the dictionary will likely complain about lots of words that are quite common. It may take some time to build up a list of exceptions. As a shortcut, you might be able to find some more <code>.spelling</code> files on GitHub.</p>
+<h3 id="coverage-1">Coverage</h3>
+<ul>
+<li>Formatting: 0</li>
+<li>Spelling: 5</li>
+<li>Grammar: 0</li>
+<li>Clarity: 0</li>
+</ul>
+<h3 id="features-1">Features</h3>
+<ul>
+<li>Ease of Use: 5</li>
+<li>Remediation: 5</li>
+<li>Customization: 5</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 5</li>
+</ul>
+<h2 id="alex"><a href="https://alexjs.com/">alex</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/alex-800-446c930fd.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/alex-800-f6710f0a0.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/alex-800-f6710f0a0.png"></picture></p>
+</div>
+<p><code>alex</code> does one thing: catches insensitive and inconsiderate writing. It supports markdown files, and works via command-line, and has various IDE integrations. The specificity of <code>alex</code> is its strength. For my rubric, I am scoring it under clarity as catching insensitive writing certainly improves clarity.</p>
+<h3 id="coverage-2">Coverage</h3>
+<ul>
+<li>Formatting: 0</li>
+<li>Spelling: 0</li>
+<li>Grammar: 0</li>
+<li>Clarity: 3</li>
+</ul>
+<h3 id="features-2">Features</h3>
+<ul>
+<li>Ease of Use: 5</li>
+<li>Remediation: 5</li>
+<li>Customization: 5</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 5</li>
+</ul>
+<h2 id="write-good"><a href="https://github.com/btford/write-good"><code>write-good</code></a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/write-good-800-b8501ff39.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/write-good-800-425f5519d.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/write-good-800-425f5519d.png"></picture></p>
+</div>
+<p><code>write-good</code> is designed for “developers who can’t write good and wanna learn to do other stuff good too.” The tool’s focus is on improving the clarity of writing (and helping developers write well).</p>
+<p>Install:</p>
+<pre><code>npm install -g write-good</code></pre>
+<p>Run:</p>
+<pre><code>$ write-good ./blog/_posts/2021-02-11-mitmproxy.md
+here are several ways to accomplish this.
+                         ^^^^^^^^^^
+&quot;accomplish&quot; is wordy or unneeded on line 305 at column 26
+-------------
+e-ca-certificates` is an excellent proof of concept, but if you want to run a do
+                         ^^^^^^^^^
+&quot;excellent&quot; is a weasel word on line 367 at column 84</code></pre>
+<p><code>write-good</code> has many exciting suggestions. It will highlight passive voice, cliches, weak adverbs, and much more. Unfortunately, it’s not easy to exclude items or configure rules. It might be helpful as a writing suggestion tool, but this lack of configurability means you will have difficulty using it in a continuous integration process.</p>
+<h3 id="coverage-3">Coverage</h3>
+<ul>
+<li>Formatting: 0</li>
+<li>Spelling: 0</li>
+<li>Grammar: 0</li>
+<li>Clarity: 2</li>
+</ul>
+<h3 id="features-3">Features</h3>
+<ul>
+<li>Ease of Use: 5</li>
+<li>Remediation: 0</li>
+<li>Customization: 1</li>
+<li>IDE support: 2</li>
+<li>CI / CLI Support: 2</li>
+</ul>
+<h2 id="textlint"><a href="https://textlint.github.io/">textlint</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/textlint-800-6eb4f859e.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/textlint-800-17ad92e53.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/textlint-800-17ad92e53.png"></picture></p>
+</div>
+<p><code>textlint</code> is a pluggable linting tool that supports markdown, plain text, and HTML. The plug-in architecture means that it can offer the features of some of the previous items by wrapping them up as a plug-in. It has a <a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule#rules-english">plug-in</a> for <code>alex</code>, <code>write-good</code>, and for many spell checkers and grammar checkers. The downside of this flexibility is that it is a bit harder to set up and configure: you have to install each plug-in separately.</p>
+<p>Install:</p>
+<pre><code>$ npm install textlint --global
+# install each plugin
+$ npm install --global textlint-rule-no-todo
+....
+</code></pre>
+<p>Run:</p>
+<pre><code>textlint &quot;docs/**&quot;</code></pre>
+<p><code>textlint</code> is configurable via an <code>textlintrc</code> and has inline exclude rules ( <code>&lt;!-- textlint-disable ruleA,ruleB --&gt;</code> ) – which may make it a possible way to use <code>write-good</code> or other tools that lack this functionality.</p>
+<h3 id="coverage-4">Coverage</h3>
+<ul>
+<li>Formatting: 0</li>
+<li>Spelling: 3</li>
+<li>Grammar: 3</li>
+<li>Clarity: 4</li>
+</ul>
+<h3 id="features-4">Features</h3>
+<ul>
+<li>Ease of Use: 1</li>
+<li>Remediation: 3</li>
+<li>Customization: 4</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 2</li>
+</ul>
+<h2 id="proselint"><a href="http://proselint.com/">proselint</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/proselint-800-b152ebcc0.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/proselint-800-e7264b476.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/proselint-800-e7264b476.png"></picture></p>
+</div>
+<p><code>proselint</code> goes deep on writing clarity improvements in the same way the <code>alex</code> goes deep on inclusive writing:</p>
+<blockquote>
+<p><code>proselint</code> places the world’s greatest writers and editors by your side, where they whisper suggestions on how to improve your prose. You’ll be guided by advice inspired by Bryan Garner, David Foster Wallace, Chuck Palahniuk, Steve Pinker, Mary Norris, Mark Twain, Elmore Leonard, George Orwell, Matthew Butterick, William Strunk, E. B. White, Philip Corbett, Ernest Gowers, and the editorial staff of the world’s finest literary magazines and newspapers, among others. Our goal is to aggregate knowledge about best practices in writing and to make that knowledge immediately accessible to all authors in the form of a linter for prose.</p>
+</blockquote>
+<p>Some of the writing advice included is great:</p>
+<pre><code>echo &quot;The very first thing you&#39;ll see at the top of every (well-written) bash script &quot; | proselint
+&lt;stdin&gt;:1:5: weasel_words.very Substitute &#39;damn&#39; every time you&#39;re inclined to write &#39;very&#39;; your editor will delete it and the writing will be just as it should be.</code></pre>
+<pre><code>echo &quot;Thankfully, not all the advice I received was bad. &quot; | proselint
+&lt;stdin&gt;:1:2: skunked_terms.misc &#39;Thankfully,&#39; is a bit of a skunked term — impossible to use without issue. Find some other way to say it.</code></pre>
+<pre><code>echo &quot;it is worth noting that both for CI and CD, the operating principles and coding philosophy are equally as important as the technical aspect of the implementation.&quot; | proselint
+&lt;stdin&gt;:1:96: after_the_deadline.redundancy Redundancy. Use &#39;as&#39; instead of &#39;equally as&#39;.</code></pre>
+<p>This one is awesome considering the context of the <a href="/blog/thought-leaders/">original article</a>:</p>
+<pre><code>echo &quot;thought leaders&quot; | proselint
+&lt;stdin&gt;:1:2: cliches.garner &#39;thought leaders&#39; is cliché.</code></pre>
+<pre><code> echo &quot;One elephant in the room with ngrok is&quot; | proselint
+&lt;stdin&gt;:1:5: corporate_speak.misc Minimize your use of corporate catchphrases like this one.</code></pre>
+<p>Learning from all the best writers is a very lofty objective, and <code>proselint</code> has accumulated some valuable rules, but it falls short of its goal of collecting all the worlds writing advice in a parsable form. Ignoring and excluding rules are also not fully supported.</p>
+<h3 id="coverage-5">Coverage</h3>
+<ul>
+<li>Formatting: 0</li>
+<li>Spelling: 0</li>
+<li>Grammar: 0</li>
+<li>Clarity: 5</li>
+</ul>
+<h3 id="features-5">Features</h3>
+<ul>
+<li>Ease of Use: 5</li>
+<li>Remediation: 0</li>
+<li>Customization: 0</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 2</li>
+</ul>
+<h2 id="vale"><a href="https://github.com/errata-ai/vale">Vale</a></h2>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/markdown-lint/vale-800-337217691.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/vale-800-8ff190de8.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/markdown-lint/vale-800-8ff190de8.png"></picture></p>
+</div>
+<p>Vale, created by Joseph Kato, supports spelling, grammar, and clarity checks. It is extendable using a YAML rule format and is designed around the idea of a style guide – a specific house style that you put together and vale enforces. It has an implementation of most <code>proselint</code> as a style guide, most of <code>write-good</code>, as well as the <a href="https://docs.microsoft.com/en-us/style-guide/welcome/">Microsoft Writing Style Guide</a> and the Google <a href="https://developers.google.com/style/">developer documentation style guide</a>. Vale is targeted directly at the Docs-as-Code community and documentation teams, who take the writing style of documents very seriously.</p>
+<p>Vale is fast and configurable but not necessarily easy to get started with. Initially, I couldn’t get it to find any problems until I realized that it needs a config file to run:</p>
+<pre><code>MinAlertLevel = suggestion
+
+[*]
+BasedOnStyles = Vale</code></pre>
+<figcaption>
+.vale.ini
+</figcaption>
+<p>Additionally, to use it effectively, you will need to copy an existing style-guide into your repository. Separating the styles from the tool is Vale’s biggest strength. It’s also could be a weakness as the rules you build up are specific to your repository. It is easy to write and customize rules but hard to share them back as they need to live in your source code repository.</p>
+<p>Besides the official Vale style guides <a href="https://buildkite.com/blog/linting-the-buildkite-docs">Buildkite</a>, <a href="https://github.com/linode/docs/tree/develop/ci/vale/styles">Linode</a>, and <a href="https://github.com/testthedocs/vale-styles">Write The Docs</a> have rules online that you can copy into your repo or use as inspiration for your own rules.</p>
+<p>If you are taking linting documentation seriously and can take the time to set up a style that works for you, then Vale is the way to go. The rules of most other tools can be implemented inside value, and many already are.</p>
+<h3 id="coverage-6">Coverage</h3>
+<ul>
+<li>Formatting: 2</li>
+<li>Spelling: 5</li>
+<li>Grammar: 5</li>
+<li>Clarity: 5</li>
+</ul>
+<h3 id="features-6">Features</h3>
+<ul>
+<li>Ease of Use: 1</li>
+<li>Remediation: 0</li>
+<li>Customization: 5</li>
+<li>IDE support: 5</li>
+<li>CI / CLI Support: 5</li>
+</ul>
+<h3 id="vale-styles">Vale Styles</h3>
+<ul>
+<li><a href="https://github.com/topics/vale-linter-style">Official Styles</a><br />
+</li>
+<li><a href="https://github.com/search?q=topic%3Avale-linter-style+org%3Atestthedocs+fork%3Atrue">Write The Docs Styles</a></li>
+<li><a href="https://github.com/testthedocs/Openly">Grammarly Clone in Vale</a></li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>Many tools exist for testing and linting English prose. You can start as simply as just spelling checking your readme before you commit it or go as complex as a full style guide running on every change to your software documentation.</p>
+<p>If you are willing to invest the time, then <code>Vale</code>, with its flexible rules, is the clear leader. Combining <code>Vale</code> with <code>markdownlint</code> and running both in a continuous integration build should ensure that documents are spelling correctly, grammatically correct, and written in a properly formatted and exclusive way.</p>
+<p>If you’re looking for a more accessible place to start or don’t need the grammar and clarity suggestions, then <code>mdspell</code> and <code>markdownlint</code> make a great combination.</p>
+<p>Once you have decided on what tools will work best for you, make sure you find a way to automate their usage. This blog uses <code>Vale</code> and <code>markdownlint</code> inside an <a href="https://earthly.dev/">Earthfile</a> that is run every commit. This helps us prevent mistakes from getting into the blog.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Adam Gordon Bell</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/" class="page__taxonomy-item" rel="tag">+</a><span class="sep">, </span>
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-25T00:00:00-04:00">June 25, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/" class="pagination--pager" title="Creating and hosting your own rpm packages and yum repo
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-600-f3c707015.webp 600w, /blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-f3c707015.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-600-3cc6ceb1f.jpg 600w, /blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-3cc6ceb1f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-3cc6ceb1f.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/" rel="permalink">Creating and hosting your own rpm packages and yum repo
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/15-minute-project/header-600-6a593a8f2.webp 600w, /blog/generated/assets/images/15-minute-project/header-800-6a593a8f2.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/15-minute-project/header-600-0f4e5a7b7.jpg 600w, /blog/generated/assets/images/15-minute-project/header-800-0f4e5a7b7.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/15-minute-project/header-800-0f4e5a7b7.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/15-minute-project/" rel="permalink">The 15-Minute Project
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Applying city planning to software development
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

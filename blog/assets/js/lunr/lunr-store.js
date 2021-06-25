@@ -334,4 +334,10 @@ var store = [{
         "tags": [],
         "url": "/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Linting Markdown And Documentation",
+        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["+","Tutorials"],
+        "tags": [],
+        "url": "/blog/markdown-lint/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
