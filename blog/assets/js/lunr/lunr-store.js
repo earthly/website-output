@@ -340,4 +340,10 @@ var store = [{
         "tags": [],
         "url": "/blog/markdown-lint/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "SQL Errors and Video Cameras",
+        "excerpt":"Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things. The SQL looked something like this: --...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/video-camera-on/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

@@ -1,4 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-29T08:27:45-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">Linting Markdown And Documentation</title><link href="https://earthly.dev/blog/markdown-lint/" rel="alternate" type="text/html" title="Linting Markdown And Documentation" /><published>2021-06-25T00:00:00-04:00</published><updated>2021-06-25T00:00:00-04:00</updated><id>https://earthly.dev/blog/markdown-lint</id><content type="html" xml:base="https://earthly.dev/blog/markdown-lint/">&lt;p&gt;Many linting, code formatting, and static analysis tools exist for code. You can use &lt;code&gt;eslint&lt;/code&gt;, &lt;code&gt;gofmt&lt;/code&gt;, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://earthly.dev/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="https://earthly.dev/blog/" rel="alternate" type="text/html" /><updated>2021-06-29T09:20:19-04:00</updated><id>https://earthly.dev/blog/feed.xml</id><title type="html">Earthly Blog</title><subtitle>Build automation for the container era.</subtitle><entry><title type="html">SQL Errors and Video Cameras</title><link href="https://earthly.dev/blog/video-camera-on/" rel="alternate" type="text/html" title="SQL Errors and Video Cameras" /><published>2021-06-29T00:00:00-04:00</published><updated>2021-06-29T00:00:00-04:00</updated><id>https://earthly.dev/blog/video-camera-on</id><content type="html" xml:base="https://earthly.dev/blog/video-camera-on/">&lt;div class=&quot;narrow-code&quot;&gt;
+&lt;p&gt;Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things.&lt;/p&gt;
+&lt;p&gt;The SQL looked something like this:&lt;/p&gt;
+&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode sql&quot;&gt;&lt;code class=&quot;sourceCode sql&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;-- sort and insert first partition into repo&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-2&quot;&gt;&lt;a href=&quot;#cb1-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;INTO&lt;/span&gt; Report&lt;/span&gt;
+&lt;span id=&quot;cb1-3&quot;&gt;&lt;a href=&quot;#cb1-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;SELECT&lt;/span&gt; name &lt;span class=&quot;kw&quot;&gt;FROM&lt;/span&gt; input1 &lt;/span&gt;
+&lt;span id=&quot;cb1-4&quot;&gt;&lt;a href=&quot;#cb1-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;BY&lt;/span&gt; val;&lt;/span&gt;
+&lt;span id=&quot;cb1-5&quot;&gt;&lt;a href=&quot;#cb1-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; &lt;/span&gt;
+&lt;span id=&quot;cb1-6&quot;&gt;&lt;a href=&quot;#cb1-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;FROM&lt;/span&gt; Report;&lt;/span&gt;
+&lt;span id=&quot;cb1-7&quot;&gt;&lt;a href=&quot;#cb1-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;one&lt;/span&gt;
+&lt;span id=&quot;cb1-8&quot;&gt;&lt;a href=&quot;#cb1-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;two&lt;/span&gt;
+&lt;span id=&quot;cb1-9&quot;&gt;&lt;a href=&quot;#cb1-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;three &lt;span class=&quot;co&quot;&gt;-- yep&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-10&quot;&gt;&lt;a href=&quot;#cb1-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-11&quot;&gt;&lt;a href=&quot;#cb1-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;co&quot;&gt;-- sort and insert second partition into repo&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-12&quot;&gt;&lt;a href=&quot;#cb1-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;INTO&lt;/span&gt; Report&lt;/span&gt;
+&lt;span id=&quot;cb1-13&quot;&gt;&lt;a href=&quot;#cb1-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;SELECT&lt;/span&gt; name &lt;span class=&quot;kw&quot;&gt;FROM&lt;/span&gt; input2 &lt;/span&gt;
+&lt;span id=&quot;cb1-14&quot;&gt;&lt;a href=&quot;#cb1-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;BY&lt;/span&gt; val;&lt;/span&gt;
+&lt;span id=&quot;cb1-15&quot;&gt;&lt;a href=&quot;#cb1-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-16&quot;&gt;&lt;a href=&quot;#cb1-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;FROM&lt;/span&gt; Report;&lt;/span&gt;
+&lt;span id=&quot;cb1-17&quot;&gt;&lt;a href=&quot;#cb1-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;one&lt;/span&gt;
+&lt;span id=&quot;cb1-18&quot;&gt;&lt;a href=&quot;#cb1-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;two&lt;/span&gt;
+&lt;span id=&quot;cb1-19&quot;&gt;&lt;a href=&quot;#cb1-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;three&lt;/span&gt;
+&lt;span id=&quot;cb1-20&quot;&gt;&lt;a href=&quot;#cb1-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;four &lt;/span&gt;
+&lt;span id=&quot;cb1-21&quot;&gt;&lt;a href=&quot;#cb1-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;five &lt;/span&gt;
+&lt;span id=&quot;cb1-22&quot;&gt;&lt;a href=&quot;#cb1-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;six &lt;span class=&quot;co&quot;&gt;-- yep&lt;/span&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-23&quot;&gt;&lt;a href=&quot;#cb1-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
+&lt;span id=&quot;cb1-24&quot;&gt;&lt;a href=&quot;#cb1-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;kw&quot;&gt;SELECT&lt;/span&gt; top &lt;span class=&quot;dv&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;FROM&lt;/span&gt; Report;&lt;/span&gt;
+&lt;span id=&quot;cb1-25&quot;&gt;&lt;a href=&quot;#cb1-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;one&lt;/span&gt;
+&lt;span id=&quot;cb1-26&quot;&gt;&lt;a href=&quot;#cb1-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;two&lt;/span&gt;
+&lt;span id=&quot;cb1-27&quot;&gt;&lt;a href=&quot;#cb1-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;four &lt;span class=&quot;co&quot;&gt;-- wait, what?&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I was going to spend the morning tracking this down. That was my daily stand-up update. But when I gave it, I caught a look from my teammate Isabella (not her real name). The look helped me solve the problem. We’ll get to the solution in a moment, but I want to talk about that facial expression – I am always on the lookout for it now.&lt;/p&gt;
+&lt;h2 id=&quot;the-wait-what-look&quot;&gt;The Wait-What? Look&lt;/h2&gt;
+&lt;div class=&quot;align-right&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused1-500-a0a7ebe24.webp 500w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused1-500-b12c046e3.png 500w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;260px&quot; src=&quot;/blog/generated/assets/images/video-camera-on/confused1-800-b12c046e3.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+“I’ve traced it to a bug in the SMTP protocol”
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;I once saw someone go up to a post-office box and confidently empty their lunch garbage into it - like it was a food court garbage bin. I made the facial expression then - I could feel my lips pull to one side and my eyes narrow in confusion. Am I seeing this correctly?&lt;/p&gt;
+&lt;p&gt;I’ve spotted this look in so many daily stand-ups since then. Usually, it’s very fleeting, but I try not to let it pass by unremarked because unpacking it can save so much time. It easy to thrash on a problem and forget some simple assumption you’ve made. This face is a sign you’ve overlooked something important.&lt;/p&gt;
+&lt;p&gt;Are daily stand-ups valuable? Sometimes they are, and sometimes they aren’t&lt;a href=&quot;#fn1&quot; class=&quot;footnote-ref&quot; id=&quot;fnref1&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;. If you’re blocked on something, then telling the team is essential, but you shouldn’t wait for the next stand-up to share that. There are also all kinds of social reasons why a stand-up is healthy. I work from my home office and have for many years, and a video stand-up is a great way to actually have some small talk, screen to screen, with my teammates. Some parts of a daily stand-up are just a status report, and I’m not sure that ‘what I did yesterday and what I’m doing today part’ is always valuable. But the actual off-topic parts of a stand-up – the part where I complain about how difficult it is to get a permit for building my deck, and where Alex explains about foraging for mushrooms – those parts help keep me sane and happy.&lt;/p&gt;
+&lt;h2 id=&quot;thats-not-quite-right&quot;&gt;That’s Not Quite Right&lt;/h2&gt;
+&lt;div class=&quot;align-left&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused2-500-1f53a66bd.webp 500w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused2-500-4089110d6.png 500w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;260px&quot; src=&quot;/blog/generated/assets/images/video-camera-on/confused2-800-4089110d6.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+“I’m inserting ‘foo’ but retrieving ‘disk is full’”
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;We are always simulating the world around us on some subconscious level. It helps us predict what is going to happen next. For example, my neighbor is out watering his grass right now – I can see him out my office window. If his hose wasn’t on, I’m not sure I would notice because I’m not paying that much attention. But if he casually jumped from the ground to the second-story roof of his house, it would become the center of my attention. It would trigger some that’s-not-quite-right effect, and I would unconsciously make that confused face.&lt;/p&gt;
+&lt;p&gt;That is why a stand-up can be valuable, in person or screen to screen. You can give your update when you are stuck, and you can watch for that failed-simulation face. Then ask them what they are thinking. Chances are they know where you missed a step or where you have a false assumption. At the very least, you’ve violated their intuition about the problem, and unpacking that feeling is a good idea.&lt;/p&gt;
+&lt;h2 id=&quot;non-verbal-communication-requires-cameras-on&quot;&gt;Non-Verbal Communication Requires Cameras On&lt;/h2&gt;
+&lt;div class=&quot;align-right&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused3-500-957022048.webp 500w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused3-500-7d0fb7a4e.png 500w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;260px&quot; src=&quot;/blog/generated/assets/images/video-camera-on/confused3-800-7d0fb7a4e.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+“All users were created on a Thursday in 1970”
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;I’ve heard many times before that 70% of communication is non-verbal. This seems to oversell non-verbals or maybe I’m just not great at reading them. This whole confused-face signal could be replaced with chin-scratching emoji or a sign that said: “Wait, What?”. But, when I do get a non-verbal signal, it can save me hours and days of time. I don’t think you can easily replicate this signal with asynchronous communication. One reason is that these non-verbal cues often represent subtle feelings. Someone can hear your update and think to themselves, “That doesn’t sound right”, but they may not be comfortable enough or care enough to say it out loud. Or it’s just fleeting thought before they start their own update. You have to catch these expressions, and you can’t do it without seeing the person.&lt;/p&gt;
+&lt;p&gt;This doesn’t mean that everyone should always be able to see everyone in every meeting. If you are joining a 50 person meeting with a single presenter and everyone has their camera off, then follow suit. If you are eating your lunch in a meeting, I don’t need to see or hear you chew. But if you are seeking help or giving help or pairing on an issue with me, then I want to see your face. The examples and facial expressions here are extreme but even just seeing that I’ve gone too fast and lost you, or that you’re starting to say something, can improve the fidelity of the conversation.&lt;/p&gt;
+&lt;p&gt;People find zoom meetings fatiguing, and I get that. The world contains too many meetings. But I’m shocked when I talk to someone on a remote team that never uses video. If you’re not seeing your teammate’s face when you describe a problem, who knows what you are missing&lt;a href=&quot;#fn2&quot; class=&quot;footnote-ref&quot; id=&quot;fnref2&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;the-sql-solution&quot;&gt;The SQL Solution&lt;/h2&gt;
+&lt;div class=&quot;align-left&quot;&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused4-500-55b7c9ac2.webp 500w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/video-camera-on/confused4-500-4d79dd6c3.png 500w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;260px&quot; src=&quot;/blog/generated/assets/images/video-camera-on/confused4-800-4d79dd6c3.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;figcaption&gt;
+“the max message size in the queue&lt;br/&gt; is now 2 gigabytes”
+&lt;/figcaption&gt;
+&lt;/div&gt;
+&lt;p&gt;So about the SQL. I got &lt;code&gt;the look&lt;/code&gt; from Isabella because a select statement like I was describing should be deterministic. Isabella’s spidey-sense told her either I was wrong about results changing or I was misusing SQL. It turned out to be the latter.&lt;/p&gt;
+&lt;p&gt;You see, I was inserting records sorted and selecting them out without an explicit order. Also, my simple recounting of the report’s logic (and my code snippet above) was missing a critical detail – one I had forgotten about&lt;a href=&quot;#fn3&quot; class=&quot;footnote-ref&quot; id=&quot;fnref3&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. Sometimes I had to delete duplicate keys from the report table. Guess what happens when you insert things in-order into a table with deleted rows? Its implementation-specific, but sometimes, the invisible spaces left by the deleted rows will be filled in by the inserted data, undoing the insertion order. My row wasn’t missing. My data just wasn’t sorted correctly. Once I added in an &lt;code&gt;order by&lt;/code&gt; everything worked.&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- markdownlint-disable MD046 --&gt;
+&lt;section class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn1&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;&lt;a href=&quot;http://localhost:4002/blog/thought-leaders/&quot;&gt;Like everything&lt;/a&gt;, they work well in some contexts and not in others. If they aren’t helpful, drop them and try something else.&lt;a href=&quot;#fnref1&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn2&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?&lt;a href=&quot;#fnref2&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn3&quot; role=&quot;doc-endnote&quot;&gt;&lt;p&gt;I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?&lt;a href=&quot;#fnref3&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;</content><author><name>Adam Gordon Bell</name></author><category term="Articles" /><summary type="html"></summary></entry><entry><title type="html">Linting Markdown And Documentation</title><link href="https://earthly.dev/blog/markdown-lint/" rel="alternate" type="text/html" title="Linting Markdown And Documentation" /><published>2021-06-25T00:00:00-04:00</published><updated>2021-06-25T00:00:00-04:00</updated><id>https://earthly.dev/blog/markdown-lint</id><content type="html" xml:base="https://earthly.dev/blog/markdown-lint/">&lt;p&gt;Many linting, code formatting, and static analysis tools exist for code. You can use &lt;code&gt;eslint&lt;/code&gt;, &lt;code&gt;gofmt&lt;/code&gt;, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you aren’t committing spelling and grammar mistakes? How do you ensure your files are valid markdown and that the language you are using is clear and correct? You can do this and more with a documentation linter.&lt;/p&gt;
 &lt;p&gt;Many tools exist for finding problems in text files. You can use this list as a starting point for finding the markdown and prose linting tools that best fit your needs.&lt;/p&gt;
 &lt;div class=&quot;notice--success notice--big&quot;&gt;
 &lt;p&gt;&lt;strong&gt;Docs as Code&lt;/strong&gt;&lt;/p&gt;
@@ -851,7 +929,7 @@ Everybody has advice about how to build your project
 &lt;p&gt;I think you get the idea. If we adapt to all the feedback, then we will avoid the pitfalls of the recent past. But also, the scope of the project will drastically grow, and the project will likely never get completed. It’s like a &lt;a href=&quot;https://en.wikipedia.org/wiki/Second-system_effect&quot;&gt;second-system effect&lt;/a&gt; but brought forward in time.&lt;/p&gt;
 &lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
 &lt;div class=&quot;align-right&quot;&gt;
-&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-245-19bb12389.webp 245w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-245-bd3ff66f7.png 245w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-320-bd3ff66f7.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-320-19bb12389.webp 320w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-320-bd3ff66f7.png 320w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;200px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/hearnoevil-320-bd3ff66f7.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
 &lt;figcaption&gt;
 The Solution
 &lt;/figcaption&gt;
@@ -865,7 +943,7 @@ The Solution
 &lt;p&gt;The problem with all the bad advice was that it was unrelated to the problem we were trying to solve. The unit-testing person will always be advocating for more unit tests. The distributed database person will always want things to go into their favorite database.&lt;/p&gt;
 &lt;p&gt;It’s sort of like Minh’s cooking advice from King of The Hill: She tastes something and then says “Add Nutmeg”. When would nutmeg not be a good fit? Doesn’t all advice need to be contingent?&lt;/p&gt;
 &lt;div class=&quot;align-right&quot;&gt;
-&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-245-7afff0714.webp 245w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-245-821cf96ec.png 245w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;400px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-800-821cf96ec.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
+&lt;p&gt;&lt;picture&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-500-7afff0714.webp 500w&quot; type=&quot;image/webp&quot;&gt;&lt;source srcset=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-500-821cf96ec.png 500w&quot; type=&quot;image/png&quot;&gt;&lt;img width=&quot;400px&quot; src=&quot;/blog/generated/assets/images/thought-leaders/nutmeg-800-821cf96ec.png&quot;&gt;&lt;/picture&gt;&lt;/p&gt;
 &lt;figcaption&gt;
 The solution to every problem can’t be the same
 &lt;/figcaption&gt;
@@ -1047,475 +1125,4 @@ AC_OUTPUT&lt;/code&gt;&lt;/pre&gt;
 &lt;/ul&gt;
 &lt;p&gt;Finally, having continuous integration and continuous delivery removes one of the biggest barriers to implementing &lt;strong&gt;continuous deployment&lt;/strong&gt;. Continuous deployment extends this flow and enables fully automated deployments into production.&lt;/p&gt;
 &lt;p&gt;The combination of continuous integration, continuous delivery, and continuous deployment allows teams to ship features faster and get them in front of customers faster, shortening the feedback loop and increasing value generation.&lt;/p&gt;
-&lt;p&gt;For anyone looking to learn more about continuous integration, I highly recommend &lt;a href=&quot;https://martinfowler.com/&quot;&gt;Martin Fowler’s&lt;/a&gt; book &lt;a href=&quot;https://www.martinfowler.com/books/duvall.html&quot; title=&quot;Continuous Integration by Martin Fowler&quot;&gt;Continuous Integration&lt;/a&gt;.&lt;/p&gt;</content><author><name>Allan MacGregor</name></author><category term="Tutorials" /><summary type="html">In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia</summary></entry><entry><title type="html">Creating and hosting your own deb packages and apt repo</title><link href="https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/" rel="alternate" type="text/html" title="Creating and hosting your own deb packages and apt repo" /><published>2021-06-01T00:00:00-04:00</published><updated>2021-06-01T00:00:00-04:00</updated><id>https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo</id><content type="html" xml:base="https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/">&lt;!-- vale HouseStyle.TLA = NO --&gt;
-&lt;!-- vale HouseStyle.ListStart = NO --&gt;
-&lt;!-- markdownlint-disable MD032 --&gt;
-&lt;p&gt;As an Ubuntu user, I find myself typing &lt;code&gt;apt install ...&lt;/code&gt; frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests. &lt;!-- markdownlint-enable MD032 --&gt;&lt;/p&gt;
-&lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
-&lt;p&gt;This tutorial assumes you are using Ubuntu, and that the following packages are installed:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb1&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb1-1&quot;&gt;&lt;a href=&quot;#cb1-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get install &lt;span class=&quot;at&quot;&gt;-y&lt;/span&gt; gcc dpkg-dev gpg&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;step-0-creating-a-simple-hello-world-program&quot;&gt;Step 0: Creating a Simple Hello World Program&lt;/h2&gt;
-&lt;p&gt;Before getting started with packaging, let’s create a basic hello world program under &lt;code&gt;~/example/hello-world-program&lt;/code&gt;. To do this, you can copy and paste the following commands into your terminal:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb2&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb2-1&quot;&gt;&lt;a href=&quot;#cb2-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/hello-world-program&lt;/span&gt;
-&lt;span id=&quot;cb2-2&quot;&gt;&lt;a href=&quot;#cb2-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-3&quot;&gt;&lt;a href=&quot;#cb2-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-4&quot;&gt;&lt;a href=&quot;#cb2-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;int main() {&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-5&quot;&gt;&lt;a href=&quot;#cb2-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    printf(&amp;quot;hello packaged world\n&amp;quot;);&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-6&quot;&gt;&lt;a href=&quot;#cb2-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    return 0;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb2-7&quot;&gt;&lt;a href=&quot;#cb2-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;}&amp;#39;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/hello-world-program/hello.c&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then, you can compile it with:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb3&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb3-1&quot;&gt;&lt;a href=&quot;#cb3-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/hello-world-program&lt;/span&gt;
-&lt;span id=&quot;cb3-2&quot;&gt;&lt;a href=&quot;#cb3-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;gcc&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-o&lt;/span&gt; hello-world hello.c&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;There’s no technical reason for picking C for this example – the language doesn’t matter. It’s the binary we will be distributing in our deb package.&lt;/p&gt;
-&lt;h2 id=&quot;step-1-creating-a-deb-package&quot;&gt;Step 1: Creating a &lt;code&gt;deb&lt;/code&gt; Package&lt;/h2&gt;
-&lt;p&gt;Debian, and Debian-based Linux distributions use &lt;code&gt;.deb&lt;/code&gt; packages to package and distribute programs. To start we will create a directory in the form:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;package-name&amp;gt;_&amp;lt;version&amp;gt;-&amp;lt;release-number&amp;gt;_&amp;lt;architecture&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;where the&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;package-name&lt;/code&gt; is the name of our package, &lt;code&gt;hello-world&lt;/code&gt; in our case,&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;version&lt;/code&gt; is the version of the software, &lt;code&gt;0.0.1&lt;/code&gt; in our case,&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;release-number&lt;/code&gt; is used to track different releases of the same software version; it’s usually set to &lt;code&gt;1&lt;/code&gt;, but hypothetically if there was an error in the packaging (e.g. a file was missed, or the description had an error in it, or a post-install script was wrong), this number would be increased to track the change, and&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;architecture&lt;/code&gt; is the target architecture of the platform, &lt;code&gt;amd64&lt;/code&gt; in this example; however if your package is architecture-independent (e.g. a python script), then you can set this to &lt;code&gt;all&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;Theoretically, the directory doesn’t have to follow this naming convention; however some of the tools we will use later in the tutorial require this directory naming convention.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;So for this example, we’ll create the directory with:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb5&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb5-1&quot;&gt;&lt;a href=&quot;#cb5-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This directory will be the root of the package. Since we want our &lt;code&gt;hello-world&lt;/code&gt; binary to be installed system wide, we’ll have to store it under &lt;code&gt;usr/bin/hello-world&lt;/code&gt; with the following commands:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb6&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb6-1&quot;&gt;&lt;a href=&quot;#cb6-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64&lt;/span&gt;
-&lt;span id=&quot;cb6-2&quot;&gt;&lt;a href=&quot;#cb6-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; usr/bin&lt;/span&gt;
-&lt;span id=&quot;cb6-3&quot;&gt;&lt;a href=&quot;#cb6-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cp&lt;/span&gt; ~/example/hello-world-program/hello-world usr/bin/.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Each package requires a &lt;code&gt;control&lt;/code&gt; file which needs to be located under the &lt;code&gt;DEBIAN&lt;/code&gt; directory. You can copy and paste the following to create one:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64/DEBIAN&lt;/span&gt;
-&lt;span id=&quot;cb7-2&quot;&gt;&lt;a href=&quot;#cb7-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-3&quot;&gt;&lt;a href=&quot;#cb7-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;Package: hello-world&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-4&quot;&gt;&lt;a href=&quot;#cb7-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Version: 0.0.1&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-5&quot;&gt;&lt;a href=&quot;#cb7-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Maintainer: example &amp;lt;example@example.com&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-6&quot;&gt;&lt;a href=&quot;#cb7-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Depends: libc6&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-7&quot;&gt;&lt;a href=&quot;#cb7-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Architecture: amd64&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-8&quot;&gt;&lt;a href=&quot;#cb7-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Homepage: http://example.com&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-9&quot;&gt;&lt;a href=&quot;#cb7-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Description: A program that prints hello&amp;quot;&lt;/span&gt; &lt;span class=&quot;dt&quot;&gt;\&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb7-10&quot;&gt;&lt;a href=&quot;#cb7-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64/DEBIAN/control&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that we’re assuming an amd64 Architecture for this tutorial, if your binary is for a different architecture, adjust accordingly. If you’re distributing a platform-independent package, you can set the architecture to &lt;code&gt;all&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;By this point you should have created two files:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;~/example/hello-world_0.0.1-1_amd64/usr/bin/hello-world
-~/example/hello-world_0.0.1-1_amd64/DEBIAN/control&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To build the .deb package, run:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb9&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb9-1&quot;&gt;&lt;a href=&quot;#cb9-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;dpkg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--build&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This will output a deb package under &lt;code&gt;~/example/hello-world_0.0.1.deb&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;You can inspect the info of the deb by running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb10&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb10-1&quot;&gt;&lt;a href=&quot;#cb10-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;dpkg-deb&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--info&lt;/span&gt; ~/example/hello-world_0.0.1.deb&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which will show:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;new&lt;/span&gt; Debian package, version 2.0.&lt;/span&gt;
-&lt;span id=&quot;cb11-2&quot;&gt;&lt;a href=&quot;#cb11-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;size&lt;/span&gt; 2832 bytes: control archive=336 bytes.&lt;/span&gt;
-&lt;span id=&quot;cb11-3&quot;&gt;&lt;a href=&quot;#cb11-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;    &lt;span class=&quot;ex&quot;&gt;182&lt;/span&gt; bytes,     7 lines      control&lt;/span&gt;
-&lt;span id=&quot;cb11-4&quot;&gt;&lt;a href=&quot;#cb11-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Package:&lt;/span&gt; hello-world&lt;/span&gt;
-&lt;span id=&quot;cb11-5&quot;&gt;&lt;a href=&quot;#cb11-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Version:&lt;/span&gt; 0.0.1&lt;/span&gt;
-&lt;span id=&quot;cb11-6&quot;&gt;&lt;a href=&quot;#cb11-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Maintainer:&lt;/span&gt; example &lt;span class=&quot;op&quot;&gt;&amp;lt;&lt;/span&gt;example@example.com&lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb11-7&quot;&gt;&lt;a href=&quot;#cb11-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Depends:&lt;/span&gt; libc6&lt;/span&gt;
-&lt;span id=&quot;cb11-8&quot;&gt;&lt;a href=&quot;#cb11-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Architecture:&lt;/span&gt; amd64&lt;/span&gt;
-&lt;span id=&quot;cb11-9&quot;&gt;&lt;a href=&quot;#cb11-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Homepage:&lt;/span&gt; http://example.com&lt;/span&gt;
-&lt;span id=&quot;cb11-10&quot;&gt;&lt;a href=&quot;#cb11-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;Description:&lt;/span&gt; A program that prints hello&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can also view the contents by running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;dpkg-deb&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--contents&lt;/span&gt; ~/example/hello-world_0.0.1.deb&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which will show:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;drwxrwxr-x alex/alex         0 2021-05-17 16:21 ./
-drwxrwxr-x alex/alex         0 2021-05-17 16:18 ./usr/
-drwxrwxr-x alex/alex         0 2021-05-17 16:18 ./usr/bin/
--rwxrwxr-x alex/alex     16696 2021-05-17 16:18 ./usr/bin/hello-world&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;It’s also possible to run &lt;code&gt;less ~/example/hello-world_0.0.1.deb&lt;/code&gt; which will output the above information, thanks to &lt;code&gt;/bin/lesspipe&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;This package can then be installed using the &lt;code&gt;-f&lt;/code&gt; option under &lt;code&gt;apt-get install&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb14&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb14-1&quot;&gt;&lt;a href=&quot;#cb14-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get install &lt;span class=&quot;at&quot;&gt;-f&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64.deb&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then once installed, you can verify it works with commands like:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb15&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb15-1&quot;&gt;&lt;a href=&quot;#cb15-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;which&lt;/span&gt; hello-world&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;hello-world&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;which should output &lt;code&gt;/usr/bin/hello-world&lt;/code&gt; and &lt;code&gt;hello packaged world&lt;/code&gt; respectively.&lt;/p&gt;
-&lt;p&gt;Finally, if you want to remove it, you can run:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb17&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb17-1&quot;&gt;&lt;a href=&quot;#cb17-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get remove hello-world&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This concludes the first step of building a &lt;code&gt;.deb&lt;/code&gt; package. If you have access to an existing apt repository, you could submit the deb to the repository maintainer, and call it a day.&lt;/p&gt;
-&lt;h2 id=&quot;step-2-creating-an-apt-repository&quot;&gt;Step 2: Creating an &lt;code&gt;apt&lt;/code&gt; Repository&lt;/h2&gt;
-&lt;p&gt;In this step, we will show how to create your own apt repository which can be used to host one or more deb packages.&lt;/p&gt;
-&lt;p&gt;Let’s start with creating a directory to hold our debs:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb18&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb18-1&quot;&gt;&lt;a href=&quot;#cb18-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/apt-repo/pool/main/&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then copy our deb(s) into this directory:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb19&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb19-1&quot;&gt;&lt;a href=&quot;#cb19-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cp&lt;/span&gt; ~/example/hello-world_0.0.1-1_amd64.deb ~/example/apt-repo/pool/main/.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;Larger apt repositories create sub-directories for each program or project. For example, the official Ubuntu apt repository stores all vim related packages under &lt;code&gt;/ubuntu/pool/main/v/vim/&lt;/code&gt;.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Once you’ve copied in all of your debs, we will create a different directory to contain a list of all available packages and corresponding metadata:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb20&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb20-1&quot;&gt;&lt;a href=&quot;#cb20-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-p&lt;/span&gt; ~/example/apt-repo/dists/stable/main/binary-amd64&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;If you want to support multiple architectures, make a directory above for each type (e.g. &lt;code&gt;i386&lt;/code&gt;, &lt;code&gt;amd64&lt;/code&gt;, etc).&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Next, we will generate a &lt;code&gt;Packages&lt;/code&gt; file, which will contain a list of all available packages in this repository. We will use the &lt;code&gt;dpkg-scanpackages&lt;/code&gt; program to generate it, by running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb21&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb21-1&quot;&gt;&lt;a href=&quot;#cb21-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/apt-repo&lt;/span&gt;
-&lt;span id=&quot;cb21-2&quot;&gt;&lt;a href=&quot;#cb21-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;dpkg-scanpackages&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--arch&lt;/span&gt; amd64 pool/ &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; dists/stable/main/binary-amd64/Packages&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;It’s also good practice to compress the packages file, as apt will favour downloading compressed data whenever available. Let’s do this by running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb22&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb22-1&quot;&gt;&lt;a href=&quot;#cb22-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; dists/stable/main/binary-amd64/Packages &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;gzip&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-9&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; dists/stable/main/binary-amd64/Packages.gz&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Let’s take a quick look at the contents of the Packages file:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Package: hello-world
-Version: 0.0.1
-Architecture: amd64
-Maintainer: example &amp;lt;example@example.com&amp;gt;
-Depends: libc6
-Filename: pool/main/hello-world_0.0.1-1_amd64.deb
-Size: 2832
-MD5sum: 3eba602abba5d6ea2a924854d014f4a7
-SHA1: e300cabc138ac16b64884c9c832da4f811ea40fb
-SHA256: 6e314acd7e1e97e11865c11593362c65db9616345e1e34e309314528c5ef19a6
-Homepage: http://example.com
-Description: A program that prints hello&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;if you had multiple deb files, you would have an entry for each package&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;The contents of the Packages file is a list of all available packages along with metadata from the &lt;code&gt;DEBIAN/control&lt;/code&gt; file, and some hashes which can be used to validate the integrity of the package.&lt;/p&gt;
-&lt;p&gt;Next we will create a Release file. Unfortunately &lt;code&gt;dpkg-scanpackages&lt;/code&gt; does not create Release files. Some people use programs like &lt;code&gt;apt-ftparchive&lt;/code&gt;; however in this example I’ll cover an alternative to &lt;code&gt;apt-ftparchive&lt;/code&gt; by using a small bash script.&lt;/p&gt;
-&lt;p&gt;First let’s look at an example of a Release file, which can be broken up into two parts:&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;&lt;p&gt;Metadata about the repository, for example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Origin: Example Repository
-Label: Example
-Suite: stable
-Codename: stable
-Version: 1.0
-Architectures: amd64 arm64 arm7
-Components: main
-Description: An example software repository&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;A list of all &lt;code&gt;Packages&lt;/code&gt; files and their corresponding hashes and file size, for example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;MD5Sum:
- 9eb0c0528a0647daf18c7e225ac68f45 667 main/binary-amd64/Packages.gz
- 628682afa8a0208e08b5a208a4c4c85b 1685 main/binary-amd64/Packages
- b5bef2199e86a43ae02adc0b7b38bc8a 556 main/binary-arm7/Packages.gz
- 81c53db3b9c5e9de44d3ca9fc4487995 1289 main/binary-arm7/Packages
- 15258b054124639f0641c399f291af17 557 main/binary-arm64/Packages.gz
- dc597a0815aebb56b25a4ad979682f49 1292 main/binary-arm64/Packages
-SHA1:
- a4074284eb528e5d16c2c94e203d61dd825fa774 667 main/binary-amd64/Packages.gz
- ee86dd9061967232e6e68104a695f7d45d191b41 1685 main/binary-amd64/Packages
- a6f4897bcf6a4b068c5b8fafca01fc89761106dc 556 main/binary-arm7/Packages.gz
- 43171192ce84dcb43bba99828fe7493ff23e0b0e 1289 main/binary-arm7/Packages
- 9f353a909a9a3dab0a9cae1a3c7ccb879ff18d32 557 main/binary-arm64/Packages.gz
- da15c24e51a028ff591656eef0d1da0dbb85ba97 1292 main/binary-arm64/Packages
-SHA256:
- dee57f6f4a2209b63301984acb4b279f694648915fd559287a414365884c1842 667 main/binary-amd64/Packages.gz
- 7d82e5929d909d10d9f2d7129df3f6754946397caf1c08e9e4a65713f4ac39ff 1685 main/binary-amd64/Packages
- 2b3c611305e096ef246d77d2bc5fcfa807034dd200f8f99005ab640cf2c014a4 556 main/binary-arm7/Packages.gz
- d03d5192e24e098a91465ab37d34e0a2c539f50a430eb3262a543e7bd11212a1 1289 main/binary-arm7/Packages
- f96316ff77e96d246447f0ca8383472acefc0744d9b49d2be1d214d174bba38a 557 main/binary-arm64/Packages.gz
- 58120a7b5ceb57ab4faca01adac3d62009a52962e0d0a6f4b7ceb1b8faedf280 1292 main/binary-arm64/Packages&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;And that’s it for what a &lt;code&gt;Release&lt;/code&gt; file looks like. How hard could it be? let’s &lt;a href=&quot;/blog/understanding-bash&quot;&gt;write some bash&lt;/a&gt;. Just copy and paste the following in your terminal to get a copy of the script:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;#39;#!/bin/sh&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-2&quot;&gt;&lt;a href=&quot;#cb26-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;set -e&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-3&quot;&gt;&lt;a href=&quot;#cb26-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-4&quot;&gt;&lt;a href=&quot;#cb26-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;do_hash() {&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-5&quot;&gt;&lt;a href=&quot;#cb26-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    HASH_NAME=$1&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-6&quot;&gt;&lt;a href=&quot;#cb26-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    HASH_CMD=$2&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-7&quot;&gt;&lt;a href=&quot;#cb26-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    echo &amp;quot;${HASH_NAME}:&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-8&quot;&gt;&lt;a href=&quot;#cb26-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    for f in $(find -type f); do&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-9&quot;&gt;&lt;a href=&quot;#cb26-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        f=$(echo $f | cut -c3-) # remove ./ prefix&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-10&quot;&gt;&lt;a href=&quot;#cb26-10&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        if [ &amp;quot;$f&amp;quot; = &amp;quot;Release&amp;quot; ]; then&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-11&quot;&gt;&lt;a href=&quot;#cb26-11&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;            continue&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-12&quot;&gt;&lt;a href=&quot;#cb26-12&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        fi&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-13&quot;&gt;&lt;a href=&quot;#cb26-13&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;        echo &amp;quot; $(${HASH_CMD} ${f}  | cut -d&amp;quot; &amp;quot; -f1) $(wc -c $f)&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-14&quot;&gt;&lt;a href=&quot;#cb26-14&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;    done&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-15&quot;&gt;&lt;a href=&quot;#cb26-15&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-16&quot;&gt;&lt;a href=&quot;#cb26-16&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-17&quot;&gt;&lt;a href=&quot;#cb26-17&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;cat &amp;lt;&amp;lt; EOF&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-18&quot;&gt;&lt;a href=&quot;#cb26-18&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Origin: Example Repository&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-19&quot;&gt;&lt;a href=&quot;#cb26-19&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Label: Example&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-20&quot;&gt;&lt;a href=&quot;#cb26-20&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Suite: stable&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-21&quot;&gt;&lt;a href=&quot;#cb26-21&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Codename: stable&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-22&quot;&gt;&lt;a href=&quot;#cb26-22&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Version: 1.0&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-23&quot;&gt;&lt;a href=&quot;#cb26-23&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Architectures: amd64 arm64 arm7&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-24&quot;&gt;&lt;a href=&quot;#cb26-24&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Components: main&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-25&quot;&gt;&lt;a href=&quot;#cb26-25&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Description: An example software repository&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-26&quot;&gt;&lt;a href=&quot;#cb26-26&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Date: $(date -Ru)&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-27&quot;&gt;&lt;a href=&quot;#cb26-27&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;EOF&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-28&quot;&gt;&lt;a href=&quot;#cb26-28&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;do_hash &amp;quot;MD5Sum&amp;quot; &amp;quot;md5sum&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-29&quot;&gt;&lt;a href=&quot;#cb26-29&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;do_hash &amp;quot;SHA1&amp;quot; &amp;quot;sha1sum&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-30&quot;&gt;&lt;a href=&quot;#cb26-30&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;do_hash &amp;quot;SHA256&amp;quot; &amp;quot;sha256sum&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb26-31&quot;&gt;&lt;a href=&quot;#cb26-31&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/generate-release.sh &lt;span class=&quot;kw&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;chmod&lt;/span&gt; +x ~/example/generate-release.sh&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Next let’s run the &lt;code&gt;generate-release.sh&lt;/code&gt; script with:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example/apt-repo/dists/stable&lt;/span&gt;
-&lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;~/example/generate-release.sh&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; Release&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;At this point, you can try hosting this repo for yourself. In this example we’ll use python’s simple HTTP server; however in practice you’ll want to use a production-ready server. Here’s how you can start it up for testing:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb28&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb28-1&quot;&gt;&lt;a href=&quot;#cb28-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example&lt;/span&gt;
-&lt;span id=&quot;cb28-2&quot;&gt;&lt;a href=&quot;#cb28-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;python3&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-m&lt;/span&gt; http.server&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then configure this apt repository:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb29&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb29-1&quot;&gt;&lt;a href=&quot;#cb29-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;deb [arch=amd64] http://127.0.0.1:8000/apt-repo stable main&amp;quot;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; tee /etc/apt/sources.list.d/example.list&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then finally update apt and install our new hello-world package:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb30&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb30-1&quot;&gt;&lt;a href=&quot;#cb30-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get update &lt;span class=&quot;at&quot;&gt;--allow-insecure-repositories&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb30-2&quot;&gt;&lt;a href=&quot;#cb30-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get install hello-world&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that the &lt;code&gt;--allow-insecure-repositories&lt;/code&gt; will print the following warning message:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;W: The repository &amp;#39;http://127.0.0.1:8000/apt-repo stable Release&amp;#39; is not signed.
-N: Data from such a repository can&amp;#39;t be authenticated and is therefore potentially dangerous to use.
-N: See apt-secure(8) manpage for repository creation and user configuration details.&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That flag should never be used in a production environment. In the next section we’ll cover how to sign the repository, so it can be used in a trusted manor. Similarly when we install &lt;code&gt;hello-world&lt;/code&gt;, we are asked if we want to proceed with an un-authenticated package:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;WARNING: The following packages cannot be authenticated!
-  hello-world
-Install these packages without verification? [y/N]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Fortunately in the next section we’ll cover generating a PGP key, and signing our repository with it, which will allow users to verify the repository contents have not been tampered with.&lt;/p&gt;
-&lt;h2 id=&quot;step-3-signing-your-apt-repository-with-gpg&quot;&gt;Step 3: Signing your &lt;code&gt;apt&lt;/code&gt; Repository With GPG&lt;/h2&gt;
-&lt;p&gt;In the previous step, we generated a &lt;code&gt;Release&lt;/code&gt; file, which referenced one or more &lt;code&gt;Packages&lt;/code&gt; files along with it’s corresponding md5, sha1, and sha256 hashes. The &lt;code&gt;Packages&lt;/code&gt; file in turns references a deb package along with it’s md5, sha1, and sha256 hashes.&lt;/p&gt;
-&lt;p&gt;As of 2021, md5 and sha1 hashes are no longer considered secure; however sha256 is still considered to be secure. Therefore if a user can verify that the initial Release file has not been tampered with, then they could make use of the sha256 to verify the Packages file, then use the sha256 contained in the Packages file to verify the deb file.&lt;/p&gt;
-&lt;p&gt;In order to sign the apt repo, all we must do is sign the Release file.&lt;/p&gt;
-&lt;h3 id=&quot;pgp-gpg-and-gnupgp&quot;&gt;PGP, GPG, and GnuPGP&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;PGP, OpenPGP, GnuPG, GPG, (and careful not to typo PHP).&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Software has a lot of acronyms, and this extends into digital signatures. “Pretty Good Privacy” (PGP), was created in 1991 by Phil Zimmermann and eventually became the main product of non other than PGP Inc. To encourage adoption of PGP, the company created an open standard unsurprisingly called OpenPGP.&lt;/p&gt;
-&lt;p&gt;OpenPGP is only a specification, that’s where GNU Privacy Guard (GPG) fits in: GPG is an implementation of (Open)PGP. So is it a PGP key, or a GPG key? I don’t know, I’ve seen it called both, I’m going to call it a PGP because that’s what is contained in the first line of the armoured text: &lt;code&gt;-----BEGIN PGP PUBLIC KEY BLOCK-----&lt;/code&gt;.&lt;/p&gt;
-&lt;h4 id=&quot;creating-a-new-publicprivate-pgp-key-pair&quot;&gt;Creating a New Public/Private PGP Key Pair&lt;/h4&gt;
-&lt;p&gt;Let’s start with generating a PGP key pair. We will use the &lt;code&gt;--batch&lt;/code&gt; feature of &lt;code&gt;gpg&lt;/code&gt; rather than using the interactive prompt. This has the benefit of generating keys in a repeatable way. First create a batch template by copying and pasting the following into your terminal:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb33&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb33-1&quot;&gt;&lt;a href=&quot;#cb33-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;%echo Generating an example PGP key&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-2&quot;&gt;&lt;a href=&quot;#cb33-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Key-Type: RSA&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-3&quot;&gt;&lt;a href=&quot;#cb33-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Key-Length: 4096&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-4&quot;&gt;&lt;a href=&quot;#cb33-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Name-Real: example&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-5&quot;&gt;&lt;a href=&quot;#cb33-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Name-Email: example@example.com&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-6&quot;&gt;&lt;a href=&quot;#cb33-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;Expire-Date: 0&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-7&quot;&gt;&lt;a href=&quot;#cb33-7&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%no-ask-passphrase&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-8&quot;&gt;&lt;a href=&quot;#cb33-8&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%no-protection&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb33-9&quot;&gt;&lt;a href=&quot;#cb33-9&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;st&quot;&gt;%commit&amp;quot;&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; /tmp/example-pgp-key.batch&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;then we will generate it under a new temporary gpg keyring:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb34&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb34-1&quot;&gt;&lt;a href=&quot;#cb34-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;GNUPGHOME&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;mktemp&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; ~/example/pgpkeys-XXXXXX&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;
-&lt;span id=&quot;cb34-2&quot;&gt;&lt;a href=&quot;#cb34-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--no-tty&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--batch&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--gen-key&lt;/span&gt; /tmp/example-pgp-key.batch&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Since we overrode the GNUPGHOME to a temporary directory, we can keep this key separate from our other keys. Let’s take a quick look at the contents of the directory:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb35&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb35-1&quot;&gt;&lt;a href=&quot;#cb35-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$GNUPGHOME&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;/private-keys-v1.d&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;will show something along the lines of&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;A3FB218BA1929542FF110C7D1B077B6469F769C9.key&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;which contains binary data. We can also view all of our loaded keys with:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb37&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb37-1&quot;&gt;&lt;a href=&quot;#cb37-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--list-keys&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which will show something similar to&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/home/alex/example/pgpkeys-pyml86/pubring.kbx
--------------------------------
-pub   rsa4096 2021-05-18 [SCEA]
-      B4D5C8B003C50A38A7E85B5989376CAC59892E72
-uid           [ultimate] example &amp;lt;example@example.com&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This PGP key is comprised of both a public key, and a private key. Let’s start with exporting the public key:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb39&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb39-1&quot;&gt;&lt;a href=&quot;#cb39-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--export&lt;/span&gt; example &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/pgp-key.public&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Alternatively, you can reference the key by the email address or even the associated hex code. This should result in a public key that looks like:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-----BEGIN PGP PUBLIC KEY BLOCK-----
-
-mQINBGCkNmcBEADjEcDdne3ti5derY+hSPnhrBWeBba/1gb3S7lKwsysFlxeAApU
-mROTk7gijH84GofOkZzQw9PJEA4u4kkF6EFfOr+VS3JDt5kYjpGorXMD8iRtJAIq
-Y6hX7vqNDHpXFHSEEBIFCUF9E3yf8p7Wrohe0/6HVz1m/XAcU34zWY3a4zfgntsd
-r4hj1h3E/GkZEI8UpB+/LshzbIoZMEDy+EB3EX/oCstZc9aKTUZLP9q5r3CvbrJU
-s3354N+XFxCocVv4c/UFtcUI14EfQv7LVB2JRWYrit65DAHx87V4xcajqbkswvYn
-4ela0DCW/Bw2jz1DaEHLGzn9me6z+YYH8VWbYqUJ/hrHHHSqjjSZ3S5E8gLVzTuf
-IpoWUCSNeZlltBqoWf4ei7Q4nhzFi7AkvLABSkmx7R1+7fOH0ZIN+M2G6lOgcHEU
-IiS7v6ygyj1U2h+38xn66dDH/gUhjp0zJfivMnC1c7pz7R4zNhFxyv1cyekP1nJA
-wmpW+Y5ja3qSJYCHGmrtNaQIVMo2Ho1aXZiMysaTXKp4CYluoUsh97GjLtksq834
-y3+FHdGMt8dGFBCRlZ9BFr1B++FZvuovbLoS+ZREmXTQPXYhN0TinpmnSFJsY6DK
-5zFOU9j3Mtmf77MxUA+xsKBQrDgGM76uN7ADTc0jrUo4hECxnXQkOGyYrQARAQAB
-tB1leGFtcGxlIDxleGFtcGxlQGV4YW1wbGUuY29tPokCTgQTAQoAOBYhBLTVyLAD
-xQo4p+hbWYk3bKxZiS5yBQJgpDZnAhsvBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
-AAoJEIk3bKxZiS5yTUMP/1nlYpQTf8tQgSwSVUM8jhBhdOEEzmsXy/90KgpjX9WF
-ABSC61SnGRonO60dn5CHT4oi0yJRKtsjJ3ZXLyxJY4Myop4ZCoJCcJw6sBOc3rvl
-GN4J4O3+DZn7KRGUKFmLgeuxie2tSHdWYkonlpGPQ34xLgKT6Uf1NQOcCLZpMBim
-2kxNXnnQXLEKXlbm9xmi/koub1qpko01T9DT9g9mlkv56660+sOw0XNwGmPy6HJ2
-2IND53LYDNQv4qbt00ws29AUmZ6WmlUB9oP/nMx56Urgvmn6p/CLB9vbwIAb6egq
-ZouUKsFAFyO5oVH3JoNBYbT84QewQv9BnJVQjuh0wK3OdCBjzT3YcBuRVwVJubKv
-nSjvkJtq20tgxDSPc5ostzMpT5ZnBV+VQa6fwqBgb7VIGEPQklo6IZRwDH0rX1IA
-Xpe2dZOvUICqvg17ol29uQ81BRpB7UynPDbgPDhBbELELPQN/GfaL+op8AB+cbga
-JgC1JcX08nOqnT9TMpfig4TEpL/BKO+3cFy0Sttm44zMrR1f1SiyXdjZTS715LM/
-nmAQWCZFMqN+5nHfT6lwJlqmtRCvjvHPdZla8Ah6B9oB+vJs1cClYJLSZuun89P/
-bmQ5z+qJwCUOEVhVcVPTHAkqCTX2apQBeAszcmk54bGc/Q6UKncOgvOkELS7VuPt
-=DYDE
------END PGP PUBLIC KEY BLOCK-----&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;If the exported key is much larger than this, you may have exported multiple keys which can cause issues with some repositories.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;You can verify only a single key was exported by running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb41&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb41-1&quot;&gt;&lt;a href=&quot;#cb41-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; ~/example/pgp-key.public &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--list-packets&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and checking that only a single &lt;code&gt;:public key packet:&lt;/code&gt; entry exists. It should look something like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# off=0 ctb=99 tag=6 hlen=3 plen=525
-:public key packet:
-    version 4, algo 1, created 1621374567, expires 0
-    pkey[0]: [4096 bits]
-    pkey[1]: [17 bits]
-    keyid: 89376CAC59892E72
-# off=528 ctb=b4 tag=13 hlen=2 plen=29
-:user ID packet: &amp;quot;example &amp;lt;example@example.com&amp;gt;&amp;quot;
-# off=559 ctb=89 tag=2 hlen=3 plen=590
-:signature packet: algo 1, keyid 89376CAC59892E72
-    version 4, created 1621374567, md5len 0, sigclass 0x13
-    digest algo 10, begin of digest 4d 43
-    hashed subpkt 33 len 21 (issuer fpr v4 B4D5C8B003C50A38A7E85B5989376CAC59892E72)
-    hashed subpkt 2 len 4 (sig created 2021-05-18)
-    hashed subpkt 27 len 1 (key flags: 2F)
-    hashed subpkt 11 len 4 (pref-sym-algos: 9 8 7 2)
-    hashed subpkt 21 len 5 (pref-hash-algos: 10 9 8 11 2)
-    hashed subpkt 22 len 3 (pref-zip-algos: 2 3 1)
-    hashed subpkt 30 len 1 (features: 01)
-    hashed subpkt 23 len 1 (keyserver preferences: 80)
-    subpkt 16 len 8 (issuer key ID 89376CAC59892E72)
-    data: [4095 bits]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next let’s export the private key so we can back it up somewhere safe.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb43&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb43-1&quot;&gt;&lt;a href=&quot;#cb43-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--export-secret-keys&lt;/span&gt; example &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/pgp-key.private&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You should never share this key with anyone. If you look at the output file, it should look similar to this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-----BEGIN PGP PRIVATE KEY BLOCK-----
-
-lQcYBGCkPGEBEAC7P59Xp933LVYAKsDzDgMp/kc9SyLd8VxsqX4FEJ31/hMkl8Bh
-RPg1l40IuVP9nVf0W9LrLoHVI13uoUdMYJ7+ZoOihd7Qi6ePqgmWahx+U4hyUMeQ
-2MtBV23A2HLfUxP/vOs3BgQxf6efDdZpf6Jyq7hLagXbBoGE0X02igj4ModMD7fy
-8HpKbiXhIIqTFQM1V8EQVdERzY0aEzFD/hlKKj2+NdhhYB3UwnyKoIYXrsfEnGMy
-8Yje2sr2HKXrqVBIOfqZls8MJrkMZHrMzWF9ZdBC+CJfN2/DG5bl/kBkZfpHq6Mn
-C3WPdRWOunJaDSahc7baghM4aSj5oEtaJ4e3CGi3vBajGDRXAbrDpuBPfuzyp6dI
-cqbNLTkriYq5idXx9XxD6EaGrkZ12U4JCvfhex4qsczQMl/AUNZDmW+9MB7J0ZdS
-tAUJCSbsM5B5663l9uVwI6is4PH18GX0b76EBjrYe8OcSljKLGXobtfZSIKd4zBf
-K6Fxs7gAST8VewApWjsLDGuBdLJcOcdftUxo/5Vg+c/ThtlxduOdsoB6+z/pVufj
-YAGMl388jeV34d+2FzH+VxedzdIO6tPN8G0WINLP7YyKmE89BccYKpIVd9fqYg/Y
-KIqF1zRbu7MtAMfpUsHt90Wctn6mLe7KR5BSoBzf3cu2RxbOlhWohOD7aQARAQAB
-AA/6ArEBa1MgX6MpL0tuBpBW/02GXJ0t3R7RA0bUZuI8QwLp54a+3ycMokiRYGS5
-jlWqo/qF55d9ikC94uYyjih9YI68qaNe9oRrXidFiAHycuZkebArjitvkHrfOvxh
-elBJY02l296cRNHe6Oxb/pw1C4zoUz0s5F8NkYkpUZVeV6LySueW70kBmPxIUxoS
-o9aTezrNrZxuKuFXe952wNFwL5630HoZqBynkR1SiPORudlrSaotytep7fobHLqA
-sAh4/PDIZ1jBlR0hX8o58aOqGRFTkwLaC6BSXO2Sl6+14TuOA2W2LKN/hxZZvvlz
-F1RFD+EH6dAg0pjAXAYvzxXuX27V0aeKzxssbK0Xl/c6n3IMNHTdbAw17W4lg0fJ
-Omd9csGh0+wEGxsM30gqTT46Z5ixtZ6Q6zbpUBN3k4Lr5iW0BEBYIj4J0YVD2c0Q
-3jKQ/xnrE1GjrBuVT4WIvKGaHlcrP/v+tg4AZjhZzwcRi84AlEOTTNjNkmQqDc02
-1ogx5zZ8/RoNitswPd1v4Cj7zQzhozinEcv/8PJoCm1thbIUE84i7/vTEsmFm/gq
-Xh93/v8k8comM2EUVSrmJOuUWtTx9fCKLE34ZhyETVgl68thDp2oX6HQXPPkPOF5
-Q3k4ujWd3tn1dTR9brPHtf0/9f/LQCLp5L+lNxOQzeHABgEIANYIwHxbIXEyojjS
-R6FG8FjPWVD7D2vo5V176V3N+ERjSBGwyDZ3sjqSuj+TnBNwiPL7XKKxNslXvww0
-I8hLmhw3bEN9ZzmdZ5IIzUmEjDhUTDMmTF6C7HpnLpuuqpKRcwCRtnHJM/3umQpY
-l51MQNNbkKDYrU+1UVO6aTV3h56btPZSdKvyQ26zOf2UfDe2KdEaVruoCbnFnmBD
-oDerCeRf3MGc7nw21kMrJ9FPYZpMzKBqu5BI9OsB5Ju9LgAhsNW6Ux2+X0HvQQB3
-GMLU3v1KsRiwwVLvsnGpA3j28XEsq5L17sqR6knSE/0e/X0SNyJXMX9NMNf0Whlw
-TZ1nF6EIAN/2Y5V7vOa6AHdOYSpmGNoeAWeOFLXDcDdL0U7tntWFnrnI4wGyziiz
-pH2T/wfuHp6b7PcL5YzCtYGaP7/omje7WjIkFl6rJcpynu/X80ogE88c1U7u7KDb
-dqjkWyonGnSmpTvLG3fF/MA1tJawUWDwFV65ahX3N0ZS7siZbGzaBFFfuw2uzdvY
-zP04bvFeQSuTeH/XxJ5n0Ea68JRkoHwITTRX9/Gi3mNwe4YkaXu4SebCqKl1pl0v
-NwTQBAWwYSKo0xibZF5WLcax3qvhGdyyunN/WaMO7oDwxiGKg7fFym2z9Fm6/XHv
-pOJukl9ujJxp2C0Gfn5c9aIueTDgrskH/3CfvxmOyLIeDN2OOvLV//5/srYTqDGz
-b7FW20r6IxbY4Jt9kFDcOWlzErsD2L3l0D1Xyv2rE7CaWErEfGbQaYqSJ8EBB6EI
-N24Q90pzkfaL84zNGrLRpxlSd5YknDh344wID0KFHLcYy1MHynLErQPexAQDsxCY
-sv+9BxjwK9pSLEvu6+hfKAmeRPCU8LPxjgnxLXhm92CklUGmZYVIMiFtwWKqwB3c
-vmFTW/4cgfuxVxYiriAE1DQ6VOPjweKpyPli1AcMkgPXG1dVD8DkQ5WR99jFoAs4
-f2F+xbYp5cK/xoK8imCdI7TUEWd9jOpD5fgW3cI3jHf4UHZvJfVrTDCNAbQdZXhh
-bXBsZSA8ZXhhbXBsZUBleGFtcGxlLmNvbT6JAk4EEwEKADgWIQQjmwbKSoK7sgII
-vKnhkzUydQ6e7wUCYKQ8YQIbLwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgAAKCRDh
-kzUydQ6e7wepD/981U87Qr9IBh1nMFyNuLpGpRwzNMiBP/KlOQ/7HTAVvOKAYYZT
-tTG5teVcwQX9PLStjsrqJ5owpjeHkX8qydioLbK8XFFlhxi/5X6YxYKUuBfky32w
-DN+B9gqbWc9xFcEyoSgM1aZBrvVB4GKC/vqlgNnU5TDaszMIeD40tNlXZa8fv7Ie
-Hz4Sgw3MrOzLdMjW3ZpoFiYsUX0fh4CB397pOXJlOam9doznhv5vYF6scVS9GU8D
-sF8fsa0fX9kciAEw863q21R/gvJF6SnjCGsDtlVVDXJZwex30JzYyeVHg6NWXpyp
-cs9vS9gfpETmgdG9/Sx8qcV4UCsoeSodaJ4slfFkTMMFbupb5YrXkf7B6pm5esTy
-eTsP08GiDS8LDe+BsvqYyi9GuLMknAyBPD8mTTB0/lU9eEt/lFAAGVcYsGuYdc9d
-dHFEvWWflPNNx7vXS1zwdCYd4RcnIYfpLurHbb79Yv2YVr9rOS1ivWZcfi5T8bdI
-WGPxI2rJ2gZYUB7w0t9s23qADaaf/MpgbekAyPGIxKEGGQGyv9kqzYmVZdfdRss3
-MsMwELFwsvuUi1duyuXkbY+jJ+6qCfoWJF6zriJKNjIvjPFois9YAH3CGQP/5nsl
-rRYC0Psjil8wZAHa/sJePBtn+9Ol0atZ6QDvyr2r3fMHQiEe+mB0cpKnBw==
-=+Tgf
------END PGP PRIVATE KEY BLOCK-----&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;The above is a burner-key I created for this article. It’s never been used for anything aside from this article. You should be generating your own key, don’t use this one.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Now that we’ve generated a PGP key pair, let’s move on to signing files with them.&lt;/p&gt;
-&lt;h4 id=&quot;signing-the-release-file&quot;&gt;Signing the Release File&lt;/h4&gt;
-&lt;p&gt;Before we start signing with out keys, let’s make sure that we can import the backup we made. To do that, we will create a new GPG keyring location:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb45&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb45-1&quot;&gt;&lt;a href=&quot;#cb45-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;va&quot;&gt;GNUPGHOME&lt;/span&gt;&lt;span class=&quot;op&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;fu&quot;&gt;mktemp&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-d&lt;/span&gt; ~/example/pgpkeys-XXXXXX&lt;span class=&quot;va&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and then verify that it is empty:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb46&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb46-1&quot;&gt;&lt;a href=&quot;#cb46-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--list-keys&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which should show something similar to:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;gpg: keybox &amp;#39;/home/alex/example/pgpkeys-e7u1Ad/pubring.kbx&amp;#39; created
-gpg: /home/alex/example/pgpkeys-e7u1Ad/trustdb.gpg: trustdb created&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next we will import our backed up private key:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb48&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb48-1&quot;&gt;&lt;a href=&quot;#cb48-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; ~/example/pgp-key.private &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--import&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;which should show a similar imported message:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;gpg: key 4E793BC948F34C6F: public key &amp;quot;example &amp;lt;example@example.com&amp;gt;&amp;quot; imported
-gpg: key 4E793BC948F34C6F: secret key imported
-gpg: Total number processed: 1
-gpg:               imported: 1
-gpg:       secret keys read: 1
-gpg:   secret keys imported: 1&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and now if we run &lt;code&gt;gpg --list-keys&lt;/code&gt;, we should see it is now available:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/home/alex/example/pgpkeys-e7u1Ad/pubring.kbx
----------------------------------------------
-pub   rsa4096 2021-05-18 [SCEA]
-      CFBFFC9CCD163CC7E1768BFF4E793BC948F34C6F
-uid           [ unknown] example &amp;lt;example@example.com&amp;gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ok, let’s get around to signing the &lt;code&gt;Release&lt;/code&gt; file now.&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb51&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb51-1&quot;&gt;&lt;a href=&quot;#cb51-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; ~/example/apt-repo/dists/stable/Release &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--default-key&lt;/span&gt; example &lt;span class=&quot;at&quot;&gt;-abs&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/apt-repo/dists/stable/Release.gpg&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The contents of &lt;code&gt;Release.gpg&lt;/code&gt; should be similar to this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-----BEGIN PGP SIGNATURE-----
-
-iQJIBAABCgAyFiEEz7/8nM0WPMfhdov/Tnk7yUjzTG8FAmCkTYYUHGV4YW1wbGVA
-ZXhhbXBsZS5jb20ACgkQTnk7yUjzTG+f2g//QpVA4RP5qp2mAlolhqKCqLr6r7DX
-mUC5ueSISXlRwVK7l0xFADqw4uHsl+T0DIeX7K/efHyyqIYq+t8fCA8HbB5CmWFk
-2rOa9jFR4G+afJ1mdfQYUHshwEzY+NIScg3suO0ZeILFXcTW6a6AzlwqI3pVy/b8
-o/FCjj4hBnaPysDS1BmPqxjWvt5ilQR3RTodsFahr2FncmgZI8zvrbCey630O/Cs
-ELLp9fqBQj//FEje/JgHtG6E85qjsod0Nstu5h2yEs9iwMP1+peMB80NLpyeacpS
-CWbZmFgxqKL7JNSx04T8epL23Zg6trrzhvOzOiVp2+Ilg438LBrErSVO+3puWT2e
-bR3jpFSg9ej0+90QnG3IIkZW1RSkitlpNiFGFrUvlBRE9tSjZMK10EofPtzENEWN
-uXYqjcWTJxp6R7d1IW/lTFzwdCPorgBPBbjmJ7Ux5YWZP7jjJmFpF9jSHVz6xDcp
-oUBQcF4jHn5ewh0yKZQbqA3ZRXpPBDSNSraIDFToeFzhV94FQR2f5A5FgBR8n/Kr
-Gfb76dsKabwVJlr7z8+W2C8gHmOe4dlVVUje3bxo05VNwZEBPbRldFox4GKIWT46
-FbXyzB/EfRR7rzmaRfIpDfQa6hLOoivlat1no6akT7bK2mE7Y0L+Kae1dP+BpBUe
-BqY84ZTkmQiOL0c=
-=Dqab
------END PGP SIGNATURE-----&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now when an apt client performs an update, it will fetch both &lt;code&gt;Release&lt;/code&gt; and &lt;code&gt;Release.gpg&lt;/code&gt; and will verify the signature is valid; However to increase the speed, we will create a third file &lt;code&gt;InRelease&lt;/code&gt; which will combine both the contents of &lt;code&gt;Release&lt;/code&gt; and the PGP signature:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb53&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb53-1&quot;&gt;&lt;a href=&quot;#cb53-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; ~/example/apt-repo/dists/stable/Release &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;gpg&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--default-key&lt;/span&gt; example &lt;span class=&quot;at&quot;&gt;-abs&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;--clearsign&lt;/span&gt; &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; ~/example/apt-repo/dists/stable/InRelease&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The contents of &lt;code&gt;InRelease&lt;/code&gt; should be similar to this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-----BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
-
-Origin: Example Repository
-Label: Example
-Suite: stable
-Codename: stable
-Version: 1.0
-Architectures: amd64 arm64 arm7
-Components: main
-Description: An example software repository
-Date: Tue, 18 May 2021 01:17:46 +0000
-MD5Sum:
- d47739655e6312da85a96711f78c78db 405 main/binary-amd64/Packages
-SHA1:
- d6aa46cf29cca1b01af6e9e256bf963ff5dfdaeb 405 main/binary-amd64/Packages
-SHA256:
- 3b888d4257fcf475fc06f74bd46045c3f1d667562fdb37e86f5bea642efa49f8 405 main/binary-amd64/Packages
------BEGIN PGP SIGNATURE-----
-
-iQJIBAEBCgAyFiEEz7/8nM0WPMfhdov/Tnk7yUjzTG8FAmCkT1wUHGV4YW1wbGVA
-ZXhhbXBsZS5jb20ACgkQTnk7yUjzTG8w/RAAwB6HRyZWVOWT1A0OJAt+RlLREjev
-gfRZVLZRDv18QRZKCcj71v0Ki1hX3xWE8WVjIR9eSXNf1wJvqza+/FBGN00NY1Bk
-AFmypZP/04kjwGeUtULopLB1KrCaFdWuC9W49zUyeElIz1owX9tk+SsoLB7hGLQE
-jtweFjxhaMeCHgSJIXDoR0RpmKBuydtB3UTHjCQJBvErkYfKrAJQCDYDz+XVPLh6
-XPAohVb6SO4qBCxX30QcQpUVDRtMMRKbIOD5B+hjCP5cupvej1fBlzlFh4lBIywj
-eUXrwBxmOiO/yrsYNoJJB+mV9u1mEpQDo7yRDCICsY2c/Io/Q0CxiEIIwoEfHCb/
-WOFYYmUj1Sh9YARi74eTblMyr/Ay/9+opEr54uAixecJyC/kqsC3uptH4ZpOSwTw
-hdj24Cl2veYmiCimPB4QCLOsCU5A1phwEkgADUOh4iRaszuzGkh/NZ0al0dCF0HY
-/UsDuiMzEQGOP6ByILt1zoPrnwZKFDEbYjzSbjSXfkU9LKfrp5PWgeeq5iD58sQW
-ZCE34ksK8W67GOtQuzy0Z8NlTJY1Mkzp7IsUt60owyv6dQVZFIPYwGEisGFSOCNk
-3VZ66m1D6HtDZ60CZEJUhfu+WTC1K95cKYkhYArBR9pDecygYomLQVFO2T1ENxCA
-BKaAtOSl2Jcb4eA=
-=3Hft
------END PGP SIGNATURE-----&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id=&quot;testing-it-out&quot;&gt;Testing It Out&lt;/h4&gt;
-&lt;p&gt;We need to tell apt which public pgp key to use when verifying the apt repository. We will add a new &lt;code&gt;signed-by&lt;/code&gt; attribute to our apt config:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb55&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb55-1&quot;&gt;&lt;a href=&quot;#cb55-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;deb [arch=amd64 signed-by=&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;st&quot;&gt;/example/pgp-key.public] http://127.0.0.1:8000/apt-repo stable main&amp;quot;&lt;/span&gt; &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; tee /etc/apt/sources.list.d/example.list&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;div class=&quot;notice--info&quot;&gt;
-&lt;p&gt;note that &lt;code&gt;$HOME&lt;/code&gt; should be expanded to the absolute path of the pgp key.&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;Next start back up your web server:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb56&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb56-1&quot;&gt;&lt;a href=&quot;#cb56-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;cd&lt;/span&gt; ~/example&lt;/span&gt;
-&lt;span id=&quot;cb56-2&quot;&gt;&lt;a href=&quot;#cb56-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;python3&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-m&lt;/span&gt; http.server&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then finally try updating and re-installing our hello-world package:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb57&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb57-1&quot;&gt;&lt;a href=&quot;#cb57-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get clean&lt;/span&gt;
-&lt;span id=&quot;cb57-2&quot;&gt;&lt;a href=&quot;#cb57-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get update&lt;/span&gt;
-&lt;span id=&quot;cb57-3&quot;&gt;&lt;a href=&quot;#cb57-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;sudo&lt;/span&gt; apt-get install hello-world&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This time you shouldn’t see any security warnings.&lt;/p&gt;
-&lt;h4 id=&quot;keeping-your-private-key-secure&quot;&gt;Keeping Your Private Key Secure&lt;/h4&gt;
-&lt;p&gt;If you followed this tutorial to the tee, and your web server is still running, what happens if we try running:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb58&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb58-1&quot;&gt;&lt;a href=&quot;#cb58-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;curl&lt;/span&gt; http://127.0.0.1:8000/pgp-key.private&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Oh no! we just leaked our private key. Now’s the time to regenerate it but using a real name and email address other than &lt;code&gt;example@example.com&lt;/code&gt;. Maybe you can store it in earthly’s &lt;a href=&quot;https://docs.earthly.dev/docs/guides/cloud-secrets&quot;&gt;secret store&lt;/a&gt; instead?&lt;/p&gt;
-&lt;h2 id=&quot;appendix-a-a-complete-example-using-earthly&quot;&gt;Appendix A: A Complete Example using Earthly&lt;/h2&gt;
-&lt;p&gt;A complete example has been created under &lt;a href=&quot;https://github.com/earthly/example-apt-repo/blob/main/Earthfile&quot;&gt;github.com/earthly/example-apt-repo/Earthfile&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This Earthfile contains all the above steps from this tutorial in a single location, which can be run directly in a single shot with:&lt;/p&gt;
-&lt;div class=&quot;sourceCode&quot; id=&quot;cb59&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb59-1&quot;&gt;&lt;a href=&quot;#cb59-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;earthly&lt;/span&gt; &lt;span class=&quot;at&quot;&gt;-P&lt;/span&gt; github.com/earthly/example-apt-repo:main+test&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Alternatively, you can clone the repo and run &lt;code&gt;+test&lt;/code&gt; directly. &lt;!-- vale HouseStyle.TLA = YES --&gt; &lt;!-- vale HouseStyle.ListStart = YES --&gt;&lt;/p&gt;</content><author><name>Alex Couture-Beil</name></author><category term="Tutorials" /><summary type="html">As an Ubuntu user, I find myself typing apt install ... frequently as a way to install software on my system. But what if I wanted to distribute my code to others via an apt repository? In this post I’ll cover how to 1) create a deb package, 2) create an apt repo, 3) signing that apt repo with a PGP key, and 4) putting it all together with some tests.</summary></entry></feed>
+&lt;p&gt;For anyone looking to learn more about continuous integration, I highly recommend &lt;a href=&quot;https://martinfowler.com/&quot;&gt;Martin Fowler’s&lt;/a&gt; book &lt;a href=&quot;https://www.martinfowler.com/books/duvall.html&quot; title=&quot;Continuous Integration by Martin Fowler&quot;&gt;Continuous Integration&lt;/a&gt;.&lt;/p&gt;</content><author><name>Allan MacGregor</name></author><category term="Tutorials" /><summary type="html">In software engineering, continuous integration is the practice of merging all developers’ working copies to a shared mainline several times a day. Grady Booch first proposed the term CI in his 1991 method, although he did not advocate integrating several times a day. —Wikipedia</summary></entry></feed>
