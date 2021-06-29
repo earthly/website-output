@@ -335,9 +335,15 @@ var store = [{
         "url": "/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Linting Markdown And Documentation",
-        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["+","Tutorials"],
+        "title": "SQL Errors and Video Cameras",
+        "excerpt":"Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things. The SQL looked something like this: --...","categories": ["Articles"],
         "tags": [],
-        "url": "/blog/markdown-lint/",
+        "url": "/blog/video-camera-on/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

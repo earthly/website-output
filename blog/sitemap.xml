@@ -225,8 +225,12 @@
 <lastmod>2021-06-24T00:00:00-04:00</lastmod>
 </url>
 <url>
-<loc>https://earthly.dev/blog/markdown-lint/</loc>
-<lastmod>2021-06-25T00:00:00-04:00</lastmod>
+<loc>https://earthly.dev/blog/video-camera-on/</loc>
+<lastmod>2021-06-29T00:00:00-04:00</lastmod>
+</url>
+<url>
+<loc>https://earthly.dev/blog/example/</loc>
+<lastmod>2029-01-01T00:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/categories/</loc>
@@ -248,9 +252,6 @@
 </url>
 <url>
 <loc>https://earthly.dev/blog/categories/tutorial/</loc>
-</url>
-<url>
-<loc>https://earthly.dev/blog/categories/</loc>
 </url>
 <url>
 <loc>https://earthly.dev/blog/page2/</loc>

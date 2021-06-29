@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>SQL Errors and Video Cameras - Earthly Blog</title>
+<meta name="description" content="">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="SQL Errors and Video Cameras">
+<meta property="og:url" content="https://earthly.dev/blog/video-camera-on/">
+
+
+  <meta property="og:description" content="">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/video-camera-on/header-800-fd2e1d2f3.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="SQL Errors and Video Cameras">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:url" content="https://earthly.dev/blog/video-camera-on/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/video-camera-on/header-800-fd2e1d2f3.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-06-29T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/video-camera-on/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/video-camera-on/header-400-d8ae1c6d6.webp 400w, /blog/generated/assets/images/video-camera-on/header-600-d8ae1c6d6.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-d8ae1c6d6.webp 800w, /blog/generated/assets/images/video-camera-on/header-1000-d8ae1c6d6.webp 1000w, /blog/generated/assets/images/video-camera-on/header-1200-d8ae1c6d6.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-400-d8ae1c6d6.png 400w, /blog/generated/assets/images/video-camera-on/header-600-d8ae1c6d6.png 600w, /blog/generated/assets/images/video-camera-on/header-800-d8ae1c6d6.png 800w, /blog/generated/assets/images/video-camera-on/header-1000-d8ae1c6d6.png 1000w, /blog/generated/assets/images/video-camera-on/header-1200-d8ae1c6d6.png 1200w" type="image/png"><img src="/blog/generated/assets/images/video-camera-on/header-800-d8ae1c6d6.jpg" alt="SQL Errors and Video Cameras"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="SQL Errors and Video Cameras">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2021-06-29T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">SQL Errors and Video Cameras
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-29T00:00:00-04:00">June 29, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <div class="narrow-code">
+<p>Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things.</p>
+<p>The SQL looked something like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- sort and insert first partition into repo</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Report</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> name <span class="kw">FROM</span> input1 </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> val;</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Report;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>one</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>two</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>three <span class="co">-- yep</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- sort and insert second partition into repo</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Report</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> name <span class="kw">FROM</span> input2 </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> val;</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Report;</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>one</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>two</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>three</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>four </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>five </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>six <span class="co">-- yep</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> top <span class="dv">3</span> <span class="op">*</span> <span class="kw">FROM</span> Report;</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>one</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>two</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>four <span class="co">-- wait, what?</span></span></code></pre></div>
+<p>I was going to spend the morning tracking this down. That was my daily stand-up update. But when I gave it, I caught a look from my teammate Isabella (not her real name). The look helped me solve the problem. We’ll get to the solution in a moment, but I want to talk about that facial expression – I am always on the lookout for it now.</p>
+<h2 id="the-wait-what-look">The Wait-What? Look</h2>
+<div class="align-right">
+<p><picture><source srcset="/blog/generated/assets/images/video-camera-on/confused1-500-a0a7ebe24.webp 500w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/confused1-500-b12c046e3.png 500w" type="image/png"><img width="260px" src="/blog/generated/assets/images/video-camera-on/confused1-800-b12c046e3.png"></picture></p>
+<figcaption>
+“I’ve traced it to a bug in the SMTP protocol”
+</figcaption>
+</div>
+<p>I once saw someone go up to a post-office box and confidently empty their lunch garbage into it - like it was a food court garbage bin. I made the facial expression then - I could feel my lips pull to one side and my eyes narrow in confusion. Am I seeing this correctly?</p>
+<p>I’ve spotted this look in so many daily stand-ups since then. Usually, it’s very fleeting, but I try not to let it pass by unremarked because unpacking it can save so much time. It easy to thrash on a problem and forget some simple assumption you’ve made. This face is a sign you’ve overlooked something important.</p>
+<p>Are daily stand-ups valuable? Sometimes they are, and sometimes they aren’t<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. If you’re blocked on something, then telling the team is essential, but you shouldn’t wait for the next stand-up to share that. There are also all kinds of social reasons why a stand-up is healthy. I work from my home office and have for many years, and a video stand-up is a great way to actually have some small talk, screen to screen, with my teammates. Some parts of a daily stand-up are just a status report, and I’m not sure that ‘what I did yesterday and what I’m doing today part’ is always valuable. But the actual off-topic parts of a stand-up – the part where I complain about how difficult it is to get a permit for building my deck, and where Alex explains about foraging for mushrooms – those parts help keep me sane and happy.</p>
+<h2 id="thats-not-quite-right">That’s Not Quite Right</h2>
+<div class="align-left">
+<p><picture><source srcset="/blog/generated/assets/images/video-camera-on/confused2-500-1f53a66bd.webp 500w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/confused2-500-4089110d6.png 500w" type="image/png"><img width="260px" src="/blog/generated/assets/images/video-camera-on/confused2-800-4089110d6.png"></picture></p>
+<figcaption>
+“I’m inserting ‘foo’ but retrieving ‘disk is full’”
+</figcaption>
+</div>
+<p>We are always simulating the world around us on some subconscious level. It helps us predict what is going to happen next. For example, my neighbor is out watering his grass right now – I can see him out my office window. If his hose wasn’t on, I’m not sure I would notice because I’m not paying that much attention. But if he casually jumped from the ground to the second-story roof of his house, it would become the center of my attention. It would trigger some that’s-not-quite-right effect, and I would unconsciously make that confused face.</p>
+<p>That is why a stand-up can be valuable, in person or screen to screen. You can give your update when you are stuck, and you can watch for that failed-simulation face. Then ask them what they are thinking. Chances are they know where you missed a step or where you have a false assumption. At the very least, you’ve violated their intuition about the problem, and unpacking that feeling is a good idea.</p>
+<h2 id="non-verbal-communication-requires-cameras-on">Non-Verbal Communication Requires Cameras On</h2>
+<div class="align-right">
+<p><picture><source srcset="/blog/generated/assets/images/video-camera-on/confused3-500-957022048.webp 500w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/confused3-500-7d0fb7a4e.png 500w" type="image/png"><img width="260px" src="/blog/generated/assets/images/video-camera-on/confused3-800-7d0fb7a4e.png"></picture></p>
+<figcaption>
+“All users were created on a Thursday in 1970”
+</figcaption>
+</div>
+<p>I’ve heard many times before that 70% of communication is non-verbal. This seems to oversell non-verbals or maybe I’m just not great at reading them. This whole confused-face signal could be replaced with chin-scratching emoji or a sign that said: “Wait, What?”. But, when I do get a non-verbal signal, it can save me hours and days of time. I don’t think you can easily replicate this signal with asynchronous communication. One reason is that these non-verbal cues often represent subtle feelings. Someone can hear your update and think to themselves, “That doesn’t sound right”, but they may not be comfortable enough or care enough to say it out loud. Or it’s just fleeting thought before they start their own update. You have to catch these expressions, and you can’t do it without seeing the person.</p>
+<p>This doesn’t mean that everyone should always be able to see everyone in every meeting. If you are joining a 50 person meeting with a single presenter and everyone has their camera off, then follow suit. If you are eating your lunch in a meeting, I don’t need to see or hear you chew. But if you are seeking help or giving help or pairing on an issue with me, then I want to see your face. The examples and facial expressions here are extreme but even just seeing that I’ve gone too fast and lost you, or that you’re starting to say something, can improve the fidelity of the conversation.</p>
+<p>People find zoom meetings fatiguing, and I get that. The world contains too many meetings. But I’m shocked when I talk to someone on a remote team that never uses video. If you’re not seeing your teammate’s face when you describe a problem, who knows what you are missing<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<h2 id="the-sql-solution">The SQL Solution</h2>
+<div class="align-left">
+<p><picture><source srcset="/blog/generated/assets/images/video-camera-on/confused4-500-55b7c9ac2.webp 500w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/confused4-500-4d79dd6c3.png 500w" type="image/png"><img width="260px" src="/blog/generated/assets/images/video-camera-on/confused4-800-4d79dd6c3.png"></picture></p>
+<figcaption>
+“the max message size in the queue<br/> is now 2 gigabytes”
+</figcaption>
+</div>
+<p>So about the SQL. I got <code>the look</code> from Isabella because a select statement like I was describing should be deterministic. Isabella’s spidey-sense told her either I was wrong about results changing or I was misusing SQL. It turned out to be the latter.</p>
+<p>You see, I was inserting records sorted and selecting them out without an explicit order. Also, my simple recounting of the report’s logic (and my code snippet above) was missing a critical detail – one I had forgotten about<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Sometimes I had to delete duplicate keys from the report table. Guess what happens when you insert things in-order into a table with deleted rows? Its implementation-specific, but sometimes, the invisible spaces left by the deleted rows will be filled in by the inserted data, undoing the insertion order. My row wasn’t missing. My data just wasn’t sorted correctly. Once I added in an <code>order by</code> everything worked.</p>
+</div>
+<!-- markdownlint-disable MD046 -->
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="http://localhost:4002/blog/thought-leaders/">Like everything</a>, they work well in some contexts and not in others. If they aren’t helpful, drop them and try something else.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">Adam Gordon Bell</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-29T00:00:00-04:00">June 29, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/" class="pagination--pager" title="Creating and hosting your own rpm packages and yum repo
+">Previous</a>
+    
+    
+      <a href="/blog/example/" class="pagination--pager" title="Example Post
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-600-f3c707015.webp 600w, /blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-f3c707015.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-600-3cc6ceb1f.jpg 600w, /blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-3cc6ceb1f.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/creating-and-hosting-your-own-rpm-packages-and-yum-repo/header-800-3cc6ceb1f.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/" rel="permalink">Creating and hosting your own rpm packages and yum repo
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
