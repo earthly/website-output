@@ -10,7 +10,7 @@
 
 
 <title>v0.2.0 Released - Earthly Blog</title>
-<meta name="description" content="Changes:">
+<meta name="description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/v0-2-0-released/">
 
 
-  <meta property="og:description" content="Changes:">
+  <meta property="og:description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
 
 
 
@@ -31,7 +31,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="v0.2.0 Released">
-  <meta name="twitter:description" content="Changes:">
+  <meta name="twitter:description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
   <meta name="twitter:url" content="https://earthly.dev/blog/v0-2-0-released/">
 
   
@@ -235,7 +235,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="v0.2.0 Released">
-    <meta itemprop="description" content="Changes:">
+    <meta itemprop="description" content="Changes:Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.Rename build.earth to EarthfileGitLab supportAbility to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)HEALTHCHECK command supportFixed out of disk space errorFixed support for stdout reset control characters (which are used for installation progress bars)Added Scala, c++, dot net examplesUpgrade instructions:docker stop earthly-buildkitdsudo rm -rf /tmp/earthlyRe-run the install command for your OS">
     <meta itemprop="datePublished" content="2020-07-22T00:00:00-04:00">
     
 
@@ -403,8 +403,7 @@
 
     <p class="archive__item-excerpt" itemprop="description">
 
-
-</p>
+Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
   </article>
 </div>
 

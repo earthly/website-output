@@ -10,7 +10,7 @@
 
 
 <title>v0.3.0 Released - Earthly Blog</title>
-<meta name="description" content="Changes:">
+<meta name="description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
 
-  <meta property="og:description" content="Changes:">
+  <meta property="og:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
 
 
 
@@ -31,7 +31,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="v0.3.0 Released">
-  <meta name="twitter:description" content="Changes:">
+  <meta name="twitter:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
   <meta name="twitter:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
   
@@ -235,7 +235,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="v0.3.0 Released">
-    <meta itemprop="description" content="Changes:">
+    <meta itemprop="description" content="Changes:New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.New Significant speed improvement on Mac (builds are now almost 3x faster).New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.Improved error display in case of build failureReduced repetitive progress outputFixed an issue where leftover socket files would cause the build to fail ​Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space viaUpgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthlyUpgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.Release Pages">
     <meta itemprop="datePublished" content="2020-08-18T00:00:00-04:00">
     
 
@@ -406,8 +406,7 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
 
     <p class="archive__item-excerpt" itemprop="description">
 
-
-</p>
+Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
   </article>
 </div>
 
