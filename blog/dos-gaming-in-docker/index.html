@@ -306,7 +306,7 @@
 <li><a href="https://earthly.dev/">Earthly</a> (Optional, but I think it’s neat!)</li>
 </ul>
 <h2 id="putting-it-together">Putting It Together</h2>
-<p>First, we will need to acquire JS-DOS. JS-DOS is a wrapper around an Emscripten-compiled version of <a href="https://www.dosbox.com">DOSBox</a>, so it can run in a browser. You can get the latest versions of the files <a href="https://js-dos.com/#js-dos-622-archives">on js-dos.com</a>. Download and place these files into a project directory. Here’s how I’m doing it, using Docker:</p>
+<p>First, we will need to acquire JS-DOS. JS-DOS is a wrapper around an Emscripten-compiled version of <a href="https://www.dosbox.com">DOSBox</a>, so it can run in a browser. You can get the latest versions of the files <a href="https://js-dos.com/#js-dos-622-archives">here</a>. Download and place these files into a project directory. Here’s how I’m doing it, using Docker:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> site</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> wget https://js-dos.com/6.22/current/js-dos.js &amp;&amp; \</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    wget https://js-dos.com/6.22/current/wdosbox.js &amp;&amp; \</span>
@@ -360,7 +360,7 @@
 <p><strong>ℹ️ Note</strong></p>
 <p><code>GAME_ARGS</code> is the command for DOSBox (which is inside JS-DOS) to start once it is loaded. The CLI arguments should line up with what a regular installation of DOSBox would expect. If your game requires additional arguments, please provide them in a comma-separated list.</p>
 </div>
-<p>Copy this HTML file into the same directory as your JS-DOS files and your game. Now all you need to do is start a server within our Docker container to serve this webpage. For this, I used <a href="https://www.npmjs.com/package/serve"><code>serve</code></a>, because it was quick and easy to script (you may have noticed installing this dependency alongside JS-DOS earlier). Heres how I add the server to the container:</p>
+<p>Copy this html file into the same directory as your JS-DOS files and your game. Now all you need to do is start a server within our Docker container to serve this webpage. For this, I used <a href="https://www.npmjs.com/package/serve"><code>serve</code></a>, because it was quick and easy to script (you may have noticed installing this dependency alongside JS-DOS earlier). Heres how I add the server to the container:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ARG</span> GAME_ARGS</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> index.html .</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> sed -i s/GAME_ARGS/$GAME_ARGS/ index.html</span>
@@ -370,12 +370,11 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="dt">\</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_URL=https://archive.org/download/msdos_festival_SCORCH15/SCORCH15.ZIP <span class="dt">\</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_ARGS=<span class="dt">\&quot;</span>SCORCH.EXE<span class="dt">\&quot;</span> <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 127.0.0.1:8000:8000 <span class="dt">\</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> mycool:dosgame .</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> mycool:dosgame .</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
 <h2 id="going-further">Going Further</h2>
 <p>Using Earthly, we can even go a step further! Earthly lets us separate some of the concerns within the Dockerfile:</p>
 <div class="notice--info">
@@ -422,11 +421,11 @@
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/agent.png" title="fig:" alt="Screenshot of Apogee’s Secret Agent running in a web browser." />
 <figcaption>
-<code>earthly github.com/cosmo/earthly-dos-gaming:main+cosmo</code>
+<code>earthly github.com/dchw/earthly-dos-gaming:main+secretagent</code>
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/cosmo.png" title="fig:" alt="Screenshot of Apogee’s Cosmos Cosmic Adventure running in a web browser." />
 <figcaption>
-<code>earthly github.com/dchw/earthly-dos-gaming:main+secretagent</code>
+<code>earthly github.com/dchw/earthly-dos-gaming:main+cosmo</code>
 </figcaption>
 <p>You can run your own dos games by running:</p>
 <pre><code>earthly \
@@ -458,11 +457,8 @@
 
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
-        Corey Larson
+      <h4 class="author__name" itemprop="name">Corey Larson</h3>
     
-    
-    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Eats, runs, and codes. Dad. Engineer. Progressive. LDS. Disneyland fanatic.</p>
@@ -476,7 +472,7 @@
     <ul class="author__urls social-icons">
       
 
-     
+      
 
       
 
@@ -603,13 +599,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -627,7 +623,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          4 minute read
         
       </span>
     
@@ -635,8 +631,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
 
-Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+</p>
   </article>
 </div>
 
@@ -656,13 +653,13 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/markdown-lint/header-600-193822b16.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-193822b16.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-600-490715c18.jpg 600w, /blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/markdown-lint/" rel="permalink">Linting Markdown And Documentation
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -680,7 +677,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          1 minute read
         
       </span>
     
@@ -688,7 +685,9 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a gre...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
@@ -736,12 +735,7 @@ Many linting, code formatting, and static analysis tools exist for code. You can
       </footer>
     </div>
 
-    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
-<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
-<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
-<script src="/blog/assets/js/plugins/gumshoe.js"></script>
-<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
-<script src="/blog/assets/js/main.min.js"></script>
+    <script src="/blog/assets/js/main.min.js"></script>
 
   <script> // minified version of https://earthly.dev/assets/js/analytics.js
     function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});

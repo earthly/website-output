@@ -10,7 +10,7 @@
 
 
 <title>Incident Management Metrics and Key Performance Indicators - Earthly Blog</title>
-<meta name="description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.   We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.   Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. Testing was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.   This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.   Mean Time Between Failures (MTBF)   When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.   Mean time between failures is a metric from the field of reliability engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.    Calculating MTBF      Incidents in last 30 days         #1   Jan 3rd     #2   Jan 25       Mean Time Between Failures =    30 days / 2 Incidents = 15 days      Mean Time to Recovery (MTTR)   Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.   If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.    Calculating Mean Time to Recovery      Incident #1         Reported   10:00 am.     Recovered   12:00 pm.     Recovery Time   2 Hours         Incident #2         Reported   10:00 am.     Recovered   2 days later at 10:00 am.     Recovery Time   48 Hours       Mean Time To Recovery =    2 hour + 48 hours / 2 failures = 25 hours      Mean Time to Resolve (MTTRe)    ℹ️ Acronyms Collision Alert   Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.    Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.   The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.    Calculating Mean Time to Resolve      Incident #3         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 31     Resolve Time   30 days         Incident #4         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 11     Resolve Time   10 days       Mean Time To Resolve =    30 days + 10 days / 2 incidents = 20 days      Mean Time to Acknowledge (MTTA)   An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.   MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.    ️Calculating Mean Time to Acknowledge      Incident #5         Reported   10 am     Acknowledged   10: 05 am     Recovered   12:00 pm     Acknowledge Time   5 minutes         Incident #6         Reported   10 am     Acknowledged   11: 55 am     Recovered   12:00 pm     Acknowledge Time   115 minutes       Mean Time To Acknowledge =    5 minutes + 115 minutes / 2 incidents = 60 minutes      Summary   There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.   Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.   If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s free and open build tool.">
+<meta name="description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/incident-management-metrics/">
 
 
-  <meta property="og:description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.   We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.   Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. Testing was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.   This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.   Mean Time Between Failures (MTBF)   When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.   Mean time between failures is a metric from the field of reliability engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.    Calculating MTBF      Incidents in last 30 days         #1   Jan 3rd     #2   Jan 25       Mean Time Between Failures =    30 days / 2 Incidents = 15 days      Mean Time to Recovery (MTTR)   Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.   If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.    Calculating Mean Time to Recovery      Incident #1         Reported   10:00 am.     Recovered   12:00 pm.     Recovery Time   2 Hours         Incident #2         Reported   10:00 am.     Recovered   2 days later at 10:00 am.     Recovery Time   48 Hours       Mean Time To Recovery =    2 hour + 48 hours / 2 failures = 25 hours      Mean Time to Resolve (MTTRe)    ℹ️ Acronyms Collision Alert   Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.    Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.   The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.    Calculating Mean Time to Resolve      Incident #3         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 31     Resolve Time   30 days         Incident #4         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 11     Resolve Time   10 days       Mean Time To Resolve =    30 days + 10 days / 2 incidents = 20 days      Mean Time to Acknowledge (MTTA)   An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.   MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.    ️Calculating Mean Time to Acknowledge      Incident #5         Reported   10 am     Acknowledged   10: 05 am     Recovered   12:00 pm     Acknowledge Time   5 minutes         Incident #6         Reported   10 am     Acknowledged   11: 55 am     Recovered   12:00 pm     Acknowledge Time   115 minutes       Mean Time To Acknowledge =    5 minutes + 115 minutes / 2 incidents = 60 minutes      Summary   There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.   Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.   If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s free and open build tool.">
+  <meta property="og:description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Incident Management Metrics and Key Performance Indicators">
-  <meta name="twitter:description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.   We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.   Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. Testing was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.   This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.   Mean Time Between Failures (MTBF)   When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.   Mean time between failures is a metric from the field of reliability engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.    Calculating MTBF      Incidents in last 30 days         #1   Jan 3rd     #2   Jan 25       Mean Time Between Failures =    30 days / 2 Incidents = 15 days      Mean Time to Recovery (MTTR)   Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.   If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.    Calculating Mean Time to Recovery      Incident #1         Reported   10:00 am.     Recovered   12:00 pm.     Recovery Time   2 Hours         Incident #2         Reported   10:00 am.     Recovered   2 days later at 10:00 am.     Recovery Time   48 Hours       Mean Time To Recovery =    2 hour + 48 hours / 2 failures = 25 hours      Mean Time to Resolve (MTTRe)    ℹ️ Acronyms Collision Alert   Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.    Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.   The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.    Calculating Mean Time to Resolve      Incident #3         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 31     Resolve Time   30 days         Incident #4         Reported   day 1     Addressed   day 1     Root Cause Analysis   day 2     Root Cause Addressed   day 11     Resolve Time   10 days       Mean Time To Resolve =    30 days + 10 days / 2 incidents = 20 days      Mean Time to Acknowledge (MTTA)   An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.   MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.    ️Calculating Mean Time to Acknowledge      Incident #5         Reported   10 am     Acknowledged   10: 05 am     Recovered   12:00 pm     Acknowledge Time   5 minutes         Incident #6         Reported   10 am     Acknowledged   11: 55 am     Recovered   12:00 pm     Acknowledge Time   115 minutes       Mean Time To Acknowledge =    5 minutes + 115 minutes / 2 incidents = 60 minutes      Summary   There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.   Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.   If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s free and open build tool.">
+  <meta name="twitter:description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.">
   <meta name="twitter:url" content="https://earthly.dev/blog/incident-management-metrics/">
 
   
@@ -240,7 +240,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Incident Management Metrics and Key Performance Indicators">
-    <meta itemprop="description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. Testing was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.Mean Time Between Failures (MTBF)When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.Mean time between failures is a metric from the field of reliability engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.Calculating MTBFIncidents in last 30 days#1Jan 3rd#2Jan 25Mean Time Between Failures =30 days / 2 Incidents = 15 daysMean Time to Recovery (MTTR)Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.Calculating Mean Time to RecoveryIncident #1Reported10:00 am.Recovered12:00 pm.Recovery Time2 HoursIncident #2Reported10:00 am.Recovered2 days later at 10:00 am.Recovery Time48 HoursMean Time To Recovery =2 hour + 48 hours / 2 failures = 25 hoursMean Time to Resolve (MTTRe)ℹ️ Acronyms Collision AlertMean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.Calculating Mean Time to ResolveIncident #3Reportedday 1Addressedday 1Root Cause Analysisday 2Root Cause Addressedday 31Resolve Time30 daysIncident #4Reportedday 1Addressedday 1Root Cause Analysisday 2Root Cause Addressedday 11Resolve Time10 daysMean Time To Resolve =30 days + 10 days / 2 incidents = 20 daysMean Time to Acknowledge (MTTA)An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.️Calculating Mean Time to AcknowledgeIncident #5Reported10 amAcknowledged10: 05 amRecovered12:00 pmAcknowledge Time5 minutesIncident #6Reported10 amAcknowledged11: 55 amRecovered12:00 pmAcknowledge Time115 minutesMean Time To Acknowledge =5 minutes + 115 minutes / 2 incidents = 60 minutesSummaryThere are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s free and open build tool.">
+    <meta itemprop="description" content="In 2008, I got my first job at a software-as-a-service company. We built learning management software and ran it on servers in the small data center connected to our office.">
     <meta itemprop="datePublished" content="2021-06-11T00:00:00-04:00">
     
 
@@ -295,7 +295,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#mean-time-between-failures-mtbf">Mean Time Between Failures (MTBF)</a></li><li><a href="#mean-time-to-recovery-mttr">Mean Time to Recovery (MTTR)</a></li><li><a href="#mean-time-to-resolve-mttre">Mean Time to Resolve (MTTRe)</a></li><li><a href="#mean-time-to-acknowledge-mtta">Mean Time to Acknowledge (MTTA)</a></li><li><a href="#summary">Summary</a></li></ul>
+              <ul class="toc__menu"><li><a href="#mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</a></li><li><a href="#mttr-mean-time-to-recovery">MTTR: Mean Time To Recovery</a></li><li><a href="#mttre-mean-time-to-resolve">MTTRe: Mean Time To Resolve</a></li><li><a href="#mtta-mean-time-to-acknowledge">MTTA: Mean Time To Acknowledge</a></li><li><a href="#summary">Summary</a></li></ul>
 
             </nav>
           </aside>
@@ -305,7 +305,7 @@
 <p>We released new software onto these production servers monthly and measured quality by counting bugs per release. We also had account managers who kept us informed of how many large clients seemed upset about the last release.</p>
 <p>Occasionally, when something went wrong, we would do a stability release and spend a month only fixing bugs. <a href="/blog/unit-vs-integration">Testing</a> was not a part of our build process but a part of our team: every feature team had quality assurance people who tested each feature before it was released.</p>
 <p>This wasn’t that long ago, but cloud software development has matured a lot since this time. Incident management has become standard practice, and many great metrics and Key Performance Indicators (KPIs) exist for measuring release quality. Let’s review some of them.</p>
-<h2 id="mean-time-between-failures-mtbf">Mean Time Between Failures (MTBF)</h2>
+<h2 id="mtbf-mean-time-between-failures">MTBF: Mean Time Between Failures</h2>
 <p>When software is being released only once a month, on a fixed timeline, with extensive manual testing, counting the number of bugs might work. But once you start releasing many times per week or per day, this won’t work, and another way to measure software quality is required.</p>
 <p>Mean time between failures is a metric from the field of <a href="/blog/achieving-repeatability">reliability</a> engineering. Calculating it is simple: it is time over the number of failures that occurred during that time. If in the last 30 days you have had two production incidents, then the mean time between failure is 15 days.</p>
 <section id="calculating-mtbf" class="notice--big--primary">
@@ -334,11 +334,11 @@
 </dd>
 </dl>
 </section>
-<h2 id="mean-time-to-recovery-mttr">Mean Time to Recovery (MTTR)</h2>
+<h2 id="mttr-mean-time-to-recovery">MTTR: Mean Time To Recovery</h2>
 <p>Something funny happens when you start releasing more frequently. You may end up with a higher count of issues in production, but resolving them will happen much faster. If each change is released separately using a continuous delivery model, then recovering gets easier – often, all that is required is hitting a rollback button.</p>
 <p>If you are measuring MTBF, your software may be getting much better, but your numbers will be getting worse. Enter mean time to recovery. Mean time to recovery is just what it sounds like: you start a timer when the incident begins and stop it when production is healthy again - even a simple rollback counts. Average this number across incidents, and you have MTTR. You now have a metric that captures the health of your incidence response process.</p>
 <section id="calculating-mean-time-to-recovery" class="notice--big--primary">
-<h3>Calculating Mean Time to Recovery</h3>
+<h3>Calculating Mean Time To Recovery</h3>
 <table>
 <thead>
 <tr class="header">
@@ -349,11 +349,11 @@
 <tbody>
 <tr class="odd">
 <td>Reported</td>
-<td>10:00 am.</td>
+<td>10:00 AM</td>
 </tr>
 <tr class="even">
 <td>Recovered</td>
-<td>12:00 pm.</td>
+<td>12:00 PM</td>
 </tr>
 <tr class="odd">
 <td>Recovery Time</td>
@@ -371,11 +371,11 @@
 <tbody>
 <tr class="odd">
 <td>Reported</td>
-<td>10:00 am.</td>
+<td>10:00 AM</td>
 </tr>
 <tr class="even">
 <td>Recovered</td>
-<td>2 days later at 10:00 am.</td>
+<td>2 days later at 10:00 am</td>
 </tr>
 <tr class="odd">
 <td>Recovery Time</td>
@@ -389,7 +389,7 @@
 </dd>
 </dl>
 </section>
-<h2 id="mean-time-to-resolve-mttre">Mean Time to Resolve (MTTRe)</h2>
+<h2 id="mttre-mean-time-to-resolve">MTTRe: Mean Time To Resolve</h2>
 <div class="notice--info">
 <p>ℹ️ Acronyms Collision Alert</p>
 <p>Mean Time To Resolve, MTTRe, differs from Mean Time To Recover, MTTR, but some resources use MTTR for both. To avoid confusion, ensure you are using the correct terminology for your metric.</p>
@@ -397,7 +397,7 @@
 <p>Rolling back to address an incident is a great idea: it’s often the quickest way to get things back in a good place. But there are other types of incidents. Imagine your application deadlocks every once in a while, and you have to restart it to unlock. You may have an excellent mean time to recovery, but you’ve never actually addressed the root cause. This is what MTTRe measures, not the time to get the service back up and running but to resolve the root cause and ensure the problem never happens again.</p>
 <p>The never-happens-again part is hard to achieve but vital. If you are responding quickly but never getting to the root cause, you will be living in a stressful world of constant fire fighting. However, if you are resolving the root cause of each incident, then quality will increase over time.</p>
 <section id="calculating-mean-time-to-resolve" class="notice--big--primary">
-<h3>Calculating Mean Time to Resolve</h3>
+<h3>Calculating Mean Time To Resolve</h3>
 <table>
 <thead>
 <tr class="header">
@@ -464,11 +464,11 @@
 </dd>
 </dl>
 </section>
-<h2 id="mean-time-to-acknowledge-mtta">Mean Time to Acknowledge (MTTA)</h2>
+<h2 id="mtta-mean-time-to-acknowledge">MTTA: Mean Time To Acknowledge</h2>
 <p>An essential part of good incident management is an on-call rotation. You need someone around to respond to incidents when they occur. Our previous metrics would be unable to differentiate between an incident that took 3 hours to recover from and one that was recoverable in 5 minutes but took two hours and 55 minutes to be acknowledged.</p>
 <p>MTTA highlights this difference. It is a metric for measuring the responsiveness of the on-call person to any alerts.</p>
 <section id="calculating-mean-time-to-acknowledge" class="notice--big--primary">
-<h3>️Calculating Mean Time to Acknowledge</h3>
+<h3>️Calculating Mean Time To Acknowledge</h3>
 <table>
 <thead>
 <tr class="header">
@@ -528,8 +528,8 @@
 </dl>
 </section>
 <h2 id="summary">Summary</h2>
-<p>There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your Software Development Life Cycle, find ways to collect aggregate metrics like these and choose one or two to target for improvement.</p>
-<p>Invest in improving these metrics, and you’ll make up for it in time saved fighting fires. Also, focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.</p>
+<p>There are many ways to measure the quality of your software as a service product. MTBF, MTTR, MTTRe, and MTTA can each offer a different lens for viewing your software release life cycle. As you improve your SDLC, find ways to collect aggregate metrics like these and choose one or two to target for improvement.</p>
+<p>Invest in improving these metrics and you’ll make up for it in time saved fighting fires. Also focusing on aggregate metrics can be an effective way to move the discussion from blame about specific incidents to a higher-level debate around changing the process to better support the company’s goals.</p>
 <p>If your build pipeline is taking more than 15 minutes and therefore negatively affecting your metrics, then take a look at Earthly’s <a href="http://earthly.dev/">free and open build tool</a>.</p>
 
         
@@ -552,25 +552,8 @@
 
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
-        Adam Gordon Bell
+      <h4 class="author__name" itemprop="name">Adam Gordon Bell</h3>
     
-    
-      
-        
-          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
-        
-      
-        
-          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
-        
-      
-        
-          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
-        
-      
-    
-    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -584,7 +567,7 @@
     <ul class="author__urls social-icons">
       
 
-     
+      
 
       
 
@@ -682,7 +665,7 @@
 ">Previous</a>
     
     
-      <a href="/blog/git-branching/" class="pagination--pager" title="Git Branching Strategies and The Greek Revival
+      <a href="/blog/checklist/" class="pagination--pager" title="Put Your Best Title Here
 ">Next</a>
     
   </nav>
@@ -711,13 +694,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -735,7 +718,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          4 minute read
         
       </span>
     
@@ -743,8 +726,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
 
-Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+</p>
   </article>
 </div>
 
@@ -764,13 +748,13 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/markdown-lint/header-600-193822b16.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-193822b16.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-600-490715c18.jpg 600w, /blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/markdown-lint/" rel="permalink">Linting Markdown And Documentation
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -788,7 +772,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          1 minute read
         
       </span>
     
@@ -796,7 +780,9 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a gre...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
@@ -844,12 +830,7 @@ Many linting, code formatting, and static analysis tools exist for code. You can
       </footer>
     </div>
 
-    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
-<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
-<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
-<script src="/blog/assets/js/plugins/gumshoe.js"></script>
-<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
-<script src="/blog/assets/js/main.min.js"></script>
+    <script src="/blog/assets/js/main.min.js"></script>
 
   <script> // minified version of https://earthly.dev/assets/js/analytics.js
     function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});

@@ -10,7 +10,7 @@
 
 
 <title>v0.3.0 Released - Earthly Blog</title>
-<meta name="description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+<meta name="description" content="Changes:">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
 
-  <meta property="og:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+  <meta property="og:description" content="Changes:">
 
 
 
@@ -31,7 +31,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="v0.3.0 Released">
-  <meta name="twitter:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+  <meta name="twitter:description" content="Changes:">
   <meta name="twitter:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
   
@@ -235,7 +235,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="v0.3.0 Released">
-    <meta itemprop="description" content="Changes:New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.New Significant speed improvement on Mac (builds are now almost 3x faster).New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.Improved error display in case of build failureReduced repetitive progress outputFixed an issue where leftover socket files would cause the build to fail ​Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space viaUpgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthlyUpgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.Release Pages">
+    <meta itemprop="description" content="Changes:">
     <meta itemprop="datePublished" content="2020-08-18T00:00:00-04:00">
     
 
@@ -283,9 +283,9 @@
         <p>Changes:</p>
 <ul>
 <li><strong>New</strong> Interactive mode debugger via <code>-i</code> option (Experimental). Drops you into a shell in the container, if the build fails.</li>
-<li><strong>New</strong> Support for Dockerfiles via <code>FROM DOCKERFILE</code> command (Beta).<a href="https://docs.earthly.dev/earthfile#from-dockerfile-beta">Docs</a>. <a href="https://github.com/earthly/buildkit/blob/earthly-master/Earthfile">Example</a>.</li>
+<li><strong>New</strong> Support for Dockerfiles via FROM DOCKERFILE command (Beta).<a href="https://docs.earthly.dev/earthfile#from-dockerfile-beta">Docs</a>. <a href="https://github.com/earthly/buildkit/blob/earthly-master/Earthfile">Example</a>.</li>
 <li><strong>New</strong> Significant speed improvement on Mac (builds are now almost 3x faster).</li>
-<li><strong>New</strong> Built-in argument <code>EARTHLY_TARGET_TAG_DOCKER</code>. It is similar to <code>EARTHLY_TARGET_TAG</code>, except that it will produce a valid Docker tag. <a href="https://docs.earthly.dev/earthfile/builtin-args">See Documentation</a>.</li>
+<li><strong>New</strong> Built-in arg <code>EARTHLY_TARGET_TAG_DOCKER</code>. It is similar to <code>EARTHLY_TARGET_TAG</code>, except that it will produce a valid Docker tag. <a href="https://docs.earthly.dev/earthfile/builtin-args">See Documentation</a>.</li>
 <li>Improved error display in case of build failure</li>
 <li>Reduced repetitive progress output</li>
 <li>Fixed an issue where leftover socket files would cause the build to fail<br />
@@ -295,8 +295,8 @@
 ​<br />
 The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via</p>
 <ul>
-<li>Upgrading from <code>0.1.x</code>: <code>docker rm -f earthly-buildkitd sudo rm -rf /tmp/</code>earthly</li>
-<li>Upgrading from <code>0.2.x</code>: <code>docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly</code></li>
+<li>Upgrading from <code>0.1.x</code>docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly</li>
+<li>Upgrading from <code>0.2.x</code>docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly</li>
 </ul>
 <p>​ In addition, the earth option <code>-i</code> has been repurposed. If you were using it to produce images, you will need to change those to <code>earth --image</code> instead.</p>
 <p><a href="https://github.com/earthly/earthly/releases/tag/v0.3.0">Release Pages</a></p>
@@ -373,13 +373,13 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -397,7 +397,7 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          4 minute read
         
       </span>
     
@@ -405,8 +405,9 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
 
 
     <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
 
-Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+</p>
   </article>
 </div>
 
@@ -426,13 +427,13 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/markdown-lint/header-600-193822b16.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-193822b16.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-600-490715c18.jpg 600w, /blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/markdown-lint/" rel="permalink">Linting Markdown And Documentation
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -450,7 +451,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          1 minute read
         
       </span>
     
@@ -458,7 +459,9 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a gre...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
@@ -506,12 +509,7 @@ Many linting, code formatting, and static analysis tools exist for code. You can
       </footer>
     </div>
 
-    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
-<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
-<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
-<script src="/blog/assets/js/plugins/gumshoe.js"></script>
-<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
-<script src="/blog/assets/js/main.min.js"></script>
+    <script src="/blog/assets/js/main.min.js"></script>
 
   <script> // minified version of https://earthly.dev/assets/js/analytics.js
     function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});

@@ -12,37 +12,37 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.0 Released",
-        "excerpt":"Changes: Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. Rename build.earth to Earthfile GitLab support Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly...","categories": ["News"],
+        "excerpt":"Changes: global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details. rename build.earth to Earthfile gitlab support ability to change cache path (previously it was hardcoded to /tmp/earthly; now defaults to /var/cache/earthly on linux or ~/Library/Caches/earthly...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.1 Released",
-        "excerpt":"Changes:   Fixes handling of sockets between different targets (#115) Fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   fixes handling of sockets between different targets (#115) fixes handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-1/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.2.2 Released",
-        "excerpt":"Changes:   Fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
+        "excerpt":"Changes:   fixes macOS-specific bug introduced in v0.2.1 related to handling of symlink SSH sockets (#61)  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-2-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.0 Released",
-        "excerpt":"Changes: New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails. New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example. New Significant speed improvement on Mac (builds are now almost 3x faster). New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar...","categories": ["News"],
+        "excerpt":"Changes: New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails. New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example. New Significant speed improvement on Mac (builds are now almost 3x faster). New Built-in arg EARTHLY_TARGET_TAG_DOCKER. It is similar...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-0-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.2 Released",
-        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, for example FROM DOCKERFILE +gen-dockerfile/ #219 Support...","categories": ["News"],
+        "excerpt":"Changes New Bash autocompletion. Installation. ( experimental ) New Docker operations no longer affected by disk performance issues. Requires use of new WITH DOCKER syntax. See Docs and an Example. ( experimental ) Support for building dockerfiles which are generated inside earthly targets, e.g. FROM DOCKERFILE +gen-dockerfile/ #219 Support for COPY...","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-2-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "v0.3.3 Released",
-        "excerpt":"Changes   New earth bootstrap command can be run to set up bash and zsh shell completion  Release Page  ","categories": ["News"],
+        "excerpt":"Changes   new earth bootstrap command can be run to setup bash and zsh shell completion  Release Page  ","categories": ["News"],
         "tags": [],
         "url": "/blog/v0-3-3-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -54,13 +54,13 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Earthly 0.3.6 Released",
-        "excerpt":"Release Notes: Introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) Pass along user terminal environment variable to interactive debugger (fixes #293) Support for in-line comments (fixes #288) Fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
+        "excerpt":"Release Notes: introduced --ssh flag for RUN which allows commands to access the ssh authentication host agent via the socket $SSH_AUTH_SOCK (fixes #292) pass along user terminal environment variable to interactive debugger (fixes #293) support for in-line comments (fixes #288) fix autocompletion bug when Earthfile is invalid (fixes #299) Documentation:...","categories": ["News"],
         "tags": [],
         "url": "/blog/earthly-0-3-6-released/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Hacktoberfest 2020",
-        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What Is It? The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
+        "excerpt":"We’re excited to announce that Earthly is participating in Hacktoberfest this October. Last year’s fest saw more than 400,000 pull requests opened and this year should prove to be even larger. What is it The hosting provider DigitalOcean is once again hosting the Hacktoberfest to celebrate open source. The Hacktoberfest...","categories": ["News"],
         "tags": [],
         "url": "/blog/hacktoberfest-2020/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -186,7 +186,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Build Your Own Ngrok Clone With AWS",
-        "excerpt":"Introduction ngrok is a tool that allows you to create secure, publicly accessible URLs for your locally running code. Just a simple ./ngrok http 3000, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for...","categories": ["Tutorials"],
+        "excerpt":"Introduction Ngrok is a tool that allows you to create secure, publically accessible URLs for your locally running code. Just a simple ./ngrok http 3000, and your tunnel is up and running! It also comes with an inspector for all traffic traveling over its tunnels. Pretty slick right? However, for...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/build-your-own-ngrok-clone/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -258,7 +258,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Getting a Repeatable Build, Every Time",
-        "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
+        "excerpt":"EDIT This post used to be titled How to not use our build tool. Thanks to Reddit user musman for suggesting the current updated title In our journey to becoming better software engineers we have learned of various ways in which the team’s productivity could be improved. We noticed that...","categories": ["Articles"],
         "tags": ["Makefile","Dockerfile","Bash","Build scripts","Build strategy","Repeatable builds","Glue layer"],
         "url": "/blog/repeatable-builds-every-time/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -294,7 +294,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Using Autotools to Configure, Make, and Install a Program",
-        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versatility. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
+        "excerpt":"Autotools is one of the most widely adopted code packaging and shipping tools available to developers on Linux. While there are alternatives, such as CMake, SCons, and BJam, they don’t quite match Autotools in ease of use, power, and versability. At its base, Autotools can help make your application more...","categories": ["Tutorial"],
         "tags": [],
         "url": "/blog/autoconf/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -317,33 +317,21 @@ var store = [{
         "url": "/blog/incident-management-metrics/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Git Branching Strategies and The Greek Revival",
-        "excerpt":"Some modern development practices are easiest to understand from a historical perspective: things started a certain way, and then steps were added or removed as conditions changed. Git branching, for example, is like that. I’m going to explain various git branching strategies with a story. We will start with something...","categories": ["Tutorials"],
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read Outloud Write 5 or more titles and pick the best on Create header image in canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply) Add...","categories": ["Tutorials"],
         "tags": [],
-        "url": "/blog/git-branching/",
+        "url": "/blog/checklist/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "The 15-Minute Project",
-        "excerpt":"Like many others, 2020 encouraged me to find some new interests and hobbies to fill the time spent at home. At risk of sounding terribly boring, one of my newfound interests is that of city planning. What Is City Planning? According to Wikipedia, city planning is “…a technical and political...","categories": ["Articles"],
+        "title": "Example Graphs",
+        "excerpt":"You can embedded graphs into the markdown like this: Simple Graph More Complex How to install pandoc-plot If you are using the docker container and jekyll, it should just work. Manual Mac setup: brew install pandoc brew install pandoc-plot install specific libs: pandoc-plot toolkits to list pip3 install matplotlib for...","categories": ["Tutorials"],
         "tags": [],
-        "url": "/blog/15-minute-project/",
+        "url": "/blog/example-plot/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
-        "title": "Creating and hosting your own rpm packages and yum repo",
-        "excerpt":"This tutorial is a follow up to creating and hosting your own deb and apt repo, but is written for creating rpm packages for redhat-based Linux distributions such as Fedora, CentOS, and Rocky Linux. Prerequisites This tutorial assumes you are using CentOS 8, and that the following packages are installed:...","categories": ["Tutorials"],
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
         "tags": [],
-        "url": "/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Linting Markdown And Documentation",
-        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["+","Tutorials"],
-        "tags": [],
-        "url": "/blog/markdown-lint/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "SQL Errors and Video Cameras",
-        "excerpt":"Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things. The SQL looked something like this: --...","categories": ["Articles"],
-        "tags": [],
-        "url": "/blog/video-camera-on/",
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

@@ -10,7 +10,7 @@
 
 
 <title>Technology choice? Don’t be weird - Earthly Blog</title>
-<meta name="description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.   The plan for the earthly internal platform says, “One thing to keep in mind as you read this is plan is don’t be weird.” What does that mean?   Don’t be weird is the short version.  The slightly less short version is: “You only have so many weirdness points you can spend. The less weird you are, the more community support you can get because you’re still on the beaten path.”  it’s just a real conscious decision you need to make.   Do you have an example?   If you go to great lengths to work around some default of Kubernetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.   In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?   Also Postgres defaults are pretty sane right?   I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.   So you should always choose what everybody else chooses unless you have a really good reason?   I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.   Does the Kubernetes space have beaten paths?   There are starting to be some winners. Kubernetes itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.     So if we chose Docker Swarm or something, we’d have to have a really good reason.   Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.   You’ve seen that CNCF landscape chart, right?  There’s tons of combinations out there that still haven’t been tried before. It gets real easy, real fast, to get weird.   Whether you want to or not, you’re going to end up in a place where nobody else has been. So you want to try to contain that.">
+<meta name="description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
 
   <meta name="author" content="Corey Larson">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/dont-be-weird/">
 
 
-  <meta property="og:description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.   The plan for the earthly internal platform says, “One thing to keep in mind as you read this is plan is don’t be weird.” What does that mean?   Don’t be weird is the short version.  The slightly less short version is: “You only have so many weirdness points you can spend. The less weird you are, the more community support you can get because you’re still on the beaten path.”  it’s just a real conscious decision you need to make.   Do you have an example?   If you go to great lengths to work around some default of Kubernetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.   In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?   Also Postgres defaults are pretty sane right?   I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.   So you should always choose what everybody else chooses unless you have a really good reason?   I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.   Does the Kubernetes space have beaten paths?   There are starting to be some winners. Kubernetes itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.     So if we chose Docker Swarm or something, we’d have to have a really good reason.   Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.   You’ve seen that CNCF landscape chart, right?  There’s tons of combinations out there that still haven’t been tried before. It gets real easy, real fast, to get weird.   Whether you want to or not, you’re going to end up in a place where nobody else has been. So you want to try to contain that.">
+  <meta property="og:description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Technology choice? Don’t be weird">
-  <meta name="twitter:description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.   The plan for the earthly internal platform says, “One thing to keep in mind as you read this is plan is don’t be weird.” What does that mean?   Don’t be weird is the short version.  The slightly less short version is: “You only have so many weirdness points you can spend. The less weird you are, the more community support you can get because you’re still on the beaten path.”  it’s just a real conscious decision you need to make.   Do you have an example?   If you go to great lengths to work around some default of Kubernetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.   In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?   Also Postgres defaults are pretty sane right?   I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.   So you should always choose what everybody else chooses unless you have a really good reason?   I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.   Does the Kubernetes space have beaten paths?   There are starting to be some winners. Kubernetes itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.     So if we chose Docker Swarm or something, we’d have to have a really good reason.   Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.   You’ve seen that CNCF landscape chart, right?  There’s tons of combinations out there that still haven’t been tried before. It gets real easy, real fast, to get weird.   Whether you want to or not, you’re going to end up in a place where nobody else has been. So you want to try to contain that.">
+  <meta name="twitter:description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
   <meta name="twitter:url" content="https://earthly.dev/blog/dont-be-weird/">
 
   
@@ -240,7 +240,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Technology choice? Don’t be weird">
-    <meta itemprop="description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.The plan for the earthly internal platform says, “One thing to keep in mind as you read this is plan is don’t be weird.” What does that mean?Don’t be weird is the short version.  The slightly less short version is: “You only have so many weirdness points you can spend. The less weird you are, the more community support you can get because you’re still on the beaten path.”  it’s just a real conscious decision you need to make.Do you have an example?If you go to great lengths to work around some default of Kubernetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?Also Postgres defaults are pretty sane right?I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.So you should always choose what everybody else chooses unless you have a really good reason?I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.Does the Kubernetes space have beaten paths?There are starting to be some winners. Kubernetes itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.  So if we chose Docker Swarm or something, we’d have to have a really good reason.Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.You’ve seen that CNCF landscape chart, right?  There’s tons of combinations out there that still haven’t been tried before. It gets real easy, real fast, to get weird.Whether you want to or not, you’re going to end up in a place where nobody else has been. So you want to try to contain that.">
+    <meta itemprop="description" content="Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform.">
     <meta itemprop="datePublished" content="2020-11-06T00:00:00-05:00">
     
 
@@ -296,13 +296,13 @@
 <p><strong>The plan for the earthly internal platform says, “One thing to keep in mind as you read this is plan is <code>don't be weird.</code>” What does that mean?</strong></p>
 <p>Don’t be weird is the short version.  The slightly less short version is: “You only have so many weirdness points you can spend. The less weird you are, the more community support you can get because you’re still on the beaten path.”  it’s just a real conscious decision you need to make.</p>
 <p><strong>Do you have an example?</strong></p>
-<p>If you go to great lengths to work around some default of Kubernetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.</p>
+<p>If you go to great lengths to work around some default of Kuberenetes or one of the tools you’re using, the trouble is you’ve severely limited the amount of support you can get from the community.</p>
 <p>In the past, I’ve worked on code with services that people made, and they hated a bunch of the defaults that Postgres was pushing on them. So they had this giant, 200 and something line init script that laid down how they wanted the database to act before you could even do anything. And personally I’m just like, “Dude, just create some freaking tables, and let’s get on with our life.” Why are you changing all of these defaults and stuff everywhere?</p>
 <p><strong>Also Postgres defaults are pretty sane right?</strong></p>
 <p>I’ve always thought it was sane, but apparently he didn’t think so. But, yeah, it’s just, spend your weirdness points in the place where you’re going to get the most mileage out of it, and spend them very wisely. Choosing to stay on the beaten path is just going to pay you dividends in the long run.</p>
 <p><strong>So you should always choose what everybody else chooses unless you have a really good reason?</strong></p>
 <p>I wouldn’t even go that far. I’d say that there’s a gradient here, it’s not black and white. Stay on the beaten path until you have a good reason to get off. And then, document your good reason and get off the path, and consciously acknowledge the maintenance and oversight burden that you’re taking on there.</p>
-<p><strong>Does the Kubernetes space have beaten paths?</strong></p>
+<p><strong>Does the Kuberenetes space have beaten paths?</strong></p>
 <p>There are starting to be some winners. <a href="/blog/building-on-kubernetes-ingress">Kubernetes</a> itself used to be weirdness points, but it’s not anymore. Kubernetes is now the lingua franca of the cloud. Who doesn’t have a Kubernetes-managed platform that we could just pack up and move to, assuming we haven’t chosen to spend weirdness points on platform lock-in features.  </p>
 <p><strong>So if we chose Docker Swarm or something, we’d have to have a really good reason.</strong></p>
 <p>Yes. I would want some justification if we were choosing Docker Swarm or, Rancher 1.6 or whatever. Yeah, it’s not wrong to make those choices. It’s just, the weirder it is, the better justification you better have.</p>
@@ -329,11 +329,8 @@
 
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
-        Corey Larson
+      <h4 class="author__name" itemprop="name">Corey Larson</h3>
     
-    
-    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Eats, runs, and codes. Dad. Engineer. Progressive. LDS. Disneyland fanatic.</p>
@@ -347,7 +344,7 @@
     <ul class="author__urls social-icons">
       
 
-     
+      
 
       
 
@@ -489,13 +486,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -513,7 +510,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          4 minute read
         
       </span>
     
@@ -521,8 +518,9 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
+This post is in the future, and won’t show up in the published site
 
-Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+</p>
   </article>
 </div>
 
@@ -542,13 +540,13 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/markdown-lint/header-600-193822b16.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-193822b16.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-600-490715c18.jpg 600w, /blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/markdown-lint/" rel="permalink">Linting Markdown And Documentation
+        <a href="/blog/example-plot/" rel="permalink">Example Graphs
 </a>
       
     </h2>
@@ -566,7 +564,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          1 minute read
         
       </span>
     
@@ -574,7 +572,9 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a gre...</p>
+You can embedded graphs into the markdown like this:
+
+</p>
   </article>
 </div>
 
@@ -622,12 +622,7 @@ Many linting, code formatting, and static analysis tools exist for code. You can
       </footer>
     </div>
 
-    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
-<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
-<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
-<script src="/blog/assets/js/plugins/gumshoe.js"></script>
-<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
-<script src="/blog/assets/js/main.min.js"></script>
+    <script src="/blog/assets/js/main.min.js"></script>
 
   <script> // minified version of https://earthly.dev/assets/js/analytics.js
     function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
