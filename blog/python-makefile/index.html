@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Creating a Python Makefile - Earthly Blog</title>
+<meta name="description" content="Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and by integrating it into your routine, you can save time and avoid errors.   make is a commonplace tool in the world of software development, especially compiled languages like C or C++. It is a tool which controls the generation of executable and other non-source files from a program’s source file. It can automate the process of building software by tracking its dependencies and compiling the program only when the dependencies change.   The reason make is very common with compiled languages is because the compilation commands for those languages can be long and complicated and difficult to remember. Also, you need to compile each file and link the resulting object files together. So, whenever one of the files changes, it becomes necessary to recompile it.   In this tutorial, you will learn the basics of make and how it can be used in a Python project.   Is Python Compiled or Interpreted?   Usually, all the programming languages can be classified into compiled or interpreted languages. In simple words, in a compiled language, the program is converted from a high level language to machine language. Whereas, in case of interpreted language, the source code is read and executed one line at a time.   Since in an interpreted language you cannot compile the source files independently beforehand, you cannot utilize make like you would do for a compiled language. This makes make relatively underutilized for an interpreted language.   Now, Python is usually considered to be an interpreted language. When you run a Python code, the Python interpreter reads the file line-by-line and runs it.   But behind-the-scenes, the source code is compiled into bytecode. These are similar to CPU instructions, but instead of being run by the actual CPU, these are executed by a software called a Virtual Machine (VM), which acts as a pseudo-microprocessor that runs the bytecodes. The advantage is that you can run Python on any platform as long as the VM is installed.   When you run a Python code, the interpreter implicitly compiles the code into bytecode and interprets it with the VM. The reason Python is regarded to be an interpreted language is because the compilation step is implicit. You don’t have to invoke a compiler manually.   When you import a module into your code, Python compiles those modules into bytecode for caching purposes. These are stored in a directory named pycache in the current directory, which contains compiled .pyc files.   Although you cannot compile these modules using make, you can still use make for automation tasks like running tests, installing dependencies, cleaning the .pyc files etc.   Using Make With Python   In this tutorial, you’ll create a simple app that makes requests to http://numbersapi.com and fetches random trivia about a user given number.   The Sample Source Code   First, you’ll start by creating a file api.py with the following code:   import requests  def get_fact(number):     url = &quot;http://numbersapi.com/{}&quot;.format(number)      r = requests.get(url)     if r.status_code == 200:         print(r.text)     else:         print(&quot;An error occurred, code={}&quot;.format(r.status_code))   Create another file app.py with the following code:   import api  api.get_fact(input(&quot;Enter a number: &quot;))   This file simply imports the api module and calls the get_fact() function with a user provided number.   Finally, create a file requirements.txt with the dependencies of the app:  requests  This app only depends on the requests module, but a real life project possibly depends on a large number of modules. Let’s run the app and see how it works.   First, install the dependencies:   pip install -r requirements.txt   Then, run the actual app:   python app.py   This will prompt you for a number and show you a trivia about that number:  $  python app.py Enter a number: 20 20 is the number of questions in the popular party game Twenty Questions.  Now let’s integrate make with our project to automate the installation of dependencies and running the app.   The Makefile   To use make in your project, you need to have a file named Makefile at the root of your project. This file instructs make on what to do. The Makefile consists of a set of rules. Each rule has 3 parts: a target, a list of prerequisites, and a recipe. They follow this format:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. Anything other than tabs will result in an error.   The target represents a goal that you want to achieve, usually this is a file that needs to be created in your build. The prerequisites list tells make which files are this target dependent on. The prerequisites can be a file or another target. Finally the recipes are a list of shell commands that will be executed by make as part of building the target.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the pre-requisites are newer than the target.   Our app has two targets. First, the dependencies must be installed and then the app can be run.   Let’s create the rule for running the app first:   run:     python app.py   The target is named run and it has no prerequisites, which it will be run every time you run make run. You can test it by running make run in a terminal.   Create another target for the setup stage:   setup: requirements.txt     pip install -r requirements.txt   The setup target depends on the requirements.txt file. Whenever the requirements.txt file changes, the dependencies will be refreshed by running pip install -r.   Finally, let’s have a clean rule to clean up the pycache folder:   clean:     rm -rf __pycache__   Creating a Virtual Environment   The sample app depends on the requests library only. However, in a large project, there might be numerous dependencies. And if you are running multiple apps, it’s possible that some apps require the same dependencies, but a different version. This means that one Python installation may not be capable of satisfying the requirements of all applications. The solution for this is to use a virtual environment. This is a self-contained directory tree that contains a Python installation of a specific version.   Different apps can use their own virtual environment where they can install their requirements. The virtual environments are isolated from each other, which means there will be no dependency conflicts.   Python provides a module called venv which is used to create and manage virtual environments. Let’s see how a virtual environment can be used in the sample app.   First, you need to create a virtual environment in the project root:   python3 -m venv venv   This creates a venv folder in your current directory, which contains the necessary files to make the virtual environment.   There are two ways to use this virtual environment. Instead of using python3 or pip, you have to use ./venv/bin/python3 or ./venv/bin/pip to run the app or install dependencies:   python3 app.py # Uses the system Python ./venv/bin/python3 # USes the virtualenv Python   But writing ./venv.bin/ every time can be time consuming, especially if you have to run a lot of commands that use Python or pip. To overcome this, you can “activate” the virtual environment by running:   ./venv/bin/activate   This will load the virtual environment in the current shell. This environment will stay active as long as you don’t close the shell, or deactivate manually.   Once activated, running python3 or pip will use the executables from the virtual environment. If you now run pip install -r requirements.txt, the modules will be installed in the venv directory.   Once you are done with the virtual environment, you can deactivate the environment by running the deactivate command.   venv in Make   You can utilize make to automatically refresh your virtual environment and run your app with this virtual environment. To automatically reinstall the dependencies whenever the requirements.txt file changes, write the following in your Makefile:   venv/bin/activate: requirements.txt  python3 -m venv venv  ./venv/bin/pip install -r requirements.txt   Here the target is venv/bin/activate which depends on requirements.txt. Whenever requirements.txt changes, it rebuilds the environment and installs the dependencies with pip, which re-creates the activate. The actual goal here is the existence of the venv directory, but since make can only work with files, venv/bin/activate is used instead.   To run the app with this environment, create the following rule:   run: venv/bin/activate  ./venv/bin/python3 app.py   The run target depends on the venv/bin/activate target. Once that target is satisfied, it runs the app using the virtual environment.   Finally, update the clean target to also delete the venv directory:    clean:  rm -rf __pycache__  rm -rf venv   Let’s test this all out. First, delete the venv directory if you have one. Now run make run. Since the venv/bin/activate file does not exist, make will run the venv/bin/activate target, which will install the dependencies and finally run the app using the virtual environment.     make run for Python venv    If you run make run once again, only the app will be run and the virtual environment will not be refreshed. You can use the touch command to stimulate a change in the requiremenst.txt file which will cause make to run the setup step again -  touch requirements.txt  Now if you run make run, the virtual environment will be recreated and then the app will be run.   Using Variables   Observe that in our Makefile, we have references to the venv directory in multiple places. In future, if we want to change the directory name to something else, we have to remember to perform the change in all the places. Also there isn’t any way for the user to customize the directory name without editing the Makefile. To overcome this, we can use variables. The variables not only make the Makefile cleaner, they can be overridden by the user without editing Makefile.   A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless its a single character variable.   To set a variable, write a line starting with a variable name followed by =, := or ::=, followed by the value of the variable:   VENV = venv   Here the variable VENV is set to venv. Now whenever you use this variable in a rule, it will be replaced by its value.   The rules now can be rewritten using the VENV variable:   VENV = venv PYTHON = $(VENV)/bin/python3 PIP = $(VENV)/bin/pip  run: $(VENV)/bin/activate  $(PYTHON) app.py   $(VENV)/bin/activate: requirements.txt  python3 -m venv $(VENV)  $(PIP) install -r requirements.txt   clean:  rm -rf __pycache__  rm -rf $(VENV)   I have also replaced references to python3 and pip with a variable. By default, they will use the binaries from the virtual environment.   The variables can be overridden by providing the values when running the make command:   make VENV=my_venv run   Using VENV=my_venv overrides the default value of VENV and now the virtual environment will be created in my_venv directory. It is a good practice to use variables for all commands used in the Makefile, as well as their options and directories. This provides an easy way for the user to substitute alternatives.   Phony Targets   Your Makefile contains two special targets - run and clean. Special in the sense they don’t represent an actual file that exists. And since make executes the recipes of a target if that target does not exist, these two targets will always be executed. However, if later if you have a file called run or clean, then since these targets have no prerequisites, make will consider these to always be newer and so, will not execute the recipes.   To overcome this, make has something called a Phony target. By declaring a target to be Phony, you tell make not to consider an existing file with the same name. To make the run and clean targets phony, add this to the top:   .PHONY: run clean   Conclusion   Using make in your Python projects opens the door to lots of possibilities in terms of automation. You can use make to run linters like flake8, run tests using pytest, or run code coverage using coverage. If you wish to learn all the features of make, be sure to check out the manual by GNU.   Being full of features, and primarily targeted towards compiled languages, make can be difficult to use in a Python project, especially in large ones. If you are looking for a solution to avoid the complexities of Makefile, while still retaining the powerful automation capabilities, check out Earthly. Earthly takes a modern approach towards project builds and combines the best of both Makefile and Dockerfile. Earthly provides understandable and repeatable build scripts without any complexity.">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Creating a Python Makefile">
+<meta property="og:url" content="https://earthly.dev/blog/python-makefile/">
+
+
+  <meta property="og:description" content="Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and by integrating it into your routine, you can save time and avoid errors.   make is a commonplace tool in the world of software development, especially compiled languages like C or C++. It is a tool which controls the generation of executable and other non-source files from a program’s source file. It can automate the process of building software by tracking its dependencies and compiling the program only when the dependencies change.   The reason make is very common with compiled languages is because the compilation commands for those languages can be long and complicated and difficult to remember. Also, you need to compile each file and link the resulting object files together. So, whenever one of the files changes, it becomes necessary to recompile it.   In this tutorial, you will learn the basics of make and how it can be used in a Python project.   Is Python Compiled or Interpreted?   Usually, all the programming languages can be classified into compiled or interpreted languages. In simple words, in a compiled language, the program is converted from a high level language to machine language. Whereas, in case of interpreted language, the source code is read and executed one line at a time.   Since in an interpreted language you cannot compile the source files independently beforehand, you cannot utilize make like you would do for a compiled language. This makes make relatively underutilized for an interpreted language.   Now, Python is usually considered to be an interpreted language. When you run a Python code, the Python interpreter reads the file line-by-line and runs it.   But behind-the-scenes, the source code is compiled into bytecode. These are similar to CPU instructions, but instead of being run by the actual CPU, these are executed by a software called a Virtual Machine (VM), which acts as a pseudo-microprocessor that runs the bytecodes. The advantage is that you can run Python on any platform as long as the VM is installed.   When you run a Python code, the interpreter implicitly compiles the code into bytecode and interprets it with the VM. The reason Python is regarded to be an interpreted language is because the compilation step is implicit. You don’t have to invoke a compiler manually.   When you import a module into your code, Python compiles those modules into bytecode for caching purposes. These are stored in a directory named pycache in the current directory, which contains compiled .pyc files.   Although you cannot compile these modules using make, you can still use make for automation tasks like running tests, installing dependencies, cleaning the .pyc files etc.   Using Make With Python   In this tutorial, you’ll create a simple app that makes requests to http://numbersapi.com and fetches random trivia about a user given number.   The Sample Source Code   First, you’ll start by creating a file api.py with the following code:   import requests  def get_fact(number):     url = &quot;http://numbersapi.com/{}&quot;.format(number)      r = requests.get(url)     if r.status_code == 200:         print(r.text)     else:         print(&quot;An error occurred, code={}&quot;.format(r.status_code))   Create another file app.py with the following code:   import api  api.get_fact(input(&quot;Enter a number: &quot;))   This file simply imports the api module and calls the get_fact() function with a user provided number.   Finally, create a file requirements.txt with the dependencies of the app:  requests  This app only depends on the requests module, but a real life project possibly depends on a large number of modules. Let’s run the app and see how it works.   First, install the dependencies:   pip install -r requirements.txt   Then, run the actual app:   python app.py   This will prompt you for a number and show you a trivia about that number:  $  python app.py Enter a number: 20 20 is the number of questions in the popular party game Twenty Questions.  Now let’s integrate make with our project to automate the installation of dependencies and running the app.   The Makefile   To use make in your project, you need to have a file named Makefile at the root of your project. This file instructs make on what to do. The Makefile consists of a set of rules. Each rule has 3 parts: a target, a list of prerequisites, and a recipe. They follow this format:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. Anything other than tabs will result in an error.   The target represents a goal that you want to achieve, usually this is a file that needs to be created in your build. The prerequisites list tells make which files are this target dependent on. The prerequisites can be a file or another target. Finally the recipes are a list of shell commands that will be executed by make as part of building the target.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the pre-requisites are newer than the target.   Our app has two targets. First, the dependencies must be installed and then the app can be run.   Let’s create the rule for running the app first:   run:     python app.py   The target is named run and it has no prerequisites, which it will be run every time you run make run. You can test it by running make run in a terminal.   Create another target for the setup stage:   setup: requirements.txt     pip install -r requirements.txt   The setup target depends on the requirements.txt file. Whenever the requirements.txt file changes, the dependencies will be refreshed by running pip install -r.   Finally, let’s have a clean rule to clean up the pycache folder:   clean:     rm -rf __pycache__   Creating a Virtual Environment   The sample app depends on the requests library only. However, in a large project, there might be numerous dependencies. And if you are running multiple apps, it’s possible that some apps require the same dependencies, but a different version. This means that one Python installation may not be capable of satisfying the requirements of all applications. The solution for this is to use a virtual environment. This is a self-contained directory tree that contains a Python installation of a specific version.   Different apps can use their own virtual environment where they can install their requirements. The virtual environments are isolated from each other, which means there will be no dependency conflicts.   Python provides a module called venv which is used to create and manage virtual environments. Let’s see how a virtual environment can be used in the sample app.   First, you need to create a virtual environment in the project root:   python3 -m venv venv   This creates a venv folder in your current directory, which contains the necessary files to make the virtual environment.   There are two ways to use this virtual environment. Instead of using python3 or pip, you have to use ./venv/bin/python3 or ./venv/bin/pip to run the app or install dependencies:   python3 app.py # Uses the system Python ./venv/bin/python3 # USes the virtualenv Python   But writing ./venv.bin/ every time can be time consuming, especially if you have to run a lot of commands that use Python or pip. To overcome this, you can “activate” the virtual environment by running:   ./venv/bin/activate   This will load the virtual environment in the current shell. This environment will stay active as long as you don’t close the shell, or deactivate manually.   Once activated, running python3 or pip will use the executables from the virtual environment. If you now run pip install -r requirements.txt, the modules will be installed in the venv directory.   Once you are done with the virtual environment, you can deactivate the environment by running the deactivate command.   venv in Make   You can utilize make to automatically refresh your virtual environment and run your app with this virtual environment. To automatically reinstall the dependencies whenever the requirements.txt file changes, write the following in your Makefile:   venv/bin/activate: requirements.txt  python3 -m venv venv  ./venv/bin/pip install -r requirements.txt   Here the target is venv/bin/activate which depends on requirements.txt. Whenever requirements.txt changes, it rebuilds the environment and installs the dependencies with pip, which re-creates the activate. The actual goal here is the existence of the venv directory, but since make can only work with files, venv/bin/activate is used instead.   To run the app with this environment, create the following rule:   run: venv/bin/activate  ./venv/bin/python3 app.py   The run target depends on the venv/bin/activate target. Once that target is satisfied, it runs the app using the virtual environment.   Finally, update the clean target to also delete the venv directory:    clean:  rm -rf __pycache__  rm -rf venv   Let’s test this all out. First, delete the venv directory if you have one. Now run make run. Since the venv/bin/activate file does not exist, make will run the venv/bin/activate target, which will install the dependencies and finally run the app using the virtual environment.     make run for Python venv    If you run make run once again, only the app will be run and the virtual environment will not be refreshed. You can use the touch command to stimulate a change in the requiremenst.txt file which will cause make to run the setup step again -  touch requirements.txt  Now if you run make run, the virtual environment will be recreated and then the app will be run.   Using Variables   Observe that in our Makefile, we have references to the venv directory in multiple places. In future, if we want to change the directory name to something else, we have to remember to perform the change in all the places. Also there isn’t any way for the user to customize the directory name without editing the Makefile. To overcome this, we can use variables. The variables not only make the Makefile cleaner, they can be overridden by the user without editing Makefile.   A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless its a single character variable.   To set a variable, write a line starting with a variable name followed by =, := or ::=, followed by the value of the variable:   VENV = venv   Here the variable VENV is set to venv. Now whenever you use this variable in a rule, it will be replaced by its value.   The rules now can be rewritten using the VENV variable:   VENV = venv PYTHON = $(VENV)/bin/python3 PIP = $(VENV)/bin/pip  run: $(VENV)/bin/activate  $(PYTHON) app.py   $(VENV)/bin/activate: requirements.txt  python3 -m venv $(VENV)  $(PIP) install -r requirements.txt   clean:  rm -rf __pycache__  rm -rf $(VENV)   I have also replaced references to python3 and pip with a variable. By default, they will use the binaries from the virtual environment.   The variables can be overridden by providing the values when running the make command:   make VENV=my_venv run   Using VENV=my_venv overrides the default value of VENV and now the virtual environment will be created in my_venv directory. It is a good practice to use variables for all commands used in the Makefile, as well as their options and directories. This provides an easy way for the user to substitute alternatives.   Phony Targets   Your Makefile contains two special targets - run and clean. Special in the sense they don’t represent an actual file that exists. And since make executes the recipes of a target if that target does not exist, these two targets will always be executed. However, if later if you have a file called run or clean, then since these targets have no prerequisites, make will consider these to always be newer and so, will not execute the recipes.   To overcome this, make has something called a Phony target. By declaring a target to be Phony, you tell make not to consider an existing file with the same name. To make the run and clean targets phony, add this to the top:   .PHONY: run clean   Conclusion   Using make in your Python projects opens the door to lots of possibilities in terms of automation. You can use make to run linters like flake8, run tests using pytest, or run code coverage using coverage. If you wish to learn all the features of make, be sure to check out the manual by GNU.   Being full of features, and primarily targeted towards compiled languages, make can be difficult to use in a Python project, especially in large ones. If you are looking for a solution to avoid the complexities of Makefile, while still retaining the powerful automation capabilities, check out Earthly. Earthly takes a modern approach towards project builds and combines the best of both Makefile and Dockerfile. Earthly provides understandable and repeatable build scripts without any complexity.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/python-makefile/header-800-759a116c0.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Creating a Python Makefile">
+  <meta name="twitter:description" content="Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and by integrating it into your routine, you can save time and avoid errors.   make is a commonplace tool in the world of software development, especially compiled languages like C or C++. It is a tool which controls the generation of executable and other non-source files from a program’s source file. It can automate the process of building software by tracking its dependencies and compiling the program only when the dependencies change.   The reason make is very common with compiled languages is because the compilation commands for those languages can be long and complicated and difficult to remember. Also, you need to compile each file and link the resulting object files together. So, whenever one of the files changes, it becomes necessary to recompile it.   In this tutorial, you will learn the basics of make and how it can be used in a Python project.   Is Python Compiled or Interpreted?   Usually, all the programming languages can be classified into compiled or interpreted languages. In simple words, in a compiled language, the program is converted from a high level language to machine language. Whereas, in case of interpreted language, the source code is read and executed one line at a time.   Since in an interpreted language you cannot compile the source files independently beforehand, you cannot utilize make like you would do for a compiled language. This makes make relatively underutilized for an interpreted language.   Now, Python is usually considered to be an interpreted language. When you run a Python code, the Python interpreter reads the file line-by-line and runs it.   But behind-the-scenes, the source code is compiled into bytecode. These are similar to CPU instructions, but instead of being run by the actual CPU, these are executed by a software called a Virtual Machine (VM), which acts as a pseudo-microprocessor that runs the bytecodes. The advantage is that you can run Python on any platform as long as the VM is installed.   When you run a Python code, the interpreter implicitly compiles the code into bytecode and interprets it with the VM. The reason Python is regarded to be an interpreted language is because the compilation step is implicit. You don’t have to invoke a compiler manually.   When you import a module into your code, Python compiles those modules into bytecode for caching purposes. These are stored in a directory named pycache in the current directory, which contains compiled .pyc files.   Although you cannot compile these modules using make, you can still use make for automation tasks like running tests, installing dependencies, cleaning the .pyc files etc.   Using Make With Python   In this tutorial, you’ll create a simple app that makes requests to http://numbersapi.com and fetches random trivia about a user given number.   The Sample Source Code   First, you’ll start by creating a file api.py with the following code:   import requests  def get_fact(number):     url = &quot;http://numbersapi.com/{}&quot;.format(number)      r = requests.get(url)     if r.status_code == 200:         print(r.text)     else:         print(&quot;An error occurred, code={}&quot;.format(r.status_code))   Create another file app.py with the following code:   import api  api.get_fact(input(&quot;Enter a number: &quot;))   This file simply imports the api module and calls the get_fact() function with a user provided number.   Finally, create a file requirements.txt with the dependencies of the app:  requests  This app only depends on the requests module, but a real life project possibly depends on a large number of modules. Let’s run the app and see how it works.   First, install the dependencies:   pip install -r requirements.txt   Then, run the actual app:   python app.py   This will prompt you for a number and show you a trivia about that number:  $  python app.py Enter a number: 20 20 is the number of questions in the popular party game Twenty Questions.  Now let’s integrate make with our project to automate the installation of dependencies and running the app.   The Makefile   To use make in your project, you need to have a file named Makefile at the root of your project. This file instructs make on what to do. The Makefile consists of a set of rules. Each rule has 3 parts: a target, a list of prerequisites, and a recipe. They follow this format:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. Anything other than tabs will result in an error.   The target represents a goal that you want to achieve, usually this is a file that needs to be created in your build. The prerequisites list tells make which files are this target dependent on. The prerequisites can be a file or another target. Finally the recipes are a list of shell commands that will be executed by make as part of building the target.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the pre-requisites are newer than the target.   Our app has two targets. First, the dependencies must be installed and then the app can be run.   Let’s create the rule for running the app first:   run:     python app.py   The target is named run and it has no prerequisites, which it will be run every time you run make run. You can test it by running make run in a terminal.   Create another target for the setup stage:   setup: requirements.txt     pip install -r requirements.txt   The setup target depends on the requirements.txt file. Whenever the requirements.txt file changes, the dependencies will be refreshed by running pip install -r.   Finally, let’s have a clean rule to clean up the pycache folder:   clean:     rm -rf __pycache__   Creating a Virtual Environment   The sample app depends on the requests library only. However, in a large project, there might be numerous dependencies. And if you are running multiple apps, it’s possible that some apps require the same dependencies, but a different version. This means that one Python installation may not be capable of satisfying the requirements of all applications. The solution for this is to use a virtual environment. This is a self-contained directory tree that contains a Python installation of a specific version.   Different apps can use their own virtual environment where they can install their requirements. The virtual environments are isolated from each other, which means there will be no dependency conflicts.   Python provides a module called venv which is used to create and manage virtual environments. Let’s see how a virtual environment can be used in the sample app.   First, you need to create a virtual environment in the project root:   python3 -m venv venv   This creates a venv folder in your current directory, which contains the necessary files to make the virtual environment.   There are two ways to use this virtual environment. Instead of using python3 or pip, you have to use ./venv/bin/python3 or ./venv/bin/pip to run the app or install dependencies:   python3 app.py # Uses the system Python ./venv/bin/python3 # USes the virtualenv Python   But writing ./venv.bin/ every time can be time consuming, especially if you have to run a lot of commands that use Python or pip. To overcome this, you can “activate” the virtual environment by running:   ./venv/bin/activate   This will load the virtual environment in the current shell. This environment will stay active as long as you don’t close the shell, or deactivate manually.   Once activated, running python3 or pip will use the executables from the virtual environment. If you now run pip install -r requirements.txt, the modules will be installed in the venv directory.   Once you are done with the virtual environment, you can deactivate the environment by running the deactivate command.   venv in Make   You can utilize make to automatically refresh your virtual environment and run your app with this virtual environment. To automatically reinstall the dependencies whenever the requirements.txt file changes, write the following in your Makefile:   venv/bin/activate: requirements.txt  python3 -m venv venv  ./venv/bin/pip install -r requirements.txt   Here the target is venv/bin/activate which depends on requirements.txt. Whenever requirements.txt changes, it rebuilds the environment and installs the dependencies with pip, which re-creates the activate. The actual goal here is the existence of the venv directory, but since make can only work with files, venv/bin/activate is used instead.   To run the app with this environment, create the following rule:   run: venv/bin/activate  ./venv/bin/python3 app.py   The run target depends on the venv/bin/activate target. Once that target is satisfied, it runs the app using the virtual environment.   Finally, update the clean target to also delete the venv directory:    clean:  rm -rf __pycache__  rm -rf venv   Let’s test this all out. First, delete the venv directory if you have one. Now run make run. Since the venv/bin/activate file does not exist, make will run the venv/bin/activate target, which will install the dependencies and finally run the app using the virtual environment.     make run for Python venv    If you run make run once again, only the app will be run and the virtual environment will not be refreshed. You can use the touch command to stimulate a change in the requiremenst.txt file which will cause make to run the setup step again -  touch requirements.txt  Now if you run make run, the virtual environment will be recreated and then the app will be run.   Using Variables   Observe that in our Makefile, we have references to the venv directory in multiple places. In future, if we want to change the directory name to something else, we have to remember to perform the change in all the places. Also there isn’t any way for the user to customize the directory name without editing the Makefile. To overcome this, we can use variables. The variables not only make the Makefile cleaner, they can be overridden by the user without editing Makefile.   A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless its a single character variable.   To set a variable, write a line starting with a variable name followed by =, := or ::=, followed by the value of the variable:   VENV = venv   Here the variable VENV is set to venv. Now whenever you use this variable in a rule, it will be replaced by its value.   The rules now can be rewritten using the VENV variable:   VENV = venv PYTHON = $(VENV)/bin/python3 PIP = $(VENV)/bin/pip  run: $(VENV)/bin/activate  $(PYTHON) app.py   $(VENV)/bin/activate: requirements.txt  python3 -m venv $(VENV)  $(PIP) install -r requirements.txt   clean:  rm -rf __pycache__  rm -rf $(VENV)   I have also replaced references to python3 and pip with a variable. By default, they will use the binaries from the virtual environment.   The variables can be overridden by providing the values when running the make command:   make VENV=my_venv run   Using VENV=my_venv overrides the default value of VENV and now the virtual environment will be created in my_venv directory. It is a good practice to use variables for all commands used in the Makefile, as well as their options and directories. This provides an easy way for the user to substitute alternatives.   Phony Targets   Your Makefile contains two special targets - run and clean. Special in the sense they don’t represent an actual file that exists. And since make executes the recipes of a target if that target does not exist, these two targets will always be executed. However, if later if you have a file called run or clean, then since these targets have no prerequisites, make will consider these to always be newer and so, will not execute the recipes.   To overcome this, make has something called a Phony target. By declaring a target to be Phony, you tell make not to consider an existing file with the same name. To make the run and clean targets phony, add this to the top:   .PHONY: run clean   Conclusion   Using make in your Python projects opens the door to lots of possibilities in terms of automation. You can use make to run linters like flake8, run tests using pytest, or run code coverage using coverage. If you wish to learn all the features of make, be sure to check out the manual by GNU.   Being full of features, and primarily targeted towards compiled languages, make can be difficult to use in a Python project, especially in large ones. If you are looking for a solution to avoid the complexities of Makefile, while still retaining the powerful automation capabilities, check out Earthly. Earthly takes a modern approach towards project builds and combines the best of both Makefile and Dockerfile. Earthly provides understandable and repeatable build scripts without any complexity.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/python-makefile/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/python-makefile/header-800-759a116c0.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-08T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/python-makefile/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/python-makefile/header-400-178ae4d03.webp 400w, /blog/generated/assets/images/python-makefile/header-600-178ae4d03.webp 600w, /blog/generated/assets/images/python-makefile/header-800-178ae4d03.webp 800w, /blog/generated/assets/images/python-makefile/header-1000-178ae4d03.webp 1000w, /blog/generated/assets/images/python-makefile/header-1200-178ae4d03.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/python-makefile/header-400-178ae4d03.png 400w, /blog/generated/assets/images/python-makefile/header-600-178ae4d03.png 600w, /blog/generated/assets/images/python-makefile/header-800-178ae4d03.png 800w, /blog/generated/assets/images/python-makefile/header-1000-178ae4d03.png 1000w, /blog/generated/assets/images/python-makefile/header-1200-178ae4d03.png 1200w" type="image/png"><img src="/blog/generated/assets/images/python-makefile/header-800-178ae4d03.jpg" alt="Creating a Python Makefile"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Creating a Python Makefile">
+    <meta itemprop="description" content="Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and by integrating it into your routine, you can save time and avoid errors.make is a commonplace tool in the world of software development, especially compiled languages like C or C++. It is a tool which controls the generation of executable and other non-source files from a program’s source file. It can automate the process of building software by tracking its dependencies and compiling the program only when the dependencies change.The reason make is very common with compiled languages is because the compilation commands for those languages can be long and complicated and difficult to remember. Also, you need to compile each file and link the resulting object files together. So, whenever one of the files changes, it becomes necessary to recompile it.In this tutorial, you will learn the basics of make and how it can be used in a Python project.Is Python Compiled or Interpreted?Usually, all the programming languages can be classified into compiled or interpreted languages. In simple words, in a compiled language, the program is converted from a high level language to machine language. Whereas, in case of interpreted language, the source code is read and executed one line at a time.Since in an interpreted language you cannot compile the source files independently beforehand, you cannot utilize make like you would do for a compiled language. This makes make relatively underutilized for an interpreted language.Now, Python is usually considered to be an interpreted language. When you run a Python code, the Python interpreter reads the file line-by-line and runs it.But behind-the-scenes, the source code is compiled into bytecode. These are similar to CPU instructions, but instead of being run by the actual CPU, these are executed by a software called a Virtual Machine (VM), which acts as a pseudo-microprocessor that runs the bytecodes. The advantage is that you can run Python on any platform as long as the VM is installed.When you run a Python code, the interpreter implicitly compiles the code into bytecode and interprets it with the VM. The reason Python is regarded to be an interpreted language is because the compilation step is implicit. You don’t have to invoke a compiler manually.When you import a module into your code, Python compiles those modules into bytecode for caching purposes. These are stored in a directory named pycache in the current directory, which contains compiled .pyc files.Although you cannot compile these modules using make, you can still use make for automation tasks like running tests, installing dependencies, cleaning the .pyc files etc.Using Make With PythonIn this tutorial, you’ll create a simple app that makes requests to http://numbersapi.com and fetches random trivia about a user given number.The Sample Source CodeFirst, you’ll start by creating a file api.py with the following code:import requestsdef get_fact(number):    url = &quot;http://numbersapi.com/{}&quot;.format(number)    r = requests.get(url)    if r.status_code == 200:        print(r.text)    else:        print(&quot;An error occurred, code={}&quot;.format(r.status_code))Create another file app.py with the following code:import apiapi.get_fact(input(&quot;Enter a number: &quot;))This file simply imports the api module and calls the get_fact() function with a user provided number.Finally, create a file requirements.txt with the dependencies of the app:requestsThis app only depends on the requests module, but a real life project possibly depends on a large number of modules. Let’s run the app and see how it works.First, install the dependencies:pip install -r requirements.txtThen, run the actual app:python app.pyThis will prompt you for a number and show you a trivia about that number:$  python app.pyEnter a number: 2020 is the number of questions in the popular party game Twenty Questions.Now let’s integrate make with our project to automate the installation of dependencies and running the app.The MakefileTo use make in your project, you need to have a file named Makefile at the root of your project. This file instructs make on what to do. The Makefile consists of a set of rules. Each rule has 3 parts: a target, a list of prerequisites, and a recipe. They follow this format:target: pre-req1 pre-req2 pre-req3 ...    recipes    ...Note that there are tabs before the recipe lists. Anything other than tabs will result in an error.The target represents a goal that you want to achieve, usually this is a file that needs to be created in your build. The prerequisites list tells make which files are this target dependent on. The prerequisites can be a file or another target. Finally the recipes are a list of shell commands that will be executed by make as part of building the target.When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the pre-requisites are newer than the target.Our app has two targets. First, the dependencies must be installed and then the app can be run.Let’s create the rule for running the app first:run:    python app.pyThe target is named run and it has no prerequisites, which it will be run every time you run make run. You can test it by running make run in a terminal.Create another target for the setup stage:setup: requirements.txt    pip install -r requirements.txtThe setup target depends on the requirements.txt file. Whenever the requirements.txt file changes, the dependencies will be refreshed by running pip install -r.Finally, let’s have a clean rule to clean up the pycache folder:clean:    rm -rf __pycache__Creating a Virtual EnvironmentThe sample app depends on the requests library only. However, in a large project, there might be numerous dependencies. And if you are running multiple apps, it’s possible that some apps require the same dependencies, but a different version. This means that one Python installation may not be capable of satisfying the requirements of all applications. The solution for this is to use a virtual environment. This is a self-contained directory tree that contains a Python installation of a specific version.Different apps can use their own virtual environment where they can install their requirements. The virtual environments are isolated from each other, which means there will be no dependency conflicts.Python provides a module called venv which is used to create and manage virtual environments. Let’s see how a virtual environment can be used in the sample app.First, you need to create a virtual environment in the project root:python3 -m venv venvThis creates a venv folder in your current directory, which contains the necessary files to make the virtual environment.There are two ways to use this virtual environment. Instead of using python3 or pip, you have to use ./venv/bin/python3 or ./venv/bin/pip to run the app or install dependencies:python3 app.py # Uses the system Python./venv/bin/python3 # USes the virtualenv PythonBut writing ./venv.bin/ every time can be time consuming, especially if you have to run a lot of commands that use Python or pip. To overcome this, you can “activate” the virtual environment by running:./venv/bin/activateThis will load the virtual environment in the current shell. This environment will stay active as long as you don’t close the shell, or deactivate manually.Once activated, running python3 or pip will use the executables from the virtual environment. If you now run pip install -r requirements.txt, the modules will be installed in the venv directory.Once you are done with the virtual environment, you can deactivate the environment by running the deactivate command.venv in MakeYou can utilize make to automatically refresh your virtual environment and run your app with this virtual environment. To automatically reinstall the dependencies whenever the requirements.txt file changes, write the following in your Makefile:venv/bin/activate: requirements.txt python3 -m venv venv ./venv/bin/pip install -r requirements.txtHere the target is venv/bin/activate which depends on requirements.txt. Whenever requirements.txt changes, it rebuilds the environment and installs the dependencies with pip, which re-creates the activate. The actual goal here is the existence of the venv directory, but since make can only work with files, venv/bin/activate is used instead.To run the app with this environment, create the following rule:run: venv/bin/activate ./venv/bin/python3 app.pyThe run target depends on the venv/bin/activate target. Once that target is satisfied, it runs the app using the virtual environment.Finally, update the clean target to also delete the venv directory:clean: rm -rf __pycache__ rm -rf venvLet’s test this all out. First, delete the venv directory if you have one. Now run make run. Since the venv/bin/activate file does not exist, make will run the venv/bin/activate target, which will install the dependencies and finally run the app using the virtual environment.make run for Python venvIf you run make run once again, only the app will be run and the virtual environment will not be refreshed. You can use the touch command to stimulate a change in the requiremenst.txt file which will cause make to run the setup step again -touch requirements.txtNow if you run make run, the virtual environment will be recreated and then the app will be run.Using VariablesObserve that in our Makefile, we have references to the venv directory in multiple places. In future, if we want to change the directory name to something else, we have to remember to perform the change in all the places. Also there isn’t any way for the user to customize the directory name without editing the Makefile. To overcome this, we can use variables. The variables not only make the Makefile cleaner, they can be overridden by the user without editing Makefile.A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless its a single character variable.To set a variable, write a line starting with a variable name followed by =, := or ::=, followed by the value of the variable:VENV = venvHere the variable VENV is set to venv. Now whenever you use this variable in a rule, it will be replaced by its value.The rules now can be rewritten using the VENV variable:VENV = venvPYTHON = $(VENV)/bin/python3PIP = $(VENV)/bin/piprun: $(VENV)/bin/activate $(PYTHON) app.py$(VENV)/bin/activate: requirements.txt python3 -m venv $(VENV) $(PIP) install -r requirements.txtclean: rm -rf __pycache__ rm -rf $(VENV)I have also replaced references to python3 and pip with a variable. By default, they will use the binaries from the virtual environment.The variables can be overridden by providing the values when running the make command:make VENV=my_venv runUsing VENV=my_venv overrides the default value of VENV and now the virtual environment will be created in my_venv directory. It is a good practice to use variables for all commands used in the Makefile, as well as their options and directories. This provides an easy way for the user to substitute alternatives.Phony TargetsYour Makefile contains two special targets - run and clean. Special in the sense they don’t represent an actual file that exists. And since make executes the recipes of a target if that target does not exist, these two targets will always be executed. However, if later if you have a file called run or clean, then since these targets have no prerequisites, make will consider these to always be newer and so, will not execute the recipes.To overcome this, make has something called a Phony target. By declaring a target to be Phony, you tell make not to consider an existing file with the same name. To make the run and clean targets phony, add this to the top:.PHONY: run cleanConclusionUsing make in your Python projects opens the door to lots of possibilities in terms of automation. You can use make to run linters like flake8, run tests using pytest, or run code coverage using coverage. If you wish to learn all the features of make, be sure to check out the manual by GNU.Being full of features, and primarily targeted towards compiled languages, make can be difficult to use in a Python project, especially in large ones. If you are looking for a solution to avoid the complexities of Makefile, while still retaining the powerful automation capabilities, check out Earthly. Earthly takes a modern approach towards project builds and combines the best of both Makefile and Dockerfile. Earthly provides understandable and repeatable build scripts without any complexity.">
+    <meta itemprop="datePublished" content="2021-07-08T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Creating a Python Makefile
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-08T00:00:00-04:00">July 8, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#is-python-compiled-or-interpreted">Is Python Compiled or Interpreted?</a></li><li><a href="#using-make-with-python">Using Make With Python</a><ul><li><a href="#the-sample-source-code">The Sample Source Code</a></li><li><a href="#the-makefile">The Makefile</a></li><li><a href="#creating-a-virtual-environment">Creating a Virtual Environment</a></li><li><a href="#venv-in-make">venv in Make</a></li><li><a href="#using-variables">Using Variables</a></li><li><a href="#phony-targets">Phony Targets</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use <code>make</code> to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and by integrating it into your routine, you can save time and avoid errors.</p>
+<p><code>make</code> is a commonplace tool in the world of software development, especially compiled languages like C or C++. It is a tool which controls the generation of executable and other non-source files from a program’s source file. It can automate the process of building software by tracking its dependencies and compiling the program only when the dependencies change.</p>
+<p>The reason <code>make</code> is very common with compiled languages is because the compilation commands for those languages can be long and complicated and difficult to remember. Also, you need to compile each file and link the resulting object files together. So, whenever one of the files changes, it becomes necessary to recompile it.</p>
+<p>In this tutorial, you will learn the basics of <code>make</code> and how it can be used in a Python project.</p>
+<h2 id="is-python-compiled-or-interpreted">Is Python Compiled or Interpreted?</h2>
+<p>Usually, all the programming languages can be classified into compiled or interpreted languages. In simple words, in a compiled language, the program is converted from a high level language to machine language. Whereas, in case of interpreted language, the source code is read and executed one line at a time.</p>
+<p>Since in an interpreted language you cannot compile the source files independently beforehand, you cannot utilize <code>make</code> like you would do for a compiled language. This makes <code>make</code> relatively underutilized for an interpreted language.</p>
+<p>Now, Python is usually considered to be an interpreted language. When you run a Python code, the Python interpreter reads the file line-by-line and runs it.</p>
+<p>But behind-the-scenes, the source code is compiled into bytecode. These are similar to CPU instructions, but instead of being run by the actual CPU, these are executed by a software called a Virtual Machine (VM), which acts as a pseudo-microprocessor that runs the bytecodes. The advantage is that you can run Python on any platform as long as the VM is installed.</p>
+<p>When you run a Python code, the interpreter implicitly compiles the code into bytecode and interprets it with the VM. The reason Python is regarded to be an interpreted language is because the <a href="/blog/compiling-containers-dockerfiles-llvm-and-buildkit">compilation</a> step is implicit. You don’t have to invoke a compiler manually.</p>
+<p>When you import a module into your code, Python compiles those modules into bytecode for caching purposes. These are stored in a directory named <code>__pycache__</code> in the current directory, which contains compiled <code>.pyc</code> files.</p>
+<p>Although you cannot compile these modules using <code>make</code>, you can still use <code>make</code> for automation tasks like running tests, installing dependencies, cleaning the <code>.pyc</code> files etc.</p>
+<h2 id="using-make-with-python">Using Make With Python</h2>
+<p>In this tutorial, you’ll create a simple app that makes requests to <code>http://numbersapi.com</code> and fetches random trivia about a user given number.</p>
+<h3 id="the-sample-source-code">The Sample Source Code</h3>
+<p>First, you’ll start by creating a file <code>api.py</code> with the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_fact(number):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> <span class="st">&quot;http://numbersapi.com/</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(number)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> requests.get(url)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(r.text)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;An error occurred, code=</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(r.status_code))</span></code></pre></div>
+<p>Create another file <code>app.py</code> with the following code:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> api</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>api.get_fact(<span class="bu">input</span>(<span class="st">&quot;Enter a number: &quot;</span>))</span></code></pre></div>
+<p>This file simply imports the <code>api</code> module and calls the <code>get_fact()</code> function with a user provided number.</p>
+<p>Finally, create a file <code>requirements.txt</code> with the dependencies of the app:</p>
+<pre><code>requests</code></pre>
+<p>This app only depends on the <code>requests</code> module, but a real life project possibly depends on a large number of modules. Let’s run the app and see how it works.</p>
+<p>First, install the dependencies:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div>
+<p>Then, run the actual app:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> app.py</span></code></pre></div>
+<p>This will prompt you for a number and show you a trivia about that number:</p>
+<pre><code>$  python app.py
+Enter a number: 20
+20 is the number of questions in the popular party game Twenty Questions.</code></pre>
+<p>Now let’s integrate <code>make</code> with our project to automate the installation of dependencies and running the app.</p>
+<h3 id="the-makefile">The Makefile</h3>
+<p>To use <code>make</code> in your project, you need to have a file named <code>Makefile</code> at the root of your project. This file instructs <code>make</code> on what to do. The Makefile consists of a set of rules. Each rule has 3 parts: a target, a list of prerequisites, and a recipe. They follow this format:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">target:</span><span class="dt"> pre-req1 pre-req2 pre-req3 ...</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    recipes</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p><em>Note that there are <a href="/blog/repeatable-builds-every-time/#tips-for-taming-makefiles-in-large-teams">tabs</a> before the recipe lists. Anything other than tabs will result in an error.</em></p>
+<p>The <code>target</code> represents a goal that you want to achieve, usually this is a file that needs to be created in your build. The prerequisites list tells <code>make</code> which files are this target dependent on. The prerequisites can be a file or another target. Finally the recipes are a list of shell commands that will be executed by make as part of building the target.</p>
+<p>When <code>make</code> executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, <code>make</code> executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the pre-requisites are newer than the target.</p>
+<p>Our app has two targets. First, the dependencies must be installed and then the app can be run.</p>
+<p>Let’s create the rule for running the app first:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    python app.py</span></code></pre></div>
+<p>The target is named <code>run</code> and it has no prerequisites, which it will be run every time you run <code>make run</code>. You can test it by running <code>make run</code> in a terminal.</p>
+<p>Create another target for the setup stage:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">setup:</span><span class="dt"> requirements.txt</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    pip install -r requirements.txt</span></code></pre></div>
+<p>The <code>setup</code> target depends on the <code>requirements.txt</code> file. Whenever the <code>requirements.txt</code> file changes, the dependencies will be refreshed by running <code>pip install -r</code>.</p>
+<p>Finally, let’s have a <code>clean</code> rule to clean up the <code>__pycache__</code> folder:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    rm -rf __pycache__</span></code></pre></div>
+<h3 id="creating-a-virtual-environment">Creating a Virtual Environment</h3>
+<p>The sample app depends on the <code>requests</code> library only. However, in a large project, there might be numerous dependencies. And if you are running multiple apps, it’s possible that some apps require the same dependencies, but a different version. This means that one Python installation may not be capable of satisfying the requirements of all applications. The solution for this is to use a <a href="https://docs.python.org/3/glossary.html#term-virtual-environment">virtual environment</a>. This is a self-contained directory tree that contains a Python installation of a specific version.</p>
+<p>Different apps can use their own virtual environment where they can install their requirements. The virtual environments are isolated from each other, which means there will be no dependency conflicts.</p>
+<p>Python provides a module called <a href="https://docs.python.org/3/library/venv.html#module-venv"><code>venv</code></a> which is used to create and manage virtual environments. Let’s see how a virtual environment can be used in the sample app.</p>
+<p>First, you need to create a virtual environment in the project root:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv venv</span></code></pre></div>
+<p>This creates a <code>venv</code> folder in your current directory, which contains the necessary files to make the virtual environment.</p>
+<p>There are two ways to use this virtual environment. Instead of using <code>python3</code> or <code>pip</code>, you have to use <code>./venv/bin/python3</code> or <code>./venv/bin/pip</code> to run the app or install dependencies:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> app.py <span class="co"># Uses the system Python</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./venv/bin/python3</span> <span class="co"># USes the virtualenv Python</span></span></code></pre></div>
+<p>But writing <code>./venv.bin/</code> every time can be time consuming, especially if you have to run a lot of commands that use Python or pip. To overcome this, you can “activate” the virtual environment by running:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./venv/bin/activate</span></span></code></pre></div>
+<p>This will load the virtual environment in the current shell. This environment will stay active as long as you don’t close the shell, or deactivate manually.</p>
+<p>Once activated, running <code>python3</code> or <code>pip</code> will use the executables from the virtual environment. If you now run <code>pip install -r requirements.txt</code>, the modules will be installed in the <code>venv</code> directory.</p>
+<p>Once you are done with the virtual environment, you can deactivate the environment by running the <code>deactivate</code> command.</p>
+<h3 id="venv-in-make"><code>venv</code> in Make</h3>
+<p>You can utilize <code>make</code> to automatically refresh your virtual environment and run your app with this virtual environment. To automatically reinstall the dependencies whenever the <code>requirements.txt</code> file changes, write the following in your Makefile:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dv">venv/bin/activate:</span><span class="dt"> requirements.txt</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> python3 -m venv venv</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a> ./venv/bin/pip install -r requirements.txt</span></code></pre></div>
+<p>Here the target is <code>venv/bin/activate</code> which depends on <code>requirements.txt</code>. Whenever <code>requirements.txt</code> changes, it rebuilds the environment and installs the dependencies with pip, which re-creates the <code>activate</code>. The actual goal here is the existence of the <code>venv</code> directory, but since <code>make</code> can only work with files, <code>venv/bin/activate</code> is used instead.</p>
+<p>To run the app with this environment, create the following rule:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span><span class="dt"> venv/bin/activate</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> ./venv/bin/python3 app.py</span></code></pre></div>
+<p>The <code>run</code> target depends on the <code>venv/bin/activate</code> target. Once that target is satisfied, it runs the app using the virtual environment.</p>
+<p>Finally, update the <code>clean</code> target to also delete the <code>venv</code> directory:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a> rm -rf __pycache__</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a> rm -rf venv</span></code></pre></div>
+<p>Let’s test this all out. First, delete the <code>venv</code> directory if you have one. Now run <code>make run</code>. Since the <code>venv/bin/activate</code> file does not exist, <code>make</code> will run the <code>venv/bin/activate</code> target, which will install the dependencies and finally run the app using the virtual environment.</p>
+<figure>
+<img src="/blog/assets/images/python-makefile/makerun.png" alt="make run for Python venv" /><figcaption aria-hidden="true"><code>make run</code> for Python <code>venv</code></figcaption>
+</figure>
+<p>If you run <code>make run</code> once again, only the app will be run and the virtual environment will not be refreshed. You can use the <code>touch</code> command to stimulate a change in the <code>requiremenst.txt</code> file which will cause <code>make</code> to run the setup step again -</p>
+<pre><code>touch requirements.txt</code></pre>
+<p>Now if you run <code>make run</code>, the virtual environment will be recreated and then the app will be run.</p>
+<h3 id="using-variables">Using Variables</h3>
+<p>Observe that in our Makefile, we have references to the <code>venv</code> directory in multiple places. In future, if we want to change the directory name to something else, we have to remember to perform the change in all the places. Also there isn’t any way for the user to customize the directory name without editing the Makefile. To overcome this, we can use variables. The variables not only make the Makefile cleaner, they can be overridden by the user without editing Makefile.</p>
+<p>A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless its a single character variable.</p>
+<p>To set a variable, write a line starting with a variable name followed by <code>=</code>, <code>:=</code> or <code>::=</code>, followed by the value of the variable:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">VENV </span><span class="ch">=</span><span class="st"> venv</span></span></code></pre></div>
+<p>Here the variable <code>VENV</code> is set to <code>venv</code>. Now whenever you use this variable in a rule, it will be replaced by its value.</p>
+<p>The rules now can be rewritten using the <code>VENV</code> variable:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">VENV </span><span class="ch">=</span><span class="st"> venv</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="dt">PYTHON </span><span class="ch">=</span><span class="st"> </span><span class="ch">$(</span><span class="dt">VENV</span><span class="ch">)</span><span class="st">/bin/python3</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="dt">PIP </span><span class="ch">=</span><span class="st"> </span><span class="ch">$(</span><span class="dt">VENV</span><span class="ch">)</span><span class="st">/bin/pip</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">VENV</span><span class="ch">)</span><span class="dt">/bin/activate</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a> <span class="ch">$(</span><span class="dt">PYTHON</span><span class="ch">)</span> app.py</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="dv">$(VENV)/bin/activate:</span><span class="dt"> requirements.txt</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a> python3 -m venv <span class="ch">$(</span><span class="dt">VENV</span><span class="ch">)</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a> <span class="ch">$(</span><span class="dt">PIP</span><span class="ch">)</span> install -r requirements.txt</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a> rm -rf __pycache__</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a> rm -rf <span class="ch">$(</span><span class="dt">VENV</span><span class="ch">)</span></span></code></pre></div>
+<p>I have also replaced references to <code>python3</code> and <code>pip</code> with a variable. By default, they will use the binaries from the virtual environment.</p>
+<p>The variables can be overridden by providing the values when running the make command:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> VENV=my_venv run</span></code></pre></div>
+<p>Using <code>VENV=my_venv</code> overrides the default value of <code>VENV</code> and now the virtual environment will be created in <code>my_venv</code> directory. It is a good practice to use variables for all commands used in the Makefile, as well as their options and directories. This provides an easy way for the user to substitute alternatives.</p>
+<h3 id="phony-targets">Phony Targets</h3>
+<p>Your Makefile contains two special targets - run and clean. Special in the sense they don’t represent an actual file that exists. And since <code>make</code> executes the recipes of a target if that target does not exist, these two targets will always be executed. However, if later if you have a file called <code>run</code> or <code>clean</code>, then since these targets have no prerequisites, <code>make</code> will consider these to always be newer and so, will not execute the recipes.</p>
+<p>To overcome this, <code>make</code> has something called a Phony target. By declaring a target to be Phony, you tell <code>make</code> not to consider an existing file with the same name. To make the <code>run</code> and <code>clean</code> targets phony, add this to the top:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ot">.PHONY:</span><span class="dt"> run clean</span></span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Using <code>make</code> in your Python projects opens the door to lots of possibilities in terms of automation. You can use <code>make</code> to run linters like <code>flake8</code>, run tests using <code>pytest</code>, or run code coverage using <code>coverage</code>. If you wish to learn all the features of <code>make</code>, be sure to check out the <a href="http://www.gnu.org/software/make/manual/make.html">manual</a> by GNU.</p>
+<p>Being full of features, and primarily targeted towards compiled languages, <code>make</code> can be difficult to use in a Python project, especially in large ones. If you are looking for a solution to avoid the complexities of Makefile, while still retaining the powerful automation capabilities, check out <a href="https://earthly.dev/">Earthly</a>. Earthly takes a modern approach towards project builds and combines the best of both Makefile and Dockerfile. Earthly provides understandable and repeatable build scripts without any complexity.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-08T00:00:00-04:00">July 8, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/g++-makefile/" class="pagination--pager" title="Creating a G++ Makefile
+">Previous</a>
+    
+    
+      <a href="/blog/example/" class="pagination--pager" title="Example Post
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/g++-makefile/header-600-0b9fb0c93.webp 600w, /blog/generated/assets/images/g++-makefile/header-800-0b9fb0c93.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/g++-makefile/header-600-44867ebff.jpg 600w, /blog/generated/assets/images/g++-makefile/header-800-44867ebff.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/g++-makefile/header-800-44867ebff.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/g++-makefile/" rel="permalink">Creating a G++ Makefile
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

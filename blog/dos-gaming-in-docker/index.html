@@ -370,12 +370,11 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="dt">\</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_URL=https://archive.org/download/msdos_festival_SCORCH15/SCORCH15.ZIP <span class="dt">\</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--build-arg</span> GAME_ARGS=<span class="dt">\&quot;</span>SCORCH.EXE<span class="dt">\&quot;</span> <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 127.0.0.1:8000:8000 <span class="dt">\</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> mycool:dosgame .</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-t</span> mycool:dosgame .</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-p</span> 127.0.0.1:8000:8000 mycool:dosgame</span></code></pre></div>
 <h2 id="going-further">Going Further</h2>
 <p>Using Earthly, we can even go a step further! Earthly lets us separate some of the concerns within the Dockerfile:</p>
 <div class="notice--info">
@@ -418,17 +417,17 @@
 <p>We also have a couple pre-made targets that wrap this all up for you, and all you need to do is have <a href="https://earthly.dev/get-earthly">Earthly installed</a>! Running any of these commands will start the game. Just navigate on over to <a href="http://localhost:8000">localhost:8000</a> and start playing! Additionally, you will find a Docker image on your system named <code>jsdos:$GAME_TAG</code> for when you want to play later.</p>
 <img src="/blog/assets/images/dos-gaming-in-docker/doom.png" title="fig:" alt="Screenshot of id’s Doom running in a web browser." />
 <figcaption>
-<code>earthly github.com/dchw/earthly-dos-gaming:main+doom</code>
+<code>earthly github.com/earthly/example-dos-gaming:main+doom</code>
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/agent.png" title="fig:" alt="Screenshot of Apogee’s Secret Agent running in a web browser." />
 <figcaption>
-<code>earthly github.com/cosmo/earthly-dos-gaming:main+cosmo</code>
+<code>earthly github.com/earthly/example-dos-gaming:main+secretagent</code>
 </figcaption>
 <img src="/blog/assets/images/dos-gaming-in-docker/cosmo.png" title="fig:" alt="Screenshot of Apogee’s Cosmos Cosmic Adventure running in a web browser." />
 <figcaption>
-<code>earthly github.com/dchw/earthly-dos-gaming:main+secretagent</code>
+<code>earthly github.com/earthly/example-dos-gaming:main+cosmo</code>
 </figcaption>
-<p>You can run your own dos games by running:</p>
+<p>You can run your own DOS games by running:</p>
 <pre><code>earthly \
     --build-arg GAME_TAG=doom \
     --build-arg GAME_URL=https://archive.org/download/DoomsharewareEpisode/doom.ZIP \
@@ -603,13 +602,13 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
     </h2>
@@ -627,7 +626,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          7 minute read
+          4 minute read
         
       </span>
     
@@ -636,7 +635,19 @@
 
     <p class="archive__item-excerpt" itemprop="description">
 
-Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -656,13 +667,13 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/markdown-lint/header-600-193822b16.webp 600w, /blog/generated/assets/images/markdown-lint/header-800-193822b16.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/markdown-lint/header-600-490715c18.jpg 600w, /blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/markdown-lint/header-800-490715c18.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/python-makefile/header-600-b95119718.webp 600w, /blog/generated/assets/images/python-makefile/header-800-b95119718.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-makefile/header-600-3a116cb6d.jpg 600w, /blog/generated/assets/images/python-makefile/header-800-3a116cb6d.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-makefile/header-800-3a116cb6d.jpg"></picture>
 
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/blog/markdown-lint/" rel="permalink">Linting Markdown And Documentation
+        <a href="/blog/python-makefile/" rel="permalink">Creating a Python Makefile
 </a>
       
     </h2>
@@ -680,7 +691,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          9 minute read
+          10 minute read
         
       </span>
     
@@ -688,7 +699,7 @@ Some years ago, when I worked in a physical office, I was having trouble with a 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a gre...</p>
+Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use ...</p>
   </article>
 </div>
 

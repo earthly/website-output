@@ -84,7 +84,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Technology choice? Don't be weird",
-        "excerpt":"Here at Earthly, we are building an internal platform on AWS using EKS. I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform. The plan for the earthly internal platform says, “One thing to keep in mind as...","categories": ["Articles"],
+        "excerpt":"Here at Earthly, we are building an internal platform on AWS using EKS.  I talked to our lead architect Corey Larson about the decisions and trade offs he is making as he designs our platform. The plan for the earthly internal platform says, “One thing to keep in mind as...","categories": ["Articles"],
         "tags": ["Interview"],
         "url": "/blog/dont-be-weird/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -102,7 +102,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Unit Testing vs Integration Testing",
-        "excerpt":"In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk. Beck later ported this framework to Java as jUnit. From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly. But unit testing...","categories": ["Articles"],
+        "excerpt":"In 1998, Kent Beck wrote sUnit, a unit testing framework for SmallTalk.  Beck later ported this framework to Java as jUnit.  From there, xUnit frameworks spread to the most popular languages. Newer languages, like GoLang and Rust, have incorporated testing into the compiler and standard library directly. But unit testing...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/unit-vs-integration/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -345,5 +345,23 @@ var store = [{
         "excerpt":"Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things. The SQL looked something like this: --...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/video-camera-on/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating a G++ Makefile",
+        "excerpt":"C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools. What Is GCC? GNU...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/g++-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating a Python Makefile",
+        "excerpt":"Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
