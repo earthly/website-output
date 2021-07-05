@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Creating a G++ Makefile - Earthly Blog</title>
+<meta name="description" content="C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools.   What Is GCC?   GNU Compiler Collection, also known as GCC, started as a C compiler, created by Richard Stallman in 1984 as a part of his GNU project. GCC now supports many languages, including C++, Objective C, Java, Fortran, and Go. The latest version as of writing this article is GCC 11.1, released April 27, 2021.   The C++ compiler of GCC is known as g++. The g++ utility supports almost all mainstream C++ standards, including c++98, c++03, c++11, c++14, c++17, and experimentally c++20 and c++23. It also provides some GNU extensions to the standard to enable more useful features. You can check out the detailed standard support on gnu.org.   In this tutorial, you will learn how to compile C++ programs with the g++ compiler provided by GCC, and how to use Make to automate the compilation process.   Installing GCC   I’ll touch briefly on installing for Linux, Mac, and Windows.   Linux   GCC is one of the most common tools in the unix world, and is available in every single Linux distribution. Here, I show you how to install the GNU toolchain for some famous distributions.   For Ubuntu, you need to run the following command:   sudo apt update &amp;&amp; sudo apt install build-essentials   For Arch Linux, run:   sudo pacman -S base-devel   For Fedora, run:   dnf groupinstall &#39;Development Tools&#39;   For other distributions, consult the official wiki of your distribution.   Mac   To install GCC on Mac, run brew install gcc which will place g++-11 in /usr/local/bin. Then create an alias to g++: alias g++=‘g++-11’.   Windows   To use GCC in Windows, use WSL2. You can install GCC inside the Windows Subsystem for Linux (WSL) and use it from there.   Compiling With G++   Let’s take a look at how the compilation with G++ works. You will compile a simple Hello, World! program. Save the following file as hello.cpp:   #include&lt;iostream&gt;  int main() {     std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;      return 0; }   To compile this file, simply pass this file to g++:   g++ hello.cpp   By default, g++ will create an executable file named a.out. You can change the output file name by passing the name to the -o flag.   g++ -o hello hello.cpp   This will compile hello.cpp to an executable named hello. You can run the executable and see the output:   ./hello   The Compilation Process   Although the compilation can be done with one command, the compilation process can be divided into four distinct phases:    Preprocessing   Compilation   Assembly   Linking    In the preprocessing part, the GNU preprocessor (cpp) is invoked, which copies the header files included via #include, and expands all macros defined with #define. You can perform this step manually by running the cpp command.   cpp hello.cpp &gt; hello.i   The file hello.i contains the preprocessed source code.   In the next phase, the g++ compiler compiles the preprocessed source code to assembly language. You can run this step manually with the following command:   g++ -S hello.i   The -S flag creates a file hello.s, which contains the assembly code.   In the next step, the assembler as converts the assembly to machine code.   as -o hello.o hello.s   Finally, the linker ld links the object code with the library code to produce an executable.   ld -o hello hello.o ...libraries...   The libraries argument above is a long list of libraries that you need to find out. I omitted the exact arguments because the list is really long and complicated, and depends on which libraries g++ is using on your system. If you are interested to find out, you can run the command g++ -Q -v -o hello hello.cpp and take a look at the last line where g++ invokes collect2      Libraries Used By g++     Thankfully, you do not have to perform these steps manually, as invoking g++ itself will take care of all these steps.   Using the make Utility   Even though the compilation commands have been simple so far, this is not necessarily the case when you have multiple source files. As an example, consider this program:   #include &quot;func.h&quot;  int main() {     func(10);     func(100);          return 0; }   hello.cpp   This file includes func.h, which contains the declaration for a simple function:   #ifndef MAKE_GPP_FUNC #define MAKE_GPP_FUNC  #include&lt;iostream&gt;  void func(int i);  #endif   func.h   Finally, the definition of func resides in func.cpp:   #include &quot;func.h&quot;  void func(int i) {     std::cout &lt;&lt; &quot;You passed: &quot; &lt;&lt; i &lt;&lt; std::endl; }   func.c   In order to compile your program, you need to compile both hello.cpp and func.cpp, since the former depends on the latter.   g++ -o hello hello.cpp func.cpp   If you have more files, then you need to list all of them, while taking care to set the correct include paths and library paths. Moreover, if your code uses any library, you need to list those libraries, too. The resultant command is likely massive and difficult to remember and type. Also, the compilation command will compile all of the source files every time it is executed. But if some of the source files haven’t been modified since the last compilation, it’s a waste of time and resources to compile all the files. But keeping track of what has changed manually is also a difficult task.   This is where the make utility helps. make lets you define your target, and how to reach the target and what are the dependencies. Then it automatically keeps track of which dependencies have changed and recompiles only the necessary parts.   So let’s see how you can utilize make.   The Makefile   In order to let make know what to do, you need to create a file named Makefile in the root of your project. This file can also be named makefile but is traditionally named Makefile so that it appears near other important files such as README.   Create an empty Makefile in the project root and run the command make from the project directory. You should see the following output:  make: *** No targets. Stop.  It means make has found the Makefile, but since it is empty, it doesn’t know what to do.   Now let’s see how you can utilize Makefile to tell make what to do. The Makefile consists of a set of rules. Each rule has three parts—a target, a list of prerequisites, and a recipe—like this:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. You can’t use any other whitespace character. You must use tabs.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the prerequisites are newer than the target.   Let’s update the Makefile for the example program:   all: hello  hello: hello.o func.o  g++ -o hello hello.o func.o  func.o: func.cpp func.h  g++ -c func.cpp  hello.o: hello.cpp  g++ -c hello.cpp   Now, run the make command again. You should see the commands being run by make:  g++ -c hello.cpp g++ -c func.cpp g++ -o hello hello.o func.o  And you’ll notice that an executable called hello has been created in the directory. So, how did make do that? Let’s analyze.   When you run make without any arguments, it executes the first target. In the Makefile, the all target has a prerequisite hello. So, make looks for a rule to create hello. The rule hello has two prerequisites hello.o and func.o. Now, the target hello.o depends on hello.cpp which exists and is newer than the target hello.o (which does not exist). So, make now executes the recipe for hello.o and runs the command g++ -c hello.cpp. This creates the hello.o file.   Now make starts resolving func.o. Both of its pre-requisites exist and are newer than the target. So make executes the command g++ -c func.cpp. Now that the target hello has both the prerequisites satisfied, its recipe can be executed and the hello file is created.   Now what happens if one of the files is changed? Let’s change the hello.cpp file and change the func(10) line to func(20):   #include &quot;func.h&quot;  int main() {     func(20);     func(100);          return 0; }   Now if you run make, you’ll notice that it does not execute all the steps:  g++ -c hello.cpp g++ -o hello hello.o func.o  This time, make does not compile func.c because the file func.o exists, and its prerequisites are not newer than itself. This is because you have not changed func.cpp or func.h.   On the other hand, the file hello.cpp is newer than hello.o. So it needs to be recompiled, and when hello.o is re-created, the target hello needs to be executed, since it depends on hello.o.   You can also call make with the name of a specific rule. For example, running make func.o will only run the rule for func.o   Comments in Makefile   You can have comments in Makefile, which start with a # and last till the end of the line.   all: hello # This is a comment  hello: hello.o ...   Using Variables   Observe that in your Makefile, there are quite a lot of repetitions. For example:   func.o: func.cpp func.h  g++ -c func.cpp   In this rule, we have the string func repeated four times. Since here the base name of the source file and the compiled file are the same (func), we can use variables to tidy up the rules. The variables not only make the Makefile cleaner, they can be overridden by the user so that they can customize the Makefile without editing it.   A variable in Makefile starts with a $&lt;/code&gt; and is enclosed in parentheses &lt;code&gt;()&lt;/code&gt;or braces &lt;code&gt;{}&lt;/code&gt;, unless it’s a single character variable.&lt;/p&gt; &lt;p&gt;To set a variable, write a line starting with a variable name followed by &lt;code&gt;=&lt;/code&gt;, &lt;code&gt;:=&lt;/code&gt; or &lt;code&gt;::=&lt;/code&gt;, followed by the value of the variable:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb24&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb24-1&quot;&gt;&lt;a href=&quot;#cb24-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Here the variable &lt;code&gt;objects&lt;/code&gt; is set to &lt;code&gt;hello.o func.o&lt;/code&gt;. Now whenever you use this variable in a rule, it will be replaced by its value.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb25&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb25-1&quot;&gt;&lt;a href=&quot;#cb25-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-2&quot;&gt;&lt;a href=&quot;#cb25-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-3&quot;&gt;&lt;a href=&quot;#cb25-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-4&quot;&gt;&lt;a href=&quot;#cb25-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-5&quot;&gt;&lt;a href=&quot;#cb25-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  g++ -o hello $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;This is the same as writing:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb26-2&quot;&gt;&lt;a href=&quot;#cb26-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; g++ -o hello hello.o func.o&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;There is another way of defining variables using the &lt;code&gt;?=&lt;/code&gt; operator. This defines the variable only if it has not been defined before.&lt;/p&gt; &lt;p&gt;When you invoke &lt;code&gt;make&lt;/code&gt;, it converts all the environment variables available to it with a &lt;code&gt;make&lt;/code&gt; variable with the same name and value. This means you can set variables using environment variables. Also, you can override any variable by passing them while invoking make. For example, the &lt;code&gt;g++&lt;/code&gt; command can be invoked through a variable.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;CXX &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; g++&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-3&quot;&gt;&lt;a href=&quot;#cb27-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-4&quot;&gt;&lt;a href=&quot;#cb27-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-5&quot;&gt;&lt;a href=&quot;#cb27-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-6&quot;&gt;&lt;a href=&quot;#cb27-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;CXX&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt; -o &lt;span class=&quot;ch&quot;&gt;$(objects)    Now running make will compile the files with g++. However, the user can now substitute alternative if they want to.   make CXX=clang++   Now the files will be compiled by clang++ since CXX=clang++ overrides the variable CXX defined in the Makefile.   Phony Target   So far, you have only created files, but make can also “clean” files. Usually it’s a good idea to have a clean target to delete all the generated files, basically returning the project to a clean slate.   Here is an example for your Makefile:   clean:     rm *.o hello   You can run it via make clean. This cleans all the .o files and the hello file. Because the rm command does not create a file named clean, the rm command will be executed every time you invoke make clean.   But if you ever create a file called clean in the directory, make will get confused. Since the clean file is there, and the clean target has no prerequisites, it is always considered to be newer than its prerequisites. Therefore, the recipe will not run.   The same problem will arise with the all target if there is ever a file named all. To fix this, you can declare the targets to be “phony”.   .PHONY: all clean  clean:     rm *.o hello   Conclusion   Makefile is one of the most important components of compiling C++ using g++. It makes compilation easy and predictable and also saves time and resources by compiling only the necessary files. In this tutorial you learned how to install g++, and compile C++ programs with g++. You also learned how to write Makefiles and utilize make for increased productivity and automation.   Because make is a feature rich utility and supports a wide range of systems, it has a steep learning curve. As your project grows in size, the Makefile also grows in complexity. If you are looking for a solution to avoid the complexities of Makefile, check out Earthly. Earthly takes the best ideas from Makefile and Dockerfile, and provides understandable and repeatable build scripts, minus the head-scratching parts of the Makefile.">
+
+
+  <meta name="author" content="Aniket Bhattacharyea">
+  
+  <meta property="article:author" content="Aniket Bhattacharyea">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Creating a G++ Makefile">
+<meta property="og:url" content="https://earthly.dev/blog/g++-makefile/">
+
+
+  <meta property="og:description" content="C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools.   What Is GCC?   GNU Compiler Collection, also known as GCC, started as a C compiler, created by Richard Stallman in 1984 as a part of his GNU project. GCC now supports many languages, including C++, Objective C, Java, Fortran, and Go. The latest version as of writing this article is GCC 11.1, released April 27, 2021.   The C++ compiler of GCC is known as g++. The g++ utility supports almost all mainstream C++ standards, including c++98, c++03, c++11, c++14, c++17, and experimentally c++20 and c++23. It also provides some GNU extensions to the standard to enable more useful features. You can check out the detailed standard support on gnu.org.   In this tutorial, you will learn how to compile C++ programs with the g++ compiler provided by GCC, and how to use Make to automate the compilation process.   Installing GCC   I’ll touch briefly on installing for Linux, Mac, and Windows.   Linux   GCC is one of the most common tools in the unix world, and is available in every single Linux distribution. Here, I show you how to install the GNU toolchain for some famous distributions.   For Ubuntu, you need to run the following command:   sudo apt update &amp;&amp; sudo apt install build-essentials   For Arch Linux, run:   sudo pacman -S base-devel   For Fedora, run:   dnf groupinstall &#39;Development Tools&#39;   For other distributions, consult the official wiki of your distribution.   Mac   To install GCC on Mac, run brew install gcc which will place g++-11 in /usr/local/bin. Then create an alias to g++: alias g++=‘g++-11’.   Windows   To use GCC in Windows, use WSL2. You can install GCC inside the Windows Subsystem for Linux (WSL) and use it from there.   Compiling With G++   Let’s take a look at how the compilation with G++ works. You will compile a simple Hello, World! program. Save the following file as hello.cpp:   #include&lt;iostream&gt;  int main() {     std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;      return 0; }   To compile this file, simply pass this file to g++:   g++ hello.cpp   By default, g++ will create an executable file named a.out. You can change the output file name by passing the name to the -o flag.   g++ -o hello hello.cpp   This will compile hello.cpp to an executable named hello. You can run the executable and see the output:   ./hello   The Compilation Process   Although the compilation can be done with one command, the compilation process can be divided into four distinct phases:    Preprocessing   Compilation   Assembly   Linking    In the preprocessing part, the GNU preprocessor (cpp) is invoked, which copies the header files included via #include, and expands all macros defined with #define. You can perform this step manually by running the cpp command.   cpp hello.cpp &gt; hello.i   The file hello.i contains the preprocessed source code.   In the next phase, the g++ compiler compiles the preprocessed source code to assembly language. You can run this step manually with the following command:   g++ -S hello.i   The -S flag creates a file hello.s, which contains the assembly code.   In the next step, the assembler as converts the assembly to machine code.   as -o hello.o hello.s   Finally, the linker ld links the object code with the library code to produce an executable.   ld -o hello hello.o ...libraries...   The libraries argument above is a long list of libraries that you need to find out. I omitted the exact arguments because the list is really long and complicated, and depends on which libraries g++ is using on your system. If you are interested to find out, you can run the command g++ -Q -v -o hello hello.cpp and take a look at the last line where g++ invokes collect2      Libraries Used By g++     Thankfully, you do not have to perform these steps manually, as invoking g++ itself will take care of all these steps.   Using the make Utility   Even though the compilation commands have been simple so far, this is not necessarily the case when you have multiple source files. As an example, consider this program:   #include &quot;func.h&quot;  int main() {     func(10);     func(100);          return 0; }   hello.cpp   This file includes func.h, which contains the declaration for a simple function:   #ifndef MAKE_GPP_FUNC #define MAKE_GPP_FUNC  #include&lt;iostream&gt;  void func(int i);  #endif   func.h   Finally, the definition of func resides in func.cpp:   #include &quot;func.h&quot;  void func(int i) {     std::cout &lt;&lt; &quot;You passed: &quot; &lt;&lt; i &lt;&lt; std::endl; }   func.c   In order to compile your program, you need to compile both hello.cpp and func.cpp, since the former depends on the latter.   g++ -o hello hello.cpp func.cpp   If you have more files, then you need to list all of them, while taking care to set the correct include paths and library paths. Moreover, if your code uses any library, you need to list those libraries, too. The resultant command is likely massive and difficult to remember and type. Also, the compilation command will compile all of the source files every time it is executed. But if some of the source files haven’t been modified since the last compilation, it’s a waste of time and resources to compile all the files. But keeping track of what has changed manually is also a difficult task.   This is where the make utility helps. make lets you define your target, and how to reach the target and what are the dependencies. Then it automatically keeps track of which dependencies have changed and recompiles only the necessary parts.   So let’s see how you can utilize make.   The Makefile   In order to let make know what to do, you need to create a file named Makefile in the root of your project. This file can also be named makefile but is traditionally named Makefile so that it appears near other important files such as README.   Create an empty Makefile in the project root and run the command make from the project directory. You should see the following output:  make: *** No targets. Stop.  It means make has found the Makefile, but since it is empty, it doesn’t know what to do.   Now let’s see how you can utilize Makefile to tell make what to do. The Makefile consists of a set of rules. Each rule has three parts—a target, a list of prerequisites, and a recipe—like this:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. You can’t use any other whitespace character. You must use tabs.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the prerequisites are newer than the target.   Let’s update the Makefile for the example program:   all: hello  hello: hello.o func.o  g++ -o hello hello.o func.o  func.o: func.cpp func.h  g++ -c func.cpp  hello.o: hello.cpp  g++ -c hello.cpp   Now, run the make command again. You should see the commands being run by make:  g++ -c hello.cpp g++ -c func.cpp g++ -o hello hello.o func.o  And you’ll notice that an executable called hello has been created in the directory. So, how did make do that? Let’s analyze.   When you run make without any arguments, it executes the first target. In the Makefile, the all target has a prerequisite hello. So, make looks for a rule to create hello. The rule hello has two prerequisites hello.o and func.o. Now, the target hello.o depends on hello.cpp which exists and is newer than the target hello.o (which does not exist). So, make now executes the recipe for hello.o and runs the command g++ -c hello.cpp. This creates the hello.o file.   Now make starts resolving func.o. Both of its pre-requisites exist and are newer than the target. So make executes the command g++ -c func.cpp. Now that the target hello has both the prerequisites satisfied, its recipe can be executed and the hello file is created.   Now what happens if one of the files is changed? Let’s change the hello.cpp file and change the func(10) line to func(20):   #include &quot;func.h&quot;  int main() {     func(20);     func(100);          return 0; }   Now if you run make, you’ll notice that it does not execute all the steps:  g++ -c hello.cpp g++ -o hello hello.o func.o  This time, make does not compile func.c because the file func.o exists, and its prerequisites are not newer than itself. This is because you have not changed func.cpp or func.h.   On the other hand, the file hello.cpp is newer than hello.o. So it needs to be recompiled, and when hello.o is re-created, the target hello needs to be executed, since it depends on hello.o.   You can also call make with the name of a specific rule. For example, running make func.o will only run the rule for func.o   Comments in Makefile   You can have comments in Makefile, which start with a # and last till the end of the line.   all: hello # This is a comment  hello: hello.o ...   Using Variables   Observe that in your Makefile, there are quite a lot of repetitions. For example:   func.o: func.cpp func.h  g++ -c func.cpp   In this rule, we have the string func repeated four times. Since here the base name of the source file and the compiled file are the same (func), we can use variables to tidy up the rules. The variables not only make the Makefile cleaner, they can be overridden by the user so that they can customize the Makefile without editing it.   A variable in Makefile starts with a $&lt;/code&gt; and is enclosed in parentheses &lt;code&gt;()&lt;/code&gt;or braces &lt;code&gt;{}&lt;/code&gt;, unless it’s a single character variable.&lt;/p&gt; &lt;p&gt;To set a variable, write a line starting with a variable name followed by &lt;code&gt;=&lt;/code&gt;, &lt;code&gt;:=&lt;/code&gt; or &lt;code&gt;::=&lt;/code&gt;, followed by the value of the variable:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb24&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb24-1&quot;&gt;&lt;a href=&quot;#cb24-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Here the variable &lt;code&gt;objects&lt;/code&gt; is set to &lt;code&gt;hello.o func.o&lt;/code&gt;. Now whenever you use this variable in a rule, it will be replaced by its value.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb25&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb25-1&quot;&gt;&lt;a href=&quot;#cb25-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-2&quot;&gt;&lt;a href=&quot;#cb25-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-3&quot;&gt;&lt;a href=&quot;#cb25-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-4&quot;&gt;&lt;a href=&quot;#cb25-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-5&quot;&gt;&lt;a href=&quot;#cb25-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  g++ -o hello $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;This is the same as writing:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb26-2&quot;&gt;&lt;a href=&quot;#cb26-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; g++ -o hello hello.o func.o&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;There is another way of defining variables using the &lt;code&gt;?=&lt;/code&gt; operator. This defines the variable only if it has not been defined before.&lt;/p&gt; &lt;p&gt;When you invoke &lt;code&gt;make&lt;/code&gt;, it converts all the environment variables available to it with a &lt;code&gt;make&lt;/code&gt; variable with the same name and value. This means you can set variables using environment variables. Also, you can override any variable by passing them while invoking make. For example, the &lt;code&gt;g++&lt;/code&gt; command can be invoked through a variable.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;CXX &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; g++&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-3&quot;&gt;&lt;a href=&quot;#cb27-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-4&quot;&gt;&lt;a href=&quot;#cb27-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-5&quot;&gt;&lt;a href=&quot;#cb27-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-6&quot;&gt;&lt;a href=&quot;#cb27-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;CXX&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt; -o &lt;span class=&quot;ch&quot;&gt;$(objects)    Now running make will compile the files with g++. However, the user can now substitute alternative if they want to.   make CXX=clang++   Now the files will be compiled by clang++ since CXX=clang++ overrides the variable CXX defined in the Makefile.   Phony Target   So far, you have only created files, but make can also “clean” files. Usually it’s a good idea to have a clean target to delete all the generated files, basically returning the project to a clean slate.   Here is an example for your Makefile:   clean:     rm *.o hello   You can run it via make clean. This cleans all the .o files and the hello file. Because the rm command does not create a file named clean, the rm command will be executed every time you invoke make clean.   But if you ever create a file called clean in the directory, make will get confused. Since the clean file is there, and the clean target has no prerequisites, it is always considered to be newer than its prerequisites. Therefore, the recipe will not run.   The same problem will arise with the all target if there is ever a file named all. To fix this, you can declare the targets to be “phony”.   .PHONY: all clean  clean:     rm *.o hello   Conclusion   Makefile is one of the most important components of compiling C++ using g++. It makes compilation easy and predictable and also saves time and resources by compiling only the necessary files. In this tutorial you learned how to install g++, and compile C++ programs with g++. You also learned how to write Makefiles and utilize make for increased productivity and automation.   Because make is a feature rich utility and supports a wide range of systems, it has a steep learning curve. As your project grows in size, the Makefile also grows in complexity. If you are looking for a solution to avoid the complexities of Makefile, check out Earthly. Earthly takes the best ideas from Makefile and Dockerfile, and provides understandable and repeatable build scripts, minus the head-scratching parts of the Makefile.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/g++-makefile/header-800-94dbbe160.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Creating a G++ Makefile">
+  <meta name="twitter:description" content="C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools.   What Is GCC?   GNU Compiler Collection, also known as GCC, started as a C compiler, created by Richard Stallman in 1984 as a part of his GNU project. GCC now supports many languages, including C++, Objective C, Java, Fortran, and Go. The latest version as of writing this article is GCC 11.1, released April 27, 2021.   The C++ compiler of GCC is known as g++. The g++ utility supports almost all mainstream C++ standards, including c++98, c++03, c++11, c++14, c++17, and experimentally c++20 and c++23. It also provides some GNU extensions to the standard to enable more useful features. You can check out the detailed standard support on gnu.org.   In this tutorial, you will learn how to compile C++ programs with the g++ compiler provided by GCC, and how to use Make to automate the compilation process.   Installing GCC   I’ll touch briefly on installing for Linux, Mac, and Windows.   Linux   GCC is one of the most common tools in the unix world, and is available in every single Linux distribution. Here, I show you how to install the GNU toolchain for some famous distributions.   For Ubuntu, you need to run the following command:   sudo apt update &amp;&amp; sudo apt install build-essentials   For Arch Linux, run:   sudo pacman -S base-devel   For Fedora, run:   dnf groupinstall &#39;Development Tools&#39;   For other distributions, consult the official wiki of your distribution.   Mac   To install GCC on Mac, run brew install gcc which will place g++-11 in /usr/local/bin. Then create an alias to g++: alias g++=‘g++-11’.   Windows   To use GCC in Windows, use WSL2. You can install GCC inside the Windows Subsystem for Linux (WSL) and use it from there.   Compiling With G++   Let’s take a look at how the compilation with G++ works. You will compile a simple Hello, World! program. Save the following file as hello.cpp:   #include&lt;iostream&gt;  int main() {     std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;      return 0; }   To compile this file, simply pass this file to g++:   g++ hello.cpp   By default, g++ will create an executable file named a.out. You can change the output file name by passing the name to the -o flag.   g++ -o hello hello.cpp   This will compile hello.cpp to an executable named hello. You can run the executable and see the output:   ./hello   The Compilation Process   Although the compilation can be done with one command, the compilation process can be divided into four distinct phases:    Preprocessing   Compilation   Assembly   Linking    In the preprocessing part, the GNU preprocessor (cpp) is invoked, which copies the header files included via #include, and expands all macros defined with #define. You can perform this step manually by running the cpp command.   cpp hello.cpp &gt; hello.i   The file hello.i contains the preprocessed source code.   In the next phase, the g++ compiler compiles the preprocessed source code to assembly language. You can run this step manually with the following command:   g++ -S hello.i   The -S flag creates a file hello.s, which contains the assembly code.   In the next step, the assembler as converts the assembly to machine code.   as -o hello.o hello.s   Finally, the linker ld links the object code with the library code to produce an executable.   ld -o hello hello.o ...libraries...   The libraries argument above is a long list of libraries that you need to find out. I omitted the exact arguments because the list is really long and complicated, and depends on which libraries g++ is using on your system. If you are interested to find out, you can run the command g++ -Q -v -o hello hello.cpp and take a look at the last line where g++ invokes collect2      Libraries Used By g++     Thankfully, you do not have to perform these steps manually, as invoking g++ itself will take care of all these steps.   Using the make Utility   Even though the compilation commands have been simple so far, this is not necessarily the case when you have multiple source files. As an example, consider this program:   #include &quot;func.h&quot;  int main() {     func(10);     func(100);          return 0; }   hello.cpp   This file includes func.h, which contains the declaration for a simple function:   #ifndef MAKE_GPP_FUNC #define MAKE_GPP_FUNC  #include&lt;iostream&gt;  void func(int i);  #endif   func.h   Finally, the definition of func resides in func.cpp:   #include &quot;func.h&quot;  void func(int i) {     std::cout &lt;&lt; &quot;You passed: &quot; &lt;&lt; i &lt;&lt; std::endl; }   func.c   In order to compile your program, you need to compile both hello.cpp and func.cpp, since the former depends on the latter.   g++ -o hello hello.cpp func.cpp   If you have more files, then you need to list all of them, while taking care to set the correct include paths and library paths. Moreover, if your code uses any library, you need to list those libraries, too. The resultant command is likely massive and difficult to remember and type. Also, the compilation command will compile all of the source files every time it is executed. But if some of the source files haven’t been modified since the last compilation, it’s a waste of time and resources to compile all the files. But keeping track of what has changed manually is also a difficult task.   This is where the make utility helps. make lets you define your target, and how to reach the target and what are the dependencies. Then it automatically keeps track of which dependencies have changed and recompiles only the necessary parts.   So let’s see how you can utilize make.   The Makefile   In order to let make know what to do, you need to create a file named Makefile in the root of your project. This file can also be named makefile but is traditionally named Makefile so that it appears near other important files such as README.   Create an empty Makefile in the project root and run the command make from the project directory. You should see the following output:  make: *** No targets. Stop.  It means make has found the Makefile, but since it is empty, it doesn’t know what to do.   Now let’s see how you can utilize Makefile to tell make what to do. The Makefile consists of a set of rules. Each rule has three parts—a target, a list of prerequisites, and a recipe—like this:   target: pre-req1 pre-req2 pre-req3 ...     recipes     ...   Note that there are tabs before the recipe lists. You can’t use any other whitespace character. You must use tabs.   When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the prerequisites are newer than the target.   Let’s update the Makefile for the example program:   all: hello  hello: hello.o func.o  g++ -o hello hello.o func.o  func.o: func.cpp func.h  g++ -c func.cpp  hello.o: hello.cpp  g++ -c hello.cpp   Now, run the make command again. You should see the commands being run by make:  g++ -c hello.cpp g++ -c func.cpp g++ -o hello hello.o func.o  And you’ll notice that an executable called hello has been created in the directory. So, how did make do that? Let’s analyze.   When you run make without any arguments, it executes the first target. In the Makefile, the all target has a prerequisite hello. So, make looks for a rule to create hello. The rule hello has two prerequisites hello.o and func.o. Now, the target hello.o depends on hello.cpp which exists and is newer than the target hello.o (which does not exist). So, make now executes the recipe for hello.o and runs the command g++ -c hello.cpp. This creates the hello.o file.   Now make starts resolving func.o. Both of its pre-requisites exist and are newer than the target. So make executes the command g++ -c func.cpp. Now that the target hello has both the prerequisites satisfied, its recipe can be executed and the hello file is created.   Now what happens if one of the files is changed? Let’s change the hello.cpp file and change the func(10) line to func(20):   #include &quot;func.h&quot;  int main() {     func(20);     func(100);          return 0; }   Now if you run make, you’ll notice that it does not execute all the steps:  g++ -c hello.cpp g++ -o hello hello.o func.o  This time, make does not compile func.c because the file func.o exists, and its prerequisites are not newer than itself. This is because you have not changed func.cpp or func.h.   On the other hand, the file hello.cpp is newer than hello.o. So it needs to be recompiled, and when hello.o is re-created, the target hello needs to be executed, since it depends on hello.o.   You can also call make with the name of a specific rule. For example, running make func.o will only run the rule for func.o   Comments in Makefile   You can have comments in Makefile, which start with a # and last till the end of the line.   all: hello # This is a comment  hello: hello.o ...   Using Variables   Observe that in your Makefile, there are quite a lot of repetitions. For example:   func.o: func.cpp func.h  g++ -c func.cpp   In this rule, we have the string func repeated four times. Since here the base name of the source file and the compiled file are the same (func), we can use variables to tidy up the rules. The variables not only make the Makefile cleaner, they can be overridden by the user so that they can customize the Makefile without editing it.   A variable in Makefile starts with a $&lt;/code&gt; and is enclosed in parentheses &lt;code&gt;()&lt;/code&gt;or braces &lt;code&gt;{}&lt;/code&gt;, unless it’s a single character variable.&lt;/p&gt; &lt;p&gt;To set a variable, write a line starting with a variable name followed by &lt;code&gt;=&lt;/code&gt;, &lt;code&gt;:=&lt;/code&gt; or &lt;code&gt;::=&lt;/code&gt;, followed by the value of the variable:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb24&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb24-1&quot;&gt;&lt;a href=&quot;#cb24-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Here the variable &lt;code&gt;objects&lt;/code&gt; is set to &lt;code&gt;hello.o func.o&lt;/code&gt;. Now whenever you use this variable in a rule, it will be replaced by its value.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb25&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb25-1&quot;&gt;&lt;a href=&quot;#cb25-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-2&quot;&gt;&lt;a href=&quot;#cb25-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-3&quot;&gt;&lt;a href=&quot;#cb25-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-4&quot;&gt;&lt;a href=&quot;#cb25-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-5&quot;&gt;&lt;a href=&quot;#cb25-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  g++ -o hello $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;This is the same as writing:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb26-2&quot;&gt;&lt;a href=&quot;#cb26-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; g++ -o hello hello.o func.o&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;There is another way of defining variables using the &lt;code&gt;?=&lt;/code&gt; operator. This defines the variable only if it has not been defined before.&lt;/p&gt; &lt;p&gt;When you invoke &lt;code&gt;make&lt;/code&gt;, it converts all the environment variables available to it with a &lt;code&gt;make&lt;/code&gt; variable with the same name and value. This means you can set variables using environment variables. Also, you can override any variable by passing them while invoking make. For example, the &lt;code&gt;g++&lt;/code&gt; command can be invoked through a variable.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;CXX &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; g++&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-3&quot;&gt;&lt;a href=&quot;#cb27-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-4&quot;&gt;&lt;a href=&quot;#cb27-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-5&quot;&gt;&lt;a href=&quot;#cb27-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-6&quot;&gt;&lt;a href=&quot;#cb27-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;CXX&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt; -o &lt;span class=&quot;ch&quot;&gt;$(objects)    Now running make will compile the files with g++. However, the user can now substitute alternative if they want to.   make CXX=clang++   Now the files will be compiled by clang++ since CXX=clang++ overrides the variable CXX defined in the Makefile.   Phony Target   So far, you have only created files, but make can also “clean” files. Usually it’s a good idea to have a clean target to delete all the generated files, basically returning the project to a clean slate.   Here is an example for your Makefile:   clean:     rm *.o hello   You can run it via make clean. This cleans all the .o files and the hello file. Because the rm command does not create a file named clean, the rm command will be executed every time you invoke make clean.   But if you ever create a file called clean in the directory, make will get confused. Since the clean file is there, and the clean target has no prerequisites, it is always considered to be newer than its prerequisites. Therefore, the recipe will not run.   The same problem will arise with the all target if there is ever a file named all. To fix this, you can declare the targets to be “phony”.   .PHONY: all clean  clean:     rm *.o hello   Conclusion   Makefile is one of the most important components of compiling C++ using g++. It makes compilation easy and predictable and also saves time and resources by compiling only the necessary files. In this tutorial you learned how to install g++, and compile C++ programs with g++. You also learned how to write Makefiles and utilize make for increased productivity and automation.   Because make is a feature rich utility and supports a wide range of systems, it has a steep learning curve. As your project grows in size, the Makefile also grows in complexity. If you are looking for a solution to avoid the complexities of Makefile, check out Earthly. Earthly takes the best ideas from Makefile and Dockerfile, and provides understandable and repeatable build scripts, minus the head-scratching parts of the Makefile.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/g++-makefile/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/g++-makefile/header-800-94dbbe160.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-06T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/g++-makefile/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/g++-makefile/header-400-152bc4091.webp 400w, /blog/generated/assets/images/g++-makefile/header-600-152bc4091.webp 600w, /blog/generated/assets/images/g++-makefile/header-800-152bc4091.webp 800w, /blog/generated/assets/images/g++-makefile/header-1000-152bc4091.webp 1000w, /blog/generated/assets/images/g++-makefile/header-1200-152bc4091.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/g++-makefile/header-400-152bc4091.png 400w, /blog/generated/assets/images/g++-makefile/header-600-152bc4091.png 600w, /blog/generated/assets/images/g++-makefile/header-800-152bc4091.png 800w, /blog/generated/assets/images/g++-makefile/header-1000-152bc4091.png 1000w, /blog/generated/assets/images/g++-makefile/header-1200-152bc4091.png 1200w" type="image/png"><img src="/blog/generated/assets/images/g++-makefile/header-800-152bc4091.jpg" alt="Creating a G++ Makefile"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Creating a G++ Makefile">
+    <meta itemprop="description" content="C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools.What Is GCC?GNU Compiler Collection, also known as GCC, started as a C compiler, created by Richard Stallman in 1984 as a part of his GNU project. GCC now supports many languages, including C++, Objective C, Java, Fortran, and Go. The latest version as of writing this article is GCC 11.1, released April 27, 2021.The C++ compiler of GCC is known as g++. The g++ utility supports almost all mainstream C++ standards, including c++98, c++03, c++11, c++14, c++17, and experimentally c++20 and c++23. It also provides some GNU extensions to the standard to enable more useful features. You can check out the detailed standard support on gnu.org.In this tutorial, you will learn how to compile C++ programs with the g++ compiler provided by GCC, and how to use Make to automate the compilation process.Installing GCCI’ll touch briefly on installing for Linux, Mac, and Windows.LinuxGCC is one of the most common tools in the unix world, and is available in every single Linux distribution. Here, I show you how to install the GNU toolchain for some famous distributions.For Ubuntu, you need to run the following command:sudo apt update &amp;&amp; sudo apt install build-essentialsFor Arch Linux, run:sudo pacman -S base-develFor Fedora, run:dnf groupinstall &#39;Development Tools&#39;For other distributions, consult the official wiki of your distribution.MacTo install GCC on Mac, run brew install gcc which will place g++-11 in /usr/local/bin. Then create an alias to g++: alias g++=‘g++-11’.WindowsTo use GCC in Windows, use WSL2. You can install GCC inside the Windows Subsystem for Linux (WSL) and use it from there.Compiling With G++Let’s take a look at how the compilation with G++ works. You will compile a simple Hello, World! program. Save the following file as hello.cpp:#include&lt;iostream&gt;int main() {    std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;    return 0;}To compile this file, simply pass this file to g++:g++ hello.cppBy default, g++ will create an executable file named a.out. You can change the output file name by passing the name to the -o flag.g++ -o hello hello.cppThis will compile hello.cpp to an executable named hello. You can run the executable and see the output:./helloThe Compilation ProcessAlthough the compilation can be done with one command, the compilation process can be divided into four distinct phases:PreprocessingCompilationAssemblyLinkingIn the preprocessing part, the GNU preprocessor (cpp) is invoked, which copies the header files included via #include, and expands all macros defined with #define. You can perform this step manually by running the cpp command.cpp hello.cpp &gt; hello.iThe file hello.i contains the preprocessed source code.In the next phase, the g++ compiler compiles the preprocessed source code to assembly language. You can run this step manually with the following command:g++ -S hello.iThe -S flag creates a file hello.s, which contains the assembly code.In the next step, the assembler as converts the assembly to machine code.as -o hello.o hello.sFinally, the linker ld links the object code with the library code to produce an executable.ld -o hello hello.o ...libraries...The libraries argument above is a long list of libraries that you need to find out. I omitted the exact arguments because the list is really long and complicated, and depends on which libraries g++ is using on your system. If you are interested to find out, you can run the command g++ -Q -v -o hello hello.cpp and take a look at the last line where g++ invokes collect2Libraries Used By g++Thankfully, you do not have to perform these steps manually, as invoking g++ itself will take care of all these steps.Using the make UtilityEven though the compilation commands have been simple so far, this is not necessarily the case when you have multiple source files. As an example, consider this program:#include &quot;func.h&quot;int main() {    func(10);    func(100);        return 0;}hello.cppThis file includes func.h, which contains the declaration for a simple function:#ifndef MAKE_GPP_FUNC#define MAKE_GPP_FUNC#include&lt;iostream&gt;void func(int i);#endiffunc.hFinally, the definition of func resides in func.cpp:#include &quot;func.h&quot;void func(int i) {    std::cout &lt;&lt; &quot;You passed: &quot; &lt;&lt; i &lt;&lt; std::endl;}func.cIn order to compile your program, you need to compile both hello.cpp and func.cpp, since the former depends on the latter.g++ -o hello hello.cpp func.cppIf you have more files, then you need to list all of them, while taking care to set the correct include paths and library paths. Moreover, if your code uses any library, you need to list those libraries, too. The resultant command is likely massive and difficult to remember and type. Also, the compilation command will compile all of the source files every time it is executed. But if some of the source files haven’t been modified since the last compilation, it’s a waste of time and resources to compile all the files. But keeping track of what has changed manually is also a difficult task.This is where the make utility helps. make lets you define your target, and how to reach the target and what are the dependencies. Then it automatically keeps track of which dependencies have changed and recompiles only the necessary parts.So let’s see how you can utilize make.The MakefileIn order to let make know what to do, you need to create a file named Makefile in the root of your project. This file can also be named makefile but is traditionally named Makefile so that it appears near other important files such as README.Create an empty Makefile in the project root and run the command make from the project directory. You should see the following output:make: *** No targets. Stop.It means make has found the Makefile, but since it is empty, it doesn’t know what to do.Now let’s see how you can utilize Makefile to tell make what to do. The Makefile consists of a set of rules. Each rule has three parts—a target, a list of prerequisites, and a recipe—like this:target: pre-req1 pre-req2 pre-req3 ...    recipes    ...Note that there are tabs before the recipe lists. You can’t use any other whitespace character. You must use tabs.When make executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, make executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the prerequisites are newer than the target.Let’s update the Makefile for the example program:all: hellohello: hello.o func.o g++ -o hello hello.o func.ofunc.o: func.cpp func.h g++ -c func.cpphello.o: hello.cpp g++ -c hello.cppNow, run the make command again. You should see the commands being run by make:g++ -c hello.cppg++ -c func.cppg++ -o hello hello.o func.oAnd you’ll notice that an executable called hello has been created in the directory. So, how did make do that? Let’s analyze.When you run make without any arguments, it executes the first target. In the Makefile, the all target has a prerequisite hello. So, make looks for a rule to create hello. The rule hello has two prerequisites hello.o and func.o. Now, the target hello.o depends on hello.cpp which exists and is newer than the target hello.o (which does not exist). So, make now executes the recipe for hello.o and runs the command g++ -c hello.cpp. This creates the hello.o file.Now make starts resolving func.o. Both of its pre-requisites exist and are newer than the target. So make executes the command g++ -c func.cpp. Now that the target hello has both the prerequisites satisfied, its recipe can be executed and the hello file is created.Now what happens if one of the files is changed? Let’s change the hello.cpp file and change the func(10) line to func(20):#include &quot;func.h&quot;int main() {    func(20);    func(100);        return 0;}Now if you run make, you’ll notice that it does not execute all the steps:g++ -c hello.cppg++ -o hello hello.o func.oThis time, make does not compile func.c because the file func.o exists, and its prerequisites are not newer than itself. This is because you have not changed func.cpp or func.h.On the other hand, the file hello.cpp is newer than hello.o. So it needs to be recompiled, and when hello.o is re-created, the target hello needs to be executed, since it depends on hello.o.You can also call make with the name of a specific rule. For example, running make func.o will only run the rule for func.oComments in MakefileYou can have comments in Makefile, which start with a # and last till the end of the line.all: hello # This is a commenthello: hello.o...Using VariablesObserve that in your Makefile, there are quite a lot of repetitions. For example:func.o: func.cpp func.h g++ -c func.cppIn this rule, we have the string func repeated four times. Since here the base name of the source file and the compiled file are the same (func), we can use variables to tidy up the rules. The variables not only make the Makefile cleaner, they can be overridden by the user so that they can customize the Makefile without editing it.A variable in Makefile starts with a $&lt;/code&gt; and is enclosed in parentheses &lt;code&gt;()&lt;/code&gt;or braces &lt;code&gt;{}&lt;/code&gt;, unless it’s a single character variable.&lt;/p&gt; &lt;p&gt;To set a variable, write a line starting with a variable name followed by &lt;code&gt;=&lt;/code&gt;, &lt;code&gt;:=&lt;/code&gt; or &lt;code&gt;::=&lt;/code&gt;, followed by the value of the variable:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb24&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb24-1&quot;&gt;&lt;a href=&quot;#cb24-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Here the variable &lt;code&gt;objects&lt;/code&gt; is set to &lt;code&gt;hello.o func.o&lt;/code&gt;. Now whenever you use this variable in a rule, it will be replaced by its value.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb25&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb25-1&quot;&gt;&lt;a href=&quot;#cb25-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-2&quot;&gt;&lt;a href=&quot;#cb25-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-3&quot;&gt;&lt;a href=&quot;#cb25-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb25-4&quot;&gt;&lt;a href=&quot;#cb25-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb25-5&quot;&gt;&lt;a href=&quot;#cb25-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  g++ -o hello $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;This is the same as writing:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb26&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb26-1&quot;&gt;&lt;a href=&quot;#cb26-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb26-2&quot;&gt;&lt;a href=&quot;#cb26-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt; g++ -o hello hello.o func.o&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;There is another way of defining variables using the &lt;code&gt;?=&lt;/code&gt; operator. This defines the variable only if it has not been defined before.&lt;/p&gt; &lt;p&gt;When you invoke &lt;code&gt;make&lt;/code&gt;, it converts all the environment variables available to it with a &lt;code&gt;make&lt;/code&gt; variable with the same name and value. This means you can set variables using environment variables. Also, you can override any variable by passing them while invoking make. For example, the &lt;code&gt;g++&lt;/code&gt; command can be invoked through a variable.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb27&quot;&gt;&lt;pre class=&quot;sourceCode makefile&quot;&gt;&lt;code class=&quot;sourceCode makefile&quot;&gt;&lt;span id=&quot;cb27-1&quot;&gt;&lt;a href=&quot;#cb27-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;CXX &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; g++&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-2&quot;&gt;&lt;a href=&quot;#cb27-2&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dt&quot;&gt;objects &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;st&quot;&gt; hello.o func.o&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-3&quot;&gt;&lt;a href=&quot;#cb27-3&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-4&quot;&gt;&lt;a href=&quot;#cb27-4&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;all:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; hello&lt;/span&gt;&lt;/span&gt; &lt;span id=&quot;cb27-5&quot;&gt;&lt;a href=&quot;#cb27-5&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;/span&gt; &lt;span id=&quot;cb27-6&quot;&gt;&lt;a href=&quot;#cb27-6&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;dv&quot;&gt;hello:&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt; &lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;$(objects)  $(&lt;/span&gt;&lt;span class=&quot;dt&quot;&gt;CXX&lt;/span&gt;&lt;span class=&quot;ch&quot;&gt;)&lt;/span&gt; -o &lt;span class=&quot;ch&quot;&gt;$(objects)Now running make will compile the files with g++. However, the user can now substitute alternative if they want to.make CXX=clang++Now the files will be compiled by clang++ since CXX=clang++ overrides the variable CXX defined in the Makefile.Phony TargetSo far, you have only created files, but make can also “clean” files. Usually it’s a good idea to have a clean target to delete all the generated files, basically returning the project to a clean slate.Here is an example for your Makefile:clean:    rm *.o helloYou can run it via make clean. This cleans all the .o files and the hello file. Because the rm command does not create a file named clean, the rm command will be executed every time you invoke make clean.But if you ever create a file called clean in the directory, make will get confused. Since the clean file is there, and the clean target has no prerequisites, it is always considered to be newer than its prerequisites. Therefore, the recipe will not run.The same problem will arise with the all target if there is ever a file named all. To fix this, you can declare the targets to be “phony”..PHONY: all cleanclean:    rm *.o helloConclusionMakefile is one of the most important components of compiling C++ using g++. It makes compilation easy and predictable and also saves time and resources by compiling only the necessary files. In this tutorial you learned how to install g++, and compile C++ programs with g++. You also learned how to write Makefiles and utilize make for increased productivity and automation.Because make is a feature rich utility and supports a wide range of systems, it has a steep learning curve. As your project grows in size, the Makefile also grows in complexity. If you are looking for a solution to avoid the complexities of Makefile, check out Earthly. Earthly takes the best ideas from Makefile and Dockerfile, and provides understandable and repeatable build scripts, minus the head-scratching parts of the Makefile.">
+    <meta itemprop="datePublished" content="2021-07-06T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Creating a G++ Makefile
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-06T00:00:00-04:00">July 6, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/aniket-240-e5e4f940c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg" alt="Aniket Bhattacharyea %"></picture>
+
+          &nbsp;	&nbsp;
+          Aniket Bhattacharyea
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-is-gcc">What Is GCC?</a></li><li><a href="#installing-gcc">Installing GCC</a><ul><li><a href="#linux">Linux</a></li><li><a href="#mac">Mac</a></li><li><a href="#windows">Windows</a></li></ul></li><li><a href="#compiling-with-g">Compiling With G++</a></li><li><a href="#the-compilation-process">The Compilation Process</a></li><li><a href="#using-the-make-utility">Using the make Utility</a></li><li><a href="#the-makefile">The Makefile</a></li><li><a href="#comments-in-makefile">Comments in Makefile</a></li><li><a href="#using-variables">Using Variables</a></li><li><a href="#phony-target">Phony Target</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>C++ is one of the <a href="https://www.tiobe.com/tiobe-index/cplusplus/">most dominant programming languages</a>. Although there are many compilers available, <a href="http://gcc.gnu.org/">GCC</a> still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU <a href="/blog/autoconf">AutoTools</a>.</p>
+<h2 id="what-is-gcc">What Is GCC?</h2>
+<p><a href="http://gcc.gnu.org/">GNU Compiler Collection</a>, also known as GCC, started as a C compiler, created by Richard Stallman in 1984 as a part of his GNU project. GCC now supports many languages, including C++, Objective C, Java, Fortran, and Go. The latest version as of writing this article is GCC 11.1, released April 27, 2021.</p>
+<p>The C++ compiler of GCC is known as <code>g++</code>. The <code>g++</code> utility supports almost all mainstream C++ standards, including <code>c++98</code>, <code>c++03</code>, <code>c++11</code>, <code>c++14</code>, <code>c++17</code>, and experimentally <code>c++20</code> and <code>c++23</code>. It also provides some GNU extensions to the standard to enable more useful features. You can check out the detailed standard support <a href="https://gcc.gnu.org/projects/cxx-status.html">on gnu.org</a>.</p>
+<p>In this tutorial, you will learn how to compile C++ programs with the <code>g++</code> compiler provided by GCC, and how to use <a href="https://www.gnu.org/software/make/">Make</a> to automate the compilation process.</p>
+<h2 id="installing-gcc">Installing GCC</h2>
+<p>I’ll touch briefly on installing for Linux, Mac, and Windows.</p>
+<h3 id="linux">Linux</h3>
+<p>GCC is one of the most common tools in the unix world, and is available in every single Linux distribution. Here, I show you how to install the GNU toolchain for some famous distributions.</p>
+<p>For Ubuntu, you need to run the following command:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install build-essentials</span></code></pre></div>
+<p>For Arch Linux, run:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> pacman <span class="at">-S</span> base-devel</span></code></pre></div>
+<p>For <a href="/blog/creating-and-hosting-your-own-rpm-packages-and-yum-repo">Fedora</a>, run:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">dnf</span> groupinstall <span class="st">&#39;Development Tools&#39;</span></span></code></pre></div>
+<p>For other distributions, consult the official wiki of your distribution.</p>
+<h3 id="mac">Mac</h3>
+<p>To install GCC on Mac, run <code>brew install gcc</code> which will place <code>g++-11</code> in <code>/usr/local/bin</code>. Then create an alias to <code>g++</code>: <code>alias g++='g++-11'</code>.</p>
+<h3 id="windows">Windows</h3>
+<p>To use GCC in Windows, use <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL2</a>. You can install GCC inside the Windows Subsystem for Linux (WSL) and use it from there.</p>
+<h2 id="compiling-with-g">Compiling With G++</h2>
+<p>Let’s take a look at how the compilation with G++ works. You will compile a simple <code>Hello, World!</code> program. Save the following file as <code>hello.cpp</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout<span class="op"> &lt;&lt;</span> <span class="st">&quot;Hello, World!&quot;</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>To compile this file, simply pass this file to <code>g++</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> hello.cpp</span></code></pre></div>
+<p>By default, <code>g++</code> will create an executable file named <code>a.out</code>. You can change the output file name by passing the name to the <code>-o</code> flag.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-o</span> hello hello.cpp</span></code></pre></div>
+<p>This will compile <code>hello.cpp</code> to an executable named <code>hello</code>. You can run the executable and see the output:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./hello</span></span></code></pre></div>
+<h2 id="the-compilation-process">The Compilation Process</h2>
+<p>Although the compilation can be done with one command, the compilation process can be divided into four distinct phases:</p>
+<ol type="1">
+<li>Preprocessing</li>
+<li>Compilation</li>
+<li>Assembly</li>
+<li>Linking</li>
+</ol>
+<p>In the preprocessing part, the GNU preprocessor (<code>cpp</code>) is invoked, which copies the header files included via <code>#include</code>, and expands all macros defined with <code>#define</code>. You can perform this step manually by running the <code>cpp</code> command.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cpp</span> hello.cpp <span class="op">&gt;</span> hello.i</span></code></pre></div>
+<p>The file <code>hello.i</code> contains the preprocessed source code.</p>
+<p>In the next phase, the <code>g++</code> compiler compiles the preprocessed source code to assembly language. You can run this step manually with the following command:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-S</span> hello.i</span></code></pre></div>
+<p>The <code>-S</code> flag creates a file <code>hello.s</code>, which contains the assembly code.</p>
+<p>In the next step, the assembler <code>as</code> converts the assembly to machine code.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as</span> <span class="at">-o</span> hello.o hello.s</span></code></pre></div>
+<p>Finally, the linker <code>ld</code> links the object code with the library code to produce an executable.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ld</span> <span class="at">-o</span> hello hello.o ...libraries...</span></code></pre></div>
+<p>The <code>libraries</code> argument above is a long list of libraries that you need to find out. I omitted the exact arguments because the list is really long and complicated, and depends on which libraries <code>g++</code> is using on your system. If you are interested to find out, you can run the command <code>g++ -Q -v -o hello hello.cpp</code> and take a look at the last line where <code>g++</code> invokes <code>collect2</code></p>
+<div class="wide">
+<figure>
+<img src="/blog/assets/images/g++-makefile/libs.png" alt="Libraries Used By g++" /><figcaption aria-hidden="true">Libraries Used By g++</figcaption>
+</figure>
+</div>
+<p>Thankfully, you do not have to perform these steps manually, as invoking <code>g++</code> itself will take care of all these steps.</p>
+<h2 id="using-the-make-utility">Using the <code>make</code> Utility</h2>
+<p>Even though the compilation commands have been simple so far, this is not necessarily the case when you have multiple source files. As an example, consider this program:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;func.h&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    func<span class="op">(</span><span class="dv">10</span><span class="op">);</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    func<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<figcaption>
+<code>hello.cpp</code>
+</figcaption>
+<p>This file includes <code>func.h</code>, which contains the declaration for a simple function:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef MAKE_GPP_FUNC</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#define MAKE_GPP_FUNC</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include</span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> func<span class="op">(</span><span class="dt">int</span> i<span class="op">);</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span></code></pre></div>
+<figcaption>
+<code>func.h</code>
+</figcaption>
+<p>Finally, the definition of <code>func</code> resides in <code>func.cpp</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;func.h&quot;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> func<span class="op">(</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout<span class="op"> &lt;&lt;</span> <span class="st">&quot;You passed: &quot;</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<figcaption>
+<code>func.c</code>
+</figcaption>
+<p>In order to compile your program, you need to compile both <code>hello.cpp</code> and <code>func.cpp</code>, since the former depends on the latter.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-o</span> hello hello.cpp func.cpp</span></code></pre></div>
+<p>If you have more files, then you need to list all of them, while taking care to set the correct include paths and library paths. Moreover, if your code uses any library, you need to list those libraries, too. The resultant command is likely massive and difficult to remember and type. Also, the compilation command will compile all of the source files every time it is executed. But if some of the source files haven’t been modified since the last compilation, it’s a waste of time and resources to compile all the files. But keeping track of what has changed manually is also a difficult task.</p>
+<p>This is where the <code>make</code> utility helps. <code>make</code> lets you define your target, and how to reach the target and what are the dependencies. Then it automatically keeps track of which dependencies have changed and recompiles only the necessary parts.</p>
+<p>So let’s see how you can utilize <code>make</code>.</p>
+<h2 id="the-makefile">The Makefile</h2>
+<p>In order to let <code>make</code> know what to do, you need to create a file named <code>Makefile</code> in the root of your project. This file can also be named <code>makefile</code> but is traditionally named <code>Makefile</code> so that it appears near other important files such as <code>README</code>.</p>
+<p>Create an empty <code>Makefile</code> in the project root and run the command <code>make</code> from the project directory. You should see the following output:</p>
+<pre><code>make: *** No targets. Stop.</code></pre>
+<p>It means <code>make</code> has found the Makefile, but since it is empty, it doesn’t know what to do.</p>
+<p>Now let’s see how you can utilize Makefile to tell <code>make</code> what to do. The Makefile consists of a set of rules. Each rule has three parts—a target, a list of prerequisites, and a recipe—like this:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">target:</span><span class="dt"> pre-req1 pre-req2 pre-req3 ...</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    recipes</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<p><em>Note that there are tabs before the recipe lists. You can’t use any other whitespace character. You must use <a href="/blog/repeatable-builds-every-time/#tips-for-taming-makefiles-in-large-teams">tabs</a>.</em></p>
+<p>When <code>make</code> executes a target, it looks at its prerequisites. If those prerequisites have their own recipes, <code>make</code> executes them and when all the prerequisites are ready for a target, it executes the corresponding recipe for the current target. For each target, the recipes are executed only if the target doesn’t exist or the prerequisites are newer than the target.</p>
+<p>Let’s update the <code>Makefile</code> for the example program:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> hello</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="dv">hello:</span><span class="dt"> hello.o func.o</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a> g++ -o hello hello.o func.o</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="dv">func.o:</span><span class="dt"> func.cpp func.h</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a> g++ -c func.cpp</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="dv">hello.o:</span><span class="dt"> hello.cpp</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a> g++ -c hello.cpp</span></code></pre></div>
+<p>Now, run the <code>make</code> command again. You should see the commands being run by <code>make</code>:</p>
+<pre><code>g++ -c hello.cpp
+g++ -c func.cpp
+g++ -o hello hello.o func.o</code></pre>
+<p>And you’ll notice that an executable called <code>hello</code> has been created in the directory. So, how did <code>make</code> do that? Let’s analyze.</p>
+<p>When you run <code>make</code> without any arguments, it executes the first target. In the Makefile, the <code>all</code> target has a prerequisite <code>hello</code>. So, <code>make</code> looks for a rule to create <code>hello</code>. The rule <code>hello</code> has two prerequisites <code>hello.o</code> and <code>func.o</code>. Now, the target <code>hello.o</code> depends on <code>hello.cpp</code> which exists and is newer than the target <code>hello.o</code> (which does not exist). So, <code>make</code> now executes the recipe for <code>hello.o</code> and runs the command <code>g++ -c hello.cpp</code>. This creates the <code>hello.o</code> file.</p>
+<p>Now <code>make</code> starts resolving <code>func.o</code>. Both of its pre-requisites exist and are newer than the target. So <code>make</code> executes the command <code>g++ -c func.cpp</code>. Now that the target <code>hello</code> has both the prerequisites satisfied, its recipe can be executed and the <code>hello</code> file is created.</p>
+<p>Now what happens if one of the files is changed? Let’s change the <code>hello.cpp</code> file and change the <code>func(10)</code> line to <code>func(20)</code>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&quot;func.h&quot;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    func<span class="op">(</span><span class="dv">20</span><span class="op">);</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    func<span class="op">(</span><span class="dv">100</span><span class="op">);</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Now if you run <code>make</code>, you’ll notice that it does not execute all the steps:</p>
+<pre><code>g++ -c hello.cpp
+g++ -o hello hello.o func.o</code></pre>
+<p>This time, <code>make</code> does not compile <code>func.c</code> because the file <code>func.o</code> exists, and its prerequisites are not newer than itself. This is because you have not changed <code>func.cpp</code> or <code>func.h</code>.</p>
+<p>On the other hand, the file <code>hello.cpp</code> is newer than <code>hello.o</code>. So it needs to be recompiled, and when <code>hello.o</code> is re-created, the target <code>hello</code> needs to be executed, since it depends on <code>hello.o</code>.</p>
+<p>You can also call <code>make</code> with the name of a specific rule. For example, running <code>make func.o</code> will only run the rule for <code>func.o</code></p>
+<h2 id="comments-in-makefile">Comments in Makefile</h2>
+<p>You can have comments in Makefile, which start with a # and last till the end of the line.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> hello </span><span class="co"># This is a comment</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="dv">hello:</span><span class="dt"> hello.o</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<h2 id="using-variables">Using Variables</h2>
+<p>Observe that in your Makefile, there are quite a lot of repetitions. For example:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dv">func.o:</span><span class="dt"> func.cpp func.h</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> g++ -c func.cpp</span></code></pre></div>
+<p>In this rule, we have the string <code>func</code> repeated four times. Since here the base name of the source file and the compiled file are the same (<code>func</code>), we can use variables to tidy up the rules. The variables not only make the Makefile cleaner, they can be overridden by the user so that they can customize the Makefile without editing it.</p>
+<p>A variable in Makefile starts with a <code>$</code> and is enclosed in parentheses <code>()</code>or braces <code>{}</code>, unless it’s a single character variable.</p>
+<p>To set a variable, write a line starting with a variable name followed by <code>=</code>, <code>:=</code> or <code>::=</code>, followed by the value of the variable:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dt">objects </span><span class="ch">=</span><span class="st"> hello.o func.o</span></span></code></pre></div>
+<p>Here the variable <code>objects</code> is set to <code>hello.o func.o</code>. Now whenever you use this variable in a rule, it will be replaced by its value.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">objects </span><span class="ch">=</span><span class="st"> hello.o func.o</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> hello</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="dv">hello:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">objects</span><span class="ch">)</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    g++ -o hello <span class="ch">$(</span><span class="dt">objects</span><span class="ch">)</span></span></code></pre></div>
+<p>This is the same as writing:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dv">hello:</span><span class="dt"> hello.o func.o</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    g++ -o hello hello.o func.o</span></code></pre></div>
+<p>There is another way of defining variables using the <code>?=</code> operator. This defines the variable only if it has not been defined before.</p>
+<p>When you invoke <code>make</code>, it converts all the environment variables available to it with a <code>make</code> variable with the same name and value. This means you can set variables using environment variables. Also, you can override any variable by passing them while invoking make. For example, the <code>g++</code> command can be invoked through a variable.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">CXX </span><span class="ch">=</span><span class="st"> g++</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="dt">objects </span><span class="ch">=</span><span class="st"> hello.o func.o</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> hello</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="dv">hello:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">objects</span><span class="ch">)</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="ch">$(</span><span class="dt">CXX</span><span class="ch">)</span> -o <span class="ch">$(</span><span class="dt">objects</span><span class="ch">)</span></span></code></pre></div>
+<p>Now running <code>make</code> will compile the files with <code>g++</code>. However, the user can now substitute alternative if they want to.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> CXX=clang++</span></code></pre></div>
+<p>Now the files will be compiled by <code>clang++</code> since <code>CXX=clang++</code> overrides the variable <code>CXX</code> defined in the Makefile.</p>
+<h2 id="phony-target">Phony Target</h2>
+<p>So far, you have only created files, but <code>make</code> can also “clean” files. Usually it’s a good idea to have a <code>clean</code> target to delete all the generated files, basically returning the project to a clean slate.</p>
+<p>Here is an example for your Makefile:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    rm *.o hello</span></code></pre></div>
+<p>You can run it via <code>make clean</code>. This cleans all the <code>.o</code> files and the <code>hello</code> file. Because the <code>rm</code> command does not create a file named <code>clean</code>, the <code>rm</code> command will be executed every time you invoke <code>make clean</code>.</p>
+<p>But if you ever create a file called <code>clean</code> in the directory, <code>make</code> will get confused. Since the <code>clean</code> file is there, and the <code>clean</code> target has no prerequisites, it is always considered to be newer than its prerequisites. Therefore, the recipe will not run.</p>
+<p>The same problem will arise with the <code>all</code> target if there is ever a file named <code>all</code>. To fix this, you can declare the targets to be “phony”.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ot">.PHONY:</span><span class="dt"> all clean</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    rm *.o hello</span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>Makefile is one of the most important components of compiling C++ using <code>g++</code>. It makes compilation easy and predictable and also saves time and resources by compiling only the necessary files. In this tutorial you learned how to install <code>g++</code>, and compile C++ programs with <code>g++</code>. You also learned how to write Makefiles and utilize <code>make</code> for increased productivity and automation.</p>
+<p>Because <code>make</code> is a feature rich utility and supports a wide range of systems, it has a steep learning curve. As your project grows in size, the Makefile also grows in complexity. If you are looking for a solution to avoid the complexities of Makefile, check out <a href="https://earthly.dev/">Earthly</a>. Earthly takes the best ideas from Makefile and Dockerfile, and provides understandable and repeatable build scripts, minus the head-scratching parts of the Makefile.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/aniket-240-e5e4f940c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg" alt="Aniket Bhattacharyea %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Aniket Bhattacharyea
+    
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Aniket is a student doing a Master’s in Mathematics and has a passion for computers and software.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-06T00:00:00-04:00">July 6, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/video-camera-on/" class="pagination--pager" title="SQL Errors and Video Cameras
+">Previous</a>
+    
+    
+      <a href="/blog/python-concatenate-lists/" class="pagination--pager" title="Python Concatenate Lists
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/python-makefile/header-600-b95119718.webp 600w, /blog/generated/assets/images/python-makefile/header-800-b95119718.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-makefile/header-600-3a116cb6d.jpg 600w, /blog/generated/assets/images/python-makefile/header-800-3a116cb6d.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-makefile/header-800-3a116cb6d.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/python-makefile/" rel="permalink">Creating a Python Makefile
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
