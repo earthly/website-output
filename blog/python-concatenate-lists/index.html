@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Python Concatenate Lists - Earthly Blog</title>
+<meta name="description" content="Concatenate Two Lists in Python   Problem: You have two lists and you’d like to join them into a new list. Solution:   Python 3.8.2 &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; one + two [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;]    📢 TLDR: Use +   In almost all simple situations, using list1 + list2 is the way you want to concatenate lists.    The edge cases below are better in some situations, but + is generally the best choice. All options covered work in Python 2.3, Python 2.7, and all versions of Python 31.   Combine Lists In Place In Python   Problem: You have a huge list, and you want to add a smaller list on the end while minimizing memory usage.   In this case, it may be best to append to the existing list, reusing it instead of recreating a new list.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, ... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; x.extend(y) &gt;&gt;&gt; x [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;,  ..., &quot;four&quot;,&quot;five&quot;]   As with any optimization, you should verify that this reduces memory thrash in your specific case and stick to the simple idiomatic x + y otherwise.   Let’s use the timeit module to check some performance numbers.   # Performance Check &gt;&gt;&gt; setup = &quot;&quot;&quot;\ x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 3.6260274310000113 # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804   In this example, where x is 3000 elements, extend is around 50x faster.    ❗ Concatenating Lists With Large Elements is Fine   If the elements in your list are huge (million character strings), but the list size is less than a thousand elements, the previous solution x + y will work just fine. This is because Python stores references to the values in the list, not the values themselves. Thus, the element size makes no difference to the runtime complexity.   &gt;&gt;&gt; x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] &gt;&gt;&gt; y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &gt;&gt;&gt; #This is fine &gt;&gt;&gt; z = x + y &gt;&gt;&gt; #Performance Testing (extend is slower for large elements) &gt;&gt;&gt;  setup = &quot;&quot;&quot;\ x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 0.05397573999994165 &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06511967799997365   In this case, extend does not have an advantage.    Avoid Chain From itertools For Two Lists   It is possible to use chain from itertools to create an iterable of two lists.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,, .......... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; z = list(chain(longlist, shortlist) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, , .........., &quot;four&quot;,&quot;five&quot;]   We can check the performance of using chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804 &gt;&gt;&gt; timeit.timeit(&#39;list(chain(x, y))&#39;, setup=setup, number=1000000) 16.810488051999982   Using chain with two lists is slower in all cases tested, and x + y is easier to understand.   Combining N Lists in Python   If you need to add three or even ten lists together and the lists are statically known, then + for concatenate works great.   &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; three = [] &gt;&gt;&gt; z = one + two + three   Flatten a List of Lists in Python   However, if the number of lists is dynamic and unknown until runtime, chain from itertools becomes a great option. Chain takes a list of lists and flattens it into a single list.   &gt;&gt;&gt; l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 [[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;], [&#39;four&#39;, &#39;five&#39;], [], ... &gt;&gt;&gt; list(chain.from_iterable(l)) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;, &#39;one&#39;, &#39;two&#39;, ... ]   chain can take anything iterable, making it an excellent choice for combining lists, dictionaries, and other iterable structures.   &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; one = [1,2,3] &gt;&gt;&gt; two = {1,2,3} &gt;&gt;&gt; list(chain(one, two, one)) [1, 2, 3, 1, 2, 3, 1, 2, 3]   Performance of Flattening a List of Lists   Performance doesn’t always matter, but readability always does, and the chain method is a straightforward way to combine lists of lists. That said, let’s put readability aside for a moment and try to find the fastest way to flatten lists.   One option is iterating ourselves:   result = [] for nestedlist in l:     result.extend(nestedlist)   Let’s check its performance vs chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 &quot;&quot;&quot; &gt;&gt;&gt; # Add Nested Lists using chain.from_iterable &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(l))&#39;, setup=setup, number=100000) 1.0384087909997106 &gt;&gt;&gt; ### Add using our own iteration &gt;&gt;&gt; run = &quot;&quot;&quot;\ result = [] for nestedlist in l:     result.extend(nestedlist)   &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000) 1.8619721710001613   This shows that chain.from_iterable is faster than extend.   Flattening and Merging Lists With One Big List   What about adding a list of lists to an existing and large list? We saw that using extend can be faster with two lists when one is significantly longer than the other so let’s test the performance of extend with N lists.   First, we use our standard chain.from_iterable.   &gt;&gt;&gt; # Method 1 - chain.from_iterable  &gt;&gt;&gt; longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt; nestedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt; list(chain.from_iterable(nestedlist))   We then test its performance:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; combinedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(combinedlist))&#39;, setup=setup, number=100000) 1.8676087710009597   Next, let’s try concatenating by adding everything onto the long list:   &gt;&gt;&gt; # Method 2 - extend &gt;&gt;&gt;  longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt;  nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt;  for item in nestedlist: &gt;&gt;&gt;     longlist.extent(item)   Performance Test:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; run = &quot;&quot;&quot;\ for item in nestedlist:    longlist.extend(item)    &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000)  0.02403609199973289   There we go, extend is much faster when flattening lists or concatenating many lists with one long list. If you encounter this, using extend to add the smaller lists to the long list can decrease the work that has to be done and increase performance.   Summary   These are the main variants of combining lists in python. Use this table to guide you in the future.   Also, if you are looking for a nice way to standardize the processes around your python projects – running tests, installing dependencies, and linting code – take a look at Earthly for Repeatable Builds.      Condition   Solution   Performance Optimization2       2 lists   x + y   No     1 large list, 1 small list   x.extend(y)   Yes     Known number of N lists   x + y + z   No     Unknown number of N lists   list(chain.from_iterable(l))   No     List of Lists   list(chain.from_iterable(l))   No     1 large list, many small lists   for l1 in l: x.extend(…)   Yes          I did all the performance testing using Python 3.9.5 on MacOS BigSur.↩︎     If you don’t have a performance bottleneck, clarity trumps performance, and you should ignore the performance suggestions.   ↩︎">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Python Concatenate Lists">
+<meta property="og:url" content="https://earthly.dev/blog/python-concatenate-lists/">
+
+
+  <meta property="og:description" content="Concatenate Two Lists in Python   Problem: You have two lists and you’d like to join them into a new list. Solution:   Python 3.8.2 &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; one + two [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;]    📢 TLDR: Use +   In almost all simple situations, using list1 + list2 is the way you want to concatenate lists.    The edge cases below are better in some situations, but + is generally the best choice. All options covered work in Python 2.3, Python 2.7, and all versions of Python 31.   Combine Lists In Place In Python   Problem: You have a huge list, and you want to add a smaller list on the end while minimizing memory usage.   In this case, it may be best to append to the existing list, reusing it instead of recreating a new list.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, ... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; x.extend(y) &gt;&gt;&gt; x [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;,  ..., &quot;four&quot;,&quot;five&quot;]   As with any optimization, you should verify that this reduces memory thrash in your specific case and stick to the simple idiomatic x + y otherwise.   Let’s use the timeit module to check some performance numbers.   # Performance Check &gt;&gt;&gt; setup = &quot;&quot;&quot;\ x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 3.6260274310000113 # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804   In this example, where x is 3000 elements, extend is around 50x faster.    ❗ Concatenating Lists With Large Elements is Fine   If the elements in your list are huge (million character strings), but the list size is less than a thousand elements, the previous solution x + y will work just fine. This is because Python stores references to the values in the list, not the values themselves. Thus, the element size makes no difference to the runtime complexity.   &gt;&gt;&gt; x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] &gt;&gt;&gt; y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &gt;&gt;&gt; #This is fine &gt;&gt;&gt; z = x + y &gt;&gt;&gt; #Performance Testing (extend is slower for large elements) &gt;&gt;&gt;  setup = &quot;&quot;&quot;\ x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 0.05397573999994165 &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06511967799997365   In this case, extend does not have an advantage.    Avoid Chain From itertools For Two Lists   It is possible to use chain from itertools to create an iterable of two lists.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,, .......... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; z = list(chain(longlist, shortlist) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, , .........., &quot;four&quot;,&quot;five&quot;]   We can check the performance of using chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804 &gt;&gt;&gt; timeit.timeit(&#39;list(chain(x, y))&#39;, setup=setup, number=1000000) 16.810488051999982   Using chain with two lists is slower in all cases tested, and x + y is easier to understand.   Combining N Lists in Python   If you need to add three or even ten lists together and the lists are statically known, then + for concatenate works great.   &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; three = [] &gt;&gt;&gt; z = one + two + three   Flatten a List of Lists in Python   However, if the number of lists is dynamic and unknown until runtime, chain from itertools becomes a great option. Chain takes a list of lists and flattens it into a single list.   &gt;&gt;&gt; l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 [[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;], [&#39;four&#39;, &#39;five&#39;], [], ... &gt;&gt;&gt; list(chain.from_iterable(l)) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;, &#39;one&#39;, &#39;two&#39;, ... ]   chain can take anything iterable, making it an excellent choice for combining lists, dictionaries, and other iterable structures.   &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; one = [1,2,3] &gt;&gt;&gt; two = {1,2,3} &gt;&gt;&gt; list(chain(one, two, one)) [1, 2, 3, 1, 2, 3, 1, 2, 3]   Performance of Flattening a List of Lists   Performance doesn’t always matter, but readability always does, and the chain method is a straightforward way to combine lists of lists. That said, let’s put readability aside for a moment and try to find the fastest way to flatten lists.   One option is iterating ourselves:   result = [] for nestedlist in l:     result.extend(nestedlist)   Let’s check its performance vs chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 &quot;&quot;&quot; &gt;&gt;&gt; # Add Nested Lists using chain.from_iterable &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(l))&#39;, setup=setup, number=100000) 1.0384087909997106 &gt;&gt;&gt; ### Add using our own iteration &gt;&gt;&gt; run = &quot;&quot;&quot;\ result = [] for nestedlist in l:     result.extend(nestedlist)   &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000) 1.8619721710001613   This shows that chain.from_iterable is faster than extend.   Flattening and Merging Lists With One Big List   What about adding a list of lists to an existing and large list? We saw that using extend can be faster with two lists when one is significantly longer than the other so let’s test the performance of extend with N lists.   First, we use our standard chain.from_iterable.   &gt;&gt;&gt; # Method 1 - chain.from_iterable  &gt;&gt;&gt; longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt; nestedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt; list(chain.from_iterable(nestedlist))   We then test its performance:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; combinedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(combinedlist))&#39;, setup=setup, number=100000) 1.8676087710009597   Next, let’s try concatenating by adding everything onto the long list:   &gt;&gt;&gt; # Method 2 - extend &gt;&gt;&gt;  longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt;  nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt;  for item in nestedlist: &gt;&gt;&gt;     longlist.extent(item)   Performance Test:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; run = &quot;&quot;&quot;\ for item in nestedlist:    longlist.extend(item)    &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000)  0.02403609199973289   There we go, extend is much faster when flattening lists or concatenating many lists with one long list. If you encounter this, using extend to add the smaller lists to the long list can decrease the work that has to be done and increase performance.   Summary   These are the main variants of combining lists in python. Use this table to guide you in the future.   Also, if you are looking for a nice way to standardize the processes around your python projects – running tests, installing dependencies, and linting code – take a look at Earthly for Repeatable Builds.      Condition   Solution   Performance Optimization2       2 lists   x + y   No     1 large list, 1 small list   x.extend(y)   Yes     Known number of N lists   x + y + z   No     Unknown number of N lists   list(chain.from_iterable(l))   No     List of Lists   list(chain.from_iterable(l))   No     1 large list, many small lists   for l1 in l: x.extend(…)   Yes          I did all the performance testing using Python 3.9.5 on MacOS BigSur.↩︎     If you don’t have a performance bottleneck, clarity trumps performance, and you should ignore the performance suggestions.   ↩︎">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/python-concatenate-lists/header-800-bc439aac6.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Python Concatenate Lists">
+  <meta name="twitter:description" content="Concatenate Two Lists in Python   Problem: You have two lists and you’d like to join them into a new list. Solution:   Python 3.8.2 &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; one + two [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;]    📢 TLDR: Use +   In almost all simple situations, using list1 + list2 is the way you want to concatenate lists.    The edge cases below are better in some situations, but + is generally the best choice. All options covered work in Python 2.3, Python 2.7, and all versions of Python 31.   Combine Lists In Place In Python   Problem: You have a huge list, and you want to add a smaller list on the end while minimizing memory usage.   In this case, it may be best to append to the existing list, reusing it instead of recreating a new list.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, ... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; x.extend(y) &gt;&gt;&gt; x [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;,  ..., &quot;four&quot;,&quot;five&quot;]   As with any optimization, you should verify that this reduces memory thrash in your specific case and stick to the simple idiomatic x + y otherwise.   Let’s use the timeit module to check some performance numbers.   # Performance Check &gt;&gt;&gt; setup = &quot;&quot;&quot;\ x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 3.6260274310000113 # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804   In this example, where x is 3000 elements, extend is around 50x faster.    ❗ Concatenating Lists With Large Elements is Fine   If the elements in your list are huge (million character strings), but the list size is less than a thousand elements, the previous solution x + y will work just fine. This is because Python stores references to the values in the list, not the values themselves. Thus, the element size makes no difference to the runtime complexity.   &gt;&gt;&gt; x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] &gt;&gt;&gt; y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &gt;&gt;&gt; #This is fine &gt;&gt;&gt; z = x + y &gt;&gt;&gt; #Performance Testing (extend is slower for large elements) &gt;&gt;&gt;  setup = &quot;&quot;&quot;\ x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000] y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000) 0.05397573999994165 &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06511967799997365   In this case, extend does not have an advantage.    Avoid Chain From itertools For Two Lists   It is possible to use chain from itertools to create an iterable of two lists.   &gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,, .......... ] &gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;] [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; z = list(chain(longlist, shortlist) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, , .........., &quot;four&quot;,&quot;five&quot;]   We can check the performance of using chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000  y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;] &quot;&quot;&quot; # x + y with large x # x.extend(y) with large x &gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000) 0.06857255800002804 &gt;&gt;&gt; timeit.timeit(&#39;list(chain(x, y))&#39;, setup=setup, number=1000000) 16.810488051999982   Using chain with two lists is slower in all cases tested, and x + y is easier to understand.   Combining N Lists in Python   If you need to add three or even ten lists together and the lists are statically known, then + for concatenate works great.   &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; three = [] &gt;&gt;&gt; z = one + two + three   Flatten a List of Lists in Python   However, if the number of lists is dynamic and unknown until runtime, chain from itertools becomes a great option. Chain takes a list of lists and flattens it into a single list.   &gt;&gt;&gt; l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 [[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;], [&#39;four&#39;, &#39;five&#39;], [], ... &gt;&gt;&gt; list(chain.from_iterable(l)) [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;, &#39;one&#39;, &#39;two&#39;, ... ]   chain can take anything iterable, making it an excellent choice for combining lists, dictionaries, and other iterable structures.   &gt;&gt;&gt; from itertools import chain &gt;&gt;&gt; one = [1,2,3] &gt;&gt;&gt; two = {1,2,3} &gt;&gt;&gt; list(chain(one, two, one)) [1, 2, 3, 1, 2, 3, 1, 2, 3]   Performance of Flattening a List of Lists   Performance doesn’t always matter, but readability always does, and the chain method is a straightforward way to combine lists of lists. That said, let’s put readability aside for a moment and try to find the fastest way to flatten lists.   One option is iterating ourselves:   result = [] for nestedlist in l:     result.extend(nestedlist)   Let’s check its performance vs chain:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99 &quot;&quot;&quot; &gt;&gt;&gt; # Add Nested Lists using chain.from_iterable &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(l))&#39;, setup=setup, number=100000) 1.0384087909997106 &gt;&gt;&gt; ### Add using our own iteration &gt;&gt;&gt; run = &quot;&quot;&quot;\ result = [] for nestedlist in l:     result.extend(nestedlist)   &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000) 1.8619721710001613   This shows that chain.from_iterable is faster than extend.   Flattening and Merging Lists With One Big List   What about adding a list of lists to an existing and large list? We saw that using extend can be faster with two lists when one is significantly longer than the other so let’s test the performance of extend with N lists.   First, we use our standard chain.from_iterable.   &gt;&gt;&gt; # Method 1 - chain.from_iterable  &gt;&gt;&gt; longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt; nestedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt; list(chain.from_iterable(nestedlist))   We then test its performance:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; combinedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(combinedlist))&#39;, setup=setup, number=100000) 1.8676087710009597   Next, let’s try concatenating by adding everything onto the long list:   &gt;&gt;&gt; # Method 2 - extend &gt;&gt;&gt;  longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000 &gt;&gt;&gt;  nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &gt;&gt;&gt;  for item in nestedlist: &gt;&gt;&gt;     longlist.extent(item)   Performance Test:   &gt;&gt;&gt; setup = &quot;&quot;&quot;\ from itertools import chain longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000; nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] &quot;&quot;&quot; &gt;&gt;&gt; run = &quot;&quot;&quot;\ for item in nestedlist:    longlist.extend(item)    &quot;&quot;&quot; &gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000)  0.02403609199973289   There we go, extend is much faster when flattening lists or concatenating many lists with one long list. If you encounter this, using extend to add the smaller lists to the long list can decrease the work that has to be done and increase performance.   Summary   These are the main variants of combining lists in python. Use this table to guide you in the future.   Also, if you are looking for a nice way to standardize the processes around your python projects – running tests, installing dependencies, and linting code – take a look at Earthly for Repeatable Builds.      Condition   Solution   Performance Optimization2       2 lists   x + y   No     1 large list, 1 small list   x.extend(y)   Yes     Known number of N lists   x + y + z   No     Unknown number of N lists   list(chain.from_iterable(l))   No     List of Lists   list(chain.from_iterable(l))   No     1 large list, many small lists   for l1 in l: x.extend(…)   Yes          I did all the performance testing using Python 3.9.5 on MacOS BigSur.↩︎     If you don’t have a performance bottleneck, clarity trumps performance, and you should ignore the performance suggestions.   ↩︎">
+  <meta name="twitter:url" content="https://earthly.dev/blog/python-concatenate-lists/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/python-concatenate-lists/header-800-bc439aac6.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-06T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/python-concatenate-lists/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/python-concatenate-lists/header-400-c5c094e1e.webp 400w, /blog/generated/assets/images/python-concatenate-lists/header-600-c5c094e1e.webp 600w, /blog/generated/assets/images/python-concatenate-lists/header-800-c5c094e1e.webp 800w, /blog/generated/assets/images/python-concatenate-lists/header-1000-c5c094e1e.webp 1000w, /blog/generated/assets/images/python-concatenate-lists/header-1200-c5c094e1e.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/python-concatenate-lists/header-400-c5c094e1e.png 400w, /blog/generated/assets/images/python-concatenate-lists/header-600-c5c094e1e.png 600w, /blog/generated/assets/images/python-concatenate-lists/header-800-c5c094e1e.png 800w, /blog/generated/assets/images/python-concatenate-lists/header-1000-c5c094e1e.png 1000w, /blog/generated/assets/images/python-concatenate-lists/header-1200-c5c094e1e.png 1200w" type="image/png"><img src="/blog/generated/assets/images/python-concatenate-lists/header-800-c5c094e1e.jpg" alt="Python Concatenate Lists"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Python Concatenate Lists">
+    <meta itemprop="description" content="Concatenate Two Lists in PythonProblem: You have two lists and you’d like to join them into a new list. Solution:Python 3.8.2&gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;]&gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;]&gt;&gt;&gt; one + two[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;]📢 TLDR: Use +In almost all simple situations, using list1 + list2 is the way you want to concatenate lists.The edge cases below are better in some situations, but + is generally the best choice. All options covered work in Python 2.3, Python 2.7, and all versions of Python 31.Combine Lists In Place In PythonProblem: You have a huge list, and you want to add a smaller list on the end while minimizing memory usage.In this case, it may be best to append to the existing list, reusing it instead of recreating a new list.&gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, ... ]&gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;][&quot;four&quot;,&quot;five&quot;]&gt;&gt;&gt; x.extend(y)&gt;&gt;&gt; x[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;,  ..., &quot;four&quot;,&quot;five&quot;]As with any optimization, you should verify that this reduces memory thrash in your specific case and stick to the simple idiomatic x + y otherwise.Let’s use the timeit module to check some performance numbers.# Performance Check&gt;&gt;&gt; setup = &quot;&quot;&quot;\x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000 y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&quot;&quot;&quot;# x + y with large x&gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000)3.6260274310000113# x.extend(y) with large x&gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000)0.06857255800002804In this example, where x is 3000 elements, extend is around 50x faster.❗ Concatenating Lists With Large Elements is FineIf the elements in your list are huge (million character strings), but the list size is less than a thousand elements, the previous solution x + y will work just fine. This is because Python stores references to the values in the list, not the values themselves. Thus, the element size makes no difference to the runtime complexity.&gt;&gt;&gt; x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000]&gt;&gt;&gt; y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000]&gt;&gt;&gt; #This is fine&gt;&gt;&gt; z = x + y&gt;&gt;&gt; #Performance Testing (extend is slower for large elements)&gt;&gt;&gt;  setup = &quot;&quot;&quot;\x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000]y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000]&quot;&quot;&quot;&gt;&gt;&gt; timeit.timeit(&#39;x + y&#39;, setup=setup, number=1000000)0.05397573999994165&gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000)0.06511967799997365In this case, extend does not have an advantage.Avoid Chain From itertools For Two ListsIt is possible to use chain from itertools to create an iterable of two lists.&gt;&gt;&gt;longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;,, .......... ]&gt;&gt;&gt;shortlist = [&quot;four&quot;,&quot;five&quot;][&quot;four&quot;,&quot;five&quot;]&gt;&gt;&gt; from itertools import chain&gt;&gt;&gt; z = list(chain(longlist, shortlist)[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;one&#39;, , .........., &quot;four&quot;,&quot;five&quot;]We can check the performance of using chain:&gt;&gt;&gt; setup = &quot;&quot;&quot;\from itertools import chainx = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000 y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]&quot;&quot;&quot;# x + y with large x# x.extend(y) with large x&gt;&gt;&gt; timeit.timeit(&#39;x.extend(y)&#39;, setup=setup, number=1000000)0.06857255800002804&gt;&gt;&gt; timeit.timeit(&#39;list(chain(x, y))&#39;, setup=setup, number=1000000)16.810488051999982Using chain with two lists is slower in all cases tested, and x + y is easier to understand.Combining N Lists in PythonIf you need to add three or even ten lists together and the lists are statically known, then + for concatenate works great.&gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;]&gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;]&gt;&gt;&gt; three = []&gt;&gt;&gt; z = one + two + threeFlatten a List of Lists in PythonHowever, if the number of lists is dynamic and unknown until runtime, chain from itertools becomes a great option. Chain takes a list of lists and flattens it into a single list.&gt;&gt;&gt; l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99[[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;], [&#39;four&#39;, &#39;five&#39;], [], ...&gt;&gt;&gt; list(chain.from_iterable(l))[&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;, &#39;one&#39;, &#39;two&#39;, ... ]chain can take anything iterable, making it an excellent choice for combining lists, dictionaries, and other iterable structures.&gt;&gt;&gt; from itertools import chain&gt;&gt;&gt; one = [1,2,3]&gt;&gt;&gt; two = {1,2,3}&gt;&gt;&gt; list(chain(one, two, one))[1, 2, 3, 1, 2, 3, 1, 2, 3]Performance of Flattening a List of ListsPerformance doesn’t always matter, but readability always does, and the chain method is a straightforward way to combine lists of lists. That said, let’s put readability aside for a moment and try to find the fastest way to flatten lists.One option is iterating ourselves:result = []for nestedlist in l:    result.extend(nestedlist)Let’s check its performance vs chain:&gt;&gt;&gt; setup = &quot;&quot;&quot;\from itertools import chainl = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99&quot;&quot;&quot;&gt;&gt;&gt; # Add Nested Lists using chain.from_iterable&gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(l))&#39;, setup=setup, number=100000)1.0384087909997106&gt;&gt;&gt; ### Add using our own iteration&gt;&gt;&gt; run = &quot;&quot;&quot;\result = []for nestedlist in l:    result.extend(nestedlist)  &quot;&quot;&quot;&gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000)1.8619721710001613This shows that chain.from_iterable is faster than extend.Flattening and Merging Lists With One Big ListWhat about adding a list of lists to an existing and large list? We saw that using extend can be faster with two lists when one is significantly longer than the other so let’s test the performance of extend with N lists.First, we use our standard chain.from_iterable.&gt;&gt;&gt; # Method 1 - chain.from_iterable &gt;&gt;&gt; longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000&gt;&gt;&gt; nestedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]&gt;&gt;&gt; list(chain.from_iterable(nestedlist))We then test its performance:&gt;&gt;&gt; setup = &quot;&quot;&quot;\from itertools import chainlonglist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000;combinedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]&quot;&quot;&quot;&gt;&gt;&gt; timeit.timeit(&#39;list(chain.from_iterable(combinedlist))&#39;, setup=setup, number=100000)1.8676087710009597Next, let’s try concatenating by adding everything onto the long list:&gt;&gt;&gt; # Method 2 - extend&gt;&gt;&gt;  longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000&gt;&gt;&gt;  nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]&gt;&gt;&gt;  for item in nestedlist:&gt;&gt;&gt;     longlist.extent(item)Performance Test:&gt;&gt;&gt; setup = &quot;&quot;&quot;\from itertools import chainlonglist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000;nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]&quot;&quot;&quot;&gt;&gt;&gt; run = &quot;&quot;&quot;\for item in nestedlist:   longlist.extend(item)   &quot;&quot;&quot;&gt;&gt;&gt; timeit.timeit(run, setup=setup, number=100000) 0.02403609199973289There we go, extend is much faster when flattening lists or concatenating many lists with one long list. If you encounter this, using extend to add the smaller lists to the long list can decrease the work that has to be done and increase performance.SummaryThese are the main variants of combining lists in python. Use this table to guide you in the future.Also, if you are looking for a nice way to standardize the processes around your python projects – running tests, installing dependencies, and linting code – take a look at Earthly for Repeatable Builds.ConditionSolutionPerformance Optimization22 listsx + yNo1 large list, 1 small listx.extend(y)YesKnown number of N listsx + y + zNoUnknown number of N listslist(chain.from_iterable(l))NoList of Listslist(chain.from_iterable(l))No1 large list, many small listsfor l1 in l: x.extend(…)YesI did all the performance testing using Python 3.9.5 on MacOS BigSur.↩︎If you don’t have a performance bottleneck, clarity trumps performance, and you should ignore the performance suggestions.↩︎">
+    <meta itemprop="datePublished" content="2021-07-06T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Python Concatenate Lists
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-06T00:00:00-04:00">July 6, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#concatenate-two-lists-in-python">Concatenate Two Lists in Python</a></li><li><a href="#combine-lists-in-place-in-python">Combine Lists In Place In Python</a><ul><li><a href="#avoid-chain-from-itertools-for-two-lists">Avoid Chain From itertools For Two Lists</a></li></ul></li><li><a href="#combining-n-lists-in-python">Combining N Lists in Python</a></li><li><a href="#flatten-a-list-of-lists-in-python">Flatten a List of Lists in Python</a><ul><li><a href="#performance-of-flattening-a-list-of-lists">Performance of Flattening a List of Lists</a></li></ul></li><li><a href="#flattening-and-merging-lists-with-one-big-list">Flattening and Merging Lists With One Big List</a></li><li><a href="#summary">Summary</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <div class="narrow-code">
+
+<h2 id="concatenate-two-lists-in-python">Concatenate Two Lists in Python</h2>
+<p><strong>Problem:</strong> You have two lists and you’d like to join them into a new list. Solution:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Python <span class="fl">3.8.2</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> one <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> two <span class="op">=</span> [<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> one <span class="op">+</span> two</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;four&#39;</span>, <span class="st">&#39;five&#39;</span>]</span></code></pre></div>
+<div class="notice--warning notice--big">
+<p><strong>📢 TLDR: Use <code>+</code></strong></p>
+<p>In almost all simple situations, <strong>using <code>list1 + list2</code> is the way you want to concatenate lists</strong>.</p>
+</div>
+<p>The edge cases below are better in some situations, but <code>+</code> is generally the best choice. All options covered work in Python 2.3, Python 2.7, and all versions of Python 3<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<h2 id="combine-lists-in-place-in-python">Combine Lists In Place In Python</h2>
+<p><strong>Problem:</strong> You have a huge list, and you want to add a smaller list on the end while minimizing memory usage.</p>
+<p>In this case, it may be best to append to the existing list, reusing it instead of recreating a new list.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>longlist <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, ... ]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>shortlist <span class="op">=</span> [<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> x.extend(y)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> x</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;one&#39;</span>,  ..., <span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span></code></pre></div>
+<p>As with any optimization, you should verify that this reduces memory thrash in your specific case and stick to the simple idiomatic <code>x + y</code> otherwise.</p>
+<p>Let’s use the <a href="https://docs.python.org/3/library/timeit.html"><code>timeit</code></a> module to check some performance numbers.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Performance Check</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000 </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># x + y with large x</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;x + y&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fl">3.6260274310000113</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># x.extend(y) with large x</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;x.extend(y)&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fl">0.06857255800002804</span></span></code></pre></div>
+<p>In this example, where x is 3000 elements, extend is around 50x faster.</p>
+<div class="notice--info">
+<p><strong>❗ Concatenating Lists With Large Elements is Fine</strong></p>
+<p>If the elements in your list are huge (million character strings), but the list size is less than a thousand elements, the previous solution <code>x + y</code> will work just fine. This is because Python stores references to the values in the list, not the values themselves. Thus, the element size makes no difference to the runtime complexity.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> x <span class="op">=</span> [<span class="st">&quot;one&quot;</span> <span class="op">*</span> <span class="dv">1000</span>, <span class="st">&quot;two&quot;</span> <span class="op">*</span> <span class="dv">1000</span>, <span class="st">&quot;three&quot;</span> <span class="op">*</span> <span class="dv">1000</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> y <span class="op">=</span> [<span class="st">&quot;four&quot;</span> <span class="op">*</span> <span class="dv">1000</span>, <span class="st">&quot;five&quot;</span> <span class="op">*</span> <span class="dv">1000</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co">#This is fine</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> z <span class="op">=</span> x <span class="op">+</span> y</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co">#Performance Testing (extend is slower for large elements)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>  setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">x = [&quot;one&quot; * 1000, &quot;two&quot; * 1000, &quot;three&quot; * 1000]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">y = [&quot;four&quot; * 1000, &quot;five&quot; * 1000]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;x + y&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fl">0.05397573999994165</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;x.extend(y)&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fl">0.06511967799997365</span></span></code></pre></div>
+<p>In this case, <code>extend</code> does not have an advantage.</p>
+</div>
+<h3 id="avoid-chain-from-itertools-for-two-lists">Avoid Chain From <code>itertools</code> For Two Lists</h3>
+<p>It is possible to use <code>chain</code> from <code>itertools</code> to create an iterable of two lists.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>longlist <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>,, .......... ]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>shortlist <span class="op">=</span> [<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> itertools <span class="im">import</span> chain</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> z <span class="op">=</span> <span class="bu">list</span>(chain(longlist, shortlist)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;one&#39;</span>, , .........., <span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span></code></pre></div>
+<p>We can check the performance of using chain:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">from itertools import chain</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">x = [&quot;one&quot;,&quot;two&quot;,&quot;three&quot;] * 1000 </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">y = [&quot;four&quot;,&quot;five&quot;,&quot;six&quot;]</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># x + y with large x</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># x.extend(y) with large x</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;x.extend(y)&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fl">0.06857255800002804</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;list(chain(x, y))&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">1000000</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fl">16.810488051999982</span></span></code></pre></div>
+<p>Using <code>chain</code> with two lists is slower in all cases tested, and <code>x + y</code> is easier to understand.</p>
+<h2 id="combining-n-lists-in-python">Combining N Lists in Python</h2>
+<p>If you need to add three or even ten lists together and the lists are statically known, then <code>+</code> for concatenate works great.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> one <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> two <span class="op">=</span> [<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> three <span class="op">=</span> []</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> z <span class="op">=</span> one <span class="op">+</span> two <span class="op">+</span> three</span></code></pre></div>
+<h2 id="flatten-a-list-of-lists-in-python">Flatten a List of Lists in Python</h2>
+<p>However, if the number of lists is dynamic and unknown until runtime, <code>chain</code> from <code>itertools</code> becomes a great option. Chain takes a list of lists and flattens it into a single list.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> l <span class="op">=</span> [[<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>],[<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>],[]] <span class="op">*</span> <span class="dv">99</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>[[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>], [<span class="st">&#39;four&#39;</span>, <span class="st">&#39;five&#39;</span>], [], ...</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(chain.from_iterable(l))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>[<span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, <span class="st">&#39;three&#39;</span>, <span class="st">&#39;four&#39;</span>, <span class="st">&#39;five&#39;</span>, <span class="st">&#39;one&#39;</span>, <span class="st">&#39;two&#39;</span>, ... ]</span></code></pre></div>
+<p><code>chain</code> can take anything iterable, making it an excellent choice for combining lists, dictionaries, and other iterable structures.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> itertools <span class="im">import</span> chain</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> one <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> two <span class="op">=</span> {<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>}</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(chain(one, two, one))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div>
+<h3 id="performance-of-flattening-a-list-of-lists">Performance of Flattening a List of Lists</h3>
+<p>Performance doesn’t always matter, but readability always does, and the chain method is a straightforward way to combine lists of lists. That said, let’s put readability aside for a moment and try to find the fastest way to flatten lists.</p>
+<p>One option is iterating ourselves:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> []</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nestedlist <span class="kw">in</span> l:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    result.extend(nestedlist)</span></code></pre></div>
+<p>Let’s check its performance vs chain:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">from itertools import chain</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">l = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]] * 99</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Add Nested Lists using chain.from_iterable</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;list(chain.from_iterable(l))&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fl">1.0384087909997106</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co">### Add using our own iteration</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> run <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="st">result = []</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="st">for nestedlist in l:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="st">    result.extend(nestedlist)  </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(run, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="fl">1.8619721710001613</span></span></code></pre></div>
+<p>This shows that <code>chain.from_iterable</code> is faster than extend.</p>
+<h2 id="flattening-and-merging-lists-with-one-big-list">Flattening and Merging Lists With One Big List</h2>
+<p>What about adding a list of lists to an existing and large list? We saw that using extend can be faster with two lists when one is significantly longer than the other so let’s test the performance of <code>extend</code> with N lists.</p>
+<p>First, we use our standard <code>chain.from_iterable</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Method 1 - chain.from_iterable </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> longlist <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> nestedlist <span class="op">=</span> [longlist, [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>],[<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>],[]]</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(chain.from_iterable(nestedlist))</span></code></pre></div>
+<p>We then test its performance:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">from itertools import chain</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">combinedlist = [longlist, [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(<span class="st">&#39;list(chain.from_iterable(combinedlist))&#39;</span>, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fl">1.8676087710009597</span></span></code></pre></div>
+<p>Next, let’s try concatenating by adding everything onto the long list:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Method 2 - extend</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>  longlist <span class="op">=</span> [<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>  nestedlist <span class="op">=</span> [[<span class="st">&quot;one&quot;</span>,<span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>],[<span class="st">&quot;four&quot;</span>,<span class="st">&quot;five&quot;</span>],[]]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>  <span class="cf">for</span> item <span class="kw">in</span> nestedlist:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span>     longlist.extent(item)</span></code></pre></div>
+<p>Performance Test:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> setup <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st">from itertools import chain</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">longlist = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] * 1000;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">nestedlist = [[&quot;one&quot;,&quot;two&quot;, &quot;three&quot;],[&quot;four&quot;,&quot;five&quot;],[]]</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> run <span class="op">=</span> <span class="st">&quot;&quot;&quot;\</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">for item in nestedlist:</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">   longlist.extend(item)</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">   &quot;&quot;&quot;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> timeit.timeit(run, setup<span class="op">=</span>setup, number<span class="op">=</span><span class="dv">100000</span>) </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fl">0.02403609199973289</span></span></code></pre></div>
+<p>There we go, <code>extend</code> is much faster when flattening lists or concatenating many lists with one long list. If you encounter this, using <code>extend</code> to add the smaller lists to the long list can decrease the work that has to be done and increase performance.</p>
+<h2 id="summary">Summary</h2>
+<p>These are the main variants of combining lists in python. Use this table to guide you in the future.</p>
+<p>Also, if you are looking for a nice way to standardize the processes around your python projects – running tests, installing dependencies, and linting code – take a look at Earthly for <a href="https://earthly.dev/">Repeatable Builds</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Solution</th>
+<th style="text-align: center;">Performance Optimization<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 lists</td>
+<td><code>x + y</code></td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td>1 large list, 1 small list</td>
+<td><code>x.extend(y)</code></td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="odd">
+<td>Known number of N lists</td>
+<td><code>x + y + z</code></td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td>Unknown number of N lists</td>
+<td><code>list(chain.from_iterable(l))</code></td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td>List of Lists</td>
+<td><code>list(chain.from_iterable(l))</code></td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td>1 large list, many small lists</td>
+<td><code>for l1 in l: x.extend(...)</code></td>
+<td style="text-align: center;">Yes</td>
+</tr>
+</tbody>
+</table>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>I did all the performance testing using Python 3.9.5 on MacOS BigSur.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>If you don’t have a performance bottleneck, clarity trumps performance, and you should ignore the performance suggestions.</p>
+</div>
+<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about open source builds at Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-06T00:00:00-04:00">July 6, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/g++-makefile/" class="pagination--pager" title="Creating a G++ Makefile
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/g++-makefile/header-600-0b9fb0c93.webp 600w, /blog/generated/assets/images/g++-makefile/header-800-0b9fb0c93.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/g++-makefile/header-600-44867ebff.jpg 600w, /blog/generated/assets/images/g++-makefile/header-800-44867ebff.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/g++-makefile/header-800-44867ebff.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/g++-makefile/" rel="permalink">Creating a G++ Makefile
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/video-camera-on/header-600-739475018.webp 600w, /blog/generated/assets/images/video-camera-on/header-800-739475018.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/video-camera-on/header-600-5573f622c.jpg 600w, /blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/video-camera-on/header-800-5573f622c.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/video-camera-on/" rel="permalink">SQL Errors and Video Cameras
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

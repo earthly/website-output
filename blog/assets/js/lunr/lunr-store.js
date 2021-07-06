@@ -346,4 +346,16 @@ var store = [{
         "tags": [],
         "url": "/blog/video-camera-on/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating a G++ Makefile",
+        "excerpt":"C++ is one of the most dominant programming languages. Although there are many compilers available, GCC still ranks as one of the most popular choices for C++. GCC is part of the GNU toolchain, which comes with utilities like GNU make, GNU bison, and GNU AutoTools. What Is GCC? GNU...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/g++-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Python Concatenate Lists",
+        "excerpt":"Concatenate Two Lists in Python Problem: You have two lists and you’d like to join them into a new list. Solution: Python 3.8.2 &gt;&gt;&gt; one = [&quot;one&quot;,&quot;two&quot;, &quot;three&quot;] &gt;&gt;&gt; two = [&quot;four&quot;,&quot;five&quot;] &gt;&gt;&gt; one + two [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;] 📢 TLDR: Use + In almost all simple situations,...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-concatenate-lists/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
