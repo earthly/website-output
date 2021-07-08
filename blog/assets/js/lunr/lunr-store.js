@@ -358,4 +358,10 @@ var store = [{
         "tags": [],
         "url": "/blog/python-concatenate-lists/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating a Python Makefile",
+        "excerpt":"Even though Python is regarded as an interpreted language and the files need not be compiled separately, many developers are unaware that you can still use make to automate different parts of developing a Python project, like running tests, cleaning builds, and installing dependencies. It’s honestly an underutilized function, and...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
