@@ -364,4 +364,22 @@ var store = [{
         "tags": [],
         "url": "/blog/python-makefile/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Beating TimSort at Merging",
+        "excerpt":"Here is a problem. You are tasked with improving the hot loop of a Python program: maybe it is an in-memory sequential index of some sort. The slow part is the updating, where you are adding a new sorted list of items to the already sorted index. You need to...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-timsort-merge/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Creating a Golang Makefile",
+        "excerpt":"Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/golang-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
