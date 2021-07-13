@@ -364,4 +364,10 @@ var store = [{
         "tags": [],
         "url": "/blog/python-makefile/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Beating TimSort at Merging",
+        "excerpt":"Here is a problem. You are tasked with improving the hot loop of a Python program: maybe it is an in-memory sequential index of some sort. The slow part is the updating, where you are adding a new sorted list of items to the already sorted index. You need to...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-timsort-merge/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
