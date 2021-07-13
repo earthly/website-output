@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Creating a Golang Makefile - Earthly Blog</title>
+<meta name="description" content="Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that need to be installed before building the binary, and you probably want to run tests and ensure the code quality with linters and code coverage tools.   If this is starting to sound like a nightmare, rest assured: there is an easier way. The utility tool Make is used to automate tasks. It streamlines development and automates repetitive tasks with a single command. Make helps with testing, building, cleaning, and installing Go projects. In this tutorial, you will learn how you can leverage make and makefiles to automate all those frustrating and repetitive Golang tasks. You will learn how to build, clean, and test a Go sample project using make and a Makefile.   Adding a Makefile To Your Project   To start using make commands, you first need to create a Makefile in the root directory of your project. Let’s create a simple hello world project with a Makefile in it.   main.go   package main  import &quot;fmt&quot;  func main() {  fmt.Println(&quot;hello world&quot;) }   To run this project, you would normally need to build the project and run the binary:   go build main.go   If you want a different binary name and also want to create a build for a specific OS, you can specify this during the build:   GOARCH=amd64 GOOS=darwin go build -o hello-world main.go   You may want the build to create binary for multiple OS. For that, you will need to run multiple commands:  GOARCH=amd64 GOOS=darwin go build -o hello-world-darwin main.go GOARCH=amd64 GOOS=linux go build -o hello-world-linux main.go GOARCH=amd64 GOOS=window go build -o hello-world-windows main.go go run hello-world  The above commands can be simplified using Makefile. You can specify rules to a specific command and run a simple make command. You would not need to remember the commands and the flags or environment variables needed for executing it.   Makefile   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows   Now with these simple commands, you can build and run the Go project:  make run make build  Or you can use a single command for both build and run:  make build_and_run  Finally, you can run the clean command for the cleanup of binaries:  make clean  These commands are very handy and help to streamline the development process. Now all of your team members can use the same command. This reduces inconsistency and helps to eliminate project build-related errors that can arise with inconsistent manual commands.   Improving the Development Experience with Makefiles   make uses the Makefile as its source of commands to execute and these commands are defined as a rules in the Makefile. A single rule defines target, dependencies, and the recipe of the Makefile.   Terminology    Target: Targets are the main component of a Makefile. The make command executes the recipe by its target name. As you saw in the last section, I used commands like build, run, and build_and_clean. These are called targets. Targets are the interface to the commands I want to execute.   Dependencies: A target can have dependencies that need to be executed before running the target. For example, the build_and_clean command has two dependencies: build and run.   Recipe: Recipes are the actual commands that will be executed when the target is run. A recipe can be a single command or a collection of commands. You can specify multiple commands in a target using a line break. In the example above, the recipe for the run target is ./${BINARY_NAME}&lt;/code&gt;. A recipe should always contain a tab at the start.&lt;/li&gt; &lt;/ul&gt; &lt;h3 id=&quot;variables&quot;&gt;Variables&lt;/h3&gt; &lt;p&gt;Variables are essential to any kind of script you write. So Makefiles also have a mechanism to use variables. These are useful when you want the same configs or outputs to be used for different targets. In the example above, I have added the &lt;code&gt;BINARY_NAME&lt;/code&gt; variable, which is reused across different targets.&lt;/p&gt; &lt;p&gt;The variable can be substituted by enclosing it &lt;code&gt;${&lt;variable_name&gt;}. I have used the variable in the run command to execute the binary that was created from the build command:   BINARY_NAME=hello-world  run:  ./${BINARY_NAME}   Variables can be defined either by using = or :=. = will recursively expand the variable. This will replace the value at the point when it is substituted. For example:   x = foo y = $(x) bar x = later  all:  echo $(y)   When you run the all command, it will replace the value of x with the last updated value. The value has been changed to later, so it will print:  &gt; later bar  The other kind of variable assignment is :=. These are simple expanded variables. The variable is expanded at the first scan. So if you assign the variable using this operator, it will print the first value:   x := foo y := $(x) bar x := later  all:  echo $(y)  &gt; foo bar  Some Useful Tips    To make comments in a Makefile, you can simply add a # before any line.   To disable printing the recipe while running the target command, use @ before the recipe.   Use the SHELL variable to define the shell to execute the recipe.   Define the .DEFAULT_GOAL with the name of the target.    You can also define functions or loops in the Makefile. You can find more details on it in this make file tutorial.   Automating Tasks Using Makefile   While developing a project, you will have a lot of repetitive tasks that you might like to automate. In Golang, some of those tasks are testing, running test coverage, linting, and managing dependencies. I will be creating a Makefile that contains all the rules to automate these tasks:   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows  test:  go test ./...  test_coverage:  go test ./... -coverprofile=coverage.out  dep:  go mod download  vet:  go vet  lint:  golangci-lint run --enable-all   With this simple Makefile, you can now easily execute commands to run tasks:  make test make test_coverage make dep make vet make lint  Note: I am using an external package, golangci-lint, for linting. If you are using go mod, make sure to add it to your go.mod file.   Any CI/CD tool that you are using can now simply use these targets.   Conclusion   Golang is a popular language for developing large-scale projects. Larger projects have multiple developers and require continuous automation to scale. Streamlining the development process by automating the tasks that are required during development, testing, and release will pay off with a faster and more reliable development process and a easier release process.   For next-level automation and to further improve the automation, tools like Earthly.dev can be helpful. If you are also using Docker along with Makefile, Earthly can help make your development process smoother, taking some of the best ideas from Makefiles and Dockerfiles and combining them into one specification.">
+
+
+  <meta name="author" content="Milap Neupane">
+  
+  <meta property="article:author" content="Milap Neupane">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Creating a Golang Makefile">
+<meta property="og:url" content="https://earthly.dev/blog/golang-makefile/">
+
+
+  <meta property="og:description" content="Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that need to be installed before building the binary, and you probably want to run tests and ensure the code quality with linters and code coverage tools.   If this is starting to sound like a nightmare, rest assured: there is an easier way. The utility tool Make is used to automate tasks. It streamlines development and automates repetitive tasks with a single command. Make helps with testing, building, cleaning, and installing Go projects. In this tutorial, you will learn how you can leverage make and makefiles to automate all those frustrating and repetitive Golang tasks. You will learn how to build, clean, and test a Go sample project using make and a Makefile.   Adding a Makefile To Your Project   To start using make commands, you first need to create a Makefile in the root directory of your project. Let’s create a simple hello world project with a Makefile in it.   main.go   package main  import &quot;fmt&quot;  func main() {  fmt.Println(&quot;hello world&quot;) }   To run this project, you would normally need to build the project and run the binary:   go build main.go   If you want a different binary name and also want to create a build for a specific OS, you can specify this during the build:   GOARCH=amd64 GOOS=darwin go build -o hello-world main.go   You may want the build to create binary for multiple OS. For that, you will need to run multiple commands:  GOARCH=amd64 GOOS=darwin go build -o hello-world-darwin main.go GOARCH=amd64 GOOS=linux go build -o hello-world-linux main.go GOARCH=amd64 GOOS=window go build -o hello-world-windows main.go go run hello-world  The above commands can be simplified using Makefile. You can specify rules to a specific command and run a simple make command. You would not need to remember the commands and the flags or environment variables needed for executing it.   Makefile   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows   Now with these simple commands, you can build and run the Go project:  make run make build  Or you can use a single command for both build and run:  make build_and_run  Finally, you can run the clean command for the cleanup of binaries:  make clean  These commands are very handy and help to streamline the development process. Now all of your team members can use the same command. This reduces inconsistency and helps to eliminate project build-related errors that can arise with inconsistent manual commands.   Improving the Development Experience with Makefiles   make uses the Makefile as its source of commands to execute and these commands are defined as a rules in the Makefile. A single rule defines target, dependencies, and the recipe of the Makefile.   Terminology    Target: Targets are the main component of a Makefile. The make command executes the recipe by its target name. As you saw in the last section, I used commands like build, run, and build_and_clean. These are called targets. Targets are the interface to the commands I want to execute.   Dependencies: A target can have dependencies that need to be executed before running the target. For example, the build_and_clean command has two dependencies: build and run.   Recipe: Recipes are the actual commands that will be executed when the target is run. A recipe can be a single command or a collection of commands. You can specify multiple commands in a target using a line break. In the example above, the recipe for the run target is ./${BINARY_NAME}&lt;/code&gt;. A recipe should always contain a tab at the start.&lt;/li&gt; &lt;/ul&gt; &lt;h3 id=&quot;variables&quot;&gt;Variables&lt;/h3&gt; &lt;p&gt;Variables are essential to any kind of script you write. So Makefiles also have a mechanism to use variables. These are useful when you want the same configs or outputs to be used for different targets. In the example above, I have added the &lt;code&gt;BINARY_NAME&lt;/code&gt; variable, which is reused across different targets.&lt;/p&gt; &lt;p&gt;The variable can be substituted by enclosing it &lt;code&gt;${&lt;variable_name&gt;}. I have used the variable in the run command to execute the binary that was created from the build command:   BINARY_NAME=hello-world  run:  ./${BINARY_NAME}   Variables can be defined either by using = or :=. = will recursively expand the variable. This will replace the value at the point when it is substituted. For example:   x = foo y = $(x) bar x = later  all:  echo $(y)   When you run the all command, it will replace the value of x with the last updated value. The value has been changed to later, so it will print:  &gt; later bar  The other kind of variable assignment is :=. These are simple expanded variables. The variable is expanded at the first scan. So if you assign the variable using this operator, it will print the first value:   x := foo y := $(x) bar x := later  all:  echo $(y)  &gt; foo bar  Some Useful Tips    To make comments in a Makefile, you can simply add a # before any line.   To disable printing the recipe while running the target command, use @ before the recipe.   Use the SHELL variable to define the shell to execute the recipe.   Define the .DEFAULT_GOAL with the name of the target.    You can also define functions or loops in the Makefile. You can find more details on it in this make file tutorial.   Automating Tasks Using Makefile   While developing a project, you will have a lot of repetitive tasks that you might like to automate. In Golang, some of those tasks are testing, running test coverage, linting, and managing dependencies. I will be creating a Makefile that contains all the rules to automate these tasks:   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows  test:  go test ./...  test_coverage:  go test ./... -coverprofile=coverage.out  dep:  go mod download  vet:  go vet  lint:  golangci-lint run --enable-all   With this simple Makefile, you can now easily execute commands to run tasks:  make test make test_coverage make dep make vet make lint  Note: I am using an external package, golangci-lint, for linting. If you are using go mod, make sure to add it to your go.mod file.   Any CI/CD tool that you are using can now simply use these targets.   Conclusion   Golang is a popular language for developing large-scale projects. Larger projects have multiple developers and require continuous automation to scale. Streamlining the development process by automating the tasks that are required during development, testing, and release will pay off with a faster and more reliable development process and a easier release process.   For next-level automation and to further improve the automation, tools like Earthly.dev can be helpful. If you are also using Docker along with Makefile, Earthly can help make your development process smoother, taking some of the best ideas from Makefiles and Dockerfiles and combining them into one specification.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/golang-makefile/header-800-d3683e08a.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Creating a Golang Makefile">
+  <meta name="twitter:description" content="Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that need to be installed before building the binary, and you probably want to run tests and ensure the code quality with linters and code coverage tools.   If this is starting to sound like a nightmare, rest assured: there is an easier way. The utility tool Make is used to automate tasks. It streamlines development and automates repetitive tasks with a single command. Make helps with testing, building, cleaning, and installing Go projects. In this tutorial, you will learn how you can leverage make and makefiles to automate all those frustrating and repetitive Golang tasks. You will learn how to build, clean, and test a Go sample project using make and a Makefile.   Adding a Makefile To Your Project   To start using make commands, you first need to create a Makefile in the root directory of your project. Let’s create a simple hello world project with a Makefile in it.   main.go   package main  import &quot;fmt&quot;  func main() {  fmt.Println(&quot;hello world&quot;) }   To run this project, you would normally need to build the project and run the binary:   go build main.go   If you want a different binary name and also want to create a build for a specific OS, you can specify this during the build:   GOARCH=amd64 GOOS=darwin go build -o hello-world main.go   You may want the build to create binary for multiple OS. For that, you will need to run multiple commands:  GOARCH=amd64 GOOS=darwin go build -o hello-world-darwin main.go GOARCH=amd64 GOOS=linux go build -o hello-world-linux main.go GOARCH=amd64 GOOS=window go build -o hello-world-windows main.go go run hello-world  The above commands can be simplified using Makefile. You can specify rules to a specific command and run a simple make command. You would not need to remember the commands and the flags or environment variables needed for executing it.   Makefile   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows   Now with these simple commands, you can build and run the Go project:  make run make build  Or you can use a single command for both build and run:  make build_and_run  Finally, you can run the clean command for the cleanup of binaries:  make clean  These commands are very handy and help to streamline the development process. Now all of your team members can use the same command. This reduces inconsistency and helps to eliminate project build-related errors that can arise with inconsistent manual commands.   Improving the Development Experience with Makefiles   make uses the Makefile as its source of commands to execute and these commands are defined as a rules in the Makefile. A single rule defines target, dependencies, and the recipe of the Makefile.   Terminology    Target: Targets are the main component of a Makefile. The make command executes the recipe by its target name. As you saw in the last section, I used commands like build, run, and build_and_clean. These are called targets. Targets are the interface to the commands I want to execute.   Dependencies: A target can have dependencies that need to be executed before running the target. For example, the build_and_clean command has two dependencies: build and run.   Recipe: Recipes are the actual commands that will be executed when the target is run. A recipe can be a single command or a collection of commands. You can specify multiple commands in a target using a line break. In the example above, the recipe for the run target is ./${BINARY_NAME}&lt;/code&gt;. A recipe should always contain a tab at the start.&lt;/li&gt; &lt;/ul&gt; &lt;h3 id=&quot;variables&quot;&gt;Variables&lt;/h3&gt; &lt;p&gt;Variables are essential to any kind of script you write. So Makefiles also have a mechanism to use variables. These are useful when you want the same configs or outputs to be used for different targets. In the example above, I have added the &lt;code&gt;BINARY_NAME&lt;/code&gt; variable, which is reused across different targets.&lt;/p&gt; &lt;p&gt;The variable can be substituted by enclosing it &lt;code&gt;${&lt;variable_name&gt;}. I have used the variable in the run command to execute the binary that was created from the build command:   BINARY_NAME=hello-world  run:  ./${BINARY_NAME}   Variables can be defined either by using = or :=. = will recursively expand the variable. This will replace the value at the point when it is substituted. For example:   x = foo y = $(x) bar x = later  all:  echo $(y)   When you run the all command, it will replace the value of x with the last updated value. The value has been changed to later, so it will print:  &gt; later bar  The other kind of variable assignment is :=. These are simple expanded variables. The variable is expanded at the first scan. So if you assign the variable using this operator, it will print the first value:   x := foo y := $(x) bar x := later  all:  echo $(y)  &gt; foo bar  Some Useful Tips    To make comments in a Makefile, you can simply add a # before any line.   To disable printing the recipe while running the target command, use @ before the recipe.   Use the SHELL variable to define the shell to execute the recipe.   Define the .DEFAULT_GOAL with the name of the target.    You can also define functions or loops in the Makefile. You can find more details on it in this make file tutorial.   Automating Tasks Using Makefile   While developing a project, you will have a lot of repetitive tasks that you might like to automate. In Golang, some of those tasks are testing, running test coverage, linting, and managing dependencies. I will be creating a Makefile that contains all the rules to automate these tasks:   BINARY_NAME=hello-world  build:  GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go  GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go  GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.go  run:  ./${BINARY_NAME}  build_and_run: build run  clean:  go clean  rm ${BINARY_NAME}-darwin  rm ${BINARY_NAME}-linux  rm ${BINARY_NAME}-windows  test:  go test ./...  test_coverage:  go test ./... -coverprofile=coverage.out  dep:  go mod download  vet:  go vet  lint:  golangci-lint run --enable-all   With this simple Makefile, you can now easily execute commands to run tasks:  make test make test_coverage make dep make vet make lint  Note: I am using an external package, golangci-lint, for linting. If you are using go mod, make sure to add it to your go.mod file.   Any CI/CD tool that you are using can now simply use these targets.   Conclusion   Golang is a popular language for developing large-scale projects. Larger projects have multiple developers and require continuous automation to scale. Streamlining the development process by automating the tasks that are required during development, testing, and release will pay off with a faster and more reliable development process and a easier release process.   For next-level automation and to further improve the automation, tools like Earthly.dev can be helpful. If you are also using Docker along with Makefile, Earthly can help make your development process smoother, taking some of the best ideas from Makefiles and Dockerfiles and combining them into one specification.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/golang-makefile/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/golang-makefile/header-800-d3683e08a.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-15T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/golang-makefile/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/golang-makefile/header-400-dfef6baee.webp 400w, /blog/generated/assets/images/golang-makefile/header-600-dfef6baee.webp 600w, /blog/generated/assets/images/golang-makefile/header-800-dfef6baee.webp 800w, /blog/generated/assets/images/golang-makefile/header-1000-dfef6baee.webp 1000w, /blog/generated/assets/images/golang-makefile/header-1200-dfef6baee.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/golang-makefile/header-400-dfef6baee.png 400w, /blog/generated/assets/images/golang-makefile/header-600-dfef6baee.png 600w, /blog/generated/assets/images/golang-makefile/header-800-dfef6baee.png 800w, /blog/generated/assets/images/golang-makefile/header-1000-dfef6baee.png 1000w, /blog/generated/assets/images/golang-makefile/header-1200-dfef6baee.png 1200w" type="image/png"><img src="/blog/generated/assets/images/golang-makefile/header-800-dfef6baee.jpg" alt="Creating a Golang Makefile"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Creating a Golang Makefile">
+    <meta itemprop="description" content="Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that need to be installed before building the binary, and you probably want to run tests and ensure the code quality with linters and code coverage tools.If this is starting to sound like a nightmare, rest assured: there is an easier way. The utility tool Make is used to automate tasks. It streamlines development and automates repetitive tasks with a single command. Make helps with testing, building, cleaning, and installing Go projects. In this tutorial, you will learn how you can leverage make and makefiles to automate all those frustrating and repetitive Golang tasks. You will learn how to build, clean, and test a Go sample project using make and a Makefile.Adding a Makefile To Your ProjectTo start using make commands, you first need to create a Makefile in the root directory of your project. Let’s create a simple hello world project with a Makefile in it.main.gopackage mainimport &quot;fmt&quot;func main() { fmt.Println(&quot;hello world&quot;)}To run this project, you would normally need to build the project and run the binary:go build main.goIf you want a different binary name and also want to create a build for a specific OS, you can specify this during the build:GOARCH=amd64 GOOS=darwin go build -o hello-world main.goYou may want the build to create binary for multiple OS. For that, you will need to run multiple commands:GOARCH=amd64 GOOS=darwin go build -o hello-world-darwin main.goGOARCH=amd64 GOOS=linux go build -o hello-world-linux main.goGOARCH=amd64 GOOS=window go build -o hello-world-windows main.gogo run hello-worldThe above commands can be simplified using Makefile. You can specify rules to a specific command and run a simple make command. You would not need to remember the commands and the flags or environment variables needed for executing it.MakefileBINARY_NAME=hello-worldbuild: GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.gorun: ./${BINARY_NAME}build_and_run: build runclean: go clean rm ${BINARY_NAME}-darwin rm ${BINARY_NAME}-linux rm ${BINARY_NAME}-windowsNow with these simple commands, you can build and run the Go project:make runmake buildOr you can use a single command for both build and run:make build_and_runFinally, you can run the clean command for the cleanup of binaries:make cleanThese commands are very handy and help to streamline the development process. Now all of your team members can use the same command. This reduces inconsistency and helps to eliminate project build-related errors that can arise with inconsistent manual commands.Improving the Development Experience with Makefilesmake uses the Makefile as its source of commands to execute and these commands are defined as a rules in the Makefile. A single rule defines target, dependencies, and the recipe of the Makefile.TerminologyTarget: Targets are the main component of a Makefile. The make command executes the recipe by its target name. As you saw in the last section, I used commands like build, run, and build_and_clean. These are called targets. Targets are the interface to the commands I want to execute.Dependencies: A target can have dependencies that need to be executed before running the target. For example, the build_and_clean command has two dependencies: build and run.Recipe: Recipes are the actual commands that will be executed when the target is run. A recipe can be a single command or a collection of commands. You can specify multiple commands in a target using a line break. In the example above, the recipe for the run target is ./${BINARY_NAME}&lt;/code&gt;. A recipe should always contain a tab at the start.&lt;/li&gt; &lt;/ul&gt; &lt;h3 id=&quot;variables&quot;&gt;Variables&lt;/h3&gt; &lt;p&gt;Variables are essential to any kind of script you write. So Makefiles also have a mechanism to use variables. These are useful when you want the same configs or outputs to be used for different targets. In the example above, I have added the &lt;code&gt;BINARY_NAME&lt;/code&gt; variable, which is reused across different targets.&lt;/p&gt; &lt;p&gt;The variable can be substituted by enclosing it &lt;code&gt;${&lt;variable_name&gt;}. I have used the variable in the run command to execute the binary that was created from the build command:BINARY_NAME=hello-worldrun: ./${BINARY_NAME}Variables can be defined either by using = or :=. = will recursively expand the variable. This will replace the value at the point when it is substituted. For example:x = fooy = $(x) barx = laterall: echo $(y)When you run the all command, it will replace the value of x with the last updated value. The value has been changed to later, so it will print:&gt; later barThe other kind of variable assignment is :=. These are simple expanded variables. The variable is expanded at the first scan. So if you assign the variable using this operator, it will print the first value:x := fooy := $(x) barx := laterall: echo $(y)&gt; foo barSome Useful TipsTo make comments in a Makefile, you can simply add a # before any line.To disable printing the recipe while running the target command, use @ before the recipe.Use the SHELL variable to define the shell to execute the recipe.Define the .DEFAULT_GOAL with the name of the target.You can also define functions or loops in the Makefile. You can find more details on it in this make file tutorial.Automating Tasks Using MakefileWhile developing a project, you will have a lot of repetitive tasks that you might like to automate. In Golang, some of those tasks are testing, running test coverage, linting, and managing dependencies. I will be creating a Makefile that contains all the rules to automate these tasks:BINARY_NAME=hello-worldbuild: GOARCH=amd64 GOOS=darwin go build -o ${BINARY_NAME}-darwin main.go GOARCH=amd64 GOOS=linux go build -o ${BINARY_NAME}-linux main.go GOARCH=amd64 GOOS=window go build -o ${BINARY_NAME}-windows main.gorun: ./${BINARY_NAME}build_and_run: build runclean: go clean rm ${BINARY_NAME}-darwin rm ${BINARY_NAME}-linux rm ${BINARY_NAME}-windowstest: go test ./...test_coverage: go test ./... -coverprofile=coverage.outdep: go mod downloadvet: go vetlint: golangci-lint run --enable-allWith this simple Makefile, you can now easily execute commands to run tasks:make testmake test_coveragemake depmake vetmake lintNote: I am using an external package, golangci-lint, for linting. If you are using go mod, make sure to add it to your go.mod file.Any CI/CD tool that you are using can now simply use these targets.ConclusionGolang is a popular language for developing large-scale projects. Larger projects have multiple developers and require continuous automation to scale. Streamlining the development process by automating the tasks that are required during development, testing, and release will pay off with a faster and more reliable development process and a easier release process.For next-level automation and to further improve the automation, tools like Earthly.dev can be helpful. If you are also using Docker along with Makefile, Earthly can help make your development process smoother, taking some of the best ideas from Makefiles and Dockerfiles and combining them into one specification.">
+    <meta itemprop="datePublished" content="2021-07-15T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Creating a Golang Makefile
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-15T00:00:00-04:00">July 15, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/milapneupane-240-c726f547c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/milapneupane-240-3d2a65cfa.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/milapneupane-240-3d2a65cfa.jpg" alt="Milap Neupane %"></picture>
+
+          &nbsp;	&nbsp;
+          Milap Neupane
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#adding-a-makefile-to-your-project">Adding a Makefile To Your Project</a><ul><li><a href="#main.go">main.go</a></li><li><a href="#makefile">Makefile</a></li></ul></li><li><a href="#improving-the-development-experience-with-makefiles">Improving the Development Experience with Makefiles</a><ul><li><a href="#terminology">Terminology</a></li><li><a href="#variables">Variables</a><ul><li><a href="#some-useful-tips">Some Useful Tips</a></li></ul></li></ul></li><li><a href="#automating-tasks-using-makefile">Automating Tasks Using Makefile</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <div class="narrow-code">
+<p>Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that need to be installed before building the binary, and you probably want to run tests and ensure the code quality with linters and code coverage tools.</p>
+<p>If this is starting to sound like a nightmare, rest assured: there is an easier way. The utility tool <a href="https://en.wikipedia.org/wiki/Make_(software)">Make</a> is used to automate tasks. It streamlines development and automates repetitive tasks with a single command. Make helps with testing, building, cleaning, and installing Go projects. In this tutorial, you will learn how you can leverage make and makefiles to automate all those frustrating and repetitive Golang tasks. You will learn how to build, clean, and test a Go sample project using make and a <code>Makefile</code>.</p>
+<h2 id="adding-a-makefile-to-your-project">Adding a Makefile To Your Project</h2>
+<p>To start using make commands, you first need to create a <code>Makefile</code> in the root directory of your project. Let’s create a simple <code>hello world</code> project with a <code>Makefile</code> in it.</p>
+<h3 id="main.go"><code>main.go</code></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span> main</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="st">&quot;fmt&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a> fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;hello world&quot;</span><span class="op">)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>To run this project, you would normally need to build the project and run the binary:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">go</span> build main.go</span></code></pre></div>
+<p>If you want a different binary name and also want to create a build for a specific OS, you can specify this during the build:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">GOARCH</span><span class="op">=</span>amd64 <span class="va">GOOS</span><span class="op">=</span>darwin <span class="ex">go</span> build <span class="at">-o</span> hello-world main.go</span></code></pre></div>
+<p>You may want the build to create binary for multiple OS. For that, you will need to run multiple commands:</p>
+<pre><code>GOARCH=amd64 GOOS=darwin go build -o hello-world-darwin main.go
+GOARCH=amd64 GOOS=linux go build -o hello-world-linux main.go
+GOARCH=amd64 GOOS=window go build -o hello-world-windows main.go</code></pre>
+<pre><code>go run hello-world</code></pre>
+<p>The above commands can be simplified using Makefile. You can specify rules to a specific command and run a simple make command. You would not need to remember the commands and the flags or environment variables needed for executing it.</p>
+<h3 id="makefile">Makefile</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">BINARY_NAME</span><span class="ch">=</span><span class="st">hello-world</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=darwin go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-darwin main.go</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=linux go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-linux main.go</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=window go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-windows main.go</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> ./<span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="dv">build_and_run:</span><span class="dt"> build run</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a> go clean</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-darwin</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-linux</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-windows</span></code></pre></div>
+<p>Now with these simple commands, you can build and run the Go project:</p>
+<pre><code>make run
+make build</code></pre>
+<p>Or you can use a single command for both build and run:</p>
+<pre><code>make build_and_run</code></pre>
+<p>Finally, you can run the clean command for the cleanup of binaries:</p>
+<pre><code>make clean</code></pre>
+<p>These commands are very handy and help to streamline the development process. Now all of your team members can use the same command. This reduces inconsistency and helps to eliminate project build-related errors that can arise with inconsistent manual commands.</p>
+<h2 id="improving-the-development-experience-with-makefiles">Improving the Development Experience with Makefiles</h2>
+<p><code>make</code> uses the Makefile as its source of commands to execute and these commands are defined as a <em>rules</em> in the Makefile. A single rule defines target, dependencies, and the recipe of the Makefile.</p>
+<h3 id="terminology">Terminology</h3>
+<ul>
+<li><strong>Target:</strong> Targets are the main component of a Makefile. The make command executes the recipe by its target name. As you saw in the last section, I used commands like <code>build</code>, <code>run</code>, and <code>build_and_clean</code>. These are called <em>targets</em>. Targets are the interface to the commands I want to execute.</li>
+<li><strong>Dependencies:</strong> A target can have dependencies that need to be executed before running the target. For example, the <code>build_and_clean</code> command has two dependencies: <code>build</code> and <code>run</code>.</li>
+<li><strong>Recipe:</strong> Recipes are the actual commands that will be executed when the target is run. A recipe can be a single command or a collection of commands. You can specify multiple commands in a target using a line break. In the example above, the recipe for the run target is <code>./${BINARY_NAME}</code>. A recipe should always contain a tab at the start.</li>
+</ul>
+<h3 id="variables">Variables</h3>
+<p>Variables are essential to any kind of script you write. So Makefiles also have a mechanism to use variables. These are useful when you want the same configs or outputs to be used for different targets. In the example above, I have added the <code>BINARY_NAME</code> variable, which is reused across different targets.</p>
+<p>The variable can be substituted by enclosing it <code>${&lt;variable_name&gt;}</code>. I have used the variable in the run command to execute the binary that was created from the build command:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dt">BINARY_NAME</span><span class="ch">=</span><span class="st">hello-world</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> ./<span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span></span></code></pre></div>
+<p>Variables can be defined either by using <code>=</code> or <code>:=</code>. <code>=</code> will recursively expand the variable. This will replace the value at the point when it is substituted. For example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">x </span><span class="ch">=</span><span class="st"> foo</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">y </span><span class="ch">=</span><span class="st"> </span><span class="ch">$(</span><span class="dt">x</span><span class="ch">)</span><span class="st"> bar</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="dt">x </span><span class="ch">=</span><span class="st"> later</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a> echo <span class="ch">$(</span><span class="dt">y</span><span class="ch">)</span></span></code></pre></div>
+<p>When you run the <code>all</code> command, it will replace the value of <code>x</code> with the last updated value. The value has been changed to <code>later</code>, so it will print:</p>
+<pre><code>&gt; later bar</code></pre>
+<p>The other kind of variable assignment is <code>:=</code>. These are <em>simple expanded</em> variables. The variable is expanded at the first scan. So if you assign the variable using this operator, it will print the first value:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">x </span><span class="ch">:=</span><span class="st"> foo</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">y </span><span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="dt">x</span><span class="ch">)</span><span class="st"> bar</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dt">x </span><span class="ch">:=</span><span class="st"> later</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a> echo <span class="ch">$(</span><span class="dt">y</span><span class="ch">)</span></span></code></pre></div>
+<pre><code>&gt; foo bar</code></pre>
+<h4 id="some-useful-tips">Some Useful Tips</h4>
+<ul>
+<li>To make comments in a Makefile, you can simply add a <code>#</code> before any line.</li>
+<li>To disable printing the recipe while running the target command, use <code>@</code> before the recipe.</li>
+<li>Use the <code>SHELL</code> variable to define the shell to execute the recipe.</li>
+<li>Define the <code>.DEFAULT_GOAL</code> with the name of the target.</li>
+</ul>
+<p>You can also define functions or loops in the Makefile. You can find more details on it <a href="https://makefiletutorial.com">in this make file tutorial</a>.</p>
+<h2 id="automating-tasks-using-makefile">Automating Tasks Using Makefile</h2>
+<p>While developing a project, you will have a lot of repetitive tasks that you might like to automate. In Golang, some of those tasks are testing, running test coverage, linting, and managing dependencies. I will be creating a Makefile that contains all the rules to automate these tasks:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">BINARY_NAME</span><span class="ch">=</span><span class="st">hello-world</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dv">build:</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=darwin go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-darwin main.go</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=linux go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-linux main.go</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a> GOARCH=amd64 GOOS=window go build -o <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-windows main.go</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="dv">run:</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a> ./<span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="dv">build_and_run:</span><span class="dt"> build run</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="dv">clean:</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a> go clean</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-darwin</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-linux</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a> rm <span class="ch">${</span><span class="dt">BINARY_NAME</span><span class="ch">}</span>-windows</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="dv">test:</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a> go test ./...</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="dv">test_coverage:</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a> go test ./... -coverprofile=coverage.out</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="dv">dep:</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a> go mod download</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="dv">vet:</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a> go vet</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="dv">lint:</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a> golangci-lint run --enable-all</span></code></pre></div>
+<p>With this simple Makefile, you can now easily execute commands to run tasks:</p>
+<pre><code>make test
+make test_coverage
+make dep
+make vet
+make lint</code></pre>
+<p><strong>Note:</strong> I am using an external package, <a href="https://github.com/golangci/golangci-lint"><code>golangci-lint</code></a>, for linting. If you are using <code>go mod</code>, make sure to add it to your <code>go.mod</code> file.</p>
+<p>Any CI/CD tool that you are using can now simply use these targets.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Golang is a popular language for developing large-scale projects. Larger projects have multiple developers and require continuous automation to scale. Streamlining the development process by automating the tasks that are required during development, testing, and release will pay off with a faster and more reliable development process and a easier release process.</p>
+<p>For next-level automation and to further improve the automation, tools like <a href="https://earthly.dev/">Earthly.dev</a> can be helpful. If you are also using Docker along with Makefile, Earthly can help make your development process smoother, taking some of the best ideas from Makefiles and Dockerfiles and combining them into one specification.</p>
+</div>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  <!-- <h5>About The Author</h5> -->
+
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/milapneupane-240-c726f547c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/milapneupane-240-3d2a65cfa.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/milapneupane-240-3d2a65cfa.jpg" alt="Milap Neupane %"></picture>
+
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Milap Neupane
+    
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Milap is a Sr. Software engineer working with ruby/rails, Golang, and cloud-native technologies with AWS. He believes in the community and is the organizer of Golang Kathmandu. In his free time, Milap likes doing street photography.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-15T00:00:00-04:00">July 15, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/python-timsort-merge/" class="pagination--pager" title="Beating TimSort at Merging
+">Previous</a>
+    
+    
+      <a href="/blog/python-matplotlib-docker/" class="pagination--pager" title="Install matplotlib In A Docker Container
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
