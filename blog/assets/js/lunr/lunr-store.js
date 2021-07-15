@@ -1,28 +1,4 @@
 var store = [{
-        "title": "Adam Gordon Bell",
-        "excerpt":" ","categories": [],
-        "tags": [],
-        "url": "/blog/authors/Adam/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Alex Couture-Beil",
-        "excerpt":" ","categories": [],
-        "tags": [],
-        "url": "/blog/authors/Alex/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Corey Larson",
-        "excerpt":" ","categories": [],
-        "tags": [],
-        "url": "/blog/authors/Corey/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
-        "title": "Vlad A. Ionescu",
-        "excerpt":" ","categories": [],
-        "tags": [],
-        "url": "/blog/authors/Vlad/",
-        "teaser": "/blog/assets/images/default-teaser.jpg"
-      },{
         "title": "Introducing Earthly: build automation for the container era",
         "excerpt":"We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and open-source. And yet, our most popular CI/CD platform was started 15 years ago when the industry looked very different. CI systems have not changed much since — they are still...","categories": ["News"],
         "tags": [],
@@ -360,7 +336,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Linting Markdown And Documentation",
-        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["Tutorials"],
+        "excerpt":"Many linting, code formatting, and static analysis tools exist for code. You can use eslint, gofmt, or many other static analysis tools, combined with a great continuous integration process, and ensure that your code stays in good shape. But what about markdown files and documentation? How do you ensure you...","categories": ["+","Tutorials"],
         "tags": [],
         "url": "/blog/markdown-lint/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
@@ -399,5 +375,11 @@ var store = [{
         "excerpt":"Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it needs multiple commands to build the binaries for different platforms, which means more time-consuming and repetitive steps when building binaries. If that’s not enough, most projects have some dependencies that...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/golang-makefile/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

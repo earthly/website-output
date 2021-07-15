@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://earthly.dev/blog/authors/Adam/</loc>
-<lastmod>2021-07-15T08:26:55-04:00</lastmod>
-</url>
-<url>
-<loc>https://earthly.dev/blog/authors/Alex/</loc>
-<lastmod>2021-07-15T08:26:55-04:00</lastmod>
-</url>
-<url>
-<loc>https://earthly.dev/blog/authors/Corey/</loc>
-<lastmod>2021-07-15T08:26:55-04:00</lastmod>
-</url>
-<url>
-<loc>https://earthly.dev/blog/authors/Vlad/</loc>
-<lastmod>2021-07-15T08:26:55-04:00</lastmod>
-</url>
-<url>
 <loc>https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/</loc>
 <lastmod>2020-04-16T00:00:00-04:00</lastmod>
 </url>
@@ -269,6 +253,10 @@
 <lastmod>2021-07-15T00:00:00-04:00</lastmod>
 </url>
 <url>
+<loc>https://earthly.dev/blog/example/</loc>
+<lastmod>2029-01-01T00:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>https://earthly.dev/blog/categories/</loc>
 </url>
 <url>
@@ -288,6 +276,9 @@
 </url>
 <url>
 <loc>https://earthly.dev/blog/categories/tutorial/</loc>
+</url>
+<url>
+<loc>https://earthly.dev/blog/categories/</loc>
 </url>
 <url>
 <loc>https://earthly.dev/blog/page2/</loc>
