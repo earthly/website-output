@@ -400,4 +400,10 @@ var store = [{
         "tags": [],
         "url": "/blog/golang-makefile/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Install `matplotlib` In A Docker Container",
+        "excerpt":"matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging article, and internally, we use it now and again for visualizing any metrics we produce. It is a bit hard to install inside a docker...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/python-matplotlib-docker/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
