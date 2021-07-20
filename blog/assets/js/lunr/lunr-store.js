@@ -406,4 +406,16 @@ var store = [{
         "tags": [],
         "url": "/blog/python-matplotlib-docker/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "6 Productive Command Line Tools",
+        "excerpt":"Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things – or at least things so complicated that they weren’t worth the effort – become possible and sometimes easy. Lately I have been adding some tools to my MacOS...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/command-line-tools/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
