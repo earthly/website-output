@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>6 Command Line Tools for Productive Programmers - Earthly Blog</title>
+<meta name="description" content="Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and sort.   Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things become possible and sometimes easy.   As I’ve learned more I’ve been adding some new tools to my command-line toolbox, and in this article I’d like to share some I’ve found valuable.   broot   I’m not sure how I came across broot, but it’s pretty handy. If you are in a small directory and want to see the lay of the land, tree is excellent.  ✗ tree . ├── dartboard.png ├── header.jpg ├── opensign.png ├── quote1.png └── trophy.png  0 directories, 5 files  However, if the directory has many files or sub-directories, tree becomes much less helpful: you only see the last screen full of information as files scroll past you.  $ tree  &lt; scrolling text for a long time &gt; ├── banner.js └── index.html  328 directories, 2028 files  broot solves this problem by being aware of the size of your terminal window and sizing to fit it.        You can navigate around using the arrow keys in broot and it is also helpful for tracking down disk space usage by passing in the -w flag (broot -w):        It can do lots of other things, so take a look at the GitHub guide but for me its just a better tree.    ℹ️ Install BRoot   Install on MacOS using brew or follow installation instructions for other environments.   brew install broot    Funky   If you live in the terminal, and you want to use your terminal as an IDE, then it’s helpful to have your terminal change based on the current directory. There are many ways to do this. DirEnv loads and unloads .env files as you enter directories. smartcd is similar. It lets you run a shell script whenever you change to a certain path – you can start and stop services, change the prompt, or anything else you want.   However, my favorite of this genre is the strangely named funky, which “takes shell functions to the next level by making them easier to define, more flexible, and more interactive.”   The way funky works is simple: as you enter a directory, funky looks for a .funky file which contains a list of bash functions. It loads them, and when you leave, it unloads them.   This means when I’m in the directory for this Jekyll blog, I have aliases loaded for creating a new post, linting my markdown, pulling in images, and so on. I can list these by typing funky   $ funky lint() { markdownlint --fix &quot;./_posts/*.md&quot;; } set-header() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/header.jpg&quot;; } set-image() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/$(date +%s).png&quot;; }   funky can do more than this, though. It has features for interactively adding and editing functions, and for registering global functions and aliases. What I like, though, is just being able to quickly give a command, in a specific context, a short alias.    ℹ️ Install Funky   Install Funky using pip   pip3 install pyfunky   Then add hooks to your .zshrc, bashrc or equivalent:   ## find where funky.sh was installed by pip and source it source /usr/local/lib/python3.9/site-packages/scripts/shell/funky.sh    Fuzzy Finder (FZF)       Using fzf to locate the generated images for this post.    If funky and broot improved my productivity then more tools could only improve it more, right? So I headed over to Lobste.rs and asked what other tools people were using. FZF came up quite a bit, and I’ve started using it myself now.   FZF is a command-line fuzzy finder. It’s fast, and it interactively lets you filter options down based on a fuzzy keyword match in many places where you need to input a value at the command-line.   If you install the included shortcuts (/usr/local/opt/fzf/install), you can use ** anywhere and get an interactive fuzzy finder to narrow down to the desired path. FZF also makes searching your history much faster.   It’s a unix filter that reads in input, shows you an interactive list that you filter down and then sends the selected item out the other side but describing that way undersells its usefulness.   I recommend watching this video where Alexey Samoshkin walks through many possible uses for FZF with a soothing piano playing in the background:      ℹ️ Install FZF   Install Funky using your package manager of choice:   brew install fzf   Then add hooks to your .zshrc, bashrc or equivalent:   #ZSH source ~/.fzf.zsh  #BASH source ~/.fzf.bash    McFly       Using McFly to suggest common earthly commands in this path.    FZF is excellent for filtering file paths in a command line when you want to open a file (vim **), but for command-line completion, there is more information available than the raw history file. McFly attempts to use this extra information to provide more relevant results.   What extra information? To start with, McFly considers these options in its ranking heuristics:    The commands you typed before the command.   How often you run the command.   How recently you ran the command.    It tracks all this in a SQLite database where it also tracks and weighs suggestions by:    The commands exit status.   The directory you ran the command in.   If you have selected it in McFly before.    Being suggested failed commands is a pet peeve of mine, but I never considered narrowing the choice based on the current directory or down-ranking items that are never selected.   McFly uses a neural net to do its ranking, and one possible downside is the lag in coming up with suggestions if your SQLite database gets too large. However, MCFLY_HISTORY_LIMIT is available to limit this growth.   I’ve only been using it for a couple of days, so I can’t give a fair appraisal of it, but the concept makes me pretty hopeful: using extra information to customize tools towards real-world usage.    ℹ️ Install McFly   You can install McFly several ways. Here is brew: :   brew tap cantino/mcfly brew install mcfly   Then add hooks to your .zshrc, bashrc or equivalent:   eval &quot;$(mcfly init zsh)&quot;   The fact that the binary emits the init script rather than dumping an init script into my home directory is a nice touch. zoxide - the following tool - does this as well.   I found that FZF was interfering with the CTRL-R of McFly and had to comment out this line in the FZF init script to get McFly working.    Better CD       Using zoxide as a cd replacement.    FZF works nicely for some path completions, but I didn’t find it helpful when changing directories with cd: After typing cd **TAB from my home directory, it takes a while for FZF to build up the full list options. It was much faster to use my existing ZSH completions of cd TAB &lt;choose a dir&gt; TAB &lt;choose a dir&gt; to navigate to a folder.   However, many tools exist which attempt to improve upon cd. autojump, z, and Fasd all track directory usage and give you a single key shortcut for changing to commonly accessed directories. r/commandline has an detailed discussion of these various cd replacements, but the one that has the most momentum is zoxide. zoxide is a rewrite of z in Rust and promises improved speed.   After you install it, you can use it just like cd (z ~/path/foo/bar), but you can also change directories based on ranked text matches of the path (z bar ~= cd ~/path/foo/bar ). Instead of needing to supply the full path to change locations, you can instead provide a unique sub-string of the path, and zoxide will use its usage history to get you where you want.   For ease of adoption, I’ve chosen to have zoxide replace cd, which is as simple as using the –cmd flag when you add the initialization shell code (eval &quot;$(zoxide init zsh --cmd cd)&quot;&lt;/code&gt;).&lt;/p&gt; &lt;div class=&quot;notice--info&quot;&gt; &lt;p&gt;&lt;strong&gt;ℹ️ Install zoxide&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;&lt;code&gt;zoxide&lt;/code&gt; can be installed &lt;a href=&quot;https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide&quot;&gt;several ways&lt;/a&gt;. Here is brew: :&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;brew&lt;/span&gt; install zoxide&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Then add hooks to your &lt;code&gt;.zshrc&lt;/code&gt;, &lt;code&gt;bashrc&lt;/code&gt; or equivalent:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(zoxide init zsh –cmd cd)&quot;     GitUpdate   This tool is another find from the Lobste.rs thread. When working on a git branch, I like to commit my work frequently. For example, before I try to delete some large block of text in a blog post, or before I attempt to refactor some piece of code, I commit my work. Of course, I’ll squash, or restructure, these commits later on, but for convenience, I have a git alias called wip (’work in progress`) which gives me a low effort way to commit.  git wip = !git add --all; git ci -m WIP  gitupdate is a simple improvement on this idea. gitupdate . commits your files but uses the file names (but not extensions) of the changed files to create a more meaningful commit message. It’s great for times when the commit message doesn’t matter.       GitUpdate generates a commit message, commits, and pushes.     ℹ️ Install GitUpdate   git clone https://github.com/nikitavoloboev/gitupdate go build sudo cp gitupdate /usr/local/bin    Other Tools   There are many other helpful command-line tools. More than can be covered well in a single article. JQ, mitmproxy, Pandoc, and PSTree are some I use frequently. There is also a whole class of Rust rewrites of common POSIX tools that warrant an article of their own.   Of course, Earthly itself is a command-line tool, and one I constantly use for gluing together various development steps together. It, and the tools I use for linting prose have become a standard part of how I work.   What less common command-line tools do you use? If you have tool suggestions, I’d love to hear them. You can find my Twitter account and email below and I’d love to hear what you are using.">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="6 Command Line Tools for Productive Programmers">
+<meta property="og:url" content="https://earthly.dev/blog/command-line-tools/">
+
+
+  <meta property="og:description" content="Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and sort.   Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things become possible and sometimes easy.   As I’ve learned more I’ve been adding some new tools to my command-line toolbox, and in this article I’d like to share some I’ve found valuable.   broot   I’m not sure how I came across broot, but it’s pretty handy. If you are in a small directory and want to see the lay of the land, tree is excellent.  ✗ tree . ├── dartboard.png ├── header.jpg ├── opensign.png ├── quote1.png └── trophy.png  0 directories, 5 files  However, if the directory has many files or sub-directories, tree becomes much less helpful: you only see the last screen full of information as files scroll past you.  $ tree  &lt; scrolling text for a long time &gt; ├── banner.js └── index.html  328 directories, 2028 files  broot solves this problem by being aware of the size of your terminal window and sizing to fit it.        You can navigate around using the arrow keys in broot and it is also helpful for tracking down disk space usage by passing in the -w flag (broot -w):        It can do lots of other things, so take a look at the GitHub guide but for me its just a better tree.    ℹ️ Install BRoot   Install on MacOS using brew or follow installation instructions for other environments.   brew install broot    Funky   If you live in the terminal, and you want to use your terminal as an IDE, then it’s helpful to have your terminal change based on the current directory. There are many ways to do this. DirEnv loads and unloads .env files as you enter directories. smartcd is similar. It lets you run a shell script whenever you change to a certain path – you can start and stop services, change the prompt, or anything else you want.   However, my favorite of this genre is the strangely named funky, which “takes shell functions to the next level by making them easier to define, more flexible, and more interactive.”   The way funky works is simple: as you enter a directory, funky looks for a .funky file which contains a list of bash functions. It loads them, and when you leave, it unloads them.   This means when I’m in the directory for this Jekyll blog, I have aliases loaded for creating a new post, linting my markdown, pulling in images, and so on. I can list these by typing funky   $ funky lint() { markdownlint --fix &quot;./_posts/*.md&quot;; } set-header() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/header.jpg&quot;; } set-image() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/$(date +%s).png&quot;; }   funky can do more than this, though. It has features for interactively adding and editing functions, and for registering global functions and aliases. What I like, though, is just being able to quickly give a command, in a specific context, a short alias.    ℹ️ Install Funky   Install Funky using pip   pip3 install pyfunky   Then add hooks to your .zshrc, bashrc or equivalent:   ## find where funky.sh was installed by pip and source it source /usr/local/lib/python3.9/site-packages/scripts/shell/funky.sh    Fuzzy Finder (FZF)       Using fzf to locate the generated images for this post.    If funky and broot improved my productivity then more tools could only improve it more, right? So I headed over to Lobste.rs and asked what other tools people were using. FZF came up quite a bit, and I’ve started using it myself now.   FZF is a command-line fuzzy finder. It’s fast, and it interactively lets you filter options down based on a fuzzy keyword match in many places where you need to input a value at the command-line.   If you install the included shortcuts (/usr/local/opt/fzf/install), you can use ** anywhere and get an interactive fuzzy finder to narrow down to the desired path. FZF also makes searching your history much faster.   It’s a unix filter that reads in input, shows you an interactive list that you filter down and then sends the selected item out the other side but describing that way undersells its usefulness.   I recommend watching this video where Alexey Samoshkin walks through many possible uses for FZF with a soothing piano playing in the background:      ℹ️ Install FZF   Install Funky using your package manager of choice:   brew install fzf   Then add hooks to your .zshrc, bashrc or equivalent:   #ZSH source ~/.fzf.zsh  #BASH source ~/.fzf.bash    McFly       Using McFly to suggest common earthly commands in this path.    FZF is excellent for filtering file paths in a command line when you want to open a file (vim **), but for command-line completion, there is more information available than the raw history file. McFly attempts to use this extra information to provide more relevant results.   What extra information? To start with, McFly considers these options in its ranking heuristics:    The commands you typed before the command.   How often you run the command.   How recently you ran the command.    It tracks all this in a SQLite database where it also tracks and weighs suggestions by:    The commands exit status.   The directory you ran the command in.   If you have selected it in McFly before.    Being suggested failed commands is a pet peeve of mine, but I never considered narrowing the choice based on the current directory or down-ranking items that are never selected.   McFly uses a neural net to do its ranking, and one possible downside is the lag in coming up with suggestions if your SQLite database gets too large. However, MCFLY_HISTORY_LIMIT is available to limit this growth.   I’ve only been using it for a couple of days, so I can’t give a fair appraisal of it, but the concept makes me pretty hopeful: using extra information to customize tools towards real-world usage.    ℹ️ Install McFly   You can install McFly several ways. Here is brew: :   brew tap cantino/mcfly brew install mcfly   Then add hooks to your .zshrc, bashrc or equivalent:   eval &quot;$(mcfly init zsh)&quot;   The fact that the binary emits the init script rather than dumping an init script into my home directory is a nice touch. zoxide - the following tool - does this as well.   I found that FZF was interfering with the CTRL-R of McFly and had to comment out this line in the FZF init script to get McFly working.    Better CD       Using zoxide as a cd replacement.    FZF works nicely for some path completions, but I didn’t find it helpful when changing directories with cd: After typing cd **TAB from my home directory, it takes a while for FZF to build up the full list options. It was much faster to use my existing ZSH completions of cd TAB &lt;choose a dir&gt; TAB &lt;choose a dir&gt; to navigate to a folder.   However, many tools exist which attempt to improve upon cd. autojump, z, and Fasd all track directory usage and give you a single key shortcut for changing to commonly accessed directories. r/commandline has an detailed discussion of these various cd replacements, but the one that has the most momentum is zoxide. zoxide is a rewrite of z in Rust and promises improved speed.   After you install it, you can use it just like cd (z ~/path/foo/bar), but you can also change directories based on ranked text matches of the path (z bar ~= cd ~/path/foo/bar ). Instead of needing to supply the full path to change locations, you can instead provide a unique sub-string of the path, and zoxide will use its usage history to get you where you want.   For ease of adoption, I’ve chosen to have zoxide replace cd, which is as simple as using the –cmd flag when you add the initialization shell code (eval &quot;$(zoxide init zsh --cmd cd)&quot;&lt;/code&gt;).&lt;/p&gt; &lt;div class=&quot;notice--info&quot;&gt; &lt;p&gt;&lt;strong&gt;ℹ️ Install zoxide&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;&lt;code&gt;zoxide&lt;/code&gt; can be installed &lt;a href=&quot;https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide&quot;&gt;several ways&lt;/a&gt;. Here is brew: :&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;brew&lt;/span&gt; install zoxide&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Then add hooks to your &lt;code&gt;.zshrc&lt;/code&gt;, &lt;code&gt;bashrc&lt;/code&gt; or equivalent:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(zoxide init zsh –cmd cd)&quot;     GitUpdate   This tool is another find from the Lobste.rs thread. When working on a git branch, I like to commit my work frequently. For example, before I try to delete some large block of text in a blog post, or before I attempt to refactor some piece of code, I commit my work. Of course, I’ll squash, or restructure, these commits later on, but for convenience, I have a git alias called wip (’work in progress`) which gives me a low effort way to commit.  git wip = !git add --all; git ci -m WIP  gitupdate is a simple improvement on this idea. gitupdate . commits your files but uses the file names (but not extensions) of the changed files to create a more meaningful commit message. It’s great for times when the commit message doesn’t matter.       GitUpdate generates a commit message, commits, and pushes.     ℹ️ Install GitUpdate   git clone https://github.com/nikitavoloboev/gitupdate go build sudo cp gitupdate /usr/local/bin    Other Tools   There are many other helpful command-line tools. More than can be covered well in a single article. JQ, mitmproxy, Pandoc, and PSTree are some I use frequently. There is also a whole class of Rust rewrites of common POSIX tools that warrant an article of their own.   Of course, Earthly itself is a command-line tool, and one I constantly use for gluing together various development steps together. It, and the tools I use for linting prose have become a standard part of how I work.   What less common command-line tools do you use? If you have tool suggestions, I’d love to hear them. You can find my Twitter account and email below and I’d love to hear what you are using.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/command-line-tools/header-800-a028dbebd.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="6 Command Line Tools for Productive Programmers">
+  <meta name="twitter:description" content="Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and sort.   Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things become possible and sometimes easy.   As I’ve learned more I’ve been adding some new tools to my command-line toolbox, and in this article I’d like to share some I’ve found valuable.   broot   I’m not sure how I came across broot, but it’s pretty handy. If you are in a small directory and want to see the lay of the land, tree is excellent.  ✗ tree . ├── dartboard.png ├── header.jpg ├── opensign.png ├── quote1.png └── trophy.png  0 directories, 5 files  However, if the directory has many files or sub-directories, tree becomes much less helpful: you only see the last screen full of information as files scroll past you.  $ tree  &lt; scrolling text for a long time &gt; ├── banner.js └── index.html  328 directories, 2028 files  broot solves this problem by being aware of the size of your terminal window and sizing to fit it.        You can navigate around using the arrow keys in broot and it is also helpful for tracking down disk space usage by passing in the -w flag (broot -w):        It can do lots of other things, so take a look at the GitHub guide but for me its just a better tree.    ℹ️ Install BRoot   Install on MacOS using brew or follow installation instructions for other environments.   brew install broot    Funky   If you live in the terminal, and you want to use your terminal as an IDE, then it’s helpful to have your terminal change based on the current directory. There are many ways to do this. DirEnv loads and unloads .env files as you enter directories. smartcd is similar. It lets you run a shell script whenever you change to a certain path – you can start and stop services, change the prompt, or anything else you want.   However, my favorite of this genre is the strangely named funky, which “takes shell functions to the next level by making them easier to define, more flexible, and more interactive.”   The way funky works is simple: as you enter a directory, funky looks for a .funky file which contains a list of bash functions. It loads them, and when you leave, it unloads them.   This means when I’m in the directory for this Jekyll blog, I have aliases loaded for creating a new post, linting my markdown, pulling in images, and so on. I can list these by typing funky   $ funky lint() { markdownlint --fix &quot;./_posts/*.md&quot;; } set-header() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/header.jpg&quot;; } set-image() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/$(date +%s).png&quot;; }   funky can do more than this, though. It has features for interactively adding and editing functions, and for registering global functions and aliases. What I like, though, is just being able to quickly give a command, in a specific context, a short alias.    ℹ️ Install Funky   Install Funky using pip   pip3 install pyfunky   Then add hooks to your .zshrc, bashrc or equivalent:   ## find where funky.sh was installed by pip and source it source /usr/local/lib/python3.9/site-packages/scripts/shell/funky.sh    Fuzzy Finder (FZF)       Using fzf to locate the generated images for this post.    If funky and broot improved my productivity then more tools could only improve it more, right? So I headed over to Lobste.rs and asked what other tools people were using. FZF came up quite a bit, and I’ve started using it myself now.   FZF is a command-line fuzzy finder. It’s fast, and it interactively lets you filter options down based on a fuzzy keyword match in many places where you need to input a value at the command-line.   If you install the included shortcuts (/usr/local/opt/fzf/install), you can use ** anywhere and get an interactive fuzzy finder to narrow down to the desired path. FZF also makes searching your history much faster.   It’s a unix filter that reads in input, shows you an interactive list that you filter down and then sends the selected item out the other side but describing that way undersells its usefulness.   I recommend watching this video where Alexey Samoshkin walks through many possible uses for FZF with a soothing piano playing in the background:      ℹ️ Install FZF   Install Funky using your package manager of choice:   brew install fzf   Then add hooks to your .zshrc, bashrc or equivalent:   #ZSH source ~/.fzf.zsh  #BASH source ~/.fzf.bash    McFly       Using McFly to suggest common earthly commands in this path.    FZF is excellent for filtering file paths in a command line when you want to open a file (vim **), but for command-line completion, there is more information available than the raw history file. McFly attempts to use this extra information to provide more relevant results.   What extra information? To start with, McFly considers these options in its ranking heuristics:    The commands you typed before the command.   How often you run the command.   How recently you ran the command.    It tracks all this in a SQLite database where it also tracks and weighs suggestions by:    The commands exit status.   The directory you ran the command in.   If you have selected it in McFly before.    Being suggested failed commands is a pet peeve of mine, but I never considered narrowing the choice based on the current directory or down-ranking items that are never selected.   McFly uses a neural net to do its ranking, and one possible downside is the lag in coming up with suggestions if your SQLite database gets too large. However, MCFLY_HISTORY_LIMIT is available to limit this growth.   I’ve only been using it for a couple of days, so I can’t give a fair appraisal of it, but the concept makes me pretty hopeful: using extra information to customize tools towards real-world usage.    ℹ️ Install McFly   You can install McFly several ways. Here is brew: :   brew tap cantino/mcfly brew install mcfly   Then add hooks to your .zshrc, bashrc or equivalent:   eval &quot;$(mcfly init zsh)&quot;   The fact that the binary emits the init script rather than dumping an init script into my home directory is a nice touch. zoxide - the following tool - does this as well.   I found that FZF was interfering with the CTRL-R of McFly and had to comment out this line in the FZF init script to get McFly working.    Better CD       Using zoxide as a cd replacement.    FZF works nicely for some path completions, but I didn’t find it helpful when changing directories with cd: After typing cd **TAB from my home directory, it takes a while for FZF to build up the full list options. It was much faster to use my existing ZSH completions of cd TAB &lt;choose a dir&gt; TAB &lt;choose a dir&gt; to navigate to a folder.   However, many tools exist which attempt to improve upon cd. autojump, z, and Fasd all track directory usage and give you a single key shortcut for changing to commonly accessed directories. r/commandline has an detailed discussion of these various cd replacements, but the one that has the most momentum is zoxide. zoxide is a rewrite of z in Rust and promises improved speed.   After you install it, you can use it just like cd (z ~/path/foo/bar), but you can also change directories based on ranked text matches of the path (z bar ~= cd ~/path/foo/bar ). Instead of needing to supply the full path to change locations, you can instead provide a unique sub-string of the path, and zoxide will use its usage history to get you where you want.   For ease of adoption, I’ve chosen to have zoxide replace cd, which is as simple as using the –cmd flag when you add the initialization shell code (eval &quot;$(zoxide init zsh --cmd cd)&quot;&lt;/code&gt;).&lt;/p&gt; &lt;div class=&quot;notice--info&quot;&gt; &lt;p&gt;&lt;strong&gt;ℹ️ Install zoxide&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;&lt;code&gt;zoxide&lt;/code&gt; can be installed &lt;a href=&quot;https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide&quot;&gt;several ways&lt;/a&gt;. Here is brew: :&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;brew&lt;/span&gt; install zoxide&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Then add hooks to your &lt;code&gt;.zshrc&lt;/code&gt;, &lt;code&gt;bashrc&lt;/code&gt; or equivalent:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(zoxide init zsh –cmd cd)&quot;     GitUpdate   This tool is another find from the Lobste.rs thread. When working on a git branch, I like to commit my work frequently. For example, before I try to delete some large block of text in a blog post, or before I attempt to refactor some piece of code, I commit my work. Of course, I’ll squash, or restructure, these commits later on, but for convenience, I have a git alias called wip (’work in progress`) which gives me a low effort way to commit.  git wip = !git add --all; git ci -m WIP  gitupdate is a simple improvement on this idea. gitupdate . commits your files but uses the file names (but not extensions) of the changed files to create a more meaningful commit message. It’s great for times when the commit message doesn’t matter.       GitUpdate generates a commit message, commits, and pushes.     ℹ️ Install GitUpdate   git clone https://github.com/nikitavoloboev/gitupdate go build sudo cp gitupdate /usr/local/bin    Other Tools   There are many other helpful command-line tools. More than can be covered well in a single article. JQ, mitmproxy, Pandoc, and PSTree are some I use frequently. There is also a whole class of Rust rewrites of common POSIX tools that warrant an article of their own.   Of course, Earthly itself is a command-line tool, and one I constantly use for gluing together various development steps together. It, and the tools I use for linting prose have become a standard part of how I work.   What less common command-line tools do you use? If you have tool suggestions, I’d love to hear them. You can find my Twitter account and email below and I’d love to hear what you are using.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/command-line-tools/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/command-line-tools/header-800-a028dbebd.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-23T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/command-line-tools/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/command-line-tools/header-400-97d7143f4.webp 400w, /blog/generated/assets/images/command-line-tools/header-600-97d7143f4.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-97d7143f4.webp 800w, /blog/generated/assets/images/command-line-tools/header-1000-97d7143f4.webp 1000w, /blog/generated/assets/images/command-line-tools/header-1200-97d7143f4.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-400-97d7143f4.png 400w, /blog/generated/assets/images/command-line-tools/header-600-97d7143f4.png 600w, /blog/generated/assets/images/command-line-tools/header-800-97d7143f4.png 800w, /blog/generated/assets/images/command-line-tools/header-1000-97d7143f4.png 1000w, /blog/generated/assets/images/command-line-tools/header-1200-97d7143f4.png 1200w" type="image/png"><img src="/blog/generated/assets/images/command-line-tools/header-800-97d7143f4.jpg" alt="6 Command Line Tools for Productive Programmers"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="6 Command Line Tools for Productive Programmers">
+    <meta itemprop="description" content="Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and sort.Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things become possible and sometimes easy.As I’ve learned more I’ve been adding some new tools to my command-line toolbox, and in this article I’d like to share some I’ve found valuable.brootI’m not sure how I came across broot, but it’s pretty handy. If you are in a small directory and want to see the lay of the land, tree is excellent.✗ tree.├── dartboard.png├── header.jpg├── opensign.png├── quote1.png└── trophy.png0 directories, 5 filesHowever, if the directory has many files or sub-directories, tree becomes much less helpful: you only see the last screen full of information as files scroll past you.$ tree &lt; scrolling text for a long time &gt;├── banner.js└── index.html328 directories, 2028 filesbroot solves this problem by being aware of the size of your terminal window and sizing to fit it.You can navigate around using the arrow keys in broot and it is also helpful for tracking down disk space usage by passing in the -w flag (broot -w):It can do lots of other things, so take a look at the GitHub guide but for me its just a better tree.ℹ️ Install BRootInstall on MacOS using brew or follow installation instructions for other environments.brew install brootFunkyIf you live in the terminal, and you want to use your terminal as an IDE, then it’s helpful to have your terminal change based on the current directory. There are many ways to do this. DirEnv loads and unloads .env files as you enter directories. smartcd is similar. It lets you run a shell script whenever you change to a certain path – you can start and stop services, change the prompt, or anything else you want.However, my favorite of this genre is the strangely named funky, which “takes shell functions to the next level by making them easier to define, more flexible, and more interactive.”The way funky works is simple: as you enter a directory, funky looks for a .funky file which contains a list of bash functions. It loads them, and when you leave, it unloads them.This means when I’m in the directory for this Jekyll blog, I have aliases loaded for creating a new post, linting my markdown, pulling in images, and so on. I can list these by typing funky$ funkylint() { markdownlint --fix &quot;./_posts/*.md&quot;; }set-header() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/header.jpg&quot;; }set-image() { cp &quot;$(latest-image)&quot; &quot;$(image-folder)/$(date +%s).png&quot;; }funky can do more than this, though. It has features for interactively adding and editing functions, and for registering global functions and aliases. What I like, though, is just being able to quickly give a command, in a specific context, a short alias.ℹ️ Install FunkyInstall Funky using pippip3 install pyfunkyThen add hooks to your .zshrc, bashrc or equivalent:## find where funky.sh was installed by pip and source itsource /usr/local/lib/python3.9/site-packages/scripts/shell/funky.shFuzzy Finder (FZF)Using fzf to locate the generated images for this post.If funky and broot improved my productivity then more tools could only improve it more, right? So I headed over to Lobste.rs and asked what other tools people were using. FZF came up quite a bit, and I’ve started using it myself now.FZF is a command-line fuzzy finder. It’s fast, and it interactively lets you filter options down based on a fuzzy keyword match in many places where you need to input a value at the command-line.If you install the included shortcuts (/usr/local/opt/fzf/install), you can use ** anywhere and get an interactive fuzzy finder to narrow down to the desired path. FZF also makes searching your history much faster.It’s a unix filter that reads in input, shows you an interactive list that you filter down and then sends the selected item out the other side but describing that way undersells its usefulness.I recommend watching this video where Alexey Samoshkin walks through many possible uses for FZF with a soothing piano playing in the background:ℹ️ Install FZFInstall Funky using your package manager of choice:brew install fzfThen add hooks to your .zshrc, bashrc or equivalent:#ZSHsource ~/.fzf.zsh #BASHsource ~/.fzf.bashMcFlyUsing McFly to suggest common earthly commands in this path.FZF is excellent for filtering file paths in a command line when you want to open a file (vim **), but for command-line completion, there is more information available than the raw history file. McFly attempts to use this extra information to provide more relevant results.What extra information? To start with, McFly considers these options in its ranking heuristics:The commands you typed before the command.How often you run the command.How recently you ran the command.It tracks all this in a SQLite database where it also tracks and weighs suggestions by:The commands exit status.The directory you ran the command in.If you have selected it in McFly before.Being suggested failed commands is a pet peeve of mine, but I never considered narrowing the choice based on the current directory or down-ranking items that are never selected.McFly uses a neural net to do its ranking, and one possible downside is the lag in coming up with suggestions if your SQLite database gets too large. However, MCFLY_HISTORY_LIMIT is available to limit this growth.I’ve only been using it for a couple of days, so I can’t give a fair appraisal of it, but the concept makes me pretty hopeful: using extra information to customize tools towards real-world usage.ℹ️ Install McFlyYou can install McFly several ways. Here is brew: :brew tap cantino/mcflybrew install mcflyThen add hooks to your .zshrc, bashrc or equivalent:eval &quot;$(mcfly init zsh)&quot;The fact that the binary emits the init script rather than dumping an init script into my home directory is a nice touch. zoxide - the following tool - does this as well.I found that FZF was interfering with the CTRL-R of McFly and had to comment out this line in the FZF init script to get McFly working.Better CDUsing zoxide as a cd replacement.FZF works nicely for some path completions, but I didn’t find it helpful when changing directories with cd: After typing cd **TAB from my home directory, it takes a while for FZF to build up the full list options. It was much faster to use my existing ZSH completions of cd TAB &lt;choose a dir&gt; TAB &lt;choose a dir&gt; to navigate to a folder.However, many tools exist which attempt to improve upon cd. autojump, z, and Fasd all track directory usage and give you a single key shortcut for changing to commonly accessed directories. r/commandline has an detailed discussion of these various cd replacements, but the one that has the most momentum is zoxide. zoxide is a rewrite of z in Rust and promises improved speed.After you install it, you can use it just like cd (z ~/path/foo/bar), but you can also change directories based on ranked text matches of the path (z bar ~= cd ~/path/foo/bar ). Instead of needing to supply the full path to change locations, you can instead provide a unique sub-string of the path, and zoxide will use its usage history to get you where you want.For ease of adoption, I’ve chosen to have zoxide replace cd, which is as simple as using the –cmd flag when you add the initialization shell code (eval &quot;$(zoxide init zsh --cmd cd)&quot;&lt;/code&gt;).&lt;/p&gt; &lt;div class=&quot;notice--info&quot;&gt; &lt;p&gt;&lt;strong&gt;ℹ️ Install zoxide&lt;/strong&gt;&lt;/p&gt; &lt;p&gt;&lt;code&gt;zoxide&lt;/code&gt; can be installed &lt;a href=&quot;https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide&quot;&gt;several ways&lt;/a&gt;. Here is brew: :&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb11&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb11-1&quot;&gt;&lt;a href=&quot;#cb11-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;brew&lt;/span&gt; install zoxide&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;Then add hooks to your &lt;code&gt;.zshrc&lt;/code&gt;, &lt;code&gt;bashrc&lt;/code&gt; or equivalent:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb12&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb12-1&quot;&gt;&lt;a href=&quot;#cb12-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;bu&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;st&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;va&quot;&gt;$(zoxide init zsh –cmd cd)&quot;GitUpdateThis tool is another find from the Lobste.rs thread. When working on a git branch, I like to commit my work frequently. For example, before I try to delete some large block of text in a blog post, or before I attempt to refactor some piece of code, I commit my work. Of course, I’ll squash, or restructure, these commits later on, but for convenience, I have a git alias called wip (’work in progress`) which gives me a low effort way to commit.git wip = !git add --all; git ci -m WIPgitupdate is a simple improvement on this idea. gitupdate . commits your files but uses the file names (but not extensions) of the changed files to create a more meaningful commit message. It’s great for times when the commit message doesn’t matter.GitUpdate generates a commit message, commits, and pushes.ℹ️ Install GitUpdategit clone https://github.com/nikitavoloboev/gitupdatego buildsudo cp gitupdate /usr/local/binOther ToolsThere are many other helpful command-line tools. More than can be covered well in a single article. JQ, mitmproxy, Pandoc, and PSTree are some I use frequently. There is also a whole class of Rust rewrites of common POSIX tools that warrant an article of their own.Of course, Earthly itself is a command-line tool, and one I constantly use for gluing together various development steps together. It, and the tools I use for linting prose have become a standard part of how I work.What less common command-line tools do you use? If you have tool suggestions, I’d love to hear them. You can find my Twitter account and email below and I’d love to hear what you are using.">
+    <meta itemprop="datePublished" content="2021-07-23T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">6 Command Line Tools for Productive Programmers
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-23T00:00:00-04:00">July 23, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <p>Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like <code>grep</code>,<code>cat</code> and <code>sort</code>.</p>
+<p>Tools are powerful. A good tool makes work easier and faster, and a great tool unlocks new abilities: Previously impossible things become possible and sometimes easy.</p>
+<p>As I’ve learned more I’ve been adding some new tools to my command-line toolbox, and in this article I’d like to share some I’ve found valuable.</p>
+<h2 id="broot"><code>broot</code></h2>
+<p>I’m not sure how I came across <code>broot</code>, but it’s pretty handy. If you are in a small directory and want to see the lay of the land, <code>tree</code> is excellent.</p>
+<pre><code>✗ tree
+.
+├── dartboard.png
+├── header.jpg
+├── opensign.png
+├── quote1.png
+└── trophy.png
+
+0 directories, 5 files</code></pre>
+<p>However, if the directory has many files or sub-directories, <code>tree</code> becomes much less helpful: you only see the last screen full of information as files scroll past you.</p>
+<pre><code>$ tree 
+&lt; scrolling text for a long time &gt;
+├── banner.js
+└── index.html
+
+328 directories, 2028 files</code></pre>
+<p><code>broot</code> solves this problem by being aware of the size of your terminal window and sizing to fit it.</p>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/broot-800-39409e646.png" srcset="/blog/generated/assets/images/command-line-tools/broot-400-39409e646.png 400w, /blog/generated/assets/images/command-line-tools/broot-600-39409e646.png 600w, /blog/generated/assets/images/command-line-tools/broot-800-39409e646.png 800w, /blog/generated/assets/images/command-line-tools/broot-1000-39409e646.png 1000w"></p>
+</div>
+<p>You can navigate around using the arrow keys in <code>broot</code> and it is also helpful for tracking down disk space usage by passing in the <code>-w</code> flag (<code>broot -w</code>):</p>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/broot2-800-84e520359.png" srcset="/blog/generated/assets/images/command-line-tools/broot2-400-84e520359.png 400w, /blog/generated/assets/images/command-line-tools/broot2-600-84e520359.png 600w, /blog/generated/assets/images/command-line-tools/broot2-800-84e520359.png 800w, /blog/generated/assets/images/command-line-tools/broot2-1000-84e520359.png 1000w"></p>
+</div>
+<p>It can do lots of other things, so take a look at the <a href="https://github.com/Canop/broot">GitHub guide</a> but for me its just a better <code>tree</code>.</p>
+<div class="notice--info">
+<p><strong>ℹ️ Install BRoot</strong></p>
+<p>Install on MacOS using <code>brew</code> or follow <a href="https://dystroy.org/broot/install/">installation instructions</a> for other environments.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install broot</span></code></pre></div>
+</div>
+<h2 id="funky">Funky</h2>
+<p>If you live in the terminal, and you want to <a href="https://blog.sanctum.geek.nz/unix-as-ide-files/">use your terminal as an IDE</a>, then it’s helpful to have your terminal change based on the current directory. There are many ways to do this. <a href="https://direnv.net/"><code>DirEnv</code></a> loads and unloads <code>.env</code> files as you enter directories. <a href="https://github.com/cxreg/smartcd"><code>smartcd</code></a> is similar. It lets you run a shell script whenever you change to a certain path – you can start and stop services, change the prompt, or anything else you want.</p>
+<p>However, my favorite of this genre is the strangely named <a href="https://github.com/bbugyi200/funky"><code>funky</code></a>, which “takes shell functions to the next level by making them easier to define, more flexible, and more interactive.”</p>
+<p>The way <code>funky</code> works is simple: as you enter a directory, <code>funky</code> looks for a <code>.funky</code> file which contains a list of bash functions. It loads them, and when you leave, it unloads them.</p>
+<p>This means when I’m in the directory for this Jekyll blog, I have aliases loaded for creating a new post, linting my markdown, pulling in images, and so on. I can list these by typing <code>funky</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> funky</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lint()</span> <span class="kw">{</span> <span class="ex">markdownlint</span> <span class="at">--fix</span> <span class="st">&quot;./_posts/*.md&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set-header()</span> <span class="kw">{</span> <span class="fu">cp</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">latest-image</span><span class="va">)</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">image-folder</span><span class="va">)</span><span class="st">/header.jpg&quot;</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set-image()</span> <span class="kw">{</span> <span class="fu">cp</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">latest-image</span><span class="va">)</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">image-folder</span><span class="va">)</span><span class="st">/</span><span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span><span class="st">.png&quot;</span><span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<p><code>funky</code> can do more than this, though. It has features for interactively adding and editing functions, and for registering global functions and aliases. What I like, though, is just being able to quickly give a command, in a specific context, a short alias.</p>
+<div class="notice--info">
+<p><strong>ℹ️ Install Funky</strong></p>
+<p>Install Funky using pip</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip3</span> install pyfunky</span></code></pre></div>
+<p>Then add hooks to your <code>.zshrc</code>, <code>bashrc</code> or equivalent:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">## find where funky.sh was installed by pip and source it</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /usr/local/lib/python3.9/site-packages/scripts/shell/funky.sh</span></code></pre></div>
+</div>
+<h2 id="fuzzy-finder-fzf">Fuzzy Finder (FZF)</h2>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/1626788538-800-b7c54354e.png" srcset="/blog/generated/assets/images/command-line-tools/1626788538-400-b7c54354e.png 400w, /blog/generated/assets/images/command-line-tools/1626788538-600-b7c54354e.png 600w, /blog/generated/assets/images/command-line-tools/1626788538-800-b7c54354e.png 800w, /blog/generated/assets/images/command-line-tools/1626788538-1000-b7c54354e.png 1000w"></p>
+<figcaption>
+Using <code>fzf</code> to locate the generated images for this post.
+</figcaption>
+</div>
+<p>If <code>funky</code> and <code>broot</code> improved my productivity then more tools could only improve it more, right? So I headed over to <a href="https://lobste.rs/s/yfgwjr/what_interesting_command_line_tools_do">Lobste.rs</a> and asked what other tools people were using. <code>FZF</code> came up quite a bit, and I’ve started using it myself now.</p>
+<p><a href="https://github.com/junegunn/fzf">FZF</a> is a command-line fuzzy finder. It’s fast, and it interactively lets you filter options down based on a fuzzy keyword match in many places where you need to input a value at the command-line.</p>
+<p>If you install the included shortcuts (<code>/usr/local/opt/fzf/install</code>), you can use <code>**</code> anywhere and get an interactive fuzzy finder to narrow down to the desired path. <code>FZF</code> also makes searching your <code>history</code> much faster.</p>
+<p>It’s a unix filter that reads in input, shows you an interactive list that you filter down and then sends the selected item out the other side but describing that way undersells its usefulness.</p>
+<p>I recommend watching this video where Alexey Samoshkin walks through many possible uses for <code>FZF</code> with a soothing piano playing in the background:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qgG5Jhi_Els" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<div class="notice--info">
+<p><strong>ℹ️ Install FZF</strong></p>
+<p>Install Funky using your <a href="https://github.com/junegunn/fzf#using-linux-package-managers">package manager of choice</a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install fzf</span></code></pre></div>
+<p>Then add hooks to your <code>.zshrc</code>, <code>bashrc</code> or equivalent:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ZSH</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.fzf.zsh </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BASH</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.fzf.bash</span></code></pre></div>
+</div>
+<h2 id="mcfly">McFly</h2>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/1626788971-800-0b1e50ab8.png" srcset="/blog/generated/assets/images/command-line-tools/1626788971-400-0b1e50ab8.png 400w, /blog/generated/assets/images/command-line-tools/1626788971-600-0b1e50ab8.png 600w, /blog/generated/assets/images/command-line-tools/1626788971-800-0b1e50ab8.png 800w, /blog/generated/assets/images/command-line-tools/1626788971-1000-0b1e50ab8.png 1000w"></p>
+<figcaption>
+Using McFly to suggest common earthly commands in this path.
+</figcaption>
+</div>
+<p><code>FZF</code> is excellent for filtering file paths in a command line when you want to open a file (<code>vim **</code>), but for command-line completion, there is more information available than the raw history file. <a href="https://github.com/cantino/mcfly/"><code>McFly</code></a> attempts to use this extra information to provide more relevant results.</p>
+<p>What extra information? To start with, McFly considers these options in its ranking heuristics:</p>
+<ul>
+<li>The commands you typed before the command.</li>
+<li>How often you run the command.</li>
+<li>How recently you ran the command.</li>
+</ul>
+<p>It tracks all this in a SQLite database where it also tracks and weighs suggestions by:</p>
+<ul>
+<li>The commands exit status.</li>
+<li>The directory you ran the command in.</li>
+<li>If you have selected it in McFly before.</li>
+</ul>
+<p>Being suggested failed commands is a pet peeve of mine, but I never considered narrowing the choice based on the current directory or down-ranking items that are never selected.</p>
+<p><code>McFly</code> uses a neural net to do its ranking, and one possible downside is the lag in coming up with suggestions if your SQLite database gets too large. However, <code>MCFLY_HISTORY_LIMIT</code> is available to limit this growth.</p>
+<p>I’ve only been using it for a couple of days, so I can’t give a fair appraisal of it, but the concept makes me pretty hopeful: using extra information to customize tools towards real-world usage.</p>
+<div class="notice--info">
+<p><strong>ℹ️ Install McFly</strong></p>
+<p>You can install McFly <a href="https://github.com/cantino/mcfly/#installation">several ways</a>. Here is brew: :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> tap cantino/mcfly</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install mcfly</span></code></pre></div>
+<p>Then add hooks to your <code>.zshrc</code>, <code>bashrc</code> or equivalent:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">mcfly</span> init zsh<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<p>The fact that the binary emits the init script rather than dumping an init script into my home directory is a nice touch. <code>zoxide</code> - the following tool - does this as well.</p>
+<p>I found that <code>FZF</code> was interfering with the <code>CTRL-R</code> of McFly and had to comment out <a href="https://github.com/junegunn/fzf/blob/764316a53d0eb60b315f0bbcd513de58ed57a876/shell/key-bindings.zsh#L109">this line</a> in the <code>FZF</code> init script to get McFly working.</p>
+</div>
+<h2 id="better-cd">Better CD</h2>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/1626789626-800-fe7102962.png" srcset="/blog/generated/assets/images/command-line-tools/1626789626-400-fe7102962.png 400w, /blog/generated/assets/images/command-line-tools/1626789626-600-fe7102962.png 600w, /blog/generated/assets/images/command-line-tools/1626789626-800-fe7102962.png 800w, /blog/generated/assets/images/command-line-tools/1626789626-1000-fe7102962.png 1000w"></p>
+<figcaption>
+Using <code>zoxide</code> as a <code>cd</code> replacement.
+</figcaption>
+</div>
+<p><code>FZF</code> works nicely for some path completions, but I didn’t find it helpful when changing directories with <code>cd</code>: After typing <code>cd **TAB</code> from my home directory, it takes a while for <code>FZF</code> to build up the full list options. It was much faster to use my existing ZSH completions of <code>cd TAB &lt;choose a dir&gt; TAB &lt;choose a dir&gt;</code> to navigate to a folder.</p>
+<p>However, many tools exist which attempt to improve upon <code>cd</code>. <a href="https://github.com/wting/autojump"><code>autojump</code></a>, <a href="https://github.com/rupa/z"><code>z</code></a>, and <a href="https://github.com/clvv/fasd"><code>Fasd</code></a> all track directory usage and give you a single key shortcut for changing to commonly accessed directories. <a href="https://www.reddit.com/r/commandline/comments/4v5nlt/what_cd_tool_do_you_use_if_any_autojump_j_z_etc/"><code>r/commandline</code></a> has an detailed discussion of these various <code>cd</code> replacements, but the one that has the most momentum is <code>zoxide</code>. <a href="https://github.com/ajeetdsouza/zoxide">zoxide</a> is a rewrite of z in Rust and promises improved speed.</p>
+<p>After you install it, you can use it just like <code>cd</code> (<code>z ~/path/foo/bar</code>), but you can also change directories based on ranked text matches of the path (<code>z bar</code> ~= <code>cd ~/path/foo/bar</code> ). Instead of needing to supply the full path to change locations, you can instead provide a unique sub-string of the path, and <code>zoxide</code> will use its usage history to get you where you want.</p>
+<p>For ease of adoption, I’ve chosen to have <code>zoxide</code> replace <code>cd</code>, which is as simple as using the <code>--cmd</code> flag when you add the initialization shell code (<code>eval "$(zoxide init zsh --cmd cd)"</code>).</p>
+<div class="notice--info">
+<p><strong>ℹ️ Install zoxide</strong></p>
+<p><code>zoxide</code> can be installed <a href="https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide">several ways</a>. Here is brew: :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install zoxide</span></code></pre></div>
+<p>Then add hooks to your <code>.zshrc</code>, <code>bashrc</code> or equivalent:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">eval</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">zoxide</span> init zsh <span class="at">--cmd</span> cd<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+</div>
+<h2 id="gitupdate">GitUpdate</h2>
+<p>This tool is another find from the <a href="https://lobste.rs/s/yfgwjr/what_interesting_command_line_tools_do">Lobste.rs</a> thread. When working on a git branch, I like to commit my work frequently. For example, before I try to delete some large block of text in a blog post, or before I attempt to refactor some piece of code, I commit my work. Of course, I’ll squash, or restructure, these commits later on, but for convenience, I have a git alias called <code>wip</code> (’work in progress`) which gives me a low effort way to commit.</p>
+<pre><code>git wip = !git add --all; git ci -m WIP</code></pre>
+<p><a href="https://github.com/nikitavoloboev/gitupdate"><code>gitupdate</code></a> is a simple improvement on this idea. <code>gitupdate .</code> commits your files but uses the file names (but not extensions) of the changed files to create a more meaningful commit message. It’s great for times when the commit message doesn’t matter.</p>
+<div class="wide-code">
+<p><img src="/blog/generated/assets/images/command-line-tools/1626790555-800-65425229c.png" srcset="/blog/generated/assets/images/command-line-tools/1626790555-400-65425229c.png 400w, /blog/generated/assets/images/command-line-tools/1626790555-600-65425229c.png 600w, /blog/generated/assets/images/command-line-tools/1626790555-800-65425229c.png 800w, /blog/generated/assets/images/command-line-tools/1626790555-1000-65425229c.png 1000w"></p>
+<figcaption>
+GitUpdate generates a commit message, commits, and pushes.
+</figcaption>
+</div>
+<div class="notice--info">
+<p><strong>ℹ️ Install GitUpdate</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/nikitavoloboev/gitupdate</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">go</span> build</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp gitupdate /usr/local/bin</span></code></pre></div>
+</div>
+<h2 id="other-tools">Other Tools</h2>
+<p>There are many other helpful command-line tools. More than can be covered well in a single article. JQ, <a href="/blog/mitmproxy"><code>mitmproxy</code></a>, <a href="https://pandoc.org/">Pandoc</a>, and <a href="https://man7.org/linux/man-pages/man1/pstree.1.html">PSTree</a> are some I use frequently. There is also a whole class of Rust rewrites of common POSIX tools that warrant an article of their own.</p>
+<p>Of course, <a href="https://earthly.dev/">Earthly</a> itself is a command-line tool, and one I constantly use for gluing together various development steps together. It, and the tools I use for <a href="/blog/markdown-lint">linting prose</a> have become a standard part of how I work.</p>
+<p>What less common command-line tools do you use? If you have tool suggestions, I’d love to hear them. You can find my Twitter account and email below and I’d love to hear what you are using.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+<p class="page__taxonomy">
+  <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>Author:</strong>
+  <span itemprop="keywords">
+    <a href="/blog/authors/Adam/" class="page__taxonomy-item" rel="tag">Adam Gordon Bell</a>
+  </span>
+</p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-23T00:00:00-04:00">July 23, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/python-matplotlib-docker/" class="pagination--pager" title="Install matplotlib In A Docker Container
+">Previous</a>
+    
+    
+      <a href="/blog/continuous-testing-in-devops/" class="pagination--pager" title="Using Continuous Testing in DevOps Workflows
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/vscode-make/header-600-cc5a5db17.webp 600w, /blog/generated/assets/images/vscode-make/header-800-cc5a5db17.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/vscode-make/header-600-91e861b7e.jpg 600w, /blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/vscode-make/" rel="permalink">Building in Visual Studio Code with a Makefile
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facil...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
