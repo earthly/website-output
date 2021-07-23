@@ -408,7 +408,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "6 Command Line Tools for Productive Programmers",
-        "excerpt":"Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and...","categories": ["Tutorials"],
+        "excerpt":"Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep, cat...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/command-line-tools/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
