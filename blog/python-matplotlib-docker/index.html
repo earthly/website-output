@@ -10,7 +10,7 @@
 
 
 <title>Install matplotlib In A Docker Container - Earthly Blog</title>
-<meta name="description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging article, and internally, we use it now and again for visualizing any metrics we produce. It is a bit hard to install inside a docker container, though.   Installing Matplotlib in Alpine Linux   On Alpine, or an Alpine-based docker image, it’s possible to install matplotlib; however it will involve compiling it from source as pip does not provide any pre-compiled binaries – this will take quite a bit of time. If you don’t mind compiling from source, you will need to have its dependencies in place to make this work:   FROM python:3.6-alpine  RUN apk add g++ jpeg-dev zlib-dev libjpeg make  RUN pip3 install matplotlib  Installing Matplotlib in Ubuntu   On Ubuntu, or a Ubuntu-based docker image, the process is much simpler:   FROM ubuntu:20.10  RUN apt-get update &amp;&amp; apt-get install -y python3 python3-pip  RUN pip3 install matplotlib  In either case, after you’ve installed it, you can quickly generate great graphs and visualizations:   import numpy as np from scipy.interpolate import splprep, splev  import matplotlib.pyplot as plt from matplotlib.path import Path from matplotlib.patches import PathPatch  N = 400 t = np.linspace(0, 3 * np.pi, N) r = 0.5 + np.cos(t) x, y = r * np.cos(t), r * np.sin(t) fig, ax = plt.subplots() ax.plot(x, y) plt.xlabel(&quot;X value&quot;) plt.ylabel(&quot;Y value&quot;) plt.savefig(&#39;1.png&#39;)      Appendix: Alpine vs Ubuntu Pip Install   Why is the Ubuntu process fast and simple and the Alpine process slow? The reason is glibc. The pip wheels for matplotlib are compiled c/c++ programs that dynamically link to glibc and Alpine does not have glibc.   Alpine tries to stay small and so uses musl-libc instead. Unfortunately, this means compiling from source on Alpine, which can be a lengthy process.   ThisGuyCantEven on Stack Overflow has more details:    Pip looks first for a wheel with the correct binaries, if it can’t find one, it tries to compile the binaries from the c/c++ source and links them against musl. In many cases, this won’t even work unless you have the python headers from python3-dev or build tools like make.   Now the silver lining, as others have mentioned, there are apk packages with the proper binaries provided by the community, using these will save you the (sometimes lengthy) process of building the binaries.">
+<meta name="description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in m...">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/python-matplotlib-docker/">
 
 
-  <meta property="og:description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging article, and internally, we use it now and again for visualizing any metrics we produce. It is a bit hard to install inside a docker container, though.   Installing Matplotlib in Alpine Linux   On Alpine, or an Alpine-based docker image, it’s possible to install matplotlib; however it will involve compiling it from source as pip does not provide any pre-compiled binaries – this will take quite a bit of time. If you don’t mind compiling from source, you will need to have its dependencies in place to make this work:   FROM python:3.6-alpine  RUN apk add g++ jpeg-dev zlib-dev libjpeg make  RUN pip3 install matplotlib  Installing Matplotlib in Ubuntu   On Ubuntu, or a Ubuntu-based docker image, the process is much simpler:   FROM ubuntu:20.10  RUN apt-get update &amp;&amp; apt-get install -y python3 python3-pip  RUN pip3 install matplotlib  In either case, after you’ve installed it, you can quickly generate great graphs and visualizations:   import numpy as np from scipy.interpolate import splprep, splev  import matplotlib.pyplot as plt from matplotlib.path import Path from matplotlib.patches import PathPatch  N = 400 t = np.linspace(0, 3 * np.pi, N) r = 0.5 + np.cos(t) x, y = r * np.cos(t), r * np.sin(t) fig, ax = plt.subplots() ax.plot(x, y) plt.xlabel(&quot;X value&quot;) plt.ylabel(&quot;Y value&quot;) plt.savefig(&#39;1.png&#39;)      Appendix: Alpine vs Ubuntu Pip Install   Why is the Ubuntu process fast and simple and the Alpine process slow? The reason is glibc. The pip wheels for matplotlib are compiled c/c++ programs that dynamically link to glibc and Alpine does not have glibc.   Alpine tries to stay small and so uses musl-libc instead. Unfortunately, this means compiling from source on Alpine, which can be a lengthy process.   ThisGuyCantEven on Stack Overflow has more details:    Pip looks first for a wheel with the correct binaries, if it can’t find one, it tries to compile the binaries from the c/c++ source and links them against musl. In many cases, this won’t even work unless you have the python headers from python3-dev or build tools like make.   Now the silver lining, as others have mentioned, there are apk packages with the proper binaries provided by the community, using these will save you the (sometimes lengthy) process of building the binaries.">
+  <meta property="og:description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in m...">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Install matplotlib In A Docker Container">
-  <meta name="twitter:description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging article, and internally, we use it now and again for visualizing any metrics we produce. It is a bit hard to install inside a docker container, though.   Installing Matplotlib in Alpine Linux   On Alpine, or an Alpine-based docker image, it’s possible to install matplotlib; however it will involve compiling it from source as pip does not provide any pre-compiled binaries – this will take quite a bit of time. If you don’t mind compiling from source, you will need to have its dependencies in place to make this work:   FROM python:3.6-alpine  RUN apk add g++ jpeg-dev zlib-dev libjpeg make  RUN pip3 install matplotlib  Installing Matplotlib in Ubuntu   On Ubuntu, or a Ubuntu-based docker image, the process is much simpler:   FROM ubuntu:20.10  RUN apt-get update &amp;&amp; apt-get install -y python3 python3-pip  RUN pip3 install matplotlib  In either case, after you’ve installed it, you can quickly generate great graphs and visualizations:   import numpy as np from scipy.interpolate import splprep, splev  import matplotlib.pyplot as plt from matplotlib.path import Path from matplotlib.patches import PathPatch  N = 400 t = np.linspace(0, 3 * np.pi, N) r = 0.5 + np.cos(t) x, y = r * np.cos(t), r * np.sin(t) fig, ax = plt.subplots() ax.plot(x, y) plt.xlabel(&quot;X value&quot;) plt.ylabel(&quot;Y value&quot;) plt.savefig(&#39;1.png&#39;)      Appendix: Alpine vs Ubuntu Pip Install   Why is the Ubuntu process fast and simple and the Alpine process slow? The reason is glibc. The pip wheels for matplotlib are compiled c/c++ programs that dynamically link to glibc and Alpine does not have glibc.   Alpine tries to stay small and so uses musl-libc instead. Unfortunately, this means compiling from source on Alpine, which can be a lengthy process.   ThisGuyCantEven on Stack Overflow has more details:    Pip looks first for a wheel with the correct binaries, if it can’t find one, it tries to compile the binaries from the c/c++ source and links them against musl. In many cases, this won’t even work unless you have the python headers from python3-dev or build tools like make.   Now the silver lining, as others have mentioned, there are apk packages with the proper binaries provided by the community, using these will save you the (sometimes lengthy) process of building the binaries.">
+  <meta name="twitter:description" content="matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in m...">
   <meta name="twitter:url" content="https://earthly.dev/blog/python-matplotlib-docker/">
 
   
@@ -157,19 +157,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -348,7 +335,7 @@
   
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
+      <div class="author__name heading" itemprop="name">
         Adam Gordon Bell
     
     
@@ -366,7 +353,7 @@
         
       
     
-    </h4>
+      </div>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -499,7 +486,7 @@
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -517,16 +504,21 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+      
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -541,7 +533,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -549,7 +541,20 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -569,16 +574,21 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/golang-makefile/header-600-c2a6f06af.webp 600w, /blog/generated/assets/images/golang-makefile/header-800-c2a6f06af.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/golang-makefile/header-600-a3886f2c1.jpg 600w, /blog/generated/assets/images/golang-makefile/header-800-a3886f2c1.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/golang-makefile/header-800-a3886f2c1.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/vscode-make/header-600-cc5a5db17.webp 600w, /blog/generated/assets/images/vscode-make/header-800-cc5a5db17.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/vscode-make/header-600-91e861b7e.jpg 600w, /blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/golang-makefile/" rel="permalink">Creating a Golang Makefile
+      
+        <a href="/blog/vscode-make/" rel="permalink">Building in Visual Studio Code with a Makefile
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -593,7 +603,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          6 minute read
+          5 minute read
         
       </span>
     
@@ -601,8 +611,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-
-Building and testing any large codebase is time-consuming, error-prone, and repetitive. Golang supports multi-platform builds, which is excellent, but it n...</p>
+Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facil...</p>
   </article>
 </div>
 

@@ -10,7 +10,7 @@
 
 
 <title>v0.3.0 Released - Earthly Blog</title>
-<meta name="description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+<meta name="description" content="Changes:New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.New Support for Doc...">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
 
-  <meta property="og:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+  <meta property="og:description" content="Changes:New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.New Support for Doc...">
 
 
 
@@ -31,7 +31,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="v0.3.0 Released">
-  <meta name="twitter:description" content="Changes:    New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.   New Support for Dockerfiles via FROM DOCKERFILE command (Beta).Docs. Example.   New Significant speed improvement on Mac (builds are now almost 3x faster).   New Built-in argument EARTHLY_TARGET_TAG_DOCKER. It is similar to EARTHLY_TARGET_TAG, except that it will produce a valid Docker tag. See Documentation.   Improved error display in case of build failure   Reduced repetitive progress output   Fixed an issue where leftover socket files would cause the build to fail ​    Upgrading: ​ The location of the Earthly cache has moved to a Docker volume. You may remove your previous cache to free up space via    Upgrading from 0.1.x: docker rm -f earthly-buildkitd sudo rm -rf /tmp/earthly   Upgrading from 0.2.x: docker rm -f earthly-buildkitd sudo rm -rf /var/cache/earthly    ​ In addition, the earth option -i has been repurposed. If you were using it to produce images, you will need to change those to earth –image instead.   Release Pages">
+  <meta name="twitter:description" content="Changes:New Interactive mode debugger via -i option (Experimental). Drops you into a shell in the container, if the build fails.New Support for Doc...">
   <meta name="twitter:url" content="https://earthly.dev/blog/v0-3-0-released/">
 
   
@@ -152,19 +152,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -358,7 +345,7 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -376,16 +363,21 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+      
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -400,7 +392,7 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -408,7 +400,20 @@ The location of the Earthly cache has moved to a Docker volume. You may remove y
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -428,16 +433,21 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/vscode-make/header-600-cc5a5db17.webp 600w, /blog/generated/assets/images/vscode-make/header-800-cc5a5db17.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/vscode-make/header-600-91e861b7e.jpg 600w, /blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+      
+        <a href="/blog/vscode-make/" rel="permalink">Building in Visual Studio Code with a Makefile
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -452,7 +462,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          5 minute read
         
       </span>
     
@@ -460,7 +470,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facil...</p>
   </article>
 </div>
 

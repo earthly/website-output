@@ -10,7 +10,7 @@
 
 
 <title>The world deserves better builds - Earthly Blog</title>
-<meta name="description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.   Today, we are pleased to announce that a number of well-respected industry veterans also share our vision and have joined Earthly’s seed round of funding to fuel our growth.  We have partnered with 468 Capital, the fund of Florian Leibert (Mesosphere), as well as a number of creators of large developer ecosystems, such as Spencer Kimball (Cockroach Labs), Olivier Pomel (DataDog), Mitch Wainer (DigitalOcean), Matt Klein (Envoy proxy), Mirko Novakovic (Instana, NewForge), David Cramer (Sentry.io), Cristian Strat (head of trading platform Coinbase) and David Aronchick (Kubernetes, GKE). In addition, a number of institutional investors with deep experience in developer platforms have joined the round, including Salil Deshpande of Bain Capital-backed fund Uncorrelated Ventures, Jeremy Levine of Bessemer Venture Partners and Ed Roman of Hack VC.    The General Sentiment Around Builds   Since our initial product launch, we’ve talked to several engineers, build gurus, and industry experts about traditional build tooling, and we discovered that nobody likes their build process. Builds are always a source of frustration one way or another. They’re slow, brittle, too difficult to understand, inconsistent, and difficult to iterate on.   In contrast, we found out that the number one reason people love Earthly so much is its ability to reproduce failures. Reproducibility is key, because it allows people to iterate on builds quickly on their laptops without having to worry that they will break when they push to CI.   Earthfiles represent a reproducibility guarantee, ensuring that your build will run the same way on all platforms - CI, your colleague’s laptop, Linux, Mac, Windows, etc. - regardless of any local specific tool chain.   People who have sought out reproducibility before Earthly have developed their own docker-based build scripts that essentially run most of the build within makeshift containers. The common problem with this approach is that the build requires constant fiddling to get right, still breaks occasionally on a colleague’s computer, and is poorly understood across wider teams.   Did you know that sed on a Mac is different from the sed on Linux distributions? So is find. And so is make. And a number of other tools we take for granted. Even on Linux alone, can you be sure that your colleagues are running the same version of Python or of Java? Is JDK even installed? If all of us were build gurus, experts in the likes of bash, Makefile, and cross-system compatibility, maybe this wouldn’t be such a big issue. But we’re not.   These incompatibilities lead to significant inefficiencies in the software development lifecycle. Too often, teams don’t even run integration tests, because they have no idea how to build the projects belonging to other teams. Beyond the typical build scripts, there are often too many unwritten assumptions, so they just give up and leave it to be caught down the pipeline, in CI, UAT… or perhaps in production.   With Earthly, we believe we can make this process an order of magnitude better.   How Does It Work?   Docker made containers friendlier to use and widely accessible, bringing container isolation into mainstream usage. In a similar spirit, Earthly follows in Docker’s footsteps, bringing together a number of important innovations into an easy-to-use package. We bring together BuildKit and OCI images and inspiration from Dockerfiles and Makefiles to make reproducible builds easier to get right and harder to get wrong.   Earthly is somewhat like a Makefile, where each target is fully isolated from one another - and, more importantly, isolated from the host environment. As they’re isolated, there is no way to depend on anything you have installed locally. To bring in OS-level dependencies, you install them as part of the build, the same way you would install them in a Dockerfile. In fact, the entire Docker Hub ecosystem can be leveraged in the build process.   In a way, Earthly completes Dockerfiles. While Dockerfiles allow you to define the make-up of Docker images, Earthfiles go beyond and also allow you to run unit tests, integration tests, or to output arbitrary files (eg. binaries, artifacts, jars), not just images - all of which runs within a containerized environment, thus maintaining consistency of execution.      Earthly replaces the scripting glue layer     There are lots of other goodies that Earthly does beyond this, such as automatically running everything in parallel, bringing a modern import system and having native secrets and SSH agent support.   What’s Next?   Having reproducible builds is the first step in our journey. We plan to build shared caching and highly parallel cloud-based builds next. We have a deep belief that builds can create bridges between engineering teams - not roadblocks. This has become our mission, and we will not stop until we’ve achieved it! Since our launch, we’ve worked with our users to address their needs and make the experience as pleasant and friendly as possible. We love feedback - check out Earthly on GitHub, drop by our Gitter channel or open a GitHub issue - tell us what you’re building and how your experience can be improved. We’re excited to have you join us on our journey!    “Reproducible and parallelizable build and continuous integration, as well as explicit dependency management, are critical to scaling any organization. I’m extremely excited about Earthly bringing this functionality to existing container based build systems without requiring an extremely expensive retooling effort on top of something like Bazel. Earthly is a pragmatic and incremental solution to a thorny problem that all organizations face.”   – Matt Klein, creator of Envoy Proxy">
+<meta name="description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a de...">
 
 
   <meta name="author" content="Vlad A. Ionescu">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/the-world-deserves-better-builds/">
 
 
-  <meta property="og:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.   Today, we are pleased to announce that a number of well-respected industry veterans also share our vision and have joined Earthly’s seed round of funding to fuel our growth.  We have partnered with 468 Capital, the fund of Florian Leibert (Mesosphere), as well as a number of creators of large developer ecosystems, such as Spencer Kimball (Cockroach Labs), Olivier Pomel (DataDog), Mitch Wainer (DigitalOcean), Matt Klein (Envoy proxy), Mirko Novakovic (Instana, NewForge), David Cramer (Sentry.io), Cristian Strat (head of trading platform Coinbase) and David Aronchick (Kubernetes, GKE). In addition, a number of institutional investors with deep experience in developer platforms have joined the round, including Salil Deshpande of Bain Capital-backed fund Uncorrelated Ventures, Jeremy Levine of Bessemer Venture Partners and Ed Roman of Hack VC.    The General Sentiment Around Builds   Since our initial product launch, we’ve talked to several engineers, build gurus, and industry experts about traditional build tooling, and we discovered that nobody likes their build process. Builds are always a source of frustration one way or another. They’re slow, brittle, too difficult to understand, inconsistent, and difficult to iterate on.   In contrast, we found out that the number one reason people love Earthly so much is its ability to reproduce failures. Reproducibility is key, because it allows people to iterate on builds quickly on their laptops without having to worry that they will break when they push to CI.   Earthfiles represent a reproducibility guarantee, ensuring that your build will run the same way on all platforms - CI, your colleague’s laptop, Linux, Mac, Windows, etc. - regardless of any local specific tool chain.   People who have sought out reproducibility before Earthly have developed their own docker-based build scripts that essentially run most of the build within makeshift containers. The common problem with this approach is that the build requires constant fiddling to get right, still breaks occasionally on a colleague’s computer, and is poorly understood across wider teams.   Did you know that sed on a Mac is different from the sed on Linux distributions? So is find. And so is make. And a number of other tools we take for granted. Even on Linux alone, can you be sure that your colleagues are running the same version of Python or of Java? Is JDK even installed? If all of us were build gurus, experts in the likes of bash, Makefile, and cross-system compatibility, maybe this wouldn’t be such a big issue. But we’re not.   These incompatibilities lead to significant inefficiencies in the software development lifecycle. Too often, teams don’t even run integration tests, because they have no idea how to build the projects belonging to other teams. Beyond the typical build scripts, there are often too many unwritten assumptions, so they just give up and leave it to be caught down the pipeline, in CI, UAT… or perhaps in production.   With Earthly, we believe we can make this process an order of magnitude better.   How Does It Work?   Docker made containers friendlier to use and widely accessible, bringing container isolation into mainstream usage. In a similar spirit, Earthly follows in Docker’s footsteps, bringing together a number of important innovations into an easy-to-use package. We bring together BuildKit and OCI images and inspiration from Dockerfiles and Makefiles to make reproducible builds easier to get right and harder to get wrong.   Earthly is somewhat like a Makefile, where each target is fully isolated from one another - and, more importantly, isolated from the host environment. As they’re isolated, there is no way to depend on anything you have installed locally. To bring in OS-level dependencies, you install them as part of the build, the same way you would install them in a Dockerfile. In fact, the entire Docker Hub ecosystem can be leveraged in the build process.   In a way, Earthly completes Dockerfiles. While Dockerfiles allow you to define the make-up of Docker images, Earthfiles go beyond and also allow you to run unit tests, integration tests, or to output arbitrary files (eg. binaries, artifacts, jars), not just images - all of which runs within a containerized environment, thus maintaining consistency of execution.      Earthly replaces the scripting glue layer     There are lots of other goodies that Earthly does beyond this, such as automatically running everything in parallel, bringing a modern import system and having native secrets and SSH agent support.   What’s Next?   Having reproducible builds is the first step in our journey. We plan to build shared caching and highly parallel cloud-based builds next. We have a deep belief that builds can create bridges between engineering teams - not roadblocks. This has become our mission, and we will not stop until we’ve achieved it! Since our launch, we’ve worked with our users to address their needs and make the experience as pleasant and friendly as possible. We love feedback - check out Earthly on GitHub, drop by our Gitter channel or open a GitHub issue - tell us what you’re building and how your experience can be improved. We’re excited to have you join us on our journey!    “Reproducible and parallelizable build and continuous integration, as well as explicit dependency management, are critical to scaling any organization. I’m extremely excited about Earthly bringing this functionality to existing container based build systems without requiring an extremely expensive retooling effort on top of something like Bazel. Earthly is a pragmatic and incremental solution to a thorny problem that all organizations face.”   – Matt Klein, creator of Envoy Proxy">
+  <meta property="og:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a de...">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="The world deserves better builds">
-  <meta name="twitter:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a deep belief that builds should be self-contained, reproducible, portable, and parallel. In addition, we think build tools should be friendly, accessible, and down to earth - hence our name.   Today, we are pleased to announce that a number of well-respected industry veterans also share our vision and have joined Earthly’s seed round of funding to fuel our growth.  We have partnered with 468 Capital, the fund of Florian Leibert (Mesosphere), as well as a number of creators of large developer ecosystems, such as Spencer Kimball (Cockroach Labs), Olivier Pomel (DataDog), Mitch Wainer (DigitalOcean), Matt Klein (Envoy proxy), Mirko Novakovic (Instana, NewForge), David Cramer (Sentry.io), Cristian Strat (head of trading platform Coinbase) and David Aronchick (Kubernetes, GKE). In addition, a number of institutional investors with deep experience in developer platforms have joined the round, including Salil Deshpande of Bain Capital-backed fund Uncorrelated Ventures, Jeremy Levine of Bessemer Venture Partners and Ed Roman of Hack VC.    The General Sentiment Around Builds   Since our initial product launch, we’ve talked to several engineers, build gurus, and industry experts about traditional build tooling, and we discovered that nobody likes their build process. Builds are always a source of frustration one way or another. They’re slow, brittle, too difficult to understand, inconsistent, and difficult to iterate on.   In contrast, we found out that the number one reason people love Earthly so much is its ability to reproduce failures. Reproducibility is key, because it allows people to iterate on builds quickly on their laptops without having to worry that they will break when they push to CI.   Earthfiles represent a reproducibility guarantee, ensuring that your build will run the same way on all platforms - CI, your colleague’s laptop, Linux, Mac, Windows, etc. - regardless of any local specific tool chain.   People who have sought out reproducibility before Earthly have developed their own docker-based build scripts that essentially run most of the build within makeshift containers. The common problem with this approach is that the build requires constant fiddling to get right, still breaks occasionally on a colleague’s computer, and is poorly understood across wider teams.   Did you know that sed on a Mac is different from the sed on Linux distributions? So is find. And so is make. And a number of other tools we take for granted. Even on Linux alone, can you be sure that your colleagues are running the same version of Python or of Java? Is JDK even installed? If all of us were build gurus, experts in the likes of bash, Makefile, and cross-system compatibility, maybe this wouldn’t be such a big issue. But we’re not.   These incompatibilities lead to significant inefficiencies in the software development lifecycle. Too often, teams don’t even run integration tests, because they have no idea how to build the projects belonging to other teams. Beyond the typical build scripts, there are often too many unwritten assumptions, so they just give up and leave it to be caught down the pipeline, in CI, UAT… or perhaps in production.   With Earthly, we believe we can make this process an order of magnitude better.   How Does It Work?   Docker made containers friendlier to use and widely accessible, bringing container isolation into mainstream usage. In a similar spirit, Earthly follows in Docker’s footsteps, bringing together a number of important innovations into an easy-to-use package. We bring together BuildKit and OCI images and inspiration from Dockerfiles and Makefiles to make reproducible builds easier to get right and harder to get wrong.   Earthly is somewhat like a Makefile, where each target is fully isolated from one another - and, more importantly, isolated from the host environment. As they’re isolated, there is no way to depend on anything you have installed locally. To bring in OS-level dependencies, you install them as part of the build, the same way you would install them in a Dockerfile. In fact, the entire Docker Hub ecosystem can be leveraged in the build process.   In a way, Earthly completes Dockerfiles. While Dockerfiles allow you to define the make-up of Docker images, Earthfiles go beyond and also allow you to run unit tests, integration tests, or to output arbitrary files (eg. binaries, artifacts, jars), not just images - all of which runs within a containerized environment, thus maintaining consistency of execution.      Earthly replaces the scripting glue layer     There are lots of other goodies that Earthly does beyond this, such as automatically running everything in parallel, bringing a modern import system and having native secrets and SSH agent support.   What’s Next?   Having reproducible builds is the first step in our journey. We plan to build shared caching and highly parallel cloud-based builds next. We have a deep belief that builds can create bridges between engineering teams - not roadblocks. This has become our mission, and we will not stop until we’ve achieved it! Since our launch, we’ve worked with our users to address their needs and make the experience as pleasant and friendly as possible. We love feedback - check out Earthly on GitHub, drop by our Gitter channel or open a GitHub issue - tell us what you’re building and how your experience can be improved. We’re excited to have you join us on our journey!    “Reproducible and parallelizable build and continuous integration, as well as explicit dependency management, are critical to scaling any organization. I’m extremely excited about Earthly bringing this functionality to existing container based build systems without requiring an extremely expensive retooling effort on top of something like Bazel. Earthly is a pragmatic and incremental solution to a thorny problem that all organizations face.”   – Matt Klein, creator of Envoy Proxy">
+  <meta name="twitter:description" content="Hello, developers of planet Earth! Earlier this year, we at Earthly embarked on a journey to bring better builds to the world. We started with a de...">
   <meta name="twitter:url" content="https://earthly.dev/blog/the-world-deserves-better-builds/">
 
   
@@ -157,19 +157,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -339,11 +326,11 @@ Since our launch, we’ve worked with our users to address their needs and make 
   
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
+      <div class="author__name heading" itemprop="name">
         Vlad A. Ionescu
     
     
-    </h4>
+      </div>
     
       <div class="author__bio" itemprop="description">
         <p>Founder of Earthly. Founder of ShiftLeft. Ex Google. Ex VMware. Co-author RabbitMQ Erlang Client.</p>
@@ -476,7 +463,7 @@ Since our launch, we’ve worked with our users to address their needs and make 
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -494,16 +481,21 @@ Since our launch, we’ve worked with our users to address their needs and make 
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+      
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -518,7 +510,7 @@ Since our launch, we’ve worked with our users to address their needs and make 
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -526,7 +518,20 @@ Since our launch, we’ve worked with our users to address their needs and make 
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -546,16 +551,21 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/vscode-make/header-600-cc5a5db17.webp 600w, /blog/generated/assets/images/vscode-make/header-800-cc5a5db17.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/vscode-make/header-600-91e861b7e.jpg 600w, /blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg"></picture>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
       
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+      
+        <a href="/blog/vscode-make/" rel="permalink">Building in Visual Studio Code with a Makefile
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -570,7 +580,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          5 minute read
         
       </span>
     
@@ -578,7 +588,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facil...</p>
   </article>
 </div>
 
