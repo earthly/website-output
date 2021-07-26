@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Using Continuous Testing in DevOps Workflows - Earthly Blog</title>
+<meta name="description" content="Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you reduce costs and save time and effort by reducing manual testing.   The caveat is that automated tests have no value if they are not executed regularly alongside your continuous integration (CI) pipeline. CI refers to frequently merging developer code changes and building and creating an artifact that can later be tested and deployed.   Extending the CI process by adding automated tests is referred to as continuous testing (CT). CT enables you to apply the fail-fast principle. You test each code change, build, and deployment against several layers of automated tests. Thus, it results in rapid feedback on the quality of your product and the state of the development process.   GitHub Actions is a great first step for implementing CT. It’s flexible and powerful enough to bring every step of the CI/CT process into a single place. Your application, tests, and workflow configuration lives with your code in your repository. Furthermore, the learning curve for GitHub Actions is relatively smooth thanks to the Marketplace that provides thousands of Actions ready to use out of the box.   What Does It Take to Implement Continuous Testing?   A good CI/CT process always contains at least the following steps:    Build   Deployment   Integration tests   End-to-end tests    In this tutorial, you will implement these four steps using GitHub Actions, as well as add performance tests.   The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a dev environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.   In this article, I assume you’ll deploy to a dev environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:     Final GitHub Action Workflow    Implementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.   To remediate those challenges, you should rely on the five DevOps principles described by Jez Humble in The DevOps Handbook:    Culture   Automate   Lean   Measure   Sharing    Implementing continuous testing is first a change in culture. Selecting the right tools for CI/CT can greatly improve collaboration.   Keep your process lean. Testing should not slow down your process. Instead, select the right amount of tests at the right time in the process. Monitor your job execution time, prefer small tasks that can fail fast, and provide rapid feedback instead of long-running ones.   Automate as much and as early as possible because it helps validate that the integration is successful. Delaying test implementation is counterproductive.   Measure your improvement and build a baseline for the quality of your software. For example, collect your code coverage, number of successful vs. failed tests, and performance metric.   Don’t forget to encourage knowledge sharing. Test automation is not a single person’s job: everyone on the team should know how the test suites work and learn how to fix simple errors when the workflows fail.   Implementing CI/CT With GitHub Actions   Now that you know the basics of CT, it’s time to see how to implement the first step by creating a GitHub Actions workflow that builds and runs your unit tests.   Build a GitHub Actions Workflow with Unit Tests   The first thing you need to get started is an initial workflow. If you already committed your application to a GitHub repository, click Actions. GitHub will automatically select and recommend a simple workflow that best suits your language.   Select one of them by clicking Set up this workflow, review the workflow steps, and commit.   Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.     Get Started with GitHub Action Workflow    A GitHub Actions workflow contains three elements:    Triggers (on) specify when the workflow must be executed. The most common use case is to run a workflow on push and pull-request on the main branch.   Jobs determine sets of actions composing your pipeline and are executed in parallel unless dependencies between jobs are specified.   Steps are the individual components of a job and can be of two types: Scripts or Actions. Steps defining a run attribute execute a command on the host defined by runs-on at the beginning of a job. Steps containing uses execute an Action, a reusable automation script.    It’s straightforward to extend a workflow once you understand those three concepts. Here’s a sample workflow for a Python application:   name: Python application   on:   pull_request:     branches: [ main ]   jobs:   build:       runs-on: ubuntu-latest       steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       run: |         python -m pip install --upgrade pip         pip install flake8 pytest         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi     - name: Lint with flake8       run: |         # stop the build if there are Python syntax errors or undefined names         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics     - name: Test with pytest       run: |         pytest   This what a basic workflow looks like:     Most basic GitHub Actions workflow    Add Code Coverage Reports   On GitHub, most users rely on third parties to get coverage reports (such as SonarQube or Codecov). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.   But let’s not rely on a third party yet. Instead, generate a badge to display in your Readme.md. You’re putting in place the first step toward tracking code quality.    Edit your existing Test with xxx step to generate a coverage report.   Save the coverage report as an artifact. Storing workflow data as artifacts.   Create a new job called gating and download the coverage report. This job must be executed after build; therefore, you must declare needs: build in your configuration.   Parse the coverage report to extract the coverage value. I provided a small script that does just that.   Generate the badge and add it to your README. Follow the setup step in the documentation of schneegans/dynamic-badges-action@v1.1.0.    # This workflow will install Python dependencies, run tests, and lint with a single version of Python # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions   name: Python application   on:   push:     branches: [ main ]   pull_request:     branches: [ main ]   jobs:   build:     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       [...]     - name: Lint with flake8       [...]     - name: Test with pytest       # Update the command to generate coverage report       run: pytest --cov-report xml --cov=phonebook tests/     - name: Upload pytest test coverage       # Upload the coverage result as an artifact       uses: actions/upload-artifact@v2       with:         name: coverage-results         path: coverage.xml       # Use always() to always run this step to publish test results when there are test failures       if: ${{ always() }}     gating:     runs-on: ubuntu-latest     needs: build       steps:     - name: Download coverage report       uses: actions/download-artifact@v2       with:         name: coverage-results     - name: Get the Coverage       shell: bash       run: |         regex=&#39;&lt;coverage.+line-rate=&quot;([0-9).[0-9]+)&quot;.+&gt;&#39;         line=$(grep -oP $regex coverage.xml)         [[ $line =~ $regex ]]         coverage=$( bc &lt;&lt;&lt; ${BASH_REMATCH[1]}*100 )         if (( $(echo &quot;$coverage &gt; 80&quot; |bc -l) )); then           COLOR=green         else           COLOR=red         fi         echo &quot;COVERAGE=${coverage%.*}%&quot; &gt;&gt; $GITHUB_ENV         echo &quot;COLOR=$COLOR&quot; &gt;&gt; $GITHUB_ENV     - name: Create the Badge       # save the badge configuration in a Gist       uses: schneegans/dynamic-badges-action@v1.1.0       with:         auth: ${{ secrets.GIST_SECRET }}         gistID: ab3bde9504060bd1feb361555e79f51d         filename: coverage.json         label: coverage         message: ${{ env.COVERAGE }}         color: ${{ env.COLOR }}   This is what your updated workflow looks like:     GitHub Action workflow including code coverage badge    And you got a badge to decorate your readme.md.     GitHub code coverage badge    Extending CT with Other Types of Testing   You have a basic CI workflow that includes unit tests and coverage reports. Now to obtain an excellent CT workflow, you need to expand with more layers of tests. You will add three new jobs:    For API testing,   For end-to-end testing   For performance testing    Add API Testing   API testing is part of integration testing. Integration testing aims to determine whether individual units meet your requirement when combined together. When performing integration testing, you target the boundary (or interfaces) of your system. In this specific case, you are aiming your test at a RESTful API. Having API tests ensures that sets of functionality meet your requirement and validates that your web server and connection to a database works properly.   While you could write an API test in the same language as your application, you should also consider a tool like Postman/Newman. Postman lets you define a sequence of HTTPS calls and validate each of them using their JavaScript test framework. This makes it easy to share integration test suites. Other developers can use them to facilitate their development process, for instance, mobile developers working with a different stack than backend developers. Newman is the command-line interface that lets you run the Postman tests.   Now that you have selected an API testing framework go to GitHub Actions Marketplace and look for an Action that meets your demands. For instance, Newman Action.   Now edit your workflow configuration:    Add a new job that must be executed after the deployment using needs: deploy.   Define the steps of your job:   Check out your repository using the Action actions/checkout@master.   Run Newman using the Action you just found in the Marketplace.     Move the gating job at the end of the workflow by changing the needs property.    name: Python application   on:   push:     branches: [ main ]   jobs:   build:     [...]   deploy:     [...] # our deployment steps   tests_api:     needs: deploy     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@master     - uses: matt-ball/newman-action@master       with:         collection: tests_integration/postman_collection.json         environment: tests_integration/postman_environment.json   gating:     needs: tests_api     [...] # we move the gating at the end of the workflow   Now your workflow should contain four sequential jobs:     GitHub Actions workflow including API tests    Add End-to-End Testing   End-to-end testing (e2e) aims to test complete use cases from the user perspective. Think of e2e as replacing a human with a robot.   When it comes to selecting an e2e framework, I recommend prioritizing one that supports the Gherkin language. Gherkin promotes writing tests in natural language (aka, plain English). With this approach, more people can understand test cases, including product owners and business analysts. As a result, you foster better collaboration within the team.   Verbalizing tests also ensure that you are writing them from the user’s perspective and not making the mistake of testing the functions you just coded.   I selected Robot Framework for this example. Robot Framework uses Selenium to control a web browser and thus replace a human by simulating clicks and text entries.   Once again, you can go to GitHub Actions Marketplace and look for an Action meeting your needs. For instance, Robot Framework Docker Action.   Add a new job called test_e2e to the workflow configuration. This job must be executed after deploy using needs: deploy. You will notice that since tests_api and test_e2e both need deploy, they will be executed in parallel after the deployment.   Have a look at the result:     GitHub Actions workflow including end-to-end tests    Your configuration should look along those lines to achieve this workflow:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e:     runs-on: ubuntu-latest     needs: deploy     name: Run Robot Framework Tests     steps:       - name: Checkout         uses: actions/checkout@v2       - name: Create folder for reports         run: mkdir reports       - name: Robot Framework Test         # NOTE: joonvena/robotframework-docker-action@v0.1 had permissions issue         # This action is based on a Docker image. I had to fall back to that image         # and use --user flag         run: |           docker run \             -v ${PWD}/reports:/opt/robotframework/reports:Z \             -v $/tests_e2e:/opt/robotframework/tests:Z \             --user $(id -u):$(id -g) \             -e BROWSER=chrome \             ppodgorsek/robot-framework:latest       - name: Upload test results         uses: actions/upload-artifact@v1         if: always()         with:           name: robotframework report           path: reports   gating:     needs: [tests_api, test_e2e]     [...] # move the gating at the end of the workflow   Add Performance Testing   Performance testing is a broad topic because there are multiple types of performance testing. Most online sources agree on six types:    Load testing   Stress testing   Soak testing   Spike testing   Scalability testing   Capacity testing.    However, I don’t recommend you try to include each of them. Instead, consider one of two ways to tackle performance testing:    Identify bottlenecks. Design an experiment that identifies bottlenecks and measures the limit of your system.   Benchmarking. Identify critical elements of your application and measure its speed. The goal is to improve one performance metric over time; conversely, you want to be alerted in case of metric degradation and address the problem as soon as possible.    As before, create a new job (called test_performance). This time I did not find an Action on the Marketplace that fit my requirement. But I recommend this Medium article to help you select your framework and implement the steps of the job yourself.   Here is the workflow I came up with for my Python application:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e: [...]   test_performances:     name: Check performance regression.     runs-on: ubuntu-latest     needs: deploy     steps:       - uses: actions/checkout@v2       - name: Set up Python 3.9         uses: actions/setup-python@v2         with:           python-version: 3.9       - name: Install dependencies         run: |           python -m pip install --upgrade pip           pip install flake8 pytest           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi       - name: Run benchmark         run: pytest tests_performances --benchmark-json output.json       - name: Store benchmark result         uses: rhysd/github-action-benchmark@v1         # NOTE: this action only works for public repository         # A pull-request is open with a fix         with:           tool: &#39;pytest&#39;           output-file-path: output.json           # Personal access token to deploy GitHub Pages branch           github-token: $           # Push and deploy GitHub pages branch automatically           auto-push: true           # Show alert with commit comment on detecting possible performance regression           alert-threshold: &#39;200%&#39;           comment-on-alert: true           fail-on-alert: true           alert-comment-cc-users: &#39;@xNok&#39;   Your final workflow must look like this:     GitHub Actions workflow including performances tests    Conclusion   Continuous testing is the next step after you successfully implement continuous integration. It further improves the speed of your application development process and adds a quality control layer to it.   Remember, there are three essential stages in a continuous testing workflow, each testing your system from a different perspective:    Unit tests validate the internal logic.   Integration tests validate the response of the system from its boundary.   End-to-end tests validate the system from the user’s perspective.    Adding performance tests can help you track important metrics and ensure that changes do not negatively impact your users.   Finally, to succeed in implementing CT, remember that testing should become part of your team’s DNA and share the same five pillars as DevOps: culture, automation, lean, measurement, and sharing.   As your CT process grows and becomes more ingrained in how you work, take a look at Earthly’s ability to produce a repeatable build process. It can help make testing in GitHub Actions a more straightforward process.">
+
+
+  <meta name="author" content="Alexandre Couëdelo">
+  
+  <meta property="article:author" content="Alexandre Couëdelo">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Using Continuous Testing in DevOps Workflows">
+<meta property="og:url" content="https://earthly.dev/blog/continuous-testing-in-devops/">
+
+
+  <meta property="og:description" content="Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you reduce costs and save time and effort by reducing manual testing.   The caveat is that automated tests have no value if they are not executed regularly alongside your continuous integration (CI) pipeline. CI refers to frequently merging developer code changes and building and creating an artifact that can later be tested and deployed.   Extending the CI process by adding automated tests is referred to as continuous testing (CT). CT enables you to apply the fail-fast principle. You test each code change, build, and deployment against several layers of automated tests. Thus, it results in rapid feedback on the quality of your product and the state of the development process.   GitHub Actions is a great first step for implementing CT. It’s flexible and powerful enough to bring every step of the CI/CT process into a single place. Your application, tests, and workflow configuration lives with your code in your repository. Furthermore, the learning curve for GitHub Actions is relatively smooth thanks to the Marketplace that provides thousands of Actions ready to use out of the box.   What Does It Take to Implement Continuous Testing?   A good CI/CT process always contains at least the following steps:    Build   Deployment   Integration tests   End-to-end tests    In this tutorial, you will implement these four steps using GitHub Actions, as well as add performance tests.   The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a dev environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.   In this article, I assume you’ll deploy to a dev environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:     Final GitHub Action Workflow    Implementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.   To remediate those challenges, you should rely on the five DevOps principles described by Jez Humble in The DevOps Handbook:    Culture   Automate   Lean   Measure   Sharing    Implementing continuous testing is first a change in culture. Selecting the right tools for CI/CT can greatly improve collaboration.   Keep your process lean. Testing should not slow down your process. Instead, select the right amount of tests at the right time in the process. Monitor your job execution time, prefer small tasks that can fail fast, and provide rapid feedback instead of long-running ones.   Automate as much and as early as possible because it helps validate that the integration is successful. Delaying test implementation is counterproductive.   Measure your improvement and build a baseline for the quality of your software. For example, collect your code coverage, number of successful vs. failed tests, and performance metric.   Don’t forget to encourage knowledge sharing. Test automation is not a single person’s job: everyone on the team should know how the test suites work and learn how to fix simple errors when the workflows fail.   Implementing CI/CT With GitHub Actions   Now that you know the basics of CT, it’s time to see how to implement the first step by creating a GitHub Actions workflow that builds and runs your unit tests.   Build a GitHub Actions Workflow with Unit Tests   The first thing you need to get started is an initial workflow. If you already committed your application to a GitHub repository, click Actions. GitHub will automatically select and recommend a simple workflow that best suits your language.   Select one of them by clicking Set up this workflow, review the workflow steps, and commit.   Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.     Get Started with GitHub Action Workflow    A GitHub Actions workflow contains three elements:    Triggers (on) specify when the workflow must be executed. The most common use case is to run a workflow on push and pull-request on the main branch.   Jobs determine sets of actions composing your pipeline and are executed in parallel unless dependencies between jobs are specified.   Steps are the individual components of a job and can be of two types: Scripts or Actions. Steps defining a run attribute execute a command on the host defined by runs-on at the beginning of a job. Steps containing uses execute an Action, a reusable automation script.    It’s straightforward to extend a workflow once you understand those three concepts. Here’s a sample workflow for a Python application:   name: Python application   on:   pull_request:     branches: [ main ]   jobs:   build:       runs-on: ubuntu-latest       steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       run: |         python -m pip install --upgrade pip         pip install flake8 pytest         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi     - name: Lint with flake8       run: |         # stop the build if there are Python syntax errors or undefined names         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics     - name: Test with pytest       run: |         pytest   This what a basic workflow looks like:     Most basic GitHub Actions workflow    Add Code Coverage Reports   On GitHub, most users rely on third parties to get coverage reports (such as SonarQube or Codecov). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.   But let’s not rely on a third party yet. Instead, generate a badge to display in your Readme.md. You’re putting in place the first step toward tracking code quality.    Edit your existing Test with xxx step to generate a coverage report.   Save the coverage report as an artifact. Storing workflow data as artifacts.   Create a new job called gating and download the coverage report. This job must be executed after build; therefore, you must declare needs: build in your configuration.   Parse the coverage report to extract the coverage value. I provided a small script that does just that.   Generate the badge and add it to your README. Follow the setup step in the documentation of schneegans/dynamic-badges-action@v1.1.0.    # This workflow will install Python dependencies, run tests, and lint with a single version of Python # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions   name: Python application   on:   push:     branches: [ main ]   pull_request:     branches: [ main ]   jobs:   build:     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       [...]     - name: Lint with flake8       [...]     - name: Test with pytest       # Update the command to generate coverage report       run: pytest --cov-report xml --cov=phonebook tests/     - name: Upload pytest test coverage       # Upload the coverage result as an artifact       uses: actions/upload-artifact@v2       with:         name: coverage-results         path: coverage.xml       # Use always() to always run this step to publish test results when there are test failures       if: ${{ always() }}     gating:     runs-on: ubuntu-latest     needs: build       steps:     - name: Download coverage report       uses: actions/download-artifact@v2       with:         name: coverage-results     - name: Get the Coverage       shell: bash       run: |         regex=&#39;&lt;coverage.+line-rate=&quot;([0-9).[0-9]+)&quot;.+&gt;&#39;         line=$(grep -oP $regex coverage.xml)         [[ $line =~ $regex ]]         coverage=$( bc &lt;&lt;&lt; ${BASH_REMATCH[1]}*100 )         if (( $(echo &quot;$coverage &gt; 80&quot; |bc -l) )); then           COLOR=green         else           COLOR=red         fi         echo &quot;COVERAGE=${coverage%.*}%&quot; &gt;&gt; $GITHUB_ENV         echo &quot;COLOR=$COLOR&quot; &gt;&gt; $GITHUB_ENV     - name: Create the Badge       # save the badge configuration in a Gist       uses: schneegans/dynamic-badges-action@v1.1.0       with:         auth: ${{ secrets.GIST_SECRET }}         gistID: ab3bde9504060bd1feb361555e79f51d         filename: coverage.json         label: coverage         message: ${{ env.COVERAGE }}         color: ${{ env.COLOR }}   This is what your updated workflow looks like:     GitHub Action workflow including code coverage badge    And you got a badge to decorate your readme.md.     GitHub code coverage badge    Extending CT with Other Types of Testing   You have a basic CI workflow that includes unit tests and coverage reports. Now to obtain an excellent CT workflow, you need to expand with more layers of tests. You will add three new jobs:    For API testing,   For end-to-end testing   For performance testing    Add API Testing   API testing is part of integration testing. Integration testing aims to determine whether individual units meet your requirement when combined together. When performing integration testing, you target the boundary (or interfaces) of your system. In this specific case, you are aiming your test at a RESTful API. Having API tests ensures that sets of functionality meet your requirement and validates that your web server and connection to a database works properly.   While you could write an API test in the same language as your application, you should also consider a tool like Postman/Newman. Postman lets you define a sequence of HTTPS calls and validate each of them using their JavaScript test framework. This makes it easy to share integration test suites. Other developers can use them to facilitate their development process, for instance, mobile developers working with a different stack than backend developers. Newman is the command-line interface that lets you run the Postman tests.   Now that you have selected an API testing framework go to GitHub Actions Marketplace and look for an Action that meets your demands. For instance, Newman Action.   Now edit your workflow configuration:    Add a new job that must be executed after the deployment using needs: deploy.   Define the steps of your job:   Check out your repository using the Action actions/checkout@master.   Run Newman using the Action you just found in the Marketplace.     Move the gating job at the end of the workflow by changing the needs property.    name: Python application   on:   push:     branches: [ main ]   jobs:   build:     [...]   deploy:     [...] # our deployment steps   tests_api:     needs: deploy     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@master     - uses: matt-ball/newman-action@master       with:         collection: tests_integration/postman_collection.json         environment: tests_integration/postman_environment.json   gating:     needs: tests_api     [...] # we move the gating at the end of the workflow   Now your workflow should contain four sequential jobs:     GitHub Actions workflow including API tests    Add End-to-End Testing   End-to-end testing (e2e) aims to test complete use cases from the user perspective. Think of e2e as replacing a human with a robot.   When it comes to selecting an e2e framework, I recommend prioritizing one that supports the Gherkin language. Gherkin promotes writing tests in natural language (aka, plain English). With this approach, more people can understand test cases, including product owners and business analysts. As a result, you foster better collaboration within the team.   Verbalizing tests also ensure that you are writing them from the user’s perspective and not making the mistake of testing the functions you just coded.   I selected Robot Framework for this example. Robot Framework uses Selenium to control a web browser and thus replace a human by simulating clicks and text entries.   Once again, you can go to GitHub Actions Marketplace and look for an Action meeting your needs. For instance, Robot Framework Docker Action.   Add a new job called test_e2e to the workflow configuration. This job must be executed after deploy using needs: deploy. You will notice that since tests_api and test_e2e both need deploy, they will be executed in parallel after the deployment.   Have a look at the result:     GitHub Actions workflow including end-to-end tests    Your configuration should look along those lines to achieve this workflow:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e:     runs-on: ubuntu-latest     needs: deploy     name: Run Robot Framework Tests     steps:       - name: Checkout         uses: actions/checkout@v2       - name: Create folder for reports         run: mkdir reports       - name: Robot Framework Test         # NOTE: joonvena/robotframework-docker-action@v0.1 had permissions issue         # This action is based on a Docker image. I had to fall back to that image         # and use --user flag         run: |           docker run \             -v ${PWD}/reports:/opt/robotframework/reports:Z \             -v $/tests_e2e:/opt/robotframework/tests:Z \             --user $(id -u):$(id -g) \             -e BROWSER=chrome \             ppodgorsek/robot-framework:latest       - name: Upload test results         uses: actions/upload-artifact@v1         if: always()         with:           name: robotframework report           path: reports   gating:     needs: [tests_api, test_e2e]     [...] # move the gating at the end of the workflow   Add Performance Testing   Performance testing is a broad topic because there are multiple types of performance testing. Most online sources agree on six types:    Load testing   Stress testing   Soak testing   Spike testing   Scalability testing   Capacity testing.    However, I don’t recommend you try to include each of them. Instead, consider one of two ways to tackle performance testing:    Identify bottlenecks. Design an experiment that identifies bottlenecks and measures the limit of your system.   Benchmarking. Identify critical elements of your application and measure its speed. The goal is to improve one performance metric over time; conversely, you want to be alerted in case of metric degradation and address the problem as soon as possible.    As before, create a new job (called test_performance). This time I did not find an Action on the Marketplace that fit my requirement. But I recommend this Medium article to help you select your framework and implement the steps of the job yourself.   Here is the workflow I came up with for my Python application:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e: [...]   test_performances:     name: Check performance regression.     runs-on: ubuntu-latest     needs: deploy     steps:       - uses: actions/checkout@v2       - name: Set up Python 3.9         uses: actions/setup-python@v2         with:           python-version: 3.9       - name: Install dependencies         run: |           python -m pip install --upgrade pip           pip install flake8 pytest           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi       - name: Run benchmark         run: pytest tests_performances --benchmark-json output.json       - name: Store benchmark result         uses: rhysd/github-action-benchmark@v1         # NOTE: this action only works for public repository         # A pull-request is open with a fix         with:           tool: &#39;pytest&#39;           output-file-path: output.json           # Personal access token to deploy GitHub Pages branch           github-token: $           # Push and deploy GitHub pages branch automatically           auto-push: true           # Show alert with commit comment on detecting possible performance regression           alert-threshold: &#39;200%&#39;           comment-on-alert: true           fail-on-alert: true           alert-comment-cc-users: &#39;@xNok&#39;   Your final workflow must look like this:     GitHub Actions workflow including performances tests    Conclusion   Continuous testing is the next step after you successfully implement continuous integration. It further improves the speed of your application development process and adds a quality control layer to it.   Remember, there are three essential stages in a continuous testing workflow, each testing your system from a different perspective:    Unit tests validate the internal logic.   Integration tests validate the response of the system from its boundary.   End-to-end tests validate the system from the user’s perspective.    Adding performance tests can help you track important metrics and ensure that changes do not negatively impact your users.   Finally, to succeed in implementing CT, remember that testing should become part of your team’s DNA and share the same five pillars as DevOps: culture, automation, lean, measurement, and sharing.   As your CT process grows and becomes more ingrained in how you work, take a look at Earthly’s ability to produce a repeatable build process. It can help make testing in GitHub Actions a more straightforward process.">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/continuous-testing-in-devops/header-800-8054f7927.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Using Continuous Testing in DevOps Workflows">
+  <meta name="twitter:description" content="Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you reduce costs and save time and effort by reducing manual testing.   The caveat is that automated tests have no value if they are not executed regularly alongside your continuous integration (CI) pipeline. CI refers to frequently merging developer code changes and building and creating an artifact that can later be tested and deployed.   Extending the CI process by adding automated tests is referred to as continuous testing (CT). CT enables you to apply the fail-fast principle. You test each code change, build, and deployment against several layers of automated tests. Thus, it results in rapid feedback on the quality of your product and the state of the development process.   GitHub Actions is a great first step for implementing CT. It’s flexible and powerful enough to bring every step of the CI/CT process into a single place. Your application, tests, and workflow configuration lives with your code in your repository. Furthermore, the learning curve for GitHub Actions is relatively smooth thanks to the Marketplace that provides thousands of Actions ready to use out of the box.   What Does It Take to Implement Continuous Testing?   A good CI/CT process always contains at least the following steps:    Build   Deployment   Integration tests   End-to-end tests    In this tutorial, you will implement these four steps using GitHub Actions, as well as add performance tests.   The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a dev environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.   In this article, I assume you’ll deploy to a dev environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:     Final GitHub Action Workflow    Implementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.   To remediate those challenges, you should rely on the five DevOps principles described by Jez Humble in The DevOps Handbook:    Culture   Automate   Lean   Measure   Sharing    Implementing continuous testing is first a change in culture. Selecting the right tools for CI/CT can greatly improve collaboration.   Keep your process lean. Testing should not slow down your process. Instead, select the right amount of tests at the right time in the process. Monitor your job execution time, prefer small tasks that can fail fast, and provide rapid feedback instead of long-running ones.   Automate as much and as early as possible because it helps validate that the integration is successful. Delaying test implementation is counterproductive.   Measure your improvement and build a baseline for the quality of your software. For example, collect your code coverage, number of successful vs. failed tests, and performance metric.   Don’t forget to encourage knowledge sharing. Test automation is not a single person’s job: everyone on the team should know how the test suites work and learn how to fix simple errors when the workflows fail.   Implementing CI/CT With GitHub Actions   Now that you know the basics of CT, it’s time to see how to implement the first step by creating a GitHub Actions workflow that builds and runs your unit tests.   Build a GitHub Actions Workflow with Unit Tests   The first thing you need to get started is an initial workflow. If you already committed your application to a GitHub repository, click Actions. GitHub will automatically select and recommend a simple workflow that best suits your language.   Select one of them by clicking Set up this workflow, review the workflow steps, and commit.   Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.     Get Started with GitHub Action Workflow    A GitHub Actions workflow contains three elements:    Triggers (on) specify when the workflow must be executed. The most common use case is to run a workflow on push and pull-request on the main branch.   Jobs determine sets of actions composing your pipeline and are executed in parallel unless dependencies between jobs are specified.   Steps are the individual components of a job and can be of two types: Scripts or Actions. Steps defining a run attribute execute a command on the host defined by runs-on at the beginning of a job. Steps containing uses execute an Action, a reusable automation script.    It’s straightforward to extend a workflow once you understand those three concepts. Here’s a sample workflow for a Python application:   name: Python application   on:   pull_request:     branches: [ main ]   jobs:   build:       runs-on: ubuntu-latest       steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       run: |         python -m pip install --upgrade pip         pip install flake8 pytest         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi     - name: Lint with flake8       run: |         # stop the build if there are Python syntax errors or undefined names         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics     - name: Test with pytest       run: |         pytest   This what a basic workflow looks like:     Most basic GitHub Actions workflow    Add Code Coverage Reports   On GitHub, most users rely on third parties to get coverage reports (such as SonarQube or Codecov). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.   But let’s not rely on a third party yet. Instead, generate a badge to display in your Readme.md. You’re putting in place the first step toward tracking code quality.    Edit your existing Test with xxx step to generate a coverage report.   Save the coverage report as an artifact. Storing workflow data as artifacts.   Create a new job called gating and download the coverage report. This job must be executed after build; therefore, you must declare needs: build in your configuration.   Parse the coverage report to extract the coverage value. I provided a small script that does just that.   Generate the badge and add it to your README. Follow the setup step in the documentation of schneegans/dynamic-badges-action@v1.1.0.    # This workflow will install Python dependencies, run tests, and lint with a single version of Python # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions   name: Python application   on:   push:     branches: [ main ]   pull_request:     branches: [ main ]   jobs:   build:     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@v2     - name: Set up Python 3.9       uses: actions/setup-python@v2       with:         python-version: 3.9     - name: Install dependencies       [...]     - name: Lint with flake8       [...]     - name: Test with pytest       # Update the command to generate coverage report       run: pytest --cov-report xml --cov=phonebook tests/     - name: Upload pytest test coverage       # Upload the coverage result as an artifact       uses: actions/upload-artifact@v2       with:         name: coverage-results         path: coverage.xml       # Use always() to always run this step to publish test results when there are test failures       if: ${{ always() }}     gating:     runs-on: ubuntu-latest     needs: build       steps:     - name: Download coverage report       uses: actions/download-artifact@v2       with:         name: coverage-results     - name: Get the Coverage       shell: bash       run: |         regex=&#39;&lt;coverage.+line-rate=&quot;([0-9).[0-9]+)&quot;.+&gt;&#39;         line=$(grep -oP $regex coverage.xml)         [[ $line =~ $regex ]]         coverage=$( bc &lt;&lt;&lt; ${BASH_REMATCH[1]}*100 )         if (( $(echo &quot;$coverage &gt; 80&quot; |bc -l) )); then           COLOR=green         else           COLOR=red         fi         echo &quot;COVERAGE=${coverage%.*}%&quot; &gt;&gt; $GITHUB_ENV         echo &quot;COLOR=$COLOR&quot; &gt;&gt; $GITHUB_ENV     - name: Create the Badge       # save the badge configuration in a Gist       uses: schneegans/dynamic-badges-action@v1.1.0       with:         auth: ${{ secrets.GIST_SECRET }}         gistID: ab3bde9504060bd1feb361555e79f51d         filename: coverage.json         label: coverage         message: ${{ env.COVERAGE }}         color: ${{ env.COLOR }}   This is what your updated workflow looks like:     GitHub Action workflow including code coverage badge    And you got a badge to decorate your readme.md.     GitHub code coverage badge    Extending CT with Other Types of Testing   You have a basic CI workflow that includes unit tests and coverage reports. Now to obtain an excellent CT workflow, you need to expand with more layers of tests. You will add three new jobs:    For API testing,   For end-to-end testing   For performance testing    Add API Testing   API testing is part of integration testing. Integration testing aims to determine whether individual units meet your requirement when combined together. When performing integration testing, you target the boundary (or interfaces) of your system. In this specific case, you are aiming your test at a RESTful API. Having API tests ensures that sets of functionality meet your requirement and validates that your web server and connection to a database works properly.   While you could write an API test in the same language as your application, you should also consider a tool like Postman/Newman. Postman lets you define a sequence of HTTPS calls and validate each of them using their JavaScript test framework. This makes it easy to share integration test suites. Other developers can use them to facilitate their development process, for instance, mobile developers working with a different stack than backend developers. Newman is the command-line interface that lets you run the Postman tests.   Now that you have selected an API testing framework go to GitHub Actions Marketplace and look for an Action that meets your demands. For instance, Newman Action.   Now edit your workflow configuration:    Add a new job that must be executed after the deployment using needs: deploy.   Define the steps of your job:   Check out your repository using the Action actions/checkout@master.   Run Newman using the Action you just found in the Marketplace.     Move the gating job at the end of the workflow by changing the needs property.    name: Python application   on:   push:     branches: [ main ]   jobs:   build:     [...]   deploy:     [...] # our deployment steps   tests_api:     needs: deploy     runs-on: ubuntu-latest     steps:     - uses: actions/checkout@master     - uses: matt-ball/newman-action@master       with:         collection: tests_integration/postman_collection.json         environment: tests_integration/postman_environment.json   gating:     needs: tests_api     [...] # we move the gating at the end of the workflow   Now your workflow should contain four sequential jobs:     GitHub Actions workflow including API tests    Add End-to-End Testing   End-to-end testing (e2e) aims to test complete use cases from the user perspective. Think of e2e as replacing a human with a robot.   When it comes to selecting an e2e framework, I recommend prioritizing one that supports the Gherkin language. Gherkin promotes writing tests in natural language (aka, plain English). With this approach, more people can understand test cases, including product owners and business analysts. As a result, you foster better collaboration within the team.   Verbalizing tests also ensure that you are writing them from the user’s perspective and not making the mistake of testing the functions you just coded.   I selected Robot Framework for this example. Robot Framework uses Selenium to control a web browser and thus replace a human by simulating clicks and text entries.   Once again, you can go to GitHub Actions Marketplace and look for an Action meeting your needs. For instance, Robot Framework Docker Action.   Add a new job called test_e2e to the workflow configuration. This job must be executed after deploy using needs: deploy. You will notice that since tests_api and test_e2e both need deploy, they will be executed in parallel after the deployment.   Have a look at the result:     GitHub Actions workflow including end-to-end tests    Your configuration should look along those lines to achieve this workflow:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e:     runs-on: ubuntu-latest     needs: deploy     name: Run Robot Framework Tests     steps:       - name: Checkout         uses: actions/checkout@v2       - name: Create folder for reports         run: mkdir reports       - name: Robot Framework Test         # NOTE: joonvena/robotframework-docker-action@v0.1 had permissions issue         # This action is based on a Docker image. I had to fall back to that image         # and use --user flag         run: |           docker run \             -v ${PWD}/reports:/opt/robotframework/reports:Z \             -v $/tests_e2e:/opt/robotframework/tests:Z \             --user $(id -u):$(id -g) \             -e BROWSER=chrome \             ppodgorsek/robot-framework:latest       - name: Upload test results         uses: actions/upload-artifact@v1         if: always()         with:           name: robotframework report           path: reports   gating:     needs: [tests_api, test_e2e]     [...] # move the gating at the end of the workflow   Add Performance Testing   Performance testing is a broad topic because there are multiple types of performance testing. Most online sources agree on six types:    Load testing   Stress testing   Soak testing   Spike testing   Scalability testing   Capacity testing.    However, I don’t recommend you try to include each of them. Instead, consider one of two ways to tackle performance testing:    Identify bottlenecks. Design an experiment that identifies bottlenecks and measures the limit of your system.   Benchmarking. Identify critical elements of your application and measure its speed. The goal is to improve one performance metric over time; conversely, you want to be alerted in case of metric degradation and address the problem as soon as possible.    As before, create a new job (called test_performance). This time I did not find an Action on the Marketplace that fit my requirement. But I recommend this Medium article to help you select your framework and implement the steps of the job yourself.   Here is the workflow I came up with for my Python application:   name: Python application   on:   push:     branches: [ main ]   jobs:   build: [...]   deploy: [...]   tests_api: [...]   test_e2e: [...]   test_performances:     name: Check performance regression.     runs-on: ubuntu-latest     needs: deploy     steps:       - uses: actions/checkout@v2       - name: Set up Python 3.9         uses: actions/setup-python@v2         with:           python-version: 3.9       - name: Install dependencies         run: |           python -m pip install --upgrade pip           pip install flake8 pytest           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi       - name: Run benchmark         run: pytest tests_performances --benchmark-json output.json       - name: Store benchmark result         uses: rhysd/github-action-benchmark@v1         # NOTE: this action only works for public repository         # A pull-request is open with a fix         with:           tool: &#39;pytest&#39;           output-file-path: output.json           # Personal access token to deploy GitHub Pages branch           github-token: $           # Push and deploy GitHub pages branch automatically           auto-push: true           # Show alert with commit comment on detecting possible performance regression           alert-threshold: &#39;200%&#39;           comment-on-alert: true           fail-on-alert: true           alert-comment-cc-users: &#39;@xNok&#39;   Your final workflow must look like this:     GitHub Actions workflow including performances tests    Conclusion   Continuous testing is the next step after you successfully implement continuous integration. It further improves the speed of your application development process and adds a quality control layer to it.   Remember, there are three essential stages in a continuous testing workflow, each testing your system from a different perspective:    Unit tests validate the internal logic.   Integration tests validate the response of the system from its boundary.   End-to-end tests validate the system from the user’s perspective.    Adding performance tests can help you track important metrics and ensure that changes do not negatively impact your users.   Finally, to succeed in implementing CT, remember that testing should become part of your team’s DNA and share the same five pillars as DevOps: culture, automation, lean, measurement, and sharing.   As your CT process grows and becomes more ingrained in how you work, take a look at Earthly’s ability to produce a repeatable build process. It can help make testing in GitHub Actions a more straightforward process.">
+  <meta name="twitter:url" content="https://earthly.dev/blog/continuous-testing-in-devops/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/continuous-testing-in-devops/header-800-8054f7927.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-27T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/continuous-testing-in-devops/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/continuous-testing-in-devops/header-400-8139233f2.webp 400w, /blog/generated/assets/images/continuous-testing-in-devops/header-600-8139233f2.webp 600w, /blog/generated/assets/images/continuous-testing-in-devops/header-800-8139233f2.webp 800w, /blog/generated/assets/images/continuous-testing-in-devops/header-1000-8139233f2.webp 1000w, /blog/generated/assets/images/continuous-testing-in-devops/header-1200-8139233f2.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-testing-in-devops/header-400-8139233f2.png 400w, /blog/generated/assets/images/continuous-testing-in-devops/header-600-8139233f2.png 600w, /blog/generated/assets/images/continuous-testing-in-devops/header-800-8139233f2.png 800w, /blog/generated/assets/images/continuous-testing-in-devops/header-1000-8139233f2.png 1000w, /blog/generated/assets/images/continuous-testing-in-devops/header-1200-8139233f2.png 1200w" type="image/png"><img src="/blog/generated/assets/images/continuous-testing-in-devops/header-800-8139233f2.jpg" alt="Using Continuous Testing in DevOps Workflows"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Using Continuous Testing in DevOps Workflows">
+    <meta itemprop="description" content="Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you reduce costs and save time and effort by reducing manual testing.The caveat is that automated tests have no value if they are not executed regularly alongside your continuous integration (CI) pipeline. CI refers to frequently merging developer code changes and building and creating an artifact that can later be tested and deployed.Extending the CI process by adding automated tests is referred to as continuous testing (CT). CT enables you to apply the fail-fast principle. You test each code change, build, and deployment against several layers of automated tests. Thus, it results in rapid feedback on the quality of your product and the state of the development process.GitHub Actions is a great first step for implementing CT. It’s flexible and powerful enough to bring every step of the CI/CT process into a single place. Your application, tests, and workflow configuration lives with your code in your repository. Furthermore, the learning curve for GitHub Actions is relatively smooth thanks to the Marketplace that provides thousands of Actions ready to use out of the box.What Does It Take to Implement Continuous Testing?A good CI/CT process always contains at least the following steps:BuildDeploymentIntegration testsEnd-to-end testsIn this tutorial, you will implement these four steps using GitHub Actions, as well as add performance tests.The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a dev environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.In this article, I assume you’ll deploy to a dev environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:Final GitHub Action WorkflowImplementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.To remediate those challenges, you should rely on the five DevOps principles described by Jez Humble in The DevOps Handbook:CultureAutomateLeanMeasureSharingImplementing continuous testing is first a change in culture. Selecting the right tools for CI/CT can greatly improve collaboration.Keep your process lean. Testing should not slow down your process. Instead, select the right amount of tests at the right time in the process. Monitor your job execution time, prefer small tasks that can fail fast, and provide rapid feedback instead of long-running ones.Automate as much and as early as possible because it helps validate that the integration is successful. Delaying test implementation is counterproductive.Measure your improvement and build a baseline for the quality of your software. For example, collect your code coverage, number of successful vs. failed tests, and performance metric.Don’t forget to encourage knowledge sharing. Test automation is not a single person’s job: everyone on the team should know how the test suites work and learn how to fix simple errors when the workflows fail.Implementing CI/CT With GitHub ActionsNow that you know the basics of CT, it’s time to see how to implement the first step by creating a GitHub Actions workflow that builds and runs your unit tests.Build a GitHub Actions Workflow with Unit TestsThe first thing you need to get started is an initial workflow. If you already committed your application to a GitHub repository, click Actions. GitHub will automatically select and recommend a simple workflow that best suits your language.Select one of them by clicking Set up this workflow, review the workflow steps, and commit.Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.Get Started with GitHub Action WorkflowA GitHub Actions workflow contains three elements:Triggers (on) specify when the workflow must be executed. The most common use case is to run a workflow on push and pull-request on the main branch.Jobs determine sets of actions composing your pipeline and are executed in parallel unless dependencies between jobs are specified.Steps are the individual components of a job and can be of two types: Scripts or Actions. Steps defining a run attribute execute a command on the host defined by runs-on at the beginning of a job. Steps containing uses execute an Action, a reusable automation script.It’s straightforward to extend a workflow once you understand those three concepts. Here’s a sample workflow for a Python application:name: Python application on:  pull_request:    branches: [ main ] jobs:  build:     runs-on: ubuntu-latest     steps:    - uses: actions/checkout@v2    - name: Set up Python 3.9      uses: actions/setup-python@v2      with:        python-version: 3.9    - name: Install dependencies      run: |        python -m pip install --upgrade pip        pip install flake8 pytest        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi    - name: Lint with flake8      run: |        # stop the build if there are Python syntax errors or undefined names        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics    - name: Test with pytest      run: |        pytestThis what a basic workflow looks like:Most basic GitHub Actions workflowAdd Code Coverage ReportsOn GitHub, most users rely on third parties to get coverage reports (such as SonarQube or Codecov). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.But let’s not rely on a third party yet. Instead, generate a badge to display in your Readme.md. You’re putting in place the first step toward tracking code quality.Edit your existing Test with xxx step to generate a coverage report.Save the coverage report as an artifact. Storing workflow data as artifacts.Create a new job called gating and download the coverage report. This job must be executed after build; therefore, you must declare needs: build in your configuration.Parse the coverage report to extract the coverage value. I provided a small script that does just that.Generate the badge and add it to your README. Follow the setup step in the documentation of schneegans/dynamic-badges-action@v1.1.0.# This workflow will install Python dependencies, run tests, and lint with a single version of Python# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions name: Python application on:  push:    branches: [ main ]  pull_request:    branches: [ main ] jobs:  build:    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@v2    - name: Set up Python 3.9      uses: actions/setup-python@v2      with:        python-version: 3.9    - name: Install dependencies      [...]    - name: Lint with flake8      [...]    - name: Test with pytest      # Update the command to generate coverage report      run: pytest --cov-report xml --cov=phonebook tests/    - name: Upload pytest test coverage      # Upload the coverage result as an artifact      uses: actions/upload-artifact@v2      with:        name: coverage-results        path: coverage.xml      # Use always() to always run this step to publish test results when there are test failures      if: ${{ always() }}   gating:    runs-on: ubuntu-latest    needs: build     steps:    - name: Download coverage report      uses: actions/download-artifact@v2      with:        name: coverage-results    - name: Get the Coverage      shell: bash      run: |        regex=&#39;&lt;coverage.+line-rate=&quot;([0-9).[0-9]+)&quot;.+&gt;&#39;        line=$(grep -oP $regex coverage.xml)        [[ $line =~ $regex ]]        coverage=$( bc &lt;&lt;&lt; ${BASH_REMATCH[1]}*100 )        if (( $(echo &quot;$coverage &gt; 80&quot; |bc -l) )); then          COLOR=green        else          COLOR=red        fi        echo &quot;COVERAGE=${coverage%.*}%&quot; &gt;&gt; $GITHUB_ENV        echo &quot;COLOR=$COLOR&quot; &gt;&gt; $GITHUB_ENV    - name: Create the Badge      # save the badge configuration in a Gist      uses: schneegans/dynamic-badges-action@v1.1.0      with:        auth: ${{ secrets.GIST_SECRET }}        gistID: ab3bde9504060bd1feb361555e79f51d        filename: coverage.json        label: coverage        message: ${{ env.COVERAGE }}        color: ${{ env.COLOR }}This is what your updated workflow looks like:GitHub Action workflow including code coverage badgeAnd you got a badge to decorate your readme.md.GitHub code coverage badgeExtending CT with Other Types of TestingYou have a basic CI workflow that includes unit tests and coverage reports. Now to obtain an excellent CT workflow, you need to expand with more layers of tests. You will add three new jobs:For API testing,For end-to-end testingFor performance testingAdd API TestingAPI testing is part of integration testing. Integration testing aims to determine whether individual units meet your requirement when combined together. When performing integration testing, you target the boundary (or interfaces) of your system. In this specific case, you are aiming your test at a RESTful API. Having API tests ensures that sets of functionality meet your requirement and validates that your web server and connection to a database works properly.While you could write an API test in the same language as your application, you should also consider a tool like Postman/Newman. Postman lets you define a sequence of HTTPS calls and validate each of them using their JavaScript test framework. This makes it easy to share integration test suites. Other developers can use them to facilitate their development process, for instance, mobile developers working with a different stack than backend developers. Newman is the command-line interface that lets you run the Postman tests.Now that you have selected an API testing framework go to GitHub Actions Marketplace and look for an Action that meets your demands. For instance, Newman Action.Now edit your workflow configuration:Add a new job that must be executed after the deployment using needs: deploy.Define the steps of your job:Check out your repository using the Action actions/checkout@master.Run Newman using the Action you just found in the Marketplace.Move the gating job at the end of the workflow by changing the needs property.name: Python application on:  push:    branches: [ main ] jobs:  build:    [...]  deploy:    [...] # our deployment steps  tests_api:    needs: deploy    runs-on: ubuntu-latest    steps:    - uses: actions/checkout@master    - uses: matt-ball/newman-action@master      with:        collection: tests_integration/postman_collection.json        environment: tests_integration/postman_environment.json  gating:    needs: tests_api    [...] # we move the gating at the end of the workflowNow your workflow should contain four sequential jobs:GitHub Actions workflow including API testsAdd End-to-End TestingEnd-to-end testing (e2e) aims to test complete use cases from the user perspective. Think of e2e as replacing a human with a robot.When it comes to selecting an e2e framework, I recommend prioritizing one that supports the Gherkin language. Gherkin promotes writing tests in natural language (aka, plain English). With this approach, more people can understand test cases, including product owners and business analysts. As a result, you foster better collaboration within the team.Verbalizing tests also ensure that you are writing them from the user’s perspective and not making the mistake of testing the functions you just coded.I selected Robot Framework for this example. Robot Framework uses Selenium to control a web browser and thus replace a human by simulating clicks and text entries.Once again, you can go to GitHub Actions Marketplace and look for an Action meeting your needs. For instance, Robot Framework Docker Action.Add a new job called test_e2e to the workflow configuration. This job must be executed after deploy using needs: deploy. You will notice that since tests_api and test_e2e both need deploy, they will be executed in parallel after the deployment.Have a look at the result:GitHub Actions workflow including end-to-end testsYour configuration should look along those lines to achieve this workflow:name: Python application on:  push:    branches: [ main ] jobs:  build: [...]  deploy: [...]  tests_api: [...]  test_e2e:    runs-on: ubuntu-latest    needs: deploy    name: Run Robot Framework Tests    steps:      - name: Checkout        uses: actions/checkout@v2      - name: Create folder for reports        run: mkdir reports      - name: Robot Framework Test        # NOTE: joonvena/robotframework-docker-action@v0.1 had permissions issue        # This action is based on a Docker image. I had to fall back to that image        # and use --user flag        run: |          docker run \            -v ${PWD}/reports:/opt/robotframework/reports:Z \            -v $/tests_e2e:/opt/robotframework/tests:Z \            --user $(id -u):$(id -g) \            -e BROWSER=chrome \            ppodgorsek/robot-framework:latest      - name: Upload test results        uses: actions/upload-artifact@v1        if: always()        with:          name: robotframework report          path: reports  gating:    needs: [tests_api, test_e2e]    [...] # move the gating at the end of the workflowAdd Performance TestingPerformance testing is a broad topic because there are multiple types of performance testing. Most online sources agree on six types:Load testingStress testingSoak testingSpike testingScalability testingCapacity testing.However, I don’t recommend you try to include each of them. Instead, consider one of two ways to tackle performance testing:Identify bottlenecks. Design an experiment that identifies bottlenecks and measures the limit of your system.Benchmarking. Identify critical elements of your application and measure its speed. The goal is to improve one performance metric over time; conversely, you want to be alerted in case of metric degradation and address the problem as soon as possible.As before, create a new job (called test_performance). This time I did not find an Action on the Marketplace that fit my requirement. But I recommend this Medium article to help you select your framework and implement the steps of the job yourself.Here is the workflow I came up with for my Python application:name: Python application on:  push:    branches: [ main ] jobs:  build: [...]  deploy: [...]  tests_api: [...]  test_e2e: [...]  test_performances:    name: Check performance regression.    runs-on: ubuntu-latest    needs: deploy    steps:      - uses: actions/checkout@v2      - name: Set up Python 3.9        uses: actions/setup-python@v2        with:          python-version: 3.9      - name: Install dependencies        run: |          python -m pip install --upgrade pip          pip install flake8 pytest          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi          if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi      - name: Run benchmark        run: pytest tests_performances --benchmark-json output.json      - name: Store benchmark result        uses: rhysd/github-action-benchmark@v1        # NOTE: this action only works for public repository        # A pull-request is open with a fix        with:          tool: &#39;pytest&#39;          output-file-path: output.json          # Personal access token to deploy GitHub Pages branch          github-token: $          # Push and deploy GitHub pages branch automatically          auto-push: true          # Show alert with commit comment on detecting possible performance regression          alert-threshold: &#39;200%&#39;          comment-on-alert: true          fail-on-alert: true          alert-comment-cc-users: &#39;@xNok&#39;Your final workflow must look like this:GitHub Actions workflow including performances testsConclusionContinuous testing is the next step after you successfully implement continuous integration. It further improves the speed of your application development process and adds a quality control layer to it.Remember, there are three essential stages in a continuous testing workflow, each testing your system from a different perspective:Unit tests validate the internal logic.Integration tests validate the response of the system from its boundary.End-to-end tests validate the system from the user’s perspective.Adding performance tests can help you track important metrics and ensure that changes do not negatively impact your users.Finally, to succeed in implementing CT, remember that testing should become part of your team’s DNA and share the same five pillars as DevOps: culture, automation, lean, measurement, and sharing.As your CT process grows and becomes more ingrained in how you work, take a look at Earthly’s ability to produce a repeatable build process. It can help make testing in GitHub Actions a more straightforward process.">
+    <meta itemprop="datePublished" content="2021-07-27T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Using Continuous Testing in DevOps Workflows
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-27T00:00:00-04:00">July 27, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcoudelo-225-d66f27dc0.webp 225w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcoudelo-225-ee8793c11.jpg 225w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcoudelo-225-ee8793c11.jpg" alt="Alexandre Couëdelo %"></picture>
+
+          &nbsp;	&nbsp;
+          Alexandre Couëdelo
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#what-does-it-take-to-implement-continuous-testing">What Does It Take to Implement Continuous Testing?</a></li><li><a href="#implementing-cict-with-github-actions">Implementing CI/CT With GitHub Actions</a><ul><li><a href="#build-a-github-actions-workflow-with-unit-tests">Build a GitHub Actions Workflow with Unit Tests</a></li><li><a href="#add-code-coverage-reports">Add Code Coverage Reports</a></li></ul></li><li><a href="#extending-ct-with-other-types-of-testing">Extending CT with Other Types of Testing</a><ul><li><a href="#add-api-testing">Add API Testing</a></li><li><a href="#add-end-to-end-testing">Add End-to-End Testing</a></li><li><a href="#add-performance-testing">Add Performance Testing</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you reduce costs and save time and effort by reducing manual testing.</p>
+<p>The caveat is that automated tests have no value if they are not executed regularly alongside your continuous integration (CI) pipeline. CI refers to frequently merging developer code changes and building and creating an artifact that can later be tested and deployed.</p>
+<p>Extending the CI process by adding automated tests is referred to as continuous testing (CT). CT enables you to apply the fail-fast principle. You test each code change, build, and deployment against several layers of automated tests. Thus, it results in rapid feedback on the quality of your product and the state of the development process.</p>
+<p><a href="https://github.com/actions">GitHub Actions</a> is a great first step for implementing CT. It’s flexible and powerful enough to bring every step of the CI/CT process into a single place. Your application, tests, and workflow configuration lives with your code in your repository. Furthermore, the learning curve for GitHub Actions is relatively smooth thanks to the <a href="https://github.com/marketplace?type=actions">Marketplace</a> that provides thousands of Actions ready to use out of the box.</p>
+<h2 id="what-does-it-take-to-implement-continuous-testing">What Does It Take to Implement Continuous Testing?</h2>
+<p>A good CI/CT process always contains at least the following steps:</p>
+<ul>
+<li>Build</li>
+<li>Deployment</li>
+<li>Integration tests</li>
+<li>End-to-end tests</li>
+</ul>
+<p>In this tutorial, you will implement these four steps using GitHub Actions, as well as add performance tests.</p>
+<p>The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a <code>dev</code> environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.</p>
+<p>In this article, I assume you’ll deploy to a <code>dev</code> environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626807599.png" alt="Final GitHub Action Workflow" /><figcaption aria-hidden="true">Final GitHub Action Workflow</figcaption>
+</figure>
+<p>Implementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.</p>
+<p>To remediate those challenges, you should rely on the five DevOps principles described by <a href="https://twitter.com/jezhumble">Jez Humble</a> in <em>The DevOps Handbook</em>:</p>
+<ol type="1">
+<li>Culture</li>
+<li>Automate</li>
+<li>Lean</li>
+<li>Measure</li>
+<li>Sharing</li>
+</ol>
+<p>Implementing continuous testing is first a change in <strong>culture</strong>. Selecting the right tools for CI/CT can greatly improve collaboration.</p>
+<p>Keep your process <strong>lean</strong>. Testing should not slow down your process. Instead, select the right amount of tests at the right time in the process. Monitor your <a href="https://docs.github.com/en/actions/managing-workflow-runs/viewing-job-execution-time">job execution time</a>, prefer small tasks that can fail fast, and provide rapid feedback instead of long-running ones.</p>
+<p><strong>Automate</strong> as much and as early as possible because it helps validate that the integration is successful. Delaying test implementation is counterproductive.</p>
+<p><strong>Measure</strong> your improvement and build a baseline for the quality of your software. For example, collect your code coverage, number of successful vs. failed tests, and performance metric.</p>
+<p>Don’t forget to encourage knowledge <strong>sharing</strong>. Test automation is not a single person’s job: everyone on the team should know how the test suites work and learn how to fix simple errors when the workflows fail.</p>
+<h2 id="implementing-cict-with-github-actions">Implementing CI/CT With GitHub Actions</h2>
+<p>Now that you know the basics of CT, it’s time to see how to implement the first step by creating a GitHub Actions workflow that builds and runs your unit tests.</p>
+<h3 id="build-a-github-actions-workflow-with-unit-tests">Build a GitHub Actions Workflow with Unit Tests</h3>
+<p>The first thing you need to get started is an initial workflow. If you already committed your application to a GitHub repository, click <strong>Actions</strong>. GitHub will automatically select and recommend a simple workflow that best suits your language.</p>
+<p>Select one of them by clicking <strong>Set up this workflow</strong>, review the workflow steps, and commit.</p>
+<p>Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626808569.png" alt="Get Started with GitHub Action Workflow" /><figcaption aria-hidden="true">Get Started with GitHub Action Workflow</figcaption>
+</figure>
+<p>A GitHub Actions workflow contains three elements:</p>
+<ul>
+<li><strong>Triggers</strong> (<code>on</code>) specify when the workflow must be executed. The most common use case is to run a workflow on <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on">push and pull-request on the <code>main</code> branch</a>.</li>
+<li><strong>Jobs</strong> determine sets of actions composing your pipeline and are executed in parallel unless dependencies between jobs are specified.</li>
+<li><strong>Steps</strong> are the individual components of a job and can be of two types: <code>Scripts</code> or <code>Actions</code>. Steps defining a <code>run</code> attribute execute a command on the host defined by <code>runs-on</code> at the beginning of a job. Steps containing <code>uses</code> execute an <a href="https://docs.github.com/en/actions/creating-actions">Action</a>, a reusable automation script.</li>
+</ul>
+<p>It’s straightforward to extend a workflow once you understand those three concepts. Here’s a sample workflow for a Python application:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Python application</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python 3.9</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.9</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        python -m pip install --upgrade pip</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        pip install flake8 pytest</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Lint with flake8</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        # stop the build if there are Python syntax errors or undefined names</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Test with pytest</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        pytest</span></code></pre></div>
+<p>This what a basic workflow looks like:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626808638.png" alt="Most basic GitHub Actions workflow" /><figcaption aria-hidden="true">Most basic GitHub Actions workflow</figcaption>
+</figure>
+<h3 id="add-code-coverage-reports">Add Code Coverage Reports</h3>
+<p>On GitHub, most users rely on third parties to get coverage reports (such as <a href="https://www.sonarqube.org/">SonarQube</a> or <a href="https://about.codecov.io/">Codecov</a>). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.</p>
+<p>But let’s not rely on a third party yet. Instead, generate a badge to display in your <code>Readme.md</code>. You’re putting in place the first step toward tracking code quality.</p>
+<ul>
+<li>Edit your existing <code>Test with xxx</code> step to generate a coverage report.</li>
+<li>Save the coverage report as an artifact. <a href="https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts">Storing workflow data as artifacts</a>.</li>
+<li>Create a new job called <code>gating</code> and download the coverage report. This job must be executed after <code>build</code>; therefore, you must declare <code>needs: build</code> in your configuration.</li>
+<li>Parse the coverage report to extract the coverage value. I provided a small script that does just that.</li>
+<li>Generate the badge and add it to your README. Follow the setup step in the documentation of <a href="https://github.com/Schneegans/dynamic-badges-action">schneegans/dynamic-badges-action@v1.1.0</a>.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This workflow will install Python dependencies, run tests, and lint with a single version of Python</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Python application</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python 3.9</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.9</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Lint with flake8</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Test with pytest</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">      # Update the command to generate coverage report</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pytest --cov-report xml --cov=phonebook tests/</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Upload pytest test coverage</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">      # Upload the coverage result as an artifact</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v2</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> coverage-results</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">path</span><span class="kw">:</span><span class="at"> coverage.xml</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">      # Use always() to always run this step to publish test results when there are test failures</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">if</span><span class="kw">:</span><span class="at"> ${{ always() }}</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">gating</span><span class="kw">:</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> build</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Download coverage report</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/download-artifact@v2</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> coverage-results</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Get the Coverage</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">shell</span><span class="kw">:</span><span class="at"> bash</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="fu">      run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        regex=&#39;&lt;coverage.+line-rate=&quot;([0-9).[0-9]+)&quot;.+&gt;&#39;</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        line=$(grep -oP $regex coverage.xml)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        [[ $line =~ $regex ]]</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        coverage=$( bc &lt;&lt;&lt; ${BASH_REMATCH[1]}*100 )</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        if (( $(echo &quot;$coverage &gt; 80&quot; |bc -l) )); then</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>          COLOR=green</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        else</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>          COLOR=red</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        fi</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        echo &quot;COVERAGE=${coverage%.*}%&quot; &gt;&gt; $GITHUB_ENV</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        echo &quot;COLOR=$COLOR&quot; &gt;&gt; $GITHUB_ENV</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create the Badge</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">      # save the badge configuration in a Gist</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> schneegans/dynamic-badges-action@v1.1.0</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">auth</span><span class="kw">:</span><span class="at"> ${{ secrets.GIST_SECRET }}</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">gistID</span><span class="kw">:</span><span class="at"> ab3bde9504060bd1feb361555e79f51d</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">filename</span><span class="kw">:</span><span class="at"> coverage.json</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">label</span><span class="kw">:</span><span class="at"> coverage</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">message</span><span class="kw">:</span><span class="at"> ${{ env.COVERAGE }}</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">color</span><span class="kw">:</span><span class="at"> ${{ env.COLOR }}</span></span></code></pre></div>
+<p>This is what your updated workflow looks like:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626877878.png" alt="GitHub Action workflow including code coverage badge" /><figcaption aria-hidden="true">GitHub Action workflow including code coverage badge</figcaption>
+</figure>
+<p>And you got a badge to decorate your <code>readme.md</code>.</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626878146.png" alt="GitHub code coverage badge" /><figcaption aria-hidden="true">GitHub code coverage badge</figcaption>
+</figure>
+<h2 id="extending-ct-with-other-types-of-testing">Extending CT with Other Types of Testing</h2>
+<p>You have a basic CI workflow that includes unit tests and coverage reports. Now to obtain an excellent CT workflow, you need to expand with more layers of tests. You will add three new jobs:</p>
+<ul>
+<li>For API testing,</li>
+<li>For end-to-end testing</li>
+<li>For performance testing</li>
+</ul>
+<h3 id="add-api-testing">Add API Testing</h3>
+<p>API testing is part of <a href="/blog/unit-vs-integration">integration testing</a>. Integration testing aims to determine whether individual units meet your requirement when combined together. When performing integration testing, you target the boundary (or interfaces) of your system. In this specific case, you are aiming your test at a RESTful API. Having API tests ensures that sets of functionality meet your requirement and validates that your web server and connection to a database works properly.</p>
+<p>While you could write an API test in the same language as your application, you should also consider a tool like <a href="https://blog.scottlogic.com/2020/02/04/GraduateGuideToAPITesting.html">Postman/Newman</a>. Postman lets you define a sequence of HTTPS calls and validate each of them using their JavaScript test framework. This makes it easy to share integration test suites. Other developers can use them to facilitate their development process, for instance, mobile developers working with a different stack than backend developers. Newman is the command-line interface that lets you run the Postman tests.</p>
+<p>Now that you have selected an API testing framework go to GitHub <a href="https://github.com/marketplace?type=actions">Actions Marketplace</a> and look for an Action that meets your demands. For instance, <a href="https://github.com/marketplace/actions/newman-action">Newman Action</a>.</p>
+<p>Now edit your workflow configuration:</p>
+<ul>
+<li>Add a new job that must be executed after the deployment using <code>needs: deploy</code>.</li>
+<li>Define the steps of your job:
+<ul>
+<li>Check out your repository using the Action <code>actions/checkout@master</code>.</li>
+<li>Run Newman using the Action you just found in the Marketplace.</li>
+</ul></li>
+<li>Move the gating job at the end of the workflow by changing the <code>needs</code> property.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Python application</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span><span class="co"> # our deployment steps</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tests_api</span><span class="kw">:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> deploy</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@master</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> matt-ball/newman-action@master</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">collection</span><span class="kw">:</span><span class="at"> tests_integration/postman_collection.json</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">environment</span><span class="kw">:</span><span class="at"> tests_integration/postman_environment.json</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">gating</span><span class="kw">:</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> tests_api</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span><span class="co"> # we move the gating at the end of the workflow</span></span></code></pre></div>
+<p>Now your workflow should contain four sequential jobs:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626878353.png" alt="GitHub Actions workflow including API tests" /><figcaption aria-hidden="true">GitHub Actions workflow including API tests</figcaption>
+</figure>
+<h3 id="add-end-to-end-testing">Add End-to-End Testing</h3>
+<p>End-to-end testing (e2e) aims to test complete use cases from the user perspective. Think of e2e as replacing a human with a robot.</p>
+<p>When it comes to selecting an e2e framework, I recommend prioritizing one that supports the Gherkin language. Gherkin promotes writing tests in natural language (aka, plain English). With this approach, more people can understand test cases, including product owners and business analysts. As a result, you foster better collaboration within the team.</p>
+<p>Verbalizing tests also ensure that you are writing them from the user’s perspective and not making the mistake of testing the functions you just coded.</p>
+<p>I selected <a href="https://robotframework.org/">Robot Framework</a> for this example. Robot Framework uses <a href="https://www.selenium.dev/">Selenium</a> to control a web browser and thus replace a human by simulating clicks and text entries.</p>
+<p>Once again, you can go to <a href="https://github.com/marketplace?type=actions">GitHub Actions Marketplace</a> and look for an Action meeting your needs. For instance, <a href="https://github.com/marketplace/actions/robot-framework">Robot Framework Docker Action</a>.</p>
+<p>Add a new job called <code>test_e2e</code> to the workflow configuration. This job must be executed after deploy using <code>needs: deploy</code>. You will notice that since <code>tests_api</code> and <code>test_e2e</code> both need <code>deploy</code>, they will be executed in parallel after the deployment.</p>
+<p>Have a look at the result:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626878240.png" alt="GitHub Actions workflow including end-to-end tests" /><figcaption aria-hidden="true">GitHub Actions workflow including end-to-end tests</figcaption>
+</figure>
+<p>Your configuration should look along those lines to achieve this workflow:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Python application</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tests_api</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test_e2e</span><span class="kw">:</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> deploy</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run Robot Framework Tests</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Create folder for reports</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> mkdir reports</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Robot Framework Test</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">        # </span><span class="al">NOTE</span><span class="co">: joonvena/robotframework-docker-action@v0.1 had permissions issue</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">        # This action is based on a Docker image. I had to fall back to that image</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">        # and use --user flag</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>          docker run \</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>            -v ${PWD}/reports:/opt/robotframework/reports:Z \</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>            -v $/tests_e2e:/opt/robotframework/tests:Z \</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            --user $(id -u):$(id -g) \</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            -e BROWSER=chrome \</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>            ppodgorsek/robot-framework:latest</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Upload test results</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/upload-artifact@v1</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">if</span><span class="kw">:</span><span class="at"> always()</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">name</span><span class="kw">:</span><span class="at"> robotframework report</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">path</span><span class="kw">:</span><span class="at"> reports</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">gating</span><span class="kw">:</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">tests_api</span><span class="kw">,</span><span class="at"> test_e2e</span><span class="kw">]</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span><span class="co"> # move the gating at the end of the workflow</span></span></code></pre></div>
+<h3 id="add-performance-testing">Add Performance Testing</h3>
+<p>Performance testing is a broad topic because there are multiple types of performance testing. Most online sources agree on six types:</p>
+<ul>
+<li>Load testing</li>
+<li>Stress testing</li>
+<li>Soak testing</li>
+<li>Spike testing</li>
+<li>Scalability testing</li>
+<li>Capacity testing.</li>
+</ul>
+<p>However, I don’t recommend you try to include each of them. Instead, consider one of two ways to tackle performance testing:</p>
+<ol type="1">
+<li><strong>Identify bottlenecks.</strong> Design an experiment that identifies bottlenecks and measures the limit of your system.</li>
+<li><strong>Benchmarking.</strong> Identify critical elements of your application and measure its speed. The goal is to improve one performance metric over time; conversely, you want to be alerted in case of metric degradation and address the problem as soon as possible.</li>
+</ol>
+<p>As before, create a new job (called <code>test_performance</code>). This time I did not find an Action on the Marketplace that fit my requirement. But I recommend <a href="https://medium.com/nerd-for-tech/ci-build-performance-testing-with-github-action-e6b227097c83">this Medium article</a> to help you select your framework and implement the steps of the job yourself.</p>
+<p>Here is the workflow I came up with for my Python application:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Python application</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main </span><span class="kw">]</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at"> </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">build</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tests_api</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test_e2e</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">...</span><span class="kw">]</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">test_performances</span><span class="kw">:</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check performance regression.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> deploy</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Set up Python 3.9</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-python@v2</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">python-version</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.9</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install dependencies</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>          python -m pip install --upgrade pip</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>          pip install flake8 pytest</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>          if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run benchmark</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> pytest tests_performances --benchmark-json output.json</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Store benchmark result</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> rhysd/github-action-benchmark@v1</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">        # </span><span class="al">NOTE</span><span class="co">: this action only works for public repository</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co">        # A pull-request is open with a fix</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">tool</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;pytest&#39;</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">output-file-path</span><span class="kw">:</span><span class="at"> output.json</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co">          # Personal access token to deploy GitHub Pages branch</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">github-token</span><span class="kw">:</span><span class="at"> $</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co">          # Push and deploy GitHub pages branch automatically</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">auto-push</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co">          # Show alert with commit comment on detecting possible performance regression</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">alert-threshold</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;200%&#39;</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">comment-on-alert</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">fail-on-alert</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">alert-comment-cc-users</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;@xNok&#39;</span></span></code></pre></div>
+<p>Your final workflow must look like this:</p>
+<figure>
+<img src="/blog/assets/images/continuous-testing-in-devops/1626878379.png" alt="GitHub Actions workflow including performances tests" /><figcaption aria-hidden="true">GitHub Actions workflow including performances tests</figcaption>
+</figure>
+<h2 id="conclusion">Conclusion</h2>
+<p>Continuous testing is the next step after you successfully implement <a href="/blog/continuous-integration">continuous integration</a>. It further improves the speed of your application development process and adds a quality control layer to it.</p>
+<p>Remember, there are three essential stages in a continuous testing workflow, each testing your system from a different perspective:</p>
+<ol type="1">
+<li>Unit tests validate the internal logic.</li>
+<li>Integration tests validate the response of the system from its boundary.</li>
+<li>End-to-end tests validate the system from the user’s perspective.</li>
+</ol>
+<p>Adding performance tests can help you track important metrics and ensure that changes do not negatively impact your users.</p>
+<p>Finally, to succeed in implementing CT, remember that testing should become part of your team’s DNA and share the same five pillars as DevOps: culture, automation, lean, measurement, and sharing.</p>
+<p>As your CT process grows and becomes more ingrained in how you work, take a look at <a href="https://earthly.dev/">Earthly’s</a> ability to produce a repeatable build process. It can help make testing in GitHub Actions a more straightforward process.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcoudelo-225-d66f27dc0.webp 225w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcoudelo-225-ee8793c11.jpg 225w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcoudelo-225-ee8793c11.jpg" alt="Alexandre Couëdelo %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <h4 class="author__name" itemprop="name">
+        Alexandre Couëdelo
+    
+    
+    </h4>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Alexandre is a Complex Systems Engineering and Management Specialist. He has been embracing the DevOps culture since he started his career by contributing to the digital transformation of a leading financial institution in Canada.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-27T00:00:00-04:00">July 27, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/command-line-tools/" class="pagination--pager" title="6 Command Line Tools for Productive Programmers
+">Previous</a>
+    
+    
+      <a href="/blog/vscode-make/" class="pagination--pager" title="Building in Visual Studio Code with a Makefile
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
+
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>

@@ -10,7 +10,7 @@
 
 
 <title>Why is JRuby Slow? - Earthly Blog</title>
-<meta name="description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and writt...">
+<meta name="description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.   The build times looked like this:       Ruby Version   Jekyll CI Time       2.5   8m 31s     2.7   8m 33s     3.0   7m 47s     JRuby   45m 16s      A Representative Jekyll CI Build    The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? Why was JRuby so slow?   Even building this blog and using all the tricks I’ve found, the performance of Ruby on the JVM still looks like this:       Runtime   Jekyll Build Time       MRI Ruby 2.7.0   2.64 seconds     Fastest Ruby on JVM Build   25.7 seconds      Building This blog is 10x slower    So why is JRuby slow in these examples? It turns out that the answer is complicated.   What Is JRuby?    I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind    JRuby is an alternative Ruby interpreter that runs on the Java Virtual Machine (JVM). MRI Ruby, also known as CRuby, is written in C and is the standard interpreter and runtime for Ruby.   Install JRuby   On my mac book, I can switch from the MRI Ruby to JRuby like this.   Install rbenv:  brew install rbenv  List possible install options:  rbenv install -l       Install:  rbenv install jruby-9.2.16.0  Set a specific project to use JRuby:  rbenv local jruby-9.2.16.0  Why Do People Use JRuby?      OMG #JRuby +Java.util.concurrent FTW! Doing a recursive backtrace through billion+, I’ve made it 30,000x faster than 1.9.3. 30 THOUSAND.">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/jruby/">
 
 
-  <meta property="og:description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and writt...">
+  <meta property="og:description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.   The build times looked like this:       Ruby Version   Jekyll CI Time       2.5   8m 31s     2.7   8m 33s     3.0   7m 47s     JRuby   45m 16s      A Representative Jekyll CI Build    The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? Why was JRuby so slow?   Even building this blog and using all the tricks I’ve found, the performance of Ruby on the JVM still looks like this:       Runtime   Jekyll Build Time       MRI Ruby 2.7.0   2.64 seconds     Fastest Ruby on JVM Build   25.7 seconds      Building This blog is 10x slower    So why is JRuby slow in these examples? It turns out that the answer is complicated.   What Is JRuby?    I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind    JRuby is an alternative Ruby interpreter that runs on the Java Virtual Machine (JVM). MRI Ruby, also known as CRuby, is written in C and is the standard interpreter and runtime for Ruby.   Install JRuby   On my mac book, I can switch from the MRI Ruby to JRuby like this.   Install rbenv:  brew install rbenv  List possible install options:  rbenv install -l       Install:  rbenv install jruby-9.2.16.0  Set a specific project to use JRuby:  rbenv local jruby-9.2.16.0  Why Do People Use JRuby?      OMG #JRuby +Java.util.concurrent FTW! Doing a recursive backtrace through billion+, I’ve made it 30,000x faster than 1.9.3. 30 THOUSAND.">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Why is JRuby Slow?">
-  <meta name="twitter:description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and writt...">
+  <meta name="twitter:description" content="Recently, I made some contributions to the continuous integration process for Jekyll. Jekyll is a static site generator created by GitHub and written in Ruby, and it uses Earthly and GitHub Actions to test that it works with Ruby 2.5, 2.7, 3.0, and JRuby.   The build times looked like this:       Ruby Version   Jekyll CI Time       2.5   8m 31s     2.7   8m 33s     3.0   7m 47s     JRuby   45m 16s      A Representative Jekyll CI Build    The Jekyll CI does lots of things in it that a simple Jekyll site build might not but clearly JRuby was slowing the whole process down by a significant amount, and this surprised me: Wasn’t the entire point of using JRuby, and its new brother TruffleRuby, speed? Why was JRuby so slow?   Even building this blog and using all the tricks I’ve found, the performance of Ruby on the JVM still looks like this:       Runtime   Jekyll Build Time       MRI Ruby 2.7.0   2.64 seconds     Fastest Ruby on JVM Build   25.7 seconds      Building This blog is 10x slower    So why is JRuby slow in these examples? It turns out that the answer is complicated.   What Is JRuby?    I was very happy to discover the JRuby project, my favorite programming language running on what’s probably the best virtual machine in the world. - Peter Lind    JRuby is an alternative Ruby interpreter that runs on the Java Virtual Machine (JVM). MRI Ruby, also known as CRuby, is written in C and is the standard interpreter and runtime for Ruby.   Install JRuby   On my mac book, I can switch from the MRI Ruby to JRuby like this.   Install rbenv:  brew install rbenv  List possible install options:  rbenv install -l       Install:  rbenv install jruby-9.2.16.0  Set a specific project to use JRuby:  rbenv local jruby-9.2.16.0  Why Do People Use JRuby?      OMG #JRuby +Java.util.concurrent FTW! Doing a recursive backtrace through billion+, I’ve made it 30,000x faster than 1.9.3. 30 THOUSAND.">
   <meta name="twitter:url" content="https://earthly.dev/blog/jruby/">
 
   
@@ -157,6 +157,19 @@
   </head>
 
   <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
     
 
 <div class="masthead">
@@ -676,7 +689,7 @@ my_jruby.eval_script(ruby_code)</code></pre>
   
   <div class="author__content">
     
-      <div class="author__name heading" itemprop="name">
+      <h4 class="author__name" itemprop="name">
         Adam Gordon Bell
     
     
@@ -694,7 +707,7 @@ my_jruby.eval_script(ruby_code)</code></pre>
         
       
     
-      </div>
+    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -827,7 +840,7 @@ my_jruby.eval_script(ruby_code)</code></pre>
   
   
     <div class="page__related">
-      <div class="page__related-title heading">You may also enjoy</div>
+      <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
         
           
@@ -845,21 +858,16 @@ my_jruby.eval_script(ruby_code)</code></pre>
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -874,7 +882,7 @@ my_jruby.eval_script(ruby_code)</code></pre>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -882,7 +890,20 @@ my_jruby.eval_script(ruby_code)</code></pre>
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -902,21 +923,16 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -931,7 +947,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          4 minute read
         
       </span>
     
@@ -939,7 +955,10 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
   </article>
 </div>
 

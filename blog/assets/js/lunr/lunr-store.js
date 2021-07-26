@@ -408,8 +408,32 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "6 Command Line Tools for Productive Programmers",
-        "excerpt":"Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep, cat...","categories": ["Tutorials"],
+        "excerpt":"Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at the number of complex tasks that can be done using just the POSIX standard command-line tools like grep,cat and...","categories": ["Tutorials"],
         "tags": [],
         "url": "/blog/command-line-tools/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Using Continuous Testing in DevOps Workflows",
+        "excerpt":"Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/continuous-testing-in-devops/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building in Visual Studio Code with a Makefile",
+        "excerpt":"Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facilitate working with projects that rely on a Makefile to speed up the build. In this tutorial, you’ll set up a simple C++ project that depends...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/vscode-make/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Idiots And Maniacs",
+        "excerpt":"Observability If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring and observability. Personally, I went through a process something like this: Service has some basic logging and an uptime alert Service has a health-check endpoint, is deployed in...","categories": ["Articles"],
+        "tags": [],
+        "url": "/blog/idiots-and-maniacs/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
