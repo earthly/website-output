@@ -10,7 +10,7 @@
 
 
 <title>On YAML Discussions - Earthly Blog</title>
-<meta name="description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.   Here are some highlights, lightly edited:   Config Traps   dkarl pointed out that putting things in config files that shouldn’t be there happens for many reasons:    Reason: Pride in creating a “generic” system that can be configured to do all kinds of new things “without touching the code.”   Reality check: only one or two programmers understand how to modify the config file, and changes have to go through the same life cycle as a code change, so you haven’t gained anything. You’ve only made it harder to onboard new programmers to the project.   Reason: Hope that if certain logic is encoded in config files, then it can never get complicated.   Reality check: Product requirements do not magically become simpler because of your implementation decisions.   Reason: Hope that you can get non-programmers to code review your business logic.   Reality check: the DSL you embedded in your config file isn’t as “human readable” as you think it is.    Dhall Is Strange   AndyC thought that Dhall was not the right answer to the YAML problem:    I agree with the problem, but disagree with the solution. Total languages don’t give you any useful engineering properties, but lack of side effects do (and Dhall also offers that).   From the surface, it seems like HCL, jsonnet, and Cue, are just as suitable as Dhall, and probably more familiar (to varying degrees).    This is an excellent point. HCL does look a bit less strange to outsiders, and HashiCorp already has mind share in the DevOps community, and it certainly beats config templates.   DSL Creation Story   reddit user XANi_ explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; &gt; * We don’t want config to be Turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.   Rake, Webpack, and Groovy    Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:    I always thought it was weird that a lot of web technologies take config files that are executable JavaScript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - Bunny     It’s fairly common in Pythonland [ to just use Python] …   It’s an ideal solution for technically-savvy users in non-security sensitive contexts. - crakers     I’m not convinced that just using programming language for your configuration files is actually that bad. For instance, with node, if you just use JS files that export an object instead of. JSON files, you end up with a lot more programmable and flexible thing. I don’t actually see the problem. - light24bulbs    Writing a Parser   Hillel Wayne wrote a great newsletter on YAML, and the ways it’s abused. He pointed out that the main competition for embedding your DSL into YAML is writing a parser, and using YAML is just easier.    [YAML] pre-parses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language    You can see the full commentary on the original article on reddit, on Hacker News and on Lobste.rs.       To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.↩︎">
+<meta name="description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.Here are some highlights, lightly edited:C...">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/on-yaml-discussions/">
 
 
-  <meta property="og:description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.   Here are some highlights, lightly edited:   Config Traps   dkarl pointed out that putting things in config files that shouldn’t be there happens for many reasons:    Reason: Pride in creating a “generic” system that can be configured to do all kinds of new things “without touching the code.”   Reality check: only one or two programmers understand how to modify the config file, and changes have to go through the same life cycle as a code change, so you haven’t gained anything. You’ve only made it harder to onboard new programmers to the project.   Reason: Hope that if certain logic is encoded in config files, then it can never get complicated.   Reality check: Product requirements do not magically become simpler because of your implementation decisions.   Reason: Hope that you can get non-programmers to code review your business logic.   Reality check: the DSL you embedded in your config file isn’t as “human readable” as you think it is.    Dhall Is Strange   AndyC thought that Dhall was not the right answer to the YAML problem:    I agree with the problem, but disagree with the solution. Total languages don’t give you any useful engineering properties, but lack of side effects do (and Dhall also offers that).   From the surface, it seems like HCL, jsonnet, and Cue, are just as suitable as Dhall, and probably more familiar (to varying degrees).    This is an excellent point. HCL does look a bit less strange to outsiders, and HashiCorp already has mind share in the DevOps community, and it certainly beats config templates.   DSL Creation Story   reddit user XANi_ explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; &gt; * We don’t want config to be Turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.   Rake, Webpack, and Groovy    Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:    I always thought it was weird that a lot of web technologies take config files that are executable JavaScript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - Bunny     It’s fairly common in Pythonland [ to just use Python] …   It’s an ideal solution for technically-savvy users in non-security sensitive contexts. - crakers     I’m not convinced that just using programming language for your configuration files is actually that bad. For instance, with node, if you just use JS files that export an object instead of. JSON files, you end up with a lot more programmable and flexible thing. I don’t actually see the problem. - light24bulbs    Writing a Parser   Hillel Wayne wrote a great newsletter on YAML, and the ways it’s abused. He pointed out that the main competition for embedding your DSL into YAML is writing a parser, and using YAML is just easier.    [YAML] pre-parses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language    You can see the full commentary on the original article on reddit, on Hacker News and on Lobste.rs.       To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.↩︎">
+  <meta property="og:description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.Here are some highlights, lightly edited:C...">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="On YAML Discussions">
-  <meta name="twitter:description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.   Here are some highlights, lightly edited:   Config Traps   dkarl pointed out that putting things in config files that shouldn’t be there happens for many reasons:    Reason: Pride in creating a “generic” system that can be configured to do all kinds of new things “without touching the code.”   Reality check: only one or two programmers understand how to modify the config file, and changes have to go through the same life cycle as a code change, so you haven’t gained anything. You’ve only made it harder to onboard new programmers to the project.   Reason: Hope that if certain logic is encoded in config files, then it can never get complicated.   Reality check: Product requirements do not magically become simpler because of your implementation decisions.   Reason: Hope that you can get non-programmers to code review your business logic.   Reality check: the DSL you embedded in your config file isn’t as “human readable” as you think it is.    Dhall Is Strange   AndyC thought that Dhall was not the right answer to the YAML problem:    I agree with the problem, but disagree with the solution. Total languages don’t give you any useful engineering properties, but lack of side effects do (and Dhall also offers that).   From the surface, it seems like HCL, jsonnet, and Cue, are just as suitable as Dhall, and probably more familiar (to varying degrees).    This is an excellent point. HCL does look a bit less strange to outsiders, and HashiCorp already has mind share in the DevOps community, and it certainly beats config templates.   DSL Creation Story   reddit user XANi_ explained how DSL’s embedded in YAML keep getting created: &gt; The vicious cycle of &gt; &gt; * We don’t want config to be Turing complete, we just need to declare some initial setup &gt; &gt; * Oops, we need to add some conditions. Just code it as data, changing config format is too much work &gt; &gt; * Oops, we need to add some templates. Just use &lt;primary language’s popular templating library&gt;, changing config format is too much work. &gt; &gt; * And congratulations, you have now written a DSL &gt; &gt;If you need conditions and flexibility, picking existing language is by FAR superior choice.   Rake, Webpack, and Groovy    Many readers pointed out that their development community skipped right by this DSL dead end by using a full programming language for build and config needs:    I always thought it was weird that a lot of web technologies take config files that are executable JavaScript. (Thinking of webpack). But it makes a lot of sense now, and I much prefer that approach. - Bunny     It’s fairly common in Pythonland [ to just use Python] …   It’s an ideal solution for technically-savvy users in non-security sensitive contexts. - crakers     I’m not convinced that just using programming language for your configuration files is actually that bad. For instance, with node, if you just use JS files that export an object instead of. JSON files, you end up with a lot more programmable and flexible thing. I don’t actually see the problem. - light24bulbs    Writing a Parser   Hillel Wayne wrote a great newsletter on YAML, and the ways it’s abused. He pointed out that the main competition for embedding your DSL into YAML is writing a parser, and using YAML is just easier.    [YAML] pre-parses the content for us. This isn’t a big enough draw to YAMLize complex programming languages, but it’s a huge deal for small DSLs. I suspect that’s the main reason why semgrep uses YAML for its rules and why so many technologies jury-rig it into a configuration language    You can see the full commentary on the original article on reddit, on Hacker News and on Lobste.rs.       To clarify, YAML, when used as the syntax frontend for a domain-specific, vendor-specific, programming language is a bad idea. I am aware YAML is not a programming language itself.↩︎">
+  <meta name="twitter:description" content="My article about how YAML makes a bad programming language 1 generated a lot of great discussions online.Here are some highlights, lightly edited:C...">
   <meta name="twitter:url" content="https://earthly.dev/blog/on-yaml-discussions/">
 
   
@@ -157,19 +157,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -356,7 +343,7 @@
   
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
+      <div class="author__name heading" itemprop="name">
         Adam Gordon Bell
     
     
@@ -374,7 +361,7 @@
         
       
     
-    </h4>
+      </div>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -522,7 +509,7 @@
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -544,12 +531,17 @@
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -596,12 +588,17 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">

@@ -10,7 +10,7 @@
 
 
 <title>v0.2.0 Released - Earthly Blog</title>
-<meta name="description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
+<meta name="description" content="Changes:Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs...">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/v0-2-0-released/">
 
 
-  <meta property="og:description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
+  <meta property="og:description" content="Changes:Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs...">
 
 
 
@@ -31,7 +31,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="v0.2.0 Released">
-  <meta name="twitter:description" content="Changes:    Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs for more details.   Rename build.earth to Earthfile   GitLab support   Ability to change cache path (previously it was hard-coded to /tmp/earthly; now defaults to /var/cache/earthly on Linux or ~/Library/Caches/earthly on macOS)   HEALTHCHECK command support   Fixed out of disk space error   Fixed support for stdout reset control characters (which are used for installation progress bars)   Added Scala, c++, dot net examples    Upgrade instructions:    docker stop earthly-buildkitd   sudo rm -rf /tmp/earthly   Re-run the install command for your OS">
+  <meta name="twitter:description" content="Changes:Global configuration file for git credentials, cache location and size, no loop device, and others; see Configuration Reference in the docs...">
   <meta name="twitter:url" content="https://earthly.dev/blog/v0-2-0-released/">
 
   
@@ -152,19 +152,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -355,7 +342,7 @@
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -377,12 +364,17 @@
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -429,12 +421,17 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">

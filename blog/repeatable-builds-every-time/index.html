@@ -10,7 +10,7 @@
 
 
 <title>Getting a Repeatable Build, Every Time - Earthly Blog</title>
-<meta name="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
+<meta name="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Ear...">
 
 
   <meta name="author" content="Vlad A. Ionescu">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/repeatable-builds-every-time/">
 
 
-  <meta property="og:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
+  <meta property="og:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Ear...">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Getting a Repeatable Build, Every Time">
-  <meta name="twitter:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
+  <meta name="twitter:description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Ear...">
   <meta name="twitter:url" content="https://earthly.dev/blog/repeatable-builds-every-time/">
 
   
@@ -157,19 +157,6 @@
   </head>
 
   <body class="layout--single">
-    <nav class="skip-links">
-  <h2 class="screen-reader-text">Skip links</h2>
-  <ul>
-    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
-    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
-    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
-  </ul>
-</nav>
-
-    <!--[if lt IE 9]>
-<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
-<![endif]-->
-
     
 
 <div class="masthead">
@@ -240,7 +227,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Getting a Repeatable Build, Every Time">
-    <meta itemprop="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly. It’s kinda like a “what would you do if you couldn’t use Earthly” article. This will hopefully give you some ideas on best practices around build script maintenance, or it might help you decide on whether Earthly is something for you (or if the alternative is preferrable).">
+    <meta itemprop="description" content="I wanted to sit down and write about all the tricks we learned and that we used every day to help make builds more manageable in the absence of Earthly.">
     <meta itemprop="datePublished" content="2021-05-19T00:00:00-04:00">
     
 
@@ -611,11 +598,11 @@ docker rm output-artifacts</code></pre>
   
   <div class="author__content">
     
-      <h4 class="author__name" itemprop="name">
+      <div class="author__name heading" itemprop="name">
         Vlad A. Ionescu
     
     
-    </h4>
+      </div>
     
       <div class="author__bio" itemprop="description">
         <p>Founder of Earthly. Founder of ShiftLeft. Ex Google. Ex VMware. Co-author RabbitMQ Erlang Client.</p>
@@ -775,7 +762,7 @@ docker rm output-artifacts</code></pre>
   
   
     <div class="page__related">
-      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="page__related-title heading">You may also enjoy</div>
       <div class="grid__wrapper">
         
           
@@ -797,12 +784,17 @@ docker rm output-artifacts</code></pre>
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
@@ -849,12 +841,17 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
       </div>
     
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
       
         <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
 </a>
       
-    </h2>
+    
+    </div>
+    
     
 
   <p class="page__meta">
