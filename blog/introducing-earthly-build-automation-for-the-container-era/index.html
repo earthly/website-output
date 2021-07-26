@@ -10,7 +10,7 @@
 
 
 <title>Introducing Earthly: build automation for the container era - Earthly Blog</title>
-<meta name="description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and ...">
+<meta name="description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and open-source. And yet, our most popular CI/CD platform was started 15 years ago when the industry looked very different. CI systems have not changed much since — they are still largely glorified bash scripts, and the limitations are starting to show their age. For context, Docker’s first release was 7 years ago and Kubernetes is only 5 years old. There is no way Jenkins (“Hudson” back then) could have been built with containers in mind, as Docker didn’t even exist at the time.      Source Lawrence Hecht, Source CNCF 2019 Survey     During this time, tech giants have innovated in parallel and have open-sourced tools like Bazel and Pants. They bring modern features, like reproducibility, determinism, the ability to scale in a monorepo and the ability to use cloud-based cache and parallelization.   Although these systems are probably some of the most advanced build automation tools the world has seen, they come at a significant cost: the build config is not compatible with any of the popular open-source tooling that the language communities have gotten so used to. It’s like they come from a parallel universe. For most teams, adopting these tools means completely rewriting all the build configs from scratch and giving up on an entire ecosystem of tooling that they have become so dependent on. As advanced as they are, these solutions have not seen significant adoption beyond tech giants.   Introducing Earthly      With the purpose of bringing these modern capabilities to people out in the real world, today we are announcing the release of Earthly: a build automation tool for the container era.   Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it. It does not replace your Gradle, your Maven, your npm, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.   Earthly runs all build targets containerized: they get container isolation and layer caching. Nothing is shared between build targets, other than clearly defined, immutable build artifacts and Docker images.   No sharing means that you get parallelization for free. You don’t need to do anything to get it and you never have to debug race conditions. It just works.   But most importantly, all builds are completely reproducible. You get a guarantee that the build succeeds on its own and not because of your local dependencies or some environmental config that you’re not aware of. Thus, it becomes an order of magnitude easier to iterate on and debug broken CI builds.      A familiar Dockerfile-like syntax is used , to help new users get up-to-speed quickly. It’s like Dockerfile and Makefile had a baby. However, in contrast to Dockerfiles, you can also output regular artifacts (jars, packages, binaries, arbitrary files), in addition to Docker images.   FROM golang:1.13-alpine3.11 WORKDIR /go-example  build:   COPY main.go .   RUN go build -o build/go-example main.go   SAVE ARTIFACT build/go-example AS LOCAL build/go-example  docker:   COPY +build/go-example .   ENTRYPOINT [&quot;/go-example/go-example&quot;]   SAVE IMAGE go-example:latest   Earthly in the future will be about much more: for example, cloud-based build parallelization that has never been possible before. For now, you can run it on top of your existing CI, and you can run it locally for development. You still get the other benefits mentioned above.   There are many other goodies that Earthly provides. For more information and also installation instructions, see the Earthly ReadMe on GitHub.   This is the first release of Earthly. We will continue to iterate, make improvements and, most importantly, incorporate user feedback. We can’t wait to see what you build with it!">
 
 
   <meta name="author" content="Vlad A. Ionescu">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/">
 
 
-  <meta property="og:description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and ...">
+  <meta property="og:description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and open-source. And yet, our most popular CI/CD platform was started 15 years ago when the industry looked very different. CI systems have not changed much since — they are still largely glorified bash scripts, and the limitations are starting to show their age. For context, Docker’s first release was 7 years ago and Kubernetes is only 5 years old. There is no way Jenkins (“Hudson” back then) could have been built with containers in mind, as Docker didn’t even exist at the time.      Source Lawrence Hecht, Source CNCF 2019 Survey     During this time, tech giants have innovated in parallel and have open-sourced tools like Bazel and Pants. They bring modern features, like reproducibility, determinism, the ability to scale in a monorepo and the ability to use cloud-based cache and parallelization.   Although these systems are probably some of the most advanced build automation tools the world has seen, they come at a significant cost: the build config is not compatible with any of the popular open-source tooling that the language communities have gotten so used to. It’s like they come from a parallel universe. For most teams, adopting these tools means completely rewriting all the build configs from scratch and giving up on an entire ecosystem of tooling that they have become so dependent on. As advanced as they are, these solutions have not seen significant adoption beyond tech giants.   Introducing Earthly      With the purpose of bringing these modern capabilities to people out in the real world, today we are announcing the release of Earthly: a build automation tool for the container era.   Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it. It does not replace your Gradle, your Maven, your npm, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.   Earthly runs all build targets containerized: they get container isolation and layer caching. Nothing is shared between build targets, other than clearly defined, immutable build artifacts and Docker images.   No sharing means that you get parallelization for free. You don’t need to do anything to get it and you never have to debug race conditions. It just works.   But most importantly, all builds are completely reproducible. You get a guarantee that the build succeeds on its own and not because of your local dependencies or some environmental config that you’re not aware of. Thus, it becomes an order of magnitude easier to iterate on and debug broken CI builds.      A familiar Dockerfile-like syntax is used , to help new users get up-to-speed quickly. It’s like Dockerfile and Makefile had a baby. However, in contrast to Dockerfiles, you can also output regular artifacts (jars, packages, binaries, arbitrary files), in addition to Docker images.   FROM golang:1.13-alpine3.11 WORKDIR /go-example  build:   COPY main.go .   RUN go build -o build/go-example main.go   SAVE ARTIFACT build/go-example AS LOCAL build/go-example  docker:   COPY +build/go-example .   ENTRYPOINT [&quot;/go-example/go-example&quot;]   SAVE IMAGE go-example:latest   Earthly in the future will be about much more: for example, cloud-based build parallelization that has never been possible before. For now, you can run it on top of your existing CI, and you can run it locally for development. You still get the other benefits mentioned above.   There are many other goodies that Earthly provides. For more information and also installation instructions, see the Earthly ReadMe on GitHub.   This is the first release of Earthly. We will continue to iterate, make improvements and, most importantly, incorporate user feedback. We can’t wait to see what you build with it!">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Introducing Earthly: build automation for the container era">
-  <meta name="twitter:description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and ...">
+  <meta name="twitter:description" content="We live in an era of continuous delivery, containers, automation, rich set of programming languages, varying code structures (mono/poly-repos) and open-source. And yet, our most popular CI/CD platform was started 15 years ago when the industry looked very different. CI systems have not changed much since — they are still largely glorified bash scripts, and the limitations are starting to show their age. For context, Docker’s first release was 7 years ago and Kubernetes is only 5 years old. There is no way Jenkins (“Hudson” back then) could have been built with containers in mind, as Docker didn’t even exist at the time.      Source Lawrence Hecht, Source CNCF 2019 Survey     During this time, tech giants have innovated in parallel and have open-sourced tools like Bazel and Pants. They bring modern features, like reproducibility, determinism, the ability to scale in a monorepo and the ability to use cloud-based cache and parallelization.   Although these systems are probably some of the most advanced build automation tools the world has seen, they come at a significant cost: the build config is not compatible with any of the popular open-source tooling that the language communities have gotten so used to. It’s like they come from a parallel universe. For most teams, adopting these tools means completely rewriting all the build configs from scratch and giving up on an entire ecosystem of tooling that they have become so dependent on. As advanced as they are, these solutions have not seen significant adoption beyond tech giants.   Introducing Earthly      With the purpose of bringing these modern capabilities to people out in the real world, today we are announcing the release of Earthly: a build automation tool for the container era.   Earthly is not meant to replace your existing open-source tooling, but rather to leverage and augment it. It does not replace your Gradle, your Maven, your npm, your webpack — you don’t need to rewrite your build. Instead, it leverages these popular technologies and builds on top of them, acting more like the glue.   Earthly runs all build targets containerized: they get container isolation and layer caching. Nothing is shared between build targets, other than clearly defined, immutable build artifacts and Docker images.   No sharing means that you get parallelization for free. You don’t need to do anything to get it and you never have to debug race conditions. It just works.   But most importantly, all builds are completely reproducible. You get a guarantee that the build succeeds on its own and not because of your local dependencies or some environmental config that you’re not aware of. Thus, it becomes an order of magnitude easier to iterate on and debug broken CI builds.      A familiar Dockerfile-like syntax is used , to help new users get up-to-speed quickly. It’s like Dockerfile and Makefile had a baby. However, in contrast to Dockerfiles, you can also output regular artifacts (jars, packages, binaries, arbitrary files), in addition to Docker images.   FROM golang:1.13-alpine3.11 WORKDIR /go-example  build:   COPY main.go .   RUN go build -o build/go-example main.go   SAVE ARTIFACT build/go-example AS LOCAL build/go-example  docker:   COPY +build/go-example .   ENTRYPOINT [&quot;/go-example/go-example&quot;]   SAVE IMAGE go-example:latest   Earthly in the future will be about much more: for example, cloud-based build parallelization that has never been possible before. For now, you can run it on top of your existing CI, and you can run it locally for development. You still get the other benefits mentioned above.   There are many other goodies that Earthly provides. For more information and also installation instructions, see the Earthly ReadMe on GitHub.   This is the first release of Earthly. We will continue to iterate, make improvements and, most importantly, incorporate user feedback. We can’t wait to see what you build with it!">
   <meta name="twitter:url" content="https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/">
 
   
@@ -157,6 +157,19 @@
   </head>
 
   <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
     
 
 <div class="masthead">
@@ -334,11 +347,11 @@
   
   <div class="author__content">
     
-      <div class="author__name heading" itemprop="name">
+      <h4 class="author__name" itemprop="name">
         Vlad A. Ionescu
     
     
-      </div>
+    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Founder of Earthly. Founder of ShiftLeft. Ex Google. Ex VMware. Co-author RabbitMQ Erlang Client.</p>
@@ -470,7 +483,7 @@
   
   
     <div class="page__related">
-      <div class="page__related-title heading">You may also enjoy</div>
+      <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
         
           
@@ -488,21 +501,16 @@
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -517,7 +525,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -525,7 +533,20 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -545,21 +566,16 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -574,7 +590,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          4 minute read
         
       </span>
     
@@ -582,7 +598,10 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
   </article>
 </div>
 

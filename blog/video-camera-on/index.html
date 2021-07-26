@@ -10,7 +10,7 @@
 
 
 <title>SQL Errors and Video Cameras - Earthly Blog</title>
-<meta name="description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that genera...">
+<meta name="description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things.   The SQL looked something like this:   -- sort and insert first partition into repo INSERT INTO Report SELECT name FROM input1  ORDER BY val;   SELECT * FROM Report; one two three -- yep  -- sort and insert second partition into repo INSERT INTO Report SELECT name FROM input2  ORDER BY val;  SELECT * FROM Report; one two three four  five  six -- yep  SELECT top 3 * FROM Report; one two four -- wait, what?   I was going to spend the morning tracking this down. That was my daily stand-up update. But when I gave it, I caught a look from my teammate Isabella (not her real name). The look helped me solve the problem. We’ll get to the solution in a moment, but I want to talk about that facial expression – I am always on the lookout for it now.   The Wait-What? Look       “I’ve traced it to a bug in the SMTP protocol”    I once saw someone go up to a post-office box and confidently empty their lunch garbage into it - like it was a food court garbage bin. I made the facial expression then - I could feel my lips pull to one side and my eyes narrow in confusion. Am I seeing this correctly?   I’ve spotted this look in so many daily stand-ups since then. Usually, it’s very fleeting, but I try not to let it pass by unremarked because unpacking it can save so much time. It easy to thrash on a problem and forget some simple assumption you’ve made. This face is a sign you’ve overlooked something important.   Are daily stand-ups valuable? Sometimes they are, and sometimes they aren’t1. If you’re blocked on something, then telling the team is essential, but you shouldn’t wait for the next stand-up to share that. There are also all kinds of social reasons why a stand-up is healthy. I work from my home office and have for many years, and a video stand-up is a great way to actually have some small talk, screen to screen, with my teammates. Some parts of a daily stand-up are just a status report, and I’m not sure that ‘what I did yesterday and what I’m doing today part’ is always valuable. But the actual off-topic parts of a stand-up – the part where I complain about how difficult it is to get a permit for building my deck, and where Alex explains about foraging for mushrooms – those parts help keep me sane and happy.   That’s Not Quite Right       “I’m inserting ‘foo’ but retrieving ‘disk is full’”    We are always simulating the world around us on some subconscious level. It helps us predict what is going to happen next. For example, my neighbor is out watering his grass right now – I can see him out my office window. If his hose wasn’t on, I’m not sure I would notice because I’m not paying that much attention. But if he casually jumped from the ground to the second-story roof of his house, it would become the center of my attention. It would trigger some that’s-not-quite-right effect, and I would unconsciously make that confused face.   That is why a stand-up can be valuable, in person or screen to screen. You can give your update when you are stuck, and you can watch for that failed-simulation face. Then ask them what they are thinking. Chances are they know where you missed a step or where you have a false assumption. At the very least, you’ve violated their intuition about the problem, and unpacking that feeling is a good idea.   Non-Verbal Communication Requires Cameras On       “All users were created on a Thursday in 1970”    I’ve heard many times before that 70% of communication is non-verbal. This seems to oversell non-verbals or maybe I’m just not great at reading them. This whole confused-face signal could be replaced with chin-scratching emoji or a sign that said: “Wait, What?”. But, when I do get a non-verbal signal, it can save me hours and days of time. I don’t think you can easily replicate this signal with asynchronous communication. One reason is that these non-verbal cues often represent subtle feelings. Someone can hear your update and think to themselves, “That doesn’t sound right”, but they may not be comfortable enough or care enough to say it out loud. Or it’s just fleeting thought before they start their own update. You have to catch these expressions, and you can’t do it without seeing the person.   This doesn’t mean that everyone should always be able to see everyone in every meeting. If you are joining a 50 person meeting with a single presenter and everyone has their camera off, then follow suit. If you are eating your lunch in a meeting, I don’t need to see or hear you chew. But if you are seeking help or giving help or pairing on an issue with me, then I want to see your face. The examples and facial expressions here are extreme but even just seeing that I’ve gone too fast and lost you, or that you’re starting to say something, can improve the fidelity of the conversation.   People find zoom meetings fatiguing, and I get that. The world contains too many meetings. But I’m shocked when I talk to someone on a remote team that never uses video. If you’re not seeing your teammate’s face when you describe a problem, who knows what you are missing2.   The SQL Solution       “the max message size in the queue is now 2 gigabytes”    So about the SQL. I got the look from Isabella because a select statement like I was describing should be deterministic. Isabella’s spidey-sense told her either I was wrong about results changing or I was misusing SQL. It turned out to be the latter.   You see, I was inserting records sorted and selecting them out without an explicit order. Also, my simple recounting of the report’s logic (and my code snippet above) was missing a critical detail – one I had forgotten about3. Sometimes I had to delete duplicate keys from the report table. Guess what happens when you insert things in-order into a table with deleted rows? Its implementation-specific, but sometimes, the invisible spaces left by the deleted rows will be filled in by the inserted data, undoing the insertion order. My row wasn’t missing. My data just wasn’t sorted correctly. Once I added in an order by everything worked.         Like everything, they work well in some contexts and not in others. If they aren’t helpful, drop them and try something else.↩︎     I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?↩︎    Here is a minimal reproduction in Postgres.   I have some tables with summary data in it:   -- simplified tables CREATE TABLE Report (name varchar(13)); CREATE TABLE input1(name varchar(13), val bigint); CREATE TABLE input2(name varchar(13), val bigint);  -- which, per user, had summary data something like this INSERT INTO input1 VALUES     (&#39;one&#39;, 1),     (&#39;two&#39;, 2),     (&#39;three&#39;, 3),     (&#39;three&#39;, 3);  INSERT INTO input2 VALUES     (&#39;four&#39;, 4),     (&#39;five&#39;, 5),     (&#39;six&#39;, 6);   I sort it and put it in the report table then remove any duplicates:   -- sort and insert first partition INSERT INTO Report SELECT name FROM input1  ORDER BY val;  -- delete duplicate records  DELETE FROM Report where name in (    select name   from Report    group by name    having count(*) &gt; 1 );  -- sort and insert second partition INSERT INTO Report SELECT name FROM input2  ORDER BY val;   Then I return the N results as part of the report:   -- show Top N report SELECT * FROM Report limit 3; one two four   The actual problem was more complex, involved abusing row_number() and was in SQL SERVER, but the solution is still the same: use an order by:     -- show Top N report   SELECT * FROM Report Order By name limit 3;   one   two   three  SQL makes no guarantees about tables being in insertion order.   ↩︎">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/video-camera-on/">
 
 
-  <meta property="og:description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that genera...">
+  <meta property="og:description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things.   The SQL looked something like this:   -- sort and insert first partition into repo INSERT INTO Report SELECT name FROM input1  ORDER BY val;   SELECT * FROM Report; one two three -- yep  -- sort and insert second partition into repo INSERT INTO Report SELECT name FROM input2  ORDER BY val;  SELECT * FROM Report; one two three four  five  six -- yep  SELECT top 3 * FROM Report; one two four -- wait, what?   I was going to spend the morning tracking this down. That was my daily stand-up update. But when I gave it, I caught a look from my teammate Isabella (not her real name). The look helped me solve the problem. We’ll get to the solution in a moment, but I want to talk about that facial expression – I am always on the lookout for it now.   The Wait-What? Look       “I’ve traced it to a bug in the SMTP protocol”    I once saw someone go up to a post-office box and confidently empty their lunch garbage into it - like it was a food court garbage bin. I made the facial expression then - I could feel my lips pull to one side and my eyes narrow in confusion. Am I seeing this correctly?   I’ve spotted this look in so many daily stand-ups since then. Usually, it’s very fleeting, but I try not to let it pass by unremarked because unpacking it can save so much time. It easy to thrash on a problem and forget some simple assumption you’ve made. This face is a sign you’ve overlooked something important.   Are daily stand-ups valuable? Sometimes they are, and sometimes they aren’t1. If you’re blocked on something, then telling the team is essential, but you shouldn’t wait for the next stand-up to share that. There are also all kinds of social reasons why a stand-up is healthy. I work from my home office and have for many years, and a video stand-up is a great way to actually have some small talk, screen to screen, with my teammates. Some parts of a daily stand-up are just a status report, and I’m not sure that ‘what I did yesterday and what I’m doing today part’ is always valuable. But the actual off-topic parts of a stand-up – the part where I complain about how difficult it is to get a permit for building my deck, and where Alex explains about foraging for mushrooms – those parts help keep me sane and happy.   That’s Not Quite Right       “I’m inserting ‘foo’ but retrieving ‘disk is full’”    We are always simulating the world around us on some subconscious level. It helps us predict what is going to happen next. For example, my neighbor is out watering his grass right now – I can see him out my office window. If his hose wasn’t on, I’m not sure I would notice because I’m not paying that much attention. But if he casually jumped from the ground to the second-story roof of his house, it would become the center of my attention. It would trigger some that’s-not-quite-right effect, and I would unconsciously make that confused face.   That is why a stand-up can be valuable, in person or screen to screen. You can give your update when you are stuck, and you can watch for that failed-simulation face. Then ask them what they are thinking. Chances are they know where you missed a step or where you have a false assumption. At the very least, you’ve violated their intuition about the problem, and unpacking that feeling is a good idea.   Non-Verbal Communication Requires Cameras On       “All users were created on a Thursday in 1970”    I’ve heard many times before that 70% of communication is non-verbal. This seems to oversell non-verbals or maybe I’m just not great at reading them. This whole confused-face signal could be replaced with chin-scratching emoji or a sign that said: “Wait, What?”. But, when I do get a non-verbal signal, it can save me hours and days of time. I don’t think you can easily replicate this signal with asynchronous communication. One reason is that these non-verbal cues often represent subtle feelings. Someone can hear your update and think to themselves, “That doesn’t sound right”, but they may not be comfortable enough or care enough to say it out loud. Or it’s just fleeting thought before they start their own update. You have to catch these expressions, and you can’t do it without seeing the person.   This doesn’t mean that everyone should always be able to see everyone in every meeting. If you are joining a 50 person meeting with a single presenter and everyone has their camera off, then follow suit. If you are eating your lunch in a meeting, I don’t need to see or hear you chew. But if you are seeking help or giving help or pairing on an issue with me, then I want to see your face. The examples and facial expressions here are extreme but even just seeing that I’ve gone too fast and lost you, or that you’re starting to say something, can improve the fidelity of the conversation.   People find zoom meetings fatiguing, and I get that. The world contains too many meetings. But I’m shocked when I talk to someone on a remote team that never uses video. If you’re not seeing your teammate’s face when you describe a problem, who knows what you are missing2.   The SQL Solution       “the max message size in the queue is now 2 gigabytes”    So about the SQL. I got the look from Isabella because a select statement like I was describing should be deterministic. Isabella’s spidey-sense told her either I was wrong about results changing or I was misusing SQL. It turned out to be the latter.   You see, I was inserting records sorted and selecting them out without an explicit order. Also, my simple recounting of the report’s logic (and my code snippet above) was missing a critical detail – one I had forgotten about3. Sometimes I had to delete duplicate keys from the report table. Guess what happens when you insert things in-order into a table with deleted rows? Its implementation-specific, but sometimes, the invisible spaces left by the deleted rows will be filled in by the inserted data, undoing the insertion order. My row wasn’t missing. My data just wasn’t sorted correctly. Once I added in an order by everything worked.         Like everything, they work well in some contexts and not in others. If they aren’t helpful, drop them and try something else.↩︎     I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?↩︎    Here is a minimal reproduction in Postgres.   I have some tables with summary data in it:   -- simplified tables CREATE TABLE Report (name varchar(13)); CREATE TABLE input1(name varchar(13), val bigint); CREATE TABLE input2(name varchar(13), val bigint);  -- which, per user, had summary data something like this INSERT INTO input1 VALUES     (&#39;one&#39;, 1),     (&#39;two&#39;, 2),     (&#39;three&#39;, 3),     (&#39;three&#39;, 3);  INSERT INTO input2 VALUES     (&#39;four&#39;, 4),     (&#39;five&#39;, 5),     (&#39;six&#39;, 6);   I sort it and put it in the report table then remove any duplicates:   -- sort and insert first partition INSERT INTO Report SELECT name FROM input1  ORDER BY val;  -- delete duplicate records  DELETE FROM Report where name in (    select name   from Report    group by name    having count(*) &gt; 1 );  -- sort and insert second partition INSERT INTO Report SELECT name FROM input2  ORDER BY val;   Then I return the N results as part of the report:   -- show Top N report SELECT * FROM Report limit 3; one two four   The actual problem was more complex, involved abusing row_number() and was in SQL SERVER, but the solution is still the same: use an order by:     -- show Top N report   SELECT * FROM Report Order By name limit 3;   one   two   three  SQL makes no guarantees about tables being in insertion order.   ↩︎">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="SQL Errors and Video Cameras">
-  <meta name="twitter:description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that genera...">
+  <meta name="twitter:description" content="Some years ago, when I worked in a physical office, I was having trouble with a new report I was developing. The reasonably complex SQL that generated the report would sometimes be missing a single row that would reappear if I reran things.   The SQL looked something like this:   -- sort and insert first partition into repo INSERT INTO Report SELECT name FROM input1  ORDER BY val;   SELECT * FROM Report; one two three -- yep  -- sort and insert second partition into repo INSERT INTO Report SELECT name FROM input2  ORDER BY val;  SELECT * FROM Report; one two three four  five  six -- yep  SELECT top 3 * FROM Report; one two four -- wait, what?   I was going to spend the morning tracking this down. That was my daily stand-up update. But when I gave it, I caught a look from my teammate Isabella (not her real name). The look helped me solve the problem. We’ll get to the solution in a moment, but I want to talk about that facial expression – I am always on the lookout for it now.   The Wait-What? Look       “I’ve traced it to a bug in the SMTP protocol”    I once saw someone go up to a post-office box and confidently empty their lunch garbage into it - like it was a food court garbage bin. I made the facial expression then - I could feel my lips pull to one side and my eyes narrow in confusion. Am I seeing this correctly?   I’ve spotted this look in so many daily stand-ups since then. Usually, it’s very fleeting, but I try not to let it pass by unremarked because unpacking it can save so much time. It easy to thrash on a problem and forget some simple assumption you’ve made. This face is a sign you’ve overlooked something important.   Are daily stand-ups valuable? Sometimes they are, and sometimes they aren’t1. If you’re blocked on something, then telling the team is essential, but you shouldn’t wait for the next stand-up to share that. There are also all kinds of social reasons why a stand-up is healthy. I work from my home office and have for many years, and a video stand-up is a great way to actually have some small talk, screen to screen, with my teammates. Some parts of a daily stand-up are just a status report, and I’m not sure that ‘what I did yesterday and what I’m doing today part’ is always valuable. But the actual off-topic parts of a stand-up – the part where I complain about how difficult it is to get a permit for building my deck, and where Alex explains about foraging for mushrooms – those parts help keep me sane and happy.   That’s Not Quite Right       “I’m inserting ‘foo’ but retrieving ‘disk is full’”    We are always simulating the world around us on some subconscious level. It helps us predict what is going to happen next. For example, my neighbor is out watering his grass right now – I can see him out my office window. If his hose wasn’t on, I’m not sure I would notice because I’m not paying that much attention. But if he casually jumped from the ground to the second-story roof of his house, it would become the center of my attention. It would trigger some that’s-not-quite-right effect, and I would unconsciously make that confused face.   That is why a stand-up can be valuable, in person or screen to screen. You can give your update when you are stuck, and you can watch for that failed-simulation face. Then ask them what they are thinking. Chances are they know where you missed a step or where you have a false assumption. At the very least, you’ve violated their intuition about the problem, and unpacking that feeling is a good idea.   Non-Verbal Communication Requires Cameras On       “All users were created on a Thursday in 1970”    I’ve heard many times before that 70% of communication is non-verbal. This seems to oversell non-verbals or maybe I’m just not great at reading them. This whole confused-face signal could be replaced with chin-scratching emoji or a sign that said: “Wait, What?”. But, when I do get a non-verbal signal, it can save me hours and days of time. I don’t think you can easily replicate this signal with asynchronous communication. One reason is that these non-verbal cues often represent subtle feelings. Someone can hear your update and think to themselves, “That doesn’t sound right”, but they may not be comfortable enough or care enough to say it out loud. Or it’s just fleeting thought before they start their own update. You have to catch these expressions, and you can’t do it without seeing the person.   This doesn’t mean that everyone should always be able to see everyone in every meeting. If you are joining a 50 person meeting with a single presenter and everyone has their camera off, then follow suit. If you are eating your lunch in a meeting, I don’t need to see or hear you chew. But if you are seeking help or giving help or pairing on an issue with me, then I want to see your face. The examples and facial expressions here are extreme but even just seeing that I’ve gone too fast and lost you, or that you’re starting to say something, can improve the fidelity of the conversation.   People find zoom meetings fatiguing, and I get that. The world contains too many meetings. But I’m shocked when I talk to someone on a remote team that never uses video. If you’re not seeing your teammate’s face when you describe a problem, who knows what you are missing2.   The SQL Solution       “the max message size in the queue is now 2 gigabytes”    So about the SQL. I got the look from Isabella because a select statement like I was describing should be deterministic. Isabella’s spidey-sense told her either I was wrong about results changing or I was misusing SQL. It turned out to be the latter.   You see, I was inserting records sorted and selecting them out without an explicit order. Also, my simple recounting of the report’s logic (and my code snippet above) was missing a critical detail – one I had forgotten about3. Sometimes I had to delete duplicate keys from the report table. Guess what happens when you insert things in-order into a table with deleted rows? Its implementation-specific, but sometimes, the invisible spaces left by the deleted rows will be filled in by the inserted data, undoing the insertion order. My row wasn’t missing. My data just wasn’t sorted correctly. Once I added in an order by everything worked.         Like everything, they work well in some contexts and not in others. If they aren’t helpful, drop them and try something else.↩︎     I’ve run this idea by people I know who work remotely and never turn their camera on. Not everyone is convinced, and I find that genuinely confusing. Maybe they have a lot of useless meetings? Perhaps the local culture is against cameras? Or maybe they always know what they are doing, and I never do?↩︎    Here is a minimal reproduction in Postgres.   I have some tables with summary data in it:   -- simplified tables CREATE TABLE Report (name varchar(13)); CREATE TABLE input1(name varchar(13), val bigint); CREATE TABLE input2(name varchar(13), val bigint);  -- which, per user, had summary data something like this INSERT INTO input1 VALUES     (&#39;one&#39;, 1),     (&#39;two&#39;, 2),     (&#39;three&#39;, 3),     (&#39;three&#39;, 3);  INSERT INTO input2 VALUES     (&#39;four&#39;, 4),     (&#39;five&#39;, 5),     (&#39;six&#39;, 6);   I sort it and put it in the report table then remove any duplicates:   -- sort and insert first partition INSERT INTO Report SELECT name FROM input1  ORDER BY val;  -- delete duplicate records  DELETE FROM Report where name in (    select name   from Report    group by name    having count(*) &gt; 1 );  -- sort and insert second partition INSERT INTO Report SELECT name FROM input2  ORDER BY val;   Then I return the N results as part of the report:   -- show Top N report SELECT * FROM Report limit 3; one two four   The actual problem was more complex, involved abusing row_number() and was in SQL SERVER, but the solution is still the same: use an order by:     -- show Top N report   SELECT * FROM Report Order By name limit 3;   one   two   three  SQL makes no guarantees about tables being in insertion order.   ↩︎">
   <meta name="twitter:url" content="https://earthly.dev/blog/video-camera-on/">
 
   
@@ -157,6 +157,19 @@
   </head>
 
   <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
     
 
 <div class="masthead">
@@ -429,7 +442,7 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
   
   <div class="author__content">
     
-      <div class="author__name heading" itemprop="name">
+      <h4 class="author__name" itemprop="name">
         Adam Gordon Bell
     
     
@@ -447,7 +460,7 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
         
       
     
-      </div>
+    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -580,7 +593,7 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
   
   
     <div class="page__related">
-      <div class="page__related-title heading">You may also enjoy</div>
+      <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
         
           
@@ -598,21 +611,16 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -627,7 +635,7 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -635,7 +643,20 @@ SQL makes no guarantees about tables being in insertion order. <!-- markdownlint
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -655,21 +676,16 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -684,7 +700,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          4 minute read
         
       </span>
     
@@ -692,7 +708,10 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
   </article>
 </div>
 

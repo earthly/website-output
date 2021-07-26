@@ -10,7 +10,7 @@
 
 
 <title>Can We Build Better? - Earthly Blog</title>
-<meta name="description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your ...">
+<meta name="description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.   Solving Reproducible Builds   Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.   Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.   A Scala Example   Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a Makefile you wouldn’t be far off.     Let’s walk through creating an Earthfile for a Scala project:  ├── build.sbt  └── src/main     ├── Main.scala └── src/test     ├── Test.scala &lt;/code&gt;&lt;/pre&gt;  We have a main that we would like to run on startup:   object Main extends App {   println(&quot;Hello, World!&quot;) }   Main.scala   And some unit tests we would like to run as part of the build:   import org.scalatest.FlatSpec  class ListFlatSpec extends FlatSpec {   &quot;An empty List&quot; should &quot;have size 0&quot; in {     assert(List.empty.size == 0)   } }   Test.scala   There are several steps involved in the build process for this project:    Compiling   Testing   Containerizing    Let’s encapsulate these into an Earthfile, so that I can run the exact same build process locally and eliminate any reproducibility issues.   Setup   The first step is to create a new Earthfile and copy in our build files and dependencies:     FROM hseeberger/scala-sbt:11.0.6_1.3.10_2.13.1 WORKDIR /scala-example  deps:     COPY build.sbt ./     COPY project project     RUN sbt update     SAVE IMAGE   Earthfile   The first line is declaring the base docker image our build steps will run inside.  All earthly builds take place within the context of a docker container.  This is how we ensure reproducibility.  After that, we set a working directory and declare our first target deps and copy our project files into the build context.    You may have noticed the first time you build an sbt project, it takes a while to pull down all the project dependencies.  This deps target is helping us avoid paying that cost every build.   Calling sbt update and then SAVE IMAGE ensures that these steps are cached and can be used in further build steps.  Earthly will only need to be rerun this step if our build files change.    We can test out the deps step like this:      Running earthly +deps     Build It   Next, we create a build target. This is our Earthfile equivalent of sbt compile.   build:     FROM +deps     COPY src src     RUN sbt compile   Earthfile continued   Inside the build: target we copy in our source files, and run our familiar sbt compile.  We use FROM +deps to tell earthly that this step is dependent upon the output of our deps step above.   We can run the build like this:      Running earthly +build     Test It   We can similarly create a target for running tests:   test:     FROM +deps     COPY src src     RUN sbt test&lt;/code&gt;&lt;/pre&gt;   Earthfile continued   We can then run our tests like this:      Running earthly +test     Containerize It   The final step in our build is to build a docker container, so we can send this application off to run in Kubernetes or EKS or whatever production happens to look like.   docker:  COPY src src  RUN sbt assembly  ENTRYPOINT [&quot;java&quot;,&quot;-cp&quot;,&quot;build/bin/scala-example-assembly-1.0.jar&quot;,&quot;Main&quot;]   SAVE IMAGE scala-example:latest   Earthfile continued   Here we are using sbt assembly to create a fat jar that we run as our docker container’s entry point.   We can test out our docker image as follows:      Running earthly +docker     You can find the full example on GitHub. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.     Did We Solve It?   We now have our deps, build, test and docker targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.      Encapsulating the Build Steps     If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .   But Wait There’s More   We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.     For now, you can find more details, such as how to install earthly and many more examples on GitHub.  ">
 
 
   <meta name="author" content="Adam Gordon Bell">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="https://earthly.dev/blog/better-builds/">
 
 
-  <meta property="og:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your ...">
+  <meta property="og:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.   Solving Reproducible Builds   Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.   Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.   A Scala Example   Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a Makefile you wouldn’t be far off.     Let’s walk through creating an Earthfile for a Scala project:  ├── build.sbt  └── src/main     ├── Main.scala └── src/test     ├── Test.scala &lt;/code&gt;&lt;/pre&gt;  We have a main that we would like to run on startup:   object Main extends App {   println(&quot;Hello, World!&quot;) }   Main.scala   And some unit tests we would like to run as part of the build:   import org.scalatest.FlatSpec  class ListFlatSpec extends FlatSpec {   &quot;An empty List&quot; should &quot;have size 0&quot; in {     assert(List.empty.size == 0)   } }   Test.scala   There are several steps involved in the build process for this project:    Compiling   Testing   Containerizing    Let’s encapsulate these into an Earthfile, so that I can run the exact same build process locally and eliminate any reproducibility issues.   Setup   The first step is to create a new Earthfile and copy in our build files and dependencies:     FROM hseeberger/scala-sbt:11.0.6_1.3.10_2.13.1 WORKDIR /scala-example  deps:     COPY build.sbt ./     COPY project project     RUN sbt update     SAVE IMAGE   Earthfile   The first line is declaring the base docker image our build steps will run inside.  All earthly builds take place within the context of a docker container.  This is how we ensure reproducibility.  After that, we set a working directory and declare our first target deps and copy our project files into the build context.    You may have noticed the first time you build an sbt project, it takes a while to pull down all the project dependencies.  This deps target is helping us avoid paying that cost every build.   Calling sbt update and then SAVE IMAGE ensures that these steps are cached and can be used in further build steps.  Earthly will only need to be rerun this step if our build files change.    We can test out the deps step like this:      Running earthly +deps     Build It   Next, we create a build target. This is our Earthfile equivalent of sbt compile.   build:     FROM +deps     COPY src src     RUN sbt compile   Earthfile continued   Inside the build: target we copy in our source files, and run our familiar sbt compile.  We use FROM +deps to tell earthly that this step is dependent upon the output of our deps step above.   We can run the build like this:      Running earthly +build     Test It   We can similarly create a target for running tests:   test:     FROM +deps     COPY src src     RUN sbt test&lt;/code&gt;&lt;/pre&gt;   Earthfile continued   We can then run our tests like this:      Running earthly +test     Containerize It   The final step in our build is to build a docker container, so we can send this application off to run in Kubernetes or EKS or whatever production happens to look like.   docker:  COPY src src  RUN sbt assembly  ENTRYPOINT [&quot;java&quot;,&quot;-cp&quot;,&quot;build/bin/scala-example-assembly-1.0.jar&quot;,&quot;Main&quot;]   SAVE IMAGE scala-example:latest   Earthfile continued   Here we are using sbt assembly to create a fat jar that we run as our docker container’s entry point.   We can test out our docker image as follows:      Running earthly +docker     You can find the full example on GitHub. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.     Did We Solve It?   We now have our deps, build, test and docker targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.      Encapsulating the Build Steps     If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .   But Wait There’s More   We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.     For now, you can find more details, such as how to install earthly and many more examples on GitHub.  ">
 
 
 
@@ -36,7 +36,7 @@
 
   <meta name="twitter:site" content="@EarthlyTech">
   <meta name="twitter:title" content="Can We Build Better?">
-  <meta name="twitter:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your ...">
+  <meta name="twitter:description" content="Have you ever had a test fail in the build but not locally? I have. Have you ever then burnt half a day pushing small changes and waiting for your build to get queued so that you could see if you had isolated the breaking change?  Well I have, and I find the slow feedback process to be painful and I’d like to propose a solution.   Solving Reproducible Builds   Whenever I have some failure in the build pipeline that I can’t reproduce locally the culprit ends up being something environmental.   That is there is some difference between running the test suite in Jenkins vs running in locally.   Earthly is an open-source tool designed to solve this problem.  It’s also pretty easy to use.  You might be able to get it in place in your current build process in the time you’d normally spend tracking down problems with a flaky build.   A Scala Example   Earthly uses Earthfiles to encapsulate your build.  If you imagine a dockerfile mixed with a Makefile you wouldn’t be far off.     Let’s walk through creating an Earthfile for a Scala project:  ├── build.sbt  └── src/main     ├── Main.scala └── src/test     ├── Test.scala &lt;/code&gt;&lt;/pre&gt;  We have a main that we would like to run on startup:   object Main extends App {   println(&quot;Hello, World!&quot;) }   Main.scala   And some unit tests we would like to run as part of the build:   import org.scalatest.FlatSpec  class ListFlatSpec extends FlatSpec {   &quot;An empty List&quot; should &quot;have size 0&quot; in {     assert(List.empty.size == 0)   } }   Test.scala   There are several steps involved in the build process for this project:    Compiling   Testing   Containerizing    Let’s encapsulate these into an Earthfile, so that I can run the exact same build process locally and eliminate any reproducibility issues.   Setup   The first step is to create a new Earthfile and copy in our build files and dependencies:     FROM hseeberger/scala-sbt:11.0.6_1.3.10_2.13.1 WORKDIR /scala-example  deps:     COPY build.sbt ./     COPY project project     RUN sbt update     SAVE IMAGE   Earthfile   The first line is declaring the base docker image our build steps will run inside.  All earthly builds take place within the context of a docker container.  This is how we ensure reproducibility.  After that, we set a working directory and declare our first target deps and copy our project files into the build context.    You may have noticed the first time you build an sbt project, it takes a while to pull down all the project dependencies.  This deps target is helping us avoid paying that cost every build.   Calling sbt update and then SAVE IMAGE ensures that these steps are cached and can be used in further build steps.  Earthly will only need to be rerun this step if our build files change.    We can test out the deps step like this:      Running earthly +deps     Build It   Next, we create a build target. This is our Earthfile equivalent of sbt compile.   build:     FROM +deps     COPY src src     RUN sbt compile   Earthfile continued   Inside the build: target we copy in our source files, and run our familiar sbt compile.  We use FROM +deps to tell earthly that this step is dependent upon the output of our deps step above.   We can run the build like this:      Running earthly +build     Test It   We can similarly create a target for running tests:   test:     FROM +deps     COPY src src     RUN sbt test&lt;/code&gt;&lt;/pre&gt;   Earthfile continued   We can then run our tests like this:      Running earthly +test     Containerize It   The final step in our build is to build a docker container, so we can send this application off to run in Kubernetes or EKS or whatever production happens to look like.   docker:  COPY src src  RUN sbt assembly  ENTRYPOINT [&quot;java&quot;,&quot;-cp&quot;,&quot;build/bin/scala-example-assembly-1.0.jar&quot;,&quot;Main&quot;]   SAVE IMAGE scala-example:latest   Earthfile continued   Here we are using sbt assembly to create a fat jar that we run as our docker container’s entry point.   We can test out our docker image as follows:      Running earthly +docker     You can find the full example on GitHub. Now we can adjust our build process to call earthly and containerization ensures our builds are not effected by environmental issues either locally or on the build server.     Did We Solve It?   We now have our deps, build, test and docker targets in our Earthfile. All together these give us a reproducible process for running our build locally and in our CI builds.  We used earthly to encapsulate the build steps.      Encapsulating the Build Steps     If a build fails in CI, we can run the same process locally and reproduce the failure.  Reproducibility solved, in a familiar dockerfile-like syntax .   But Wait There’s More   We haven’t solved all the problems of CI, however.  What about build parallelization?  What about caching intermediate steps?  How about multi-language builds with complicated interdependencies?  Earthly has some solutions for those problems as well and I’ll cover them in future tutorials.     For now, you can find more details, such as how to install earthly and many more examples on GitHub.  ">
   <meta name="twitter:url" content="https://earthly.dev/blog/better-builds/">
 
   
@@ -157,6 +157,19 @@
   </head>
 
   <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
     
 
 <div class="masthead">
@@ -435,7 +448,7 @@ Earthfile continued
   
   <div class="author__content">
     
-      <div class="author__name heading" itemprop="name">
+      <h4 class="author__name" itemprop="name">
         Adam Gordon Bell
     
     
@@ -453,7 +466,7 @@ Earthfile continued
         
       
     
-      </div>
+    </h4>
     
       <div class="author__bio" itemprop="description">
         <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
@@ -586,7 +599,7 @@ Earthfile continued
   
   
     <div class="page__related">
-      <div class="page__related-title heading">You may also enjoy</div>
+      <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
         
           
@@ -604,21 +617,16 @@ Earthfile continued
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/command-line-tools/header-600-df2c8b780.webp 600w, /blog/generated/assets/images/command-line-tools/header-800-df2c8b780.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/command-line-tools/header-600-7e54c1bed.jpg 600w, /blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/command-line-tools/header-800-7e54c1bed.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/command-line-tools/" rel="permalink">6 Command Line Tools for Productive Programmers
+        <a href="/blog/example/" rel="permalink">Example Post
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -633,7 +641,7 @@ Earthfile continued
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          4 minute read
         
       </span>
     
@@ -641,7 +649,20 @@ Earthfile continued
 
 
     <p class="archive__item-excerpt" itemprop="description">
-Lately, I’ve been doing a lot more things at the command line. I’m not a hard-core terminal guy – I use VSCode more than Vim – but I’m always surprised at t...</p>
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
   </article>
 </div>
 
@@ -661,21 +682,16 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <picture><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-e56f7fb32.webp 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-e56f7fb32.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/python-matplotlib-docker/header-600-976d74d44.jpg 600w, /blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/python-matplotlib-docker/header-800-976d74d44.jpg"></picture>
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
 
       </div>
     
-    
-    <div class="archive__item-title no_toc heading" itemprop="headline">
-    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
       
-      
-        <a href="/blog/python-matplotlib-docker/" rel="permalink">Install <code>matplotlib</code> In A Docker Container
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
 </a>
       
-    
-    </div>
-    
+    </h2>
     
 
   <p class="page__meta">
@@ -690,7 +706,7 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          4 minute read
         
       </span>
     
@@ -698,7 +714,10 @@ Lately, I’ve been doing a lot more things at the command line. I’m not a har
 
 
     <p class="archive__item-excerpt" itemprop="description">
-matplotlib is an excellent library for creating graphs and visualizations in Python. For example, I used it to generate the performance graphs in my merging...</p>
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
   </article>
 </div>
 
