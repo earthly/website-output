@@ -412,4 +412,10 @@ var store = [{
         "tags": [],
         "url": "/blog/command-line-tools/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Using Continuous Testing in DevOps Workflows",
+        "excerpt":"Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more confidence you gain in the quality of your software because the quality of each release of your application or library is measurable. Additionally, you...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/continuous-testing-in-devops/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
