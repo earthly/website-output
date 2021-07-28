@@ -303,7 +303,7 @@
 <p>The Build steps include code compilation and unit tests. Also, note that it’s convenient to deploy your application in a <code>dev</code> environment before running complex tests such as integration and end-to-end. However, you may also run your application in GitHub Actions for test purposes.</p>
 <p>In this article, I assume you’ll deploy to a <code>dev</code> environment and focus on implementing different types of tests. Here is a visual of the final workflow for this tutorial:</p>
 <figure>
-<img src="/blog/assets/images/continuous-testing-in-devops/1626807599.png" alt="Final GitHub Action Workflow" /><figcaption aria-hidden="true">Final GitHub Action Workflow</figcaption>
+<img src="/blog/assets/images/continuous-testing-in-devops/40nOj1F.png" alt="Final GitHub Action Workflow" /><figcaption aria-hidden="true">Final GitHub Action Workflow</figcaption>
 </figure>
 <p>Implementing continuous testing can be challenging. If you are on a team that is new to this fail-fast approach, it may be a frustrating transition. In addition, seeing builds or pipelines failing can be overwhelming at the beginning. I suggest prioritizing fixing tests over focusing on new features. This may also be a significant change.</p>
 <p>To remediate those challenges, you should rely on the five DevOps principles described by <a href="https://twitter.com/jezhumble">Jez Humble</a> in <em>The DevOps Handbook</em>:</p>
@@ -326,7 +326,7 @@
 <p>Select one of them by clicking <strong>Set up this workflow</strong>, review the workflow steps, and commit.</p>
 <p>Right away, you should see your workflow starting to build and test your application. Many starting workflows also include linting that validates the formatting and detects potential errors.</p>
 <figure>
-<img src="/blog/assets/images/continuous-testing-in-devops/1626808569.png" alt="Get Started with GitHub Action Workflow" /><figcaption aria-hidden="true">Get Started with GitHub Action Workflow</figcaption>
+<img src="/blog/assets/images/continuous-testing-in-devops/043P3GAA.png" alt="Get Started with GitHub Action Workflow" /><figcaption aria-hidden="true">Get Started with GitHub Action Workflow</figcaption>
 </figure>
 <p>A GitHub Actions workflow contains three elements:</p>
 <ul>
@@ -368,7 +368,7 @@
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        pytest</span></code></pre></div>
 <p>This what a basic workflow looks like:</p>
 <figure>
-<img src="/blog/assets/images/continuous-testing-in-devops/1626808638.png" alt="Most basic GitHub Actions workflow" /><figcaption aria-hidden="true">Most basic GitHub Actions workflow</figcaption>
+<img src="/blog/assets/images/continuous-testing-in-devops/KVnFfF4.png" alt="Most basic GitHub Actions workflow" /><figcaption aria-hidden="true">Most basic GitHub Actions workflow</figcaption>
 </figure>
 <h3 id="add-code-coverage-reports">Add Code Coverage Reports</h3>
 <p>On GitHub, most users rely on third parties to get coverage reports (such as <a href="https://www.sonarqube.org/">SonarQube</a> or <a href="https://about.codecov.io/">Codecov</a>). Integrating those SaaS into your workflow is simple, thanks to the GitHub Actions Marketplace. Most third parties providing code coverage reports have created an Action to make the integration seamless.</p>
