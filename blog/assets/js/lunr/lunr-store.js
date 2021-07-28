@@ -418,4 +418,10 @@ var store = [{
         "tags": [],
         "url": "/blog/continuous-testing-in-devops/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Building in Visual Studio Code with a Makefile",
+        "excerpt":"Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facilitate working with projects that rely on a Makefile to speed up the build. In this tutorial, you’ll set up a simple C++ project that depends...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/vscode-make/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
