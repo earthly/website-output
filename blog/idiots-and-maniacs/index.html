@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Idiots And Maniacs - Earthly Blog</title>
+<meta name="description" content="ObservabilityIf you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational moni...">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Idiots And Maniacs">
+<meta property="og:url" content="https://earthly.dev/blog/idiots-and-maniacs/">
+
+
+  <meta property="og:description" content="ObservabilityIf you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational moni...">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/idiots-and-maniacs/header-800-aea13e3c5.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Idiots And Maniacs">
+  <meta name="twitter:description" content="ObservabilityIf you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational moni...">
+  <meta name="twitter:url" content="https://earthly.dev/blog/idiots-and-maniacs/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/idiots-and-maniacs/header-800-aea13e3c5.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-30T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/idiots-and-maniacs/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-400-b8ed3968f.webp 400w, /blog/generated/assets/images/idiots-and-maniacs/header-600-b8ed3968f.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-b8ed3968f.webp 800w, /blog/generated/assets/images/idiots-and-maniacs/header-1000-b8ed3968f.webp 1000w, /blog/generated/assets/images/idiots-and-maniacs/header-1200-b8ed3968f.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-400-b8ed3968f.png 400w, /blog/generated/assets/images/idiots-and-maniacs/header-600-b8ed3968f.png 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-b8ed3968f.png 800w, /blog/generated/assets/images/idiots-and-maniacs/header-1000-b8ed3968f.png 1000w, /blog/generated/assets/images/idiots-and-maniacs/header-1200-b8ed3968f.png 1200w" type="image/png"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-b8ed3968f.jpg" alt="Idiots And Maniacs"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Idiots And Maniacs">
+    <meta itemprop="description" content="ObservabilityIf you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring and observability. Personally, I went through a process something like this:Service has some basic logging and an uptime alertService has a health-check endpoint, is deployed in triplicate behind a load balancerLogs are real-time shipped to Splunk / ELK StackMetrics set up in Datadog / Prometheus with pagingDistributed Tracing set up for debugging across servicesAnd so onEach step requires more work to set up and has some additional benefits. I moved through each step by necessity as my service handled more requests and became more important to customers.If you had shown step-1-me what a simple REST service looks like in step 5, I would have been shocked. The metrics counters and distributed tracing spans, and various operational concerns make the service more complex. I would have thought that whoever wrote the service was obsessed with operational issues, to the detriment of solving the problems at hand. I would have thought the service author was an observability maniac.On the other hand, if step-5-me were to get paged because a service written by step-1-me was down, he would not be happy. He would have a hard time figuring out what was wrong, and he’d be pretty sure the service author was an idiot who had never been paged in the middle of the night.It reminds me a lot of driving when it first snows here in Peterborough.DrivingIn the winter, we get snow. It’s just a fact of life, and people learn how to drive in snowy conditions. But on the first substantial snowfall of the year, people struggle to remember how to drive.Some will drive way below the speed limit and slow down traffic for everyone. They are idiots in the snow. Others get frustrated by the slow drivers and go too fast for the road conditions. Don’t they know there is snow on the road?Everyone driving slower than me is an idiot, but everyone going faster than me is a maniac.So it is with software development. Everyone who takes an idea further than I have is a maniac, and people who haven’t taken it as far as me are idiots.TestingThere was a time when I thought all code should have 80% unit test code coverage as a minimum. Anything less was practically unethical, and if you didn’t think so, then you hadn’t read Clean Code™️ enough times.On the other hand, Richard Hipp – who tests to 100% code coverage at the machine code level, covering every branch by running billions of tests each release1 – is a testing maniac.I hope you see where I’m going. This idiot to maniac gradient feels right, but it makes no sense. Wherever you find yourself along the spectrum is more a reflection of the context in which you work than anything else.More ExamplesHere are some made-up and exaggerated examples:Typescript Developer: JavaScript developers are idiots. Don’t they know how many bugs the type system could have caught for them.Typescript Developer: Elm developers are obsessed with types. They are maniacs about using types to catch things at compile time.Go Developer: The JVM is such a heavyweight runtime and uses so much memory.Go Developer: Rust is so complex! Who wants to manage memory manually. Use a GC, you maniacs!Kotlin Developer: Java is so verbose and ugly. Welcome to 2021. Kotlin has a lot of sugar and type improvements that make writing correct code simpler.Kotlin Developer: Scala is for maniacs. There is so much syntactic sugar and type stuff that it’s not worth learning about.I’m not trying to pick on any of these languages - Typescript, Go, and Kotlin are all exceptionally well suited to the context they are used in. But contexts vary2, and it takes mental effort to see that people making other trade-offs sometimes have good reasons for it.That doesn’t mean that other people are never wrong, though. People choose the wrong tool for the job all the time. If I were doing SQLite’s level of testing for a low reliability, low traffic, stateless web service when a couple of integration tests would do, then that’d be a mistake, but you’d have to know the context to make that call.While you’re here:Earthly is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.Richard is the creator of SQLite. See this interview for a discussion of his testing approach.↩︎Personal and team familiarity can also be part of the context. PHP may not seem to be the best choice for building a command-line tool, but if it’s a small tool used by a team of PHP developers, then it might be the best choice.↩︎">
+    <meta itemprop="datePublished" content="2021-07-30T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Idiots And Maniacs
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-30T00:00:00-04:00">July 30, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <h2 id="observability">Observability</h2>
+<p>If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring and observability. Personally, I went through a process something like this:</p>
+<ol type="1">
+<li>Service has some basic <a href="/blog/understanding-docker-logging-and-log-files">logging</a> and an uptime alert</li>
+<li>Service has a health-check endpoint, is deployed in triplicate behind a load balancer</li>
+<li>Logs are real-time shipped to Splunk / ELK Stack</li>
+<li>Metrics set up in Datadog / Prometheus with paging</li>
+<li>Distributed Tracing set up for debugging across services</li>
+<li>And so on</li>
+</ol>
+<p>Each step requires more work to set up and has some additional benefits. I moved through each step by necessity as my service handled more requests and became more important to customers.</p>
+<p>If you had shown step-1-me what a simple REST service looks like in step 5, I would have been shocked. The metrics counters and distributed tracing spans, and various operational concerns make the service more complex. I would have thought that whoever wrote the service was obsessed with operational issues, to the detriment of solving the problems at hand. I would have thought the service author was an observability maniac.</p>
+<p>On the other hand, if step-5-me were to get paged because a service written by step-1-me was down, he would not be happy. He would have a hard time figuring out what was wrong, and he’d be pretty sure the service author was an idiot who had never been paged in the middle of the night.</p>
+<p>It reminds me a lot of driving when it first snows here in Peterborough.</p>
+<h2 id="driving">Driving</h2>
+<p><picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/9580-800-b155e3159.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/9580-800-0cb86c200.png 800w" type="image/png"><img width="1200px" src="/blog/generated/assets/images/idiots-and-maniacs/9580-800-0cb86c200.png"></picture></p>
+<p>In the winter, we get snow. It’s just a fact of life, and people learn how to drive in snowy conditions. But on the first substantial snowfall of the year, people struggle to remember how to drive.</p>
+<p>Some will drive way below the speed limit and slow down traffic for everyone. They are idiots in the snow. Others get frustrated by the slow drivers and go too fast for the road conditions. Don’t they know there is snow on the road?</p>
+<p>Everyone driving slower than me is an idiot, but everyone going faster than me is a maniac.</p>
+<p>So it is with software development. Everyone who takes an idea further than I have is a maniac, and people who haven’t taken it as far as me are idiots.</p>
+<h2 id="testing">Testing</h2>
+<p>There was a time when I thought all code should have 80% unit test code coverage as a minimum. Anything less was practically unethical, and if you didn’t think so, then you hadn’t read Clean Code™️ enough times.</p>
+<div class="align-right">
+<p><picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/9770-400-5e5247841.webp 400w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/9770-400-1cc7b22be.png 400w" type="image/png"><img width="300px" src="/blog/generated/assets/images/idiots-and-maniacs/9770-400-1cc7b22be.png"></picture></p>
+</div>
+<p>On the other hand, Richard Hipp – who tests to 100% code coverage at the machine code level, covering every branch by running billions of tests each release<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> – is a testing maniac.</p>
+<p>I hope you see where I’m going. This idiot to maniac gradient feels right, but it makes no sense. Wherever you find yourself along the spectrum is more a reflection of the context in which you work than anything else.</p>
+<h2 id="more-examples">More Examples</h2>
+<p>Here are some made-up and exaggerated examples:</p>
+<ul>
+<li><strong>Typescript Developer:</strong> JavaScript developers are <strong>idiots</strong>. Don’t they know how many bugs the type system could have caught for them.<br />
+</li>
+<li><strong>Typescript Developer:</strong> Elm developers are obsessed with types. They are <strong>maniacs</strong> about using types to catch things at compile time.</li>
+<li><strong>Go Developer:</strong> The JVM is such a heavyweight runtime and uses so much memory.</li>
+<li><strong>Go Developer:</strong> Rust is so complex! Who wants to manage memory manually. Use a GC, you <strong>maniacs</strong>!</li>
+<li><strong>Kotlin Developer:</strong> Java is so verbose and ugly. Welcome to 2021. Kotlin has a lot of sugar and type improvements that make writing correct code simpler.</li>
+<li><strong>Kotlin Developer:</strong> Scala is for <strong>maniacs</strong>. There is so much syntactic sugar and type stuff that it’s not worth learning about.</li>
+</ul>
+<p>I’m not trying to pick on any of these languages - Typescript, Go, and Kotlin are all exceptionally well suited to the context they are used in. But contexts vary<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, and it takes mental effort to see that people making other trade-offs sometimes have good reasons for it.</p>
+<p>That doesn’t mean that other people are never wrong, though. People choose the wrong tool for the job all the time. If I were doing SQLite’s level of testing for a low reliability, low traffic, stateless web service when a couple of integration tests would do, then that’d be a mistake, but you’d have to know the context to make that call.</p>
+<div class="notice--info notice--big">
+<p>
+<strong>While you’re here:</strong>
+</p>
+<p>
+<a href="https://earthly.dev/">Earthly</a> is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.
+</p>
+</div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Richard is the creator of SQLite. See this <a href="https://corecursive.com/066-sqlite-with-richard-hipp/#billions-of-tests">interview</a> for a discussion of his testing approach.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Personal and team familiarity can also be part of the context. PHP may not seem to be the best choice for building a command-line tool, but if it’s a small tool used by a team of PHP developers, then it might be the best choice.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <div class="author__name heading" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+      </div>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/articles" class="page__taxonomy-item" rel="tag">Articles</a>
+    
+    </span>
+  </p>
+
+
+
+
+<p class="page__taxonomy">
+  <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>Author:</strong>
+  <span itemprop="keywords">
+    <a href="/blog/authors/Adam/" class="page__taxonomy-item" rel="tag">Adam Gordon Bell</a>
+  </span>
+</p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-30T00:00:00-04:00">July 30, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/vscode-make/" class="pagination--pager" title="Building in Visual Studio Code with a Makefile
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <div class="page__related-title heading">You may also enjoy</div>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/vscode-make/header-600-cc5a5db17.webp 600w, /blog/generated/assets/images/vscode-make/header-800-cc5a5db17.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/vscode-make/header-600-91e861b7e.jpg 600w, /blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/vscode-make/header-800-91e861b7e.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/vscode-make/" rel="permalink">Building in Visual Studio Code with a Makefile
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Microsoft announced recently a new Visual Studio Code extension to handle Makefiles. This extension provides a set of commands to the editor that will facil...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/continuous-testing-in-devops/header-600-e66dcda6f.webp 600w, /blog/generated/assets/images/continuous-testing-in-devops/header-800-e66dcda6f.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/continuous-testing-in-devops/header-600-6603a5d07.jpg 600w, /blog/generated/assets/images/continuous-testing-in-devops/header-800-6603a5d07.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/continuous-testing-in-devops/header-800-6603a5d07.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/continuous-testing-in-devops/" rel="permalink">Using Continuous Testing in DevOps Workflows
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Automation testing is a crucial element to speed up your delivery process. It aims to flush out any potential regressions. The more you automate, the more c...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
