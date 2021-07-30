@@ -426,7 +426,7 @@ var store = [{
         "teaser": "/blog/assets/images/default-teaser.jpg"
       },{
         "title": "Idiots And Maniacs",
-        "excerpt":"Observability If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring and observability. Personally, I went through a process something like this: Service has some basic logging and an uptime alert Service has a health-check endpoint, is deployed in...","categories": ["Articles"],
+        "excerpt":"Observability If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring and observability. Personally, I went through a process something like this: Service has some basic logging and an uptime alert. Service has a health-check endpoint, is deployed in...","categories": ["Articles"],
         "tags": [],
         "url": "/blog/idiots-and-maniacs/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
