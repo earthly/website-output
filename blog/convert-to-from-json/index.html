@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>How to Convert from JSON to CSV at The Command Line - Earthly Blog</title>
+<meta name="description" content="How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequent...">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="How to Convert from JSON to CSV at The Command Line">
+<meta property="og:url" content="https://earthly.dev/blog/convert-to-from-json/">
+
+
+  <meta property="og:description" content="How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequent...">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/convert-to-from-json/header-800-639ec1573.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="How to Convert from JSON to CSV at The Command Line">
+  <meta name="twitter:description" content="How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequent...">
+  <meta name="twitter:url" content="https://earthly.dev/blog/convert-to-from-json/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/convert-to-from-json/header-800-639ec1573.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-08-12T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/convert-to-from-json/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/convert-to-from-json/header-400-713e45389.webp 400w, /blog/generated/assets/images/convert-to-from-json/header-600-713e45389.webp 600w, /blog/generated/assets/images/convert-to-from-json/header-800-713e45389.webp 800w, /blog/generated/assets/images/convert-to-from-json/header-1000-713e45389.webp 1000w, /blog/generated/assets/images/convert-to-from-json/header-1200-713e45389.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/convert-to-from-json/header-400-713e45389.png 400w, /blog/generated/assets/images/convert-to-from-json/header-600-713e45389.png 600w, /blog/generated/assets/images/convert-to-from-json/header-800-713e45389.png 800w, /blog/generated/assets/images/convert-to-from-json/header-1000-713e45389.png 1000w, /blog/generated/assets/images/convert-to-from-json/header-1200-713e45389.png 1200w" type="image/png"><img src="/blog/generated/assets/images/convert-to-from-json/header-800-713e45389.jpg" alt="How to Convert from JSON to CSV at The Command Line"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How to Convert from JSON to CSV at The Command Line">
+    <meta itemprop="description" content="How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequently enough that it’s time for me to share my favorite tools for this conversion process. But first, some background.Background: You Probably Want a CSV Conversion ToolThe CSV format seems simple at first glance: You have a fixed number of fields per row and each field is separated by a comma.1997,Ford,E350\nHowever, if you need to use commas in the value, then the fields must be delimited with &quot;:1997,Ford,E350,&quot;Super, luxurious truck&quot;\nYou can use this same trick to delimit a line break, and use double double-quotes if you need to include &quot; in your values or headings.1997,Ford,E350,&quot;Go get one &quot;&quot;now&quot;&quot;\nthey are going fast&quot;\nThings get more complex from there, and even the CSV standard does not specify how to handle all the edge cases and some formatting options are non-compatible. Wikipedia puts it this way:The CSV file format is not fully standardized. Separating fields with commas is the foundation, but commas in the data or embedded line breaks have to be handled specially. Some implementations disallow such content while others surround the field with quotation marks, which yet again creates the need for escaping these if they are present in the data.So although it seems like CSV conversion can be done by hand in python, or your language of choice, using an existing tool that is known to handle the edges cases well it the way to go.With that in mind, let’s review some tools for converting from JSON to CSV at the command line.Convert JSON to CSV via the Command LineThe simplest way to do this JSON to CSV conversion is with dasel. dasel is a tool for DAta SELection. Think of it as a jq that supports selection on formats besides just JSON.It’s easy to install (brew install dasel), and it works great as a format converter.[ {        &quot;id&quot;   : 1,      &quot;color&quot;: &quot;red&quot;,  &quot;value&quot;: &quot;#f00&quot; }, {        &quot;id&quot;   : 2,    &quot;color&quot;: &quot;green&quot;,  &quot;value&quot;: &quot;#0f0&quot; }, {        &quot;id&quot;   : 3,    &quot;color&quot;: &quot;blue&quot;,  &quot;value&quot;: &quot;#00f&quot; }]simple.jsonThe conversion is easy:$ dasel -r json -w csv &lt; sample.json color,id,valuered,1,#f00green,2,#0f0blue,3,#00fconverting with daseldasel handles newlines and values containing commas as well.Convert JSON to CSV via the Command Line using JQIf you don’t want to install dasel or if you just love jq (brew install jq) then this solution may work well for you. Before I discovered dasel this was the main approach I used:$ cat simple.json| jq -r &#39;(map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv&#39; &quot;color&quot;,&quot;id&quot;,&quot;value&quot;&quot;red&quot;,1,&quot;#f00&quot;&quot;green&quot;,2,&quot;#0f0&quot;&quot;blue&quot;,3,&quot;#00f&quot;Convert any JSON to CSV with JQA full explanation for how this works is beyond the scope of this article, but the idea is to use (map(keys) | add | unique) to get the column names and then gather the values for those columns into $row&lt;/code&gt; and use the &lt;code&gt;@csv&lt;/code&gt; filter to convert the array of rows in a CSV format.&lt;/p&gt; &lt;h2 id=&quot;convert-json-to-csv-via-the-command-line-and-choose-ordering-column&quot;&gt;Convert JSON to CSV via the Command Line and Choose Ordering Column&lt;/h2&gt; &lt;p&gt;The downside to the previous two approaches is that you can’t specify which columns to exclude nor their order. Both &lt;code&gt;jq&lt;/code&gt; and &lt;code&gt;dazel&lt;/code&gt; support a query language for customizing the output, but if you don’t want to dive into CSS selectors, the &lt;code&gt;jsonv&lt;/code&gt; tool is a great alternative.&lt;/p&gt; &lt;p&gt;To convert, we will use &lt;code&gt;jsonv&lt;/code&gt; and pipe it our JSON file. Then, we will specify the columns to include, and we redirect its output to a file.&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb7&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb7-1&quot;&gt;&lt;a href=&quot;#cb7-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;fu&quot;&gt;cat&lt;/span&gt; simple.json &lt;span class=&quot;kw&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;ex&quot;&gt;jsonv&lt;/span&gt; id,color,value &lt;span class=&quot;op&quot;&gt;&amp;gt;&lt;/span&gt; simple.csv&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;p&gt;This gives us a simple CSV file:&lt;/p&gt; &lt;div class=&quot;sourceCode&quot; id=&quot;cb8&quot;&gt;&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;&lt;span id=&quot;cb8-1&quot;&gt;&lt;a href=&quot;#cb8-1&quot; aria-hidden=&quot;true&quot; tabindex=&quot;-1&quot;&gt;&lt;/a&gt;&lt;span class=&quot;ex&quot;&gt;$ cat simple.csv 1,&quot;red&quot;,&quot;#f00&quot; 2,&quot;green&quot;,&quot;#0f0&quot; 3,&quot;blue&quot;,&quot;#00f&quot; 4,&quot;cyan&quot;,&quot;#0ff&quot; 5,&quot;magenta&quot;,&quot;#f0f&quot; 6,&quot;yellow&quot;,&quot;#ff0&quot; 7,&quot;black&quot;,&quot;#000&quot;jsonv handles more complex examples as well. Under the hood, it uses gnuawk (gawk). You can install it using curl:curl -Ls https://raw.github.com/archan937/jsonv.sh/master/install.sh | bashYou can install gawk using brew (brew install gawk) or your package manager of choice.Convert CSV to JSON at The Command LineFor converting CSV to JSON, we can use dasel again. The read (-r) and write (-w) options mean that it’s easy to convert from any of its supported file formats (JSON, YAML, TOML, XML, and CSV).We can get our original JSON document back from CSV like this:$ cat sample.csvID, color, value1,&quot;red&quot;,&quot;#f00&quot;2,&quot;green&quot;,&quot;#0f0&quot;3,&quot;blue&quot;,&quot;#00f&quot;$ dasel -r csv -w json &lt; sample.csv{  &quot;ID&quot;: &quot;1&quot;,  &quot;color&quot;: &quot;red&quot;,  &quot;value&quot;: &quot;#f00&quot;}{  &quot;ID&quot;: &quot;2&quot;,  &quot;color&quot;: &quot;green&quot;,  &quot;value&quot;: &quot;#0f0&quot;}{  &quot;ID&quot;: &quot;3&quot;,  &quot;color&quot;: &quot;blue&quot;,  &quot;value&quot;: &quot;#00f&quot;}Convert CSV to JSON Command Line with csvtojsonAnother option is to grab the npm tool csvtojson (npm i –save csvtojson). If you don’t already have npm and Node.js installed then installing dasel is a simple solution. Once installed, you can convert to CSV by sending input to csvtojson over standard in:csvtojson &lt; sample.csv[{&quot;ID&quot;:&quot;1&quot;,&quot;color&quot;:&quot;red&quot;,&quot;value&quot;:&quot;#f00&quot;},{&quot;ID&quot;:&quot;2&quot;,&quot;color&quot;:&quot;green&quot;,&quot;value&quot;:&quot;#0f0&quot;},{&quot;ID&quot;:&quot;3&quot;,&quot;color&quot;:&quot;blue&quot;,&quot;value&quot;:&quot;#00f&quot;}]ConclusionYou now have the knowledge and the tools you need to convert JSON to CSV and CSV to JSON. jq, dasel, csvtojson and jsonv are handy command line tools that can be used on Linux, MacOS and Windows under WSL 2.While you’re here:Earthly is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.">
+    <meta itemprop="datePublished" content="2021-08-12T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How to Convert from JSON to CSV at The Command Line
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-12T00:00:00-04:00">August 12, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <p>How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequently enough that <strong>it’s time for me to share my favorite tools for this conversion process.</strong> But first, some background.</p>
+<h2 id="background-you-probably-want-a-csv-conversion-tool">Background: You Probably Want a CSV Conversion Tool</h2>
+<p>The CSV format seems simple at first glance: You have a fixed number of fields per row and each field is separated by a comma.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">1997,Ford,E350\n</span></span></code></pre></div>
+<p>However, if you need to use commas in the value, then the fields must be delimited with <code>"</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">1997,Ford,E350,</span><span class="st">&quot;Super, luxurious truck&quot;</span><span class="ex">\n</span></span></code></pre></div>
+<p>You can use this same trick to delimit a line break, and use double double-quotes if you need to include <code>"</code> in your values or headings.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">1997,Ford,E350,</span><span class="st">&quot;Go get one &quot;&quot;now&quot;&quot;\n</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">they are going fast&quot;</span><span class="ex">\n</span></span></code></pre></div>
+<p>Things get more complex from there, and even the <a href="https://datatracker.ietf.org/doc/html/rfc4180">CSV standard</a> does not specify how to handle all the edge cases and some formatting options are non-compatible. Wikipedia puts it this way:</p>
+<blockquote>
+<p>The CSV file format is not fully standardized. Separating fields with commas is the foundation, but commas in the data or embedded line breaks have to be handled specially. Some implementations disallow such content while others surround the field with quotation marks, which yet again creates the need for escaping these if they are present in the data.</p>
+</blockquote>
+<p>So although it seems like CSV conversion can be done by hand in python, or your language of choice, using an existing tool that is known to handle the edges cases well it the way to go.</p>
+<p>With that in mind, let’s review some tools for converting from JSON to CSV at the command line.</p>
+<h2 id="convert-json-to-csv-via-the-command-line">Convert JSON to CSV via the Command Line</h2>
+<p>The simplest way to do this JSON to CSV conversion is with <code>dasel</code>. <code>dasel</code> is a tool for DAta SELection. Think of it as a <code>jq</code> that supports selection on formats besides just JSON.</p>
+<p>It’s easy to install (<code>brew install dasel</code>), and it works great as a format converter.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;id&quot;</span>   <span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span>    </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#f00&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a> <span class="fu">{</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;id&quot;</span>   <span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span>  </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;green&quot;</span><span class="fu">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#0f0&quot;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">{</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;id&quot;</span>   <span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span>  </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;blue&quot;</span><span class="fu">,</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#00f&quot;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a> <span class="fu">}</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<figcaption>
+simple.json
+</figcaption>
+<p>The conversion is easy:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> dasel <span class="at">-r</span> json <span class="at">-w</span> csv <span class="op">&lt;</span> sample.json </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">color,id,value</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">red</span>,1,#f00</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">green,2,#0f0</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">blue,3,#00f</span></span></code></pre></div>
+<figcaption>
+converting with <code>dasel</code>
+</figcaption>
+<p><code>dasel</code> handles newlines and values containing commas as well.</p>
+<h2 id="convert-json-to-csv-via-the-command-line-using-jq">Convert JSON to CSV via the Command Line using JQ</h2>
+<p>If you don’t want to install <code>dasel</code> or if you just love <code>jq</code> (<code>brew install jq</code>) then this solution may work well for you. Before I discovered <code>dasel</code> this was the main approach I used:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat simple.json<span class="kw">|</span> <span class="ex">jq</span> <span class="at">-r</span> <span class="st">&#39;(map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv&#39;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;color&quot;</span><span class="ex">,</span><span class="st">&quot;id&quot;</span><span class="ex">,</span><span class="st">&quot;value&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;red&quot;</span><span class="ex">,1,</span><span class="st">&quot;#f00&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;green&quot;</span><span class="ex">,2,</span><span class="st">&quot;#0f0&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;blue&quot;</span><span class="ex">,3,</span><span class="st">&quot;#00f&quot;</span></span></code></pre></div>
+<figcaption>
+Convert any JSON to CSV with JQ
+</figcaption>
+<p>A full explanation for how this works is beyond the scope of this article, but the idea is to use <code>(map(keys) | add | unique)</code> to get the column names and then gather the values for those columns into <code>$row</code> and use the <code>@csv</code> filter to convert the array of rows in a CSV format.</p>
+<h2 id="convert-json-to-csv-via-the-command-line-and-choose-ordering-column">Convert JSON to CSV via the Command Line and Choose Ordering Column</h2>
+<p>The downside to the previous two approaches is that you can’t specify which columns to exclude nor their order. Both <code>jq</code> and <code>dazel</code> support a query language for customizing the output, but if you don’t want to dive into CSS selectors, the <code>jsonv</code> tool is a great alternative.</p>
+<p>To convert, we will use <code>jsonv</code> and pipe it our JSON file. Then, we will specify the columns to include, and we redirect its output to a file.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> simple.json <span class="kw">|</span> <span class="ex">jsonv</span> id,color,value <span class="op">&gt;</span> simple.csv</span></code></pre></div>
+<p>This gives us a simple CSV file:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat simple.csv</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span><span class="st">&quot;red&quot;</span><span class="ex">,</span><span class="st">&quot;#f00&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2,</span><span class="st">&quot;green&quot;</span><span class="ex">,</span><span class="st">&quot;#0f0&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">3,</span><span class="st">&quot;blue&quot;</span><span class="ex">,</span><span class="st">&quot;#00f&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">4,</span><span class="st">&quot;cyan&quot;</span><span class="ex">,</span><span class="st">&quot;#0ff&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">5,</span><span class="st">&quot;magenta&quot;</span><span class="ex">,</span><span class="st">&quot;#f0f&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">6,</span><span class="st">&quot;yellow&quot;</span><span class="ex">,</span><span class="st">&quot;#ff0&quot;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">7,</span><span class="st">&quot;black&quot;</span><span class="ex">,</span><span class="st">&quot;#000&quot;</span></span></code></pre></div>
+<p><code>jsonv</code> handles more complex examples as well. Under the hood, it uses <code>gnuawk</code> (<code>gawk</code>). You can install it using curl:</p>
+<pre><code>curl -Ls https://raw.github.com/archan937/jsonv.sh/master/install.sh | bash</code></pre>
+<p>You can install <code>gawk</code> using brew (<code>brew install gawk</code>) or your package manager of choice.</p>
+<h2 id="convert-csv-to-json-at-the-command-line">Convert CSV to JSON at The Command Line</h2>
+<p>For converting CSV to JSON, we can use <code>dasel</code> again. The read (<code>-r</code>) and write (<code>-w</code>) options mean that it’s easy to convert from any of its supported file formats (JSON, YAML, TOML, XML, and CSV).</p>
+<p>We can get our original JSON document back from CSV like this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat sample.csv</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ID,</span> color, value</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span><span class="st">&quot;red&quot;</span><span class="ex">,</span><span class="st">&quot;#f00&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2,</span><span class="st">&quot;green&quot;</span><span class="ex">,</span><span class="st">&quot;#0f0&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">3,</span><span class="st">&quot;blue&quot;</span><span class="ex">,</span><span class="st">&quot;#00f&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="er">$</span> <span class="er">dasel</span> <span class="er">-r</span> <span class="er">csv</span> <span class="er">-w</span> <span class="er">json</span> <span class="er">&lt;</span> <span class="er">sample.csv</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ID&quot;</span><span class="fu">:</span> <span class="st">&quot;1&quot;</span><span class="fu">,</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;red&quot;</span><span class="fu">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#f00&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ID&quot;</span><span class="fu">:</span> <span class="st">&quot;2&quot;</span><span class="fu">,</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;green&quot;</span><span class="fu">,</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#0f0&quot;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;ID&quot;</span><span class="fu">:</span> <span class="st">&quot;3&quot;</span><span class="fu">,</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;color&quot;</span><span class="fu">:</span> <span class="st">&quot;blue&quot;</span><span class="fu">,</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;#00f&quot;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="convert-csv-to-json-command-line-with-csvtojson">Convert CSV to JSON Command Line with <code>csvtojson</code></h2>
+<p>Another option is to grab the npm tool <code>csvtojson</code> (<code>npm i --save csvtojson</code>). If you don’t already have npm and Node.js installed then installing <code>dasel</code> is a simple solution. Once installed, you can convert to CSV by sending input to <code>csvtojson</code> over standard in:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">csvtojson</span> <span class="op">&lt;</span> sample.csv</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;ID&quot;</span><span class="dt">:</span><span class="st">&quot;1&quot;</span><span class="op">,</span><span class="st">&quot;color&quot;</span><span class="dt">:</span><span class="st">&quot;red&quot;</span><span class="op">,</span><span class="st">&quot;value&quot;</span><span class="dt">:</span><span class="st">&quot;#f00&quot;</span><span class="dt">}</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;ID&quot;</span><span class="dt">:</span><span class="st">&quot;2&quot;</span><span class="op">,</span><span class="st">&quot;color&quot;</span><span class="dt">:</span><span class="st">&quot;green&quot;</span><span class="op">,</span><span class="st">&quot;value&quot;</span><span class="dt">:</span><span class="st">&quot;#0f0&quot;</span><span class="dt">}</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="dt">{</span><span class="st">&quot;ID&quot;</span><span class="dt">:</span><span class="st">&quot;3&quot;</span><span class="op">,</span><span class="st">&quot;color&quot;</span><span class="dt">:</span><span class="st">&quot;blue&quot;</span><span class="op">,</span><span class="st">&quot;value&quot;</span><span class="dt">:</span><span class="st">&quot;#00f&quot;</span><span class="dt">}</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">]</span></span></code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>You now have the knowledge and the tools you need to convert JSON to CSV and CSV to JSON. <a href="https://stedolan.github.io/jq/"><code>jq</code></a>, <a href="https://github.com/TomWright/dasel"><code>dasel</code></a>, <a href="https://www.npmjs.com/package/csvtojson"><code>csvtojson</code></a> and <a href="https://github.com/archan937/jsonv.sh"><code>jsonv</code></a> are handy command line tools that can be used on Linux, MacOS and Windows under WSL 2.</p>
+<div class="notice--info notice--big">
+<p>
+<strong>While you’re here:</strong>
+</p>
+<p>
+<a href="https://earthly.dev/">Earthly</a> is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.
+</p>
+</div>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <div class="author__name heading" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+      </div>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+<p class="page__taxonomy">
+  <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>Author:</strong>
+  <span itemprop="keywords">
+    <a href="/blog/authors/Adam/" class="page__taxonomy-item" rel="tag">Adam Gordon Bell</a>
+  </span>
+</p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-12T00:00:00-04:00">August 12, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/idiots-and-maniacs/" class="pagination--pager" title="Idiots And Maniacs
+">Previous</a>
+    
+    
+      <a href="/blog/10-continous-delivery/" class="pagination--pager" title="10+ Best Continuous Delivery Tools
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <div class="page__related-title heading">You may also enjoy</div>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/10-continous-delivery/header-600-aae60f084.webp 600w, /blog/generated/assets/images/10-continous-delivery/header-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/10-continous-delivery/header-600-495449b49.jpg 600w, /blog/generated/assets/images/10-continous-delivery/header-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/10-continous-delivery/header-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/10-continous-delivery/" rel="permalink">10+ Best Continuous Delivery Tools
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Draft.dev Article Checklist
+
+
+
+ Add in Author page
+
+
+ Create header image in Canva
+
+
+ Optional: Find ways to break up content with quotes or images
+
+
+ Verif...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
