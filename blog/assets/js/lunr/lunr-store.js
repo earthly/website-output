@@ -430,4 +430,10 @@ var store = [{
         "tags": [],
         "url": "/blog/idiots-and-maniacs/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "How to Convert from JSON to CSV at The Command Line",
+        "excerpt":"How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequently enough that it’s time for me to share my favorite tools for this conversion process. But first, some background. Background: You...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/convert-to-from-json/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
