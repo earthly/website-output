@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>JQ Select Explained: Selecting elements from JSON with Examples - Earthly Blog</title>
+<meta name="description" content="Background: Fingers, Head, and GoogleSome actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias f...">
+
+
+  <meta name="author" content="Adam Gordon Bell">
+  
+  <meta property="article:author" content="Adam Gordon Bell">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="JQ Select Explained: Selecting elements from JSON with Examples">
+<meta property="og:url" content="https://earthly.dev/blog/jq-select/">
+
+
+  <meta property="og:description" content="Background: Fingers, Head, and GoogleSome actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias f...">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/jq-select/header-800-9692dfee3.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="JQ Select Explained: Selecting elements from JSON with Examples">
+  <meta name="twitter:description" content="Background: Fingers, Head, and GoogleSome actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias f...">
+  <meta name="twitter:url" content="https://earthly.dev/blog/jq-select/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/jq-select/header-800-9692dfee3.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-08-16T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/jq-select/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/jq-select/header-400-cec6c713b.webp 400w, /blog/generated/assets/images/jq-select/header-600-cec6c713b.webp 600w, /blog/generated/assets/images/jq-select/header-800-cec6c713b.webp 800w, /blog/generated/assets/images/jq-select/header-1000-cec6c713b.webp 1000w, /blog/generated/assets/images/jq-select/header-1200-cec6c713b.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/jq-select/header-400-cec6c713b.png 400w, /blog/generated/assets/images/jq-select/header-600-cec6c713b.png 600w, /blog/generated/assets/images/jq-select/header-800-cec6c713b.png 800w, /blog/generated/assets/images/jq-select/header-1000-cec6c713b.png 1000w, /blog/generated/assets/images/jq-select/header-1200-cec6c713b.png 1200w" type="image/png"><img src="/blog/generated/assets/images/jq-select/header-800-cec6c713b.jpg" alt="JQ Select Explained: Selecting elements from JSON with Examples"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="JQ Select Explained: Selecting elements from JSON with Examples">
+    <meta itemprop="description" content="Background: Fingers, Head, and GoogleSome actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias for git commit is my fingers. I commit my work almost automatically when I reach a stopping point. Other actions, I know how they work, but I have to think about it every time. They are in my head, not my fingers.1Some things never stick in my head, nor my fingers. I have to go to google every time. jq is one of these.It’s time to fix that. **Let’s go over jq in enough depth that it should stick in your head (and maybe your fingers).What Is JQjq is a lightweight, command-line JSON processor. To use it, you construct one or more filters, and it applies those filters to a JSON document.The simplest filter is the identity filter which returns all its input (.):$ echo &#39;{&quot;key1&quot;:{&quot;key2&quot;:&quot;value1&quot;}}&#39; | jq &#39;.&#39;{  &quot;key1&quot;: {    &quot;key2&quot;: &quot;value1&quot;  }}This filter is handy for just pretty-printing a JSON document.Side Note: Pretty PrintingBy default, jq pretty-prints all its output. This means that its output is not character-for-character identical to its input. I’m going to ignore the pretty-printing. It’s not the hard part of the tool.Using JQ to Select ElementsLet’s start with the GitHub repository API and use jq to select the data we need. The default data returned looks like this:$ curl https://api.github.com/repos/stedolan/jq{  &quot;id&quot;: 5101141,  &quot;node_id&quot;: &quot;MDEwOlJlcG9zaXRvcnk1MTAxMTQx&quot;,  &quot;name&quot;: &quot;jq&quot;,  &quot;full_name&quot;: &quot;stedolan/jq&quot;,  &quot;private&quot;: false,  &quot;owner&quot;: {    &quot;login&quot;: &quot;stedolan&quot;,    &quot;id&quot;: 79765  },  &quot;html_url&quot;: &quot;https://github.com/stedolan/jq&quot;,  &quot;description&quot;: &quot;Command-line JSON processor&quot;,  &quot;stargazers_count&quot;: 19967,  &quot;watchers_count&quot;: 19967,  &quot;language&quot;: &quot;C&quot;,  &quot;license&quot;: {    &quot;key&quot;: &quot;other&quot;,    &quot;name&quot;: &quot;Other&quot;,    &quot;spdx_id&quot;: &quot;NOASSERTION&quot;,    &quot;url&quot;: null,    &quot;node_id&quot;: &quot;MDc6TGljZW5zZTA=&quot;  },}Side Note: Omitting DetailsThe JSON documents returned by the GitHub API are too large to show inline in a blog post. Therefore, for ease of explanation, I will omit non-relevant details.jq lets us treat the JSON document as an object and select elements inside of it.Here is how I filter the JSON document to select the value of the name key:curl https://api.github.com/repos/stedolan/jq | jq &#39; .name&#39; &quot;jq&quot;Similarly, for selecting the value of the owner key:$ curl https://api.github.com/repos/stedolan/jq | jq &#39; .owner&#39; {    &quot;login&quot;: &quot;stedolan&quot;,    &quot;id&quot;: 79765}You can drill in as far as you want like this:$ curl https://api.github.com/repos/stedolan/jq | jq &#39; .owner.login&#39; &quot;stedolan&quot;What I Learned: Object Identifier-Indexjq lets you select elements in a JSON document like it’s a JavaScript object. Just start with . ( for the whole document) and drill down to the value you want. It ends up looking something like this:jq &#39;.key.subkey.subsubkey&#39;Using JQ to Select ArraysIf you use the GitHub Issues API for jq you will get back an array of issues:curl https://api.github.com/repos/stedolan/jq/issues?per_page=5    [  {    &quot;id&quot;: 966024429,    &quot;number&quot;: 2341,    &quot;title&quot;: &quot;Question about license.&quot;,    &quot;body&quot;: &quot;I would like to create a [winget](https://github.com/microsoft/winget-cli) package for jq. 🙏🏻&quot;  },  {      &quot;id&quot;: 962477084,    &quot;number&quot;: 2340,    &quot;title&quot;: &quot;visibility of wiki pages&quot;,    &quot;body&quot;: &quot;The visibility of wiki pages to search engines is generally limited; for example, the search result for \&quot;jq Cookbook\&quot; looks like this:&quot;  },  {       &quot;id&quot;: 955350543,    &quot;number&quot;: 2337,    &quot;title&quot;: &quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;,    &quot;body&quot;: &quot;If you have a usage question, please ask us on either Stack Overflow (https://stackoverflow.com/questions/tagged/jq) or in the #jq channel (http://irc.lc/freenode/%23jq/) on Freenode (https://webchat.freenode.net/).&quot;  },  {    &quot;id&quot;: 954792209,    &quot;number&quot;: 2336,    &quot;title&quot;: &quot;Fix typo&quot;,    &quot;body&quot;: &quot;&quot;  },  {    &quot;id&quot;: 940627936,    &quot;number&quot;: 2334,    &quot;title&quot;: &quot;Compile error messages don&#39;t provide column only line number&quot;,    &quot;body&quot;: &quot;Compile errors in filter expressions don&#39;t include the column number where the parser approximately or exactly locates the error. Most filter expressions are one-liners (are multiple lines even supported?), so the information that the error is on line 1 is not helpful.&quot;  }]To get a specific element in the array, give an index:curl https://api.github.com/repos/stedolan/jq/issues?per_page=5 | jq &#39;.[4]&#39;  {    &quot;id&quot;: 940627936,    &quot;number&quot;: 2334,    &quot;title&quot;: &quot;Compile error messages don&#39;t provide column only line number&quot;,    &quot;body&quot;: &quot;Compile errors in filter expressions don&#39;t include the column number where the parser approximately or exactly locates the error. Most filter expressions are one-liners (are multiple lines even supported?), so the information that the error is on line 1 is not helpful.&quot;  }Side Note: Array Indexing in jqArray indexing has some helpful convenience.You can select ranges:$ echo &quot;[1,2,3,4,5]&quot; | jq &#39;.[2:4]&#39;[3,4]You can select one sided ranges:$ echo &quot;[1,2,3,4,5]&quot; | jq &#39;.[2:]&#39;[3,4,5]You can use negatives to select from the end:$ echo &quot;[1,2,3,4,5]&quot; | jq &#39;.[-2:]&#39;[4,5]You can use the array indexing with the object indexing:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=5 | jq &#39;.[4].title&#39; &quot;Compile error messages don&#39;t provide column only line number&quot;And you can use [] to get all the elements in the array. This is handy when for further filtering the array contents (which I’ll be doing shortly).Here is how I would get the titles of the jq issues returned by my API request:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=5 | jq &#39;.[].title&#39; &quot;Question about license.&quot;&quot;visibility of wiki pages&quot;&quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;&quot;Fix typo&quot;&quot;Compile error messages don&#39;t provide column only line number&quot;What I Learned: Array-Indexjq lets you select the whole array [], a specific elements [3], or ranges [2:5] and combine these with object index where needed.It ends up looking something like this:jq &#39;.key[].subkey[2]Side Note: Removing Quotes From JQ OutputThe -r option in jq gives you raw strings if you need that.$ echo &#39;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]&#39; | jq -r &#39;.[]&#39;123The -j option (for join) can combine together your output.$ echo &#39;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]&#39; | jq -j &#39;.[]&#39;123Putting Elements in an Array using jqNot everything emitted by jq is proper JSON. The titles I output were in a new line delimited list:&quot;Question about license.&quot;&quot;visibility of wiki pages&quot;&quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;&quot;Fix typo&quot;&quot;Compile error messages don&#39;t provide column only line number&quot;...To put a collection of results produced by a filter into a JSON array, you can wrap it in [ … ] where … is a filter.My title filter (.[].title) then becomes [ .[].title ] like this:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=5 | \  jq &#39;[ .[].title ] &#39; [  &quot;Question about license.&quot;,  &quot;visibility of wiki pages&quot;,  &quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;,  &quot;Fix typo&quot;,  &quot;Compile error messages don&#39;t provide column only line number&quot;]Now I have a valid JSON document.Using jq to Select Multiple FieldsThe GitHub issues API has a lot of details I don’t care about. I want to select multiple fields from the document returned and leave the rest behind.The easiest way to do this is using , to specify multiple filters:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=2 | \   jq &#39; .[].title, .[].number&#39;&quot;Question about license.&quot;&quot;visibility of wiki pages&quot;23412340But this is returning the result of one selection after the other. To change the ordering, I can factor out the array selector:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=2 | \  jq &#39;.[] |  .title, .number&#39;&quot;Question about license.&quot;2341&quot;visibility of wiki pages&quot;2340This uses pipes, which I’ll will talk about shortly and causes my object selectors to be run per element.If you wrap the query in the array constructor you get this:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=2 | \  jq &#39;[ .[] |  .title, .number ]&#39;[  &quot;Question about license.&quot;,  2341,  &quot;visibility of wiki pages&quot;,  2340]But this still isn’t the JSON document I need. To get these values into a proper JSON document, I need the object constructor { … }. The object construction syntax lets you build a JSON object by using jq filters for both keys and values:$ curl https://api.github.com/repos/stedolan/jq/issues?per_page=2 | \  jq &#39;[ .[] | { title: .title, number: .number} ]&#39;[  {    &quot;title&quot;: &quot;Question about license.&quot;,    &quot;number&quot;: 2341  },  {    &quot;title&quot;: &quot;visibility of wiki pages&quot;,    &quot;number&quot;: 2340  }]What I Learned: Array and Object ConstructorsTo put the elements you’ve selected back into a JSON document, you can wrap them in an array constructor [ .. ] or an object constructor { … }.If you were emitting an array of objects you constructed, then it would end up looking something like this:jq &#39;[ { key1: &lt;&lt;jq filter&gt;&gt;, key2: &lt;&lt;jq filter&gt;&gt; } ]&#39;Both keys and value can be jq filters.Sorting and Counting With JQThe next problem I have is that I want to summarize some this JSON data. Each issue returned by GitHub has a collection of labels:$ curl https://api.github.com/repos/stedolan/jq/issues/2289      jq &#39; { title: .title, number: .number, labels: .labels} &#39;  {    &quot;title&quot;: &quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;,    &quot;number&quot;: 2289,    &quot;labels&quot;: [      &quot;feature request&quot;,      &quot;dependencies&quot;    ]  }If I want those labels in alphabetical order I can use the built in sort function. It works like this:$  echo &#39;[&quot;3&quot;,&quot;2&quot;,&quot;1&quot;]&#39; | jq &#39;sort&#39;[&quot;1&quot;, &quot;2&quot;, &quot;3&quot;]I can combine this built-in jq function with my existing filter, but first, I should explain pipes and filters.jq is a filter: You pipe a JSON document to it, and it filters and outputs it. But the jq language is also made up of filters itself.In fact, most of the things I’ve used so far are filters:.title is a filter that only returns the values of key ‘title’.[] is a filter that, given an array, returns the elements of the array.[2:4] is a filter that, given an array, returns elements 2 through 4.You can join these filters together using jq’s built-in functions. You do this using a pipe (|) just like in a UNIX shell..title | length will return the length of the title[] | sort will return the array elements in sorted order.number | tostring will return our issue number as a stringThis means that sorting my labels is simple. I can just change .labels to .labels | sort:$ curl https://api.github.com/repos/stedolan/jq/issues/2289 | \  jq &#39; { title: .title, number: .number, labels: .labels | sort } &#39;      {    &quot;title&quot;: &quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;,    &quot;number&quot;: 2289,    &quot;labels&quot;: [      &quot;dependencies&quot;,      &quot;feature request&quot;    ]  }And if you want just a label count that is easy as well:$ curl https://api.github.com/repos/stedolan/jq/issues/2289 | \  jq &#39; { title: .title, number: .number, labels: .labels | length } &#39;      {    &quot;title&quot;: &quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;,    &quot;number&quot;: 2289,    &quot;labels&quot;: 2  }What I Learned: Pipes and built-insjq has many built-in functions, and you can combine them with your queries using the pipe operator (|).If you were emitting an array of objects then it ends up looking something like this:jq &#39; .key1.subkey2[] | sort &#39; # sortingjq &#39; .key2.subkey | length&#39; # length of string or arrayjq &#39; .key3 | floor | tostring | length&#39; # and so onMaps and Selects Using JQThe jq issues list has many non-issues: people can’t figure out how to do something and open an issue. Attention Internet: Please don’t do this. GitHub issues aren’t the place to post your random homework problem.Let’s say I want to grab all the issues that are labeled. This would let me skip all the drive-by fix-my-problem issues. Unfortunately, it’s impossible to do this with the GitHub API unless you specify all the possible labels in your query. Never fear though, we can easily do this query on the command line by filtering our results with jq.Our query so far looks like this:  jq &#39;[ .[] | { title: .title, number: .number, labels: .labels | length } ]&#39;The first thing we can do is simplify it using map.  jq &#39;map({ title: .title, number: .number, labels: .labels | length }) You can think of map(…) as a shorthand for [ .[] | … ]. It lets you unwrap an array, apply the filter and then rewrap the results back into an array.We can combine that with a select statement that looks like this:map(select(.labels &gt; 0))select is a built-in function that takes a boolean expression and only returns elements that match. It’s similar to the WHERE clause in a SQL statement or array filter in JavaScript.Putting this all together looks like this:curl https://api.github.com/repos/stedolan/jq/issues?per_page=100 | \   jq &#39;map({ title: .title, number: .number, labels: .labels | length }) |    map(select(.labels &gt; 0))&#39;[  {    &quot;title&quot;: &quot;Bump lxml from 4.3.1 to 4.6.3 in /docs&quot;,    &quot;number&quot;: 2295,    &quot;labels&quot;: 1  },  {    &quot;title&quot;: &quot;Bump pyyaml from 3.13 to 5.4 in /docs&quot;,    &quot;number&quot;: 2291,    &quot;labels&quot;: 1  },  {    &quot;title&quot;: &quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;,    &quot;number&quot;: 2289,    &quot;labels&quot;: 1  },  {    &quot;title&quot;: &quot;Debugging help through showing pipeline intermediates. &quot;,    &quot;number&quot;: 2206,    &quot;labels&quot;: 1  }]This uses three object indexes, two maps, two pipes, a length function, and a select predicate. But if you’ve followed along, this should all make sense. It’s all just composing together filters until you get the result you need.JQ CheatSheetWhat I Learned: JQ CheatSheetjq lets you select elements by starting with a . and accessing keys and arrays like it’s a JavaScript Object (which is it is). This feature uses the Object and Array index jq creates of a JSON document and look like this:jq &#39;.key[0].subkey[2:3].subsubkey&#39;jq contains object constructors { … } and array constructors [ … ]. You use these when you want to wrap back up something you’ve pulled out of a JSON document using the above indexes:jq &#39;[ { key1: .key1, key2: .key2 }  ]&#39;jq contains built-in functions (length,sort,select,map) and pipes (|), and you can compose these together just like you can combine pipes and filters in a command-line shell:  jq &#39;map({ order-of-magitude: .items | length | tostring | length }) ConclusionThis has only been the basics of jq. The jq query language is a full programming language and you can do lots of exciting things with it. You convert from JSON to CSV. You can define you own functions and even find primes with jq:# Denoting the input by $n, which is assumed to be a positive integer,# eratosthenes/0 produces an array of primes less than or equal to $n:def eratosthenes:  (. + 1) as $n  | (($n|sqrt) / 2) as $s  | [null, null, range(2; $n)]  | reduce (2, 1 + (2 * range(1; $s))) as $i (.; erase($i))  | map(select(.));However, simple stuff – like selecting elements, filtering by key, or value – is often all you need.I hope this helps make jq more approachable and that you no longer have to go to google every time you want to query a JSON document.A note for the pedants: automated behavior is stored in your basal ganglia. It feels like it’s in my fingers, but really, these actions just fired at a level below my awareness.↩︎">
+    <meta itemprop="datePublished" content="2021-08-16T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">JQ Select Explained: Selecting elements from JSON with Examples
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-16T00:00:00-04:00">August 16, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+          &nbsp;	&nbsp;
+          Adam Gordon Bell
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#background-fingers-head-and-google">Background: Fingers, Head, and Google</a></li><li><a href="#what-is-jq">What Is JQ</a></li><li><a href="#using-jq-to-select-elements">Using JQ to Select Elements</a></li><li><a href="#using-jq-to-select-arrays">Using JQ to Select Arrays</a></li><li><a href="#putting-elements-in-an-array-using-jq">Putting Elements in an Array using jq</a></li><li><a href="#using-jq-to-select-multiple-fields">Using jq to Select Multiple Fields</a></li><li><a href="#sorting-and-counting-with-jq">Sorting and Counting With JQ</a></li><li><a href="#maps-and-selects-using-jq">Maps and Selects Using JQ</a></li><li><a href="#jq-cheatsheet">JQ CheatSheet</a></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="background-fingers-head-and-google">Background: Fingers, Head, and Google</h2>
+<p>Some actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias for <code>git commit</code> is my fingers. I commit my work almost automatically when I reach a stopping point. Other actions, I know how they work, but I have to think about it every time. They are in my head, not my fingers.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Some things never stick in my head, nor my fingers. I have to go to google every time. <strong><code>jq</code> is one of these.</strong></p>
+<p>It’s time to fix that. **Let’s go over <code>jq</code> in enough depth that it should stick in your head (and maybe your fingers).</p>
+<h2 id="what-is-jq">What Is JQ</h2>
+<p><code>jq</code> is a lightweight, command-line JSON processor. To use it, you construct one or more filters, and it applies those filters to a JSON document.</p>
+<p>The simplest filter is the identity filter which returns all its input (<code>.</code>):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;{&quot;key1&quot;:{&quot;key2&quot;:&quot;value1&quot;}}&#39;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.&#39;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;key1&quot;</span><span class="ex">:</span> {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;key2&quot;</span><span class="ex">:</span> <span class="st">&quot;value1&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<p>This filter is handy for just pretty-printing a JSON document.</p>
+<div class="notice--info">
+<p><strong>Side Note: Pretty Printing</strong></p>
+<p>By default, <code>jq</code> pretty-prints all its output. This means that its output is not character-for-character identical to its input. I’m going to ignore the pretty-printing. It’s not the hard part of the tool.</p>
+</div>
+<h2 id="using-jq-to-select-elements">Using JQ to Select Elements</h2>
+<p>Let’s start with the GitHub repository API and use <code>jq</code> to select the data we need. The default data returned looks like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;id&quot;</span><span class="ex">:</span> 5101141,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;node_id&quot;</span><span class="ex">:</span> <span class="st">&quot;MDEwOlJlcG9zaXRvcnk1MTAxMTQx&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;name&quot;</span><span class="ex">:</span> <span class="st">&quot;jq&quot;</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;full_name&quot;</span><span class="ex">:</span> <span class="st">&quot;stedolan/jq&quot;</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;private&quot;</span><span class="ex">:</span> false,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;owner&quot;</span><span class="ex">:</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;login&quot;</span><span class="ex">:</span> <span class="st">&quot;stedolan&quot;</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 79765</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;html_url&quot;</span><span class="ex">:</span> <span class="st">&quot;https://github.com/stedolan/jq&quot;</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;description&quot;</span><span class="ex">:</span> <span class="st">&quot;Command-line JSON processor&quot;</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;stargazers_count&quot;</span><span class="ex">:</span> 19967,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;watchers_count&quot;</span><span class="ex">:</span> 19967,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;language&quot;</span><span class="ex">:</span> <span class="st">&quot;C&quot;</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;license&quot;</span><span class="ex">:</span> {</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;key&quot;</span><span class="ex">:</span> <span class="st">&quot;other&quot;</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;name&quot;</span><span class="ex">:</span> <span class="st">&quot;Other&quot;</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;spdx_id&quot;</span><span class="ex">:</span> <span class="st">&quot;NOASSERTION&quot;</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;url&quot;</span><span class="ex">:</span> null,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;node_id&quot;</span><span class="ex">:</span> <span class="st">&quot;MDc6TGljZW5zZTA=&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<div class="notice--info">
+<p><strong>Side Note: Omitting Details</strong></p>
+<p>The JSON documents returned by the GitHub API are too large to show inline in a blog post. Therefore, for ease of explanation, I will omit non-relevant details.</p>
+</div>
+<p><code>jq</code> lets us treat the JSON document as an object and select elements inside of it.</p>
+<p>Here is how I filter the JSON document to select the value of the <code>name</code> key:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/stedolan/jq <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39; .name&#39;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;jq&quot;</span></span></code></pre></div>
+<figcaption>
+</figcaption>
+<p>Similarly, for selecting the value of the <code>owner</code> key:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39; .owner&#39;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;login&quot;</span><span class="ex">:</span> <span class="st">&quot;stedolan&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 79765</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span></code></pre></div>
+<p>You can drill in as far as you want like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39; .owner.login&#39;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;stedolan&quot;</span></span></code></pre></div>
+<div class="notice--big--primary">
+<!-- markdownlint-disable MD036 -->
+<p><strong>What I Learned: Object Identifier-Index</strong></p>
+<p><code>jq</code> lets you select elements in a JSON document like it’s a JavaScript object. Just start with <code>.</code> ( for the whole document) and drill down to the value you want. It ends up looking something like this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39;.key.subkey.subsubkey&#39;</span></span></code></pre></div>
+</div>
+<h2 id="using-jq-to-select-arrays">Using JQ to Select Arrays</h2>
+<p>If you use the GitHub Issues API for <code>jq</code> you will get back an array of issues:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=5    </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span>: 966024429,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="er">&quot;number&quot;:</span> <span class="er">2341,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Question about license.&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;I would like to create a [winget](https://github.com/microsoft/winget-cli) package for jq. 🙏🏻&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span><span class="ex">,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 962477084,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2340,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;visibility of wiki pages&quot;</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;The visibility of wiki pages to search engines is generally limited; for example, the search result for </span><span class="dt">\&quot;</span><span class="st">jq Cookbook</span><span class="dt">\&quot;</span><span class="st"> looks like this:&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 955350543,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2337,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;If you have a usage question, please ask us on either Stack Overflow (https://stackoverflow.com/questions/tagged/jq) or in the #jq channel (http://irc.lc/freenode/%23jq/) on Freenode (https://webchat.freenode.net/).&quot;</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 954792209,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2336,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Fix typo&quot;</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 940627936,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2334,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Compile error messages don&#39;t provide column only line number&quot;</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;Compile errors in filter expressions don&#39;t include the column number where the parser approximately or exactly locates the error. Most filter expressions are one-liners (are multiple lines even supported?), so the information that the error is on line 1 is not helpful.&quot;</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="ex">]</span></span></code></pre></div>
+<p>To get a specific element in the array, give an index:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=5 <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[4]&#39;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;id&quot;</span><span class="ex">:</span> 940627936,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2334,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Compile error messages don&#39;t provide column only line number&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;body&quot;</span><span class="ex">:</span> <span class="st">&quot;Compile errors in filter expressions don&#39;t include the column number where the parser approximately or exactly locates the error. Most filter expressions are one-liners (are multiple lines even supported?), so the information that the error is on line 1 is not helpful.&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span></code></pre></div>
+<div class="notice--info">
+<p><strong>Side Note: Array Indexing in <code>jq</code></strong></p>
+<p>Array indexing has some helpful convenience.</p>
+<p>You can select ranges:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;[1,2,3,4,5]&quot;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[2:4]&#39;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[3,4]</span></span></code></pre></div>
+<p>You can select one sided ranges:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;[1,2,3,4,5]&quot;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[2:]&#39;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[3,4,5]</span></span></code></pre></div>
+<p>You can use negatives to select from the end:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;[1,2,3,4,5]&quot;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[-2:]&#39;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[4,5]</span></span></code></pre></div>
+</div>
+<p>You can use the array indexing with the object indexing:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=5 <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[4].title&#39;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Compile error messages don&#39;t provide column only line number&quot;</span></span></code></pre></div>
+<p>And you can use <code>[]</code> to get all the elements in the array. This is handy when for further filtering the array contents (which I’ll be doing shortly).</p>
+<p>Here is how I would get the titles of the jq issues returned by my API request:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=5 <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;.[].title&#39;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Question about license.&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;visibility of wiki pages&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Fix typo&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Compile error messages don&#39;t provide column only line number&quot;</span></span></code></pre></div>
+<div class="notice--big--primary">
+<p><strong>What I Learned: Array-Index</strong></p>
+<p><code>jq</code> lets you select the whole array <code>[]</code>, a specific elements <code>[3]</code>, or ranges <code>[2:5]</code> and combine these with object index where needed.</p>
+<p>It ends up looking something like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39;.key[].subkey[2]</span></span></code></pre></div>
+</div>
+<div class="notice--info">
+<p><strong>Side Note: Removing Quotes From JQ Output</strong></p>
+<p>The <code>-r</code> option in <code>jq</code> gives you raw strings if you need that.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]&#39;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="at">-r</span> <span class="st">&#39;.[]&#39;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span></span></code></pre></div>
+<p>The <code>-j</code> option (for join) can combine together your output.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]&#39;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="at">-j</span> <span class="st">&#39;.[]&#39;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">123</span></span></code></pre></div>
+</div>
+<h2 id="putting-elements-in-an-array-using-jq">Putting Elements in an Array using <code>jq</code></h2>
+<p>Not everything emitted by <code>jq</code> is proper JSON. The titles I output were in a new line delimited list:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;Question</span> <span class="er">about</span> <span class="er">license.&quot;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;visibility</span> <span class="er">of</span> <span class="er">wiki</span> <span class="er">pages&quot;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;Release</span> <span class="er">1.6</span> <span class="er">does</span> <span class="er">not</span> <span class="er">have</span> <span class="er">pre-autoreconf&#39;ed</span> <span class="er">configure</span> <span class="er">script&quot;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;Fix</span> <span class="er">typo&quot;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;Compile</span> <span class="er">error</span> <span class="er">messages</span> <span class="er">don&#39;t</span> <span class="er">provide</span> <span class="er">column</span> <span class="er">only</span> <span class="er">line</span> <span class="er">number&quot;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span></code></pre></div>
+<p>To put a collection of results produced by a filter into a JSON array, you can wrap it in <code>[ ... ]</code> where <code>...</code> is a filter.</p>
+<p>My title filter (<code>.[].title</code>) then becomes <code>[ .[].title ]</code> like this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=5 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39;[ .[].title ] &#39;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Question about license.&quot;</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;visibility of wiki pages&quot;</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Release 1.6 does not have pre-autoreconf&#39;ed configure script&quot;</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="er">&quot;Fix</span> <span class="er">typo&quot;,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Compile error messages don&#39;t provide column only line number&quot;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="ex">]</span></span></code></pre></div>
+<p>Now I have a valid JSON document.</p>
+<h2 id="using-jq-to-select-multiple-fields">Using <code>jq</code> to Select Multiple Fields</h2>
+<p>The GitHub issues API has a lot of details I don’t care about. I want to select multiple fields from the document returned and leave the rest behind.</p>
+<p>The easiest way to do this is using <code>,</code> to specify multiple filters:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=2 <span class="kw">|</span> <span class="ex">\ </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39; .[].title, .[].number&#39;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Question about license.&quot;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;visibility of wiki pages&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">2341</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ex">2340</span></span></code></pre></div>
+<p>But this is returning the result of one selection after the other. To change the ordering, I can factor out the array selector:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=2 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39;.[] |  .title, .number&#39;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Question about license.&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2341</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;visibility of wiki pages&quot;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">2340</span></span></code></pre></div>
+<p>This uses pipes, which I’ll will talk about shortly and causes my object selectors to be run per element.</p>
+<p>If you wrap the query in the array constructor you get this:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=2 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39;[ .[] |  .title, .number ]&#39;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Question about license.&quot;</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  2341,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;visibility of wiki pages&quot;</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="er">2340</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">]</span></span></code></pre></div>
+<p>But this still isn’t the JSON document I need. To get these values into a proper JSON document, I need the object constructor <code>{ ... }</code>. The object construction syntax lets you build a JSON object by using <code>jq</code> filters for both keys and values:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=2 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39;[ .[] | { title: .title, number: .number} ]&#39;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span>: <span class="st">&quot;Question about license.&quot;</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="er">&quot;number&quot;:</span> <span class="er">2341</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span><span class="ex">,</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;visibility of wiki pages&quot;</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2340</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="ex">]</span></span></code></pre></div>
+<div class="notice--big--primary">
+<p><strong>What I Learned: Array and Object Constructors</strong></p>
+<p>To put the elements you’ve selected back into a JSON document, you can wrap them in an array constructor <code>[ .. ]</code> or an object constructor <code>{ ... }</code>.</p>
+<p>If you were emitting an array of objects you constructed, then it would end up looking something like this:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39;[ { key1: &lt;&lt;jq filter&gt;&gt;, key2: &lt;&lt;jq filter&gt;&gt; } ]&#39;</span></span></code></pre></div>
+<p>Both keys and value can be <code>jq</code> filters.</p>
+</div>
+<h2 id="sorting-and-counting-with-jq">Sorting and Counting With JQ</h2>
+<p>The next problem I have is that I want to summarize some this JSON data. Each issue returned by GitHub has a collection of labels:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues/2289    </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39; { title: .title, number: .number, labels: .labels} &#39;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2289,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> [</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;feature request&quot;</span><span class="ex">,</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;dependencies&quot;</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">]</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span></code></pre></div>
+<p>If I want those labels in alphabetical order I can use the built in <code>sort</code> function. It works like this:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span>  echo <span class="st">&#39;[&quot;3&quot;,&quot;2&quot;,&quot;1&quot;]&#39;</span> <span class="kw">|</span> <span class="ex">jq</span> <span class="st">&#39;sort&#39;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[</span><span class="st">&quot;1&quot;</span><span class="ex">,</span> <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>]</span></code></pre></div>
+<p>I can combine this built-in jq function with my existing filter, but first, I should explain pipes and filters.</p>
+<p><code>jq</code> is a filter: You pipe a JSON document to it, and it filters and outputs it. But the <code>jq</code> language is also made up of filters itself.</p>
+<p>In fact, most of the things I’ve used so far are filters:</p>
+<ul>
+<li><code>.title</code> is a filter that only returns the values of key ‘title’.<br />
+</li>
+<li><code>[]</code> is a filter that, given an array, returns the elements of the array.</li>
+<li><code>[2:4]</code> is a filter that, given an array, returns elements 2 through 4.</li>
+</ul>
+<p>You can join these filters together using <code>jq</code>’s built-in functions. You do this using a pipe (<code>|</code>) just like in a UNIX shell.</p>
+<ul>
+<li><code>.title | length</code> will return the length of the title</li>
+<li><code>[] | sort</code> will return the array elements in sorted order</li>
+<li><code>.number | tostring</code> will return our issue number as a string</li>
+</ul>
+<p>This means that sorting my labels is simple. I can just change <code>.labels</code> to <code>.labels | sort</code>:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues/2289 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39; { title: .title, number: .number, labels: .labels | sort } &#39;</span>    </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2289,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> [</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;dependencies&quot;</span><span class="ex">,</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;feature request&quot;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">]</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span></code></pre></div>
+<p>And if you want just a label count that is easy as well:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> curl https://api.github.com/repos/stedolan/jq/issues/2289 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39; { title: .title, number: .number, labels: .labels | length } &#39;</span>    </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2289,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> 2</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span></code></pre></div>
+<div class="notice--big--primary">
+<p><strong>What I Learned: Pipes and built-ins</strong></p>
+<p><code>jq</code> has many built-in functions, and you can combine them with your queries using the pipe operator (<code>|</code>).</p>
+<p>If you were emitting an array of objects then it ends up looking something like this:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39; .key1.subkey2[] | sort &#39;</span> <span class="co"># sorting</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39; .key2.subkey | length&#39;</span> <span class="co"># length of string or array</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39; .key3 | floor | tostring | length&#39;</span> <span class="co"># and so on</span></span></code></pre></div>
+</div>
+<h2 id="maps-and-selects-using-jq">Maps and Selects Using JQ</h2>
+<p>The <code>jq</code> issues list has many non-issues: people can’t figure out how to do something and open an issue. <strong>Attention Internet: Please don’t do this.</strong> GitHub issues aren’t the place to post your random homework problem.</p>
+<p>Let’s say I want to grab all the issues that are labeled. This would let me skip all the drive-by fix-my-problem issues. Unfortunately, it’s impossible to do this with the GitHub API unless you specify all the possible labels in your query. Never fear though, we can easily do this query on the command line by filtering our results with <code>jq</code>.</p>
+<p>Our query so far looks like this:</p>
+<pre><code>  jq &#39;[ .[] | { title: .title, number: .number, labels: .labels | length } ]&#39;</code></pre>
+<p>The first thing we can do is simplify it using <code>map</code>.</p>
+<pre><code>  jq &#39;map({ title: .title, number: .number, labels: .labels | length }) </code></pre>
+<p>You can think of <code>map(...)</code> as a shorthand for <code>[ .[] | ...  ]</code>. It lets you unwrap an array, apply the filter and then rewrap the results back into an array.</p>
+<p>We can combine that with a select statement that looks like this:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">map</span><span class="er">(</span><span class="cf">select</span><span class="kw">(</span><span class="ex">.labels</span> <span class="op">&gt;</span> 0<span class="kw">))</span></span></code></pre></div>
+<p><code>select</code> is a built-in function that takes a boolean expression and only returns elements that match. It’s similar to the <code>WHERE</code> clause in a SQL statement or array filter in JavaScript.</p>
+<p>Putting this all together looks like this:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> https://api.github.com/repos/stedolan/jq/issues<span class="pp">?</span>per_page=100 <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">jq</span> <span class="st">&#39;map({ title: .title, number: .number, labels: .labels | length }) | </span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="st">   map(select(.labels &gt; 0))&#39;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span>: <span class="st">&quot;Bump lxml from 4.3.1 to 4.6.3 in /docs&quot;</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="er">&quot;number&quot;:</span> <span class="er">2295,</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> 1</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span><span class="ex">,</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Bump pyyaml from 3.13 to 5.4 in /docs&quot;</span>,</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2291,</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> 1</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Bump jinja2 from 2.10 to 2.11.3 in /docs&quot;</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2289,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> 1</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">},</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="kw">{</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;title&quot;</span><span class="ex">:</span> <span class="st">&quot;Debugging help through showing pipeline intermediates. &quot;</span>,</span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;number&quot;</span><span class="ex">:</span> 2206,</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;labels&quot;</span><span class="ex">:</span> 1</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">}</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="ex">]</span></span></code></pre></div>
+<p>This uses three object indexes, two maps, two pipes, a length function, and a <code>select</code> predicate. But if you’ve followed along, this should all make sense. It’s all just composing together filters until you get the result you need.</p>
+<h2 id="jq-cheatsheet">JQ CheatSheet</h2>
+<div class="notice--big--primary">
+<p><strong>What I Learned: JQ CheatSheet</strong></p>
+<p><code>jq</code> lets you select elements by starting with a <code>.</code> and accessing keys and arrays like it’s a JavaScript Object (which is it is). This feature uses the Object and Array index <code>jq</code> creates of a JSON document and look like this:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39;.key[0].subkey[2:3].subsubkey&#39;</span></span></code></pre></div>
+<p><code>jq</code> contains object constructors <code>{ ... }</code> and array constructors <code>[ ... ]</code>. You use these when you want to wrap back up something you’ve pulled out of a JSON document using the above indexes:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jq</span> <span class="st">&#39;[ { key1: .key1, key2: .key2 }  ]&#39;</span></span></code></pre></div>
+<p><code>jq</code> contains built-in functions (<code>length</code>,<code>sort</code>,<code>select</code>,<code>map</code>) and pipes (<code>|</code>), and you can compose these together just like you can combine pipes and filters in a command-line shell:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>  <span class="ex">jq</span> <span class="st">&#39;map({ order-of-magitude: .items | length | tostring | length }) </span></span></code></pre></div>
+</div>
+<!-- markdownlint-enable MD036 -->
+<h2 id="conclusion">Conclusion</h2>
+<p>This has only been the basics of <code>jq</code>. The <code>jq</code> query language is a full programming language and you can do lots of exciting things with it. You convert from <a href="/blog/convert-to-from-json/#convert-json-to-csv-via-the-command-line-using-jq">JSON to CSV</a>. You can define you own functions and even <a href="https://rosettacode.org/wiki/Sieve_of_Eratosthenes#jq">find primes</a> with <code>jq</code>:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="pp"># Denoting the input by $n, which is assumed to be a positive integer,</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="pp"># eratosthenes/0 produces an array of primes less than or equal to $n:</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>def eratosthenes<span class="op">:</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  (<span class="op">.</span> <span class="op">+</span> <span class="dv">1</span>) as <span class="op">$</span>n</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> ((<span class="op">$</span>n<span class="op">|</span><span class="fu">sqrt</span>) <span class="op">/</span> <span class="dv">2</span>) as <span class="op">$</span>s</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> [<span class="fu">null</span>, <span class="fu">null</span>, <span class="fu">range</span>(<span class="dv">2</span>; <span class="op">$</span>n)]</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> reduce (<span class="dv">2</span>, <span class="dv">1</span> <span class="op">+</span> (<span class="dv">2</span> <span class="op">*</span> <span class="fu">range</span>(<span class="dv">1</span>; <span class="op">$</span>s))) as <span class="op">$</span>i (<span class="op">.</span>; erase(<span class="op">$</span>i))</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">|</span> <span class="fu">map</span>(select(<span class="op">.</span>));</span></code></pre></div>
+<p>However, simple stuff – like selecting elements, filtering by key, or value – is often all you need.</p>
+<p>I hope this helps make <code>jq</code> more approachable and that you no longer have to go to google every time you want to query a JSON document.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>A note for the pedants: automated behavior is stored in your basal ganglia. It feels like it’s in my fingers, but really, these actions just fired at a level below my awareness.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-fc29677ee.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png 240w" type="image/png"><img src="/blog/generated/assets/images/authors/adamgordonbell-240-ad4309f1a.png" alt="Adam Gordon Bell %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <div class="author__name heading" itemprop="name">
+        Adam Gordon Bell
+    
+    
+      
+        
+          <a href="https://twitter.com/adamgordonbell" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="mailto:adam+website@earthly.dev" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+        
+          <a href="https://corecursive.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label"></span></a>
+        
+      
+    
+      </div>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Spreading the word about Earthly. Host of CoRecursive podcast. Physical Embodiment of Cunningham’s Law</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+<p class="page__taxonomy">
+  <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>Author:</strong>
+  <span itemprop="keywords">
+    <a href="/blog/authors/Adam/" class="page__taxonomy-item" rel="tag">Adam Gordon Bell</a>
+  </span>
+</p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-16T00:00:00-04:00">August 16, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/convert-to-from-json/" class="pagination--pager" title="How to Convert from JSON to CSV at The Command Line
+">Previous</a>
+    
+    
+      <a href="/blog/10-continous-delivery/" class="pagination--pager" title="10+ Best Continuous Delivery Tools
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <div class="page__related-title heading">You may also enjoy</div>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/default-teaser-600-aae60f084.webp 600w, /blog/generated/assets/images/default-teaser-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/default-teaser-600-495449b49.jpg 600w, /blog/generated/assets/images/default-teaser-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/default-teaser-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/checklist/" rel="permalink">Put Your Best Title Here
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Writing Article Checklist
+
+
+
+ Write Outline
+
+
+ Write Draft
+
+
+ Fix Grammarly Errors
+
+
+ Read out loud
+
+
+ Write 5 or more titles and pick the best on
+
+
+ First ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
