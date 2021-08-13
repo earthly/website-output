@@ -436,4 +436,28 @@ var store = [{
         "tags": [],
         "url": "/blog/convert-to-from-json/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "JQ Select Explained: Selecting elements from JSON with Examples",
+        "excerpt":"Background: Fingers, Head, and Google Some actions are just in my fingers. I don’t have to remember how to use them. My fingers know how. My alias for git commit is my fingers. I commit my work almost automatically when I reach a stopping point. Other actions, I know how...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/jq-select/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "10+ Best Continuous Delivery Tools",
+        "excerpt":"Draft.dev Article Checklist Add in Author page Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply) Add keywords for internal links to front-matter Run earthly +link-opportunity and find 1-5 places to incorporate...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/10-continous-delivery/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Put Your Best Title Here",
+        "excerpt":"Writing Article Checklist Write Outline Write Draft Fix Grammarly Errors Read out loud Write 5 or more titles and pick the best on First two paragraphs: What’s it about? Why listen to you? Create header image in Canva Optional: Find ways to break up content with quotes or images Verify...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/checklist/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
