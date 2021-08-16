@@ -436,4 +436,22 @@ var store = [{
         "tags": [],
         "url": "/blog/convert-to-from-json/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Plotting Precipitation with Python, Pandas and Matplotlib",
+        "excerpt":"Where Did All The Rain Go? It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it had rained, which got me looking at historical weather data. Before I knew it, rather than simply look up how many...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/plotting-rainfall-data-with-python-and-matplotlib/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "10+ Best Continuous Delivery Tools",
+        "excerpt":"Draft.dev Article Checklist Add in Author page Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply) Add keywords for internal links to front-matter Run earthly +link-opportunity and find 1-5 places to incorporate...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/10-continous-delivery/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
