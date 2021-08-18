@@ -436,4 +436,10 @@ var store = [{
         "tags": [],
         "url": "/blog/convert-to-from-json/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Plotting Precipitation with Python, Pandas and Matplotlib",
+        "excerpt":"Where Did All The Rain Go? It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it had rained, which got me looking at historical weather data. Before I knew it, rather than simply look up how many...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/plotting-rainfall-data-with-python-and-matplotlib/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]

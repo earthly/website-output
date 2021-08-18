@@ -2,19 +2,19 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://earthly.dev/blog/authors/Adam/</loc>
-<lastmod>2021-08-17T08:27:09-04:00</lastmod>
+<lastmod>2021-08-18T08:26:51-04:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/authors/Alex/</loc>
-<lastmod>2021-08-17T08:27:09-04:00</lastmod>
+<lastmod>2021-08-18T08:26:51-04:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/authors/Corey/</loc>
-<lastmod>2021-08-17T08:27:09-04:00</lastmod>
+<lastmod>2021-08-18T08:26:51-04:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/authors/Vlad/</loc>
-<lastmod>2021-08-17T08:27:09-04:00</lastmod>
+<lastmod>2021-08-18T08:26:51-04:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/introducing-earthly-build-automation-for-the-container-era/</loc>
@@ -291,6 +291,10 @@
 <url>
 <loc>https://earthly.dev/blog/convert-to-from-json/</loc>
 <lastmod>2021-08-12T00:00:00-04:00</lastmod>
+</url>
+<url>
+<loc>https://earthly.dev/blog/plotting-rainfall-data-with-python-and-matplotlib/</loc>
+<lastmod>2021-08-18T00:00:00-04:00</lastmod>
 </url>
 <url>
 <loc>https://earthly.dev/blog/categories/</loc>

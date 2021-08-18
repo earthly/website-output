@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Plotting Precipitation with Python, Pandas and Matplotlib - Earthly Blog</title>
+<meta name="description" content="Where Did All The Rain Go?It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it ha...">
+
+
+  <meta name="author" content="Alex Couture-Beil">
+  
+  <meta property="article:author" content="Alex Couture-Beil">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Plotting Precipitation with Python, Pandas and Matplotlib">
+<meta property="og:url" content="https://earthly.dev/blog/plotting-rainfall-data-with-python-and-matplotlib/">
+
+
+  <meta property="og:description" content="Where Did All The Rain Go?It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it ha...">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-800-1b4b631ca.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Plotting Precipitation with Python, Pandas and Matplotlib">
+  <meta name="twitter:description" content="Where Did All The Rain Go?It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it ha...">
+  <meta name="twitter:url" content="https://earthly.dev/blog/plotting-rainfall-data-with-python-and-matplotlib/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-800-1b4b631ca.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-08-18T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/plotting-rainfall-data-with-python-and-matplotlib/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-400-709fa7287.webp 400w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-600-709fa7287.webp 600w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-800-709fa7287.webp 800w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-1000-709fa7287.webp 1000w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-1200-709fa7287.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-400-709fa7287.png 400w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-600-709fa7287.png 600w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-800-709fa7287.png 800w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-1000-709fa7287.png 1000w, /blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-1200-709fa7287.png 1200w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/header-800-709fa7287.jpg" alt="Plotting Precipitation with Python, Pandas and Matplotlib"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Plotting Precipitation with Python, Pandas and Matplotlib">
+    <meta itemprop="description" content="Where Did All The Rain Go?It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it had rained, which got me looking at historical weather data. Before I knew it, rather than simply look up how many days it’s been since it last rained (42 and counting!), I was plotting cumulative annual rainfall.Get Some DataI ended up on Environment Canada’s historic data search page, and ended up with a table of daily weather recorded at Victoria International Airport, climate ID 1018621 (which is closer to Sidney BC, but I digress). On the right hand side of that page, there was an option to download the data as CSV. Upon clicking the Download Data button, my web browser was redirected to:https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&amp;stationID=51337&amp;Year=2021&amp;Month=7&amp;Day=1&amp;time=&amp;timeframe=2&amp;submit=Download+DataThe website gave me an option to change the range of data to download; however if you squint enough, the above URL looks like an API. Furthermore, the month and day values didn’t seem to affect anything – since this was annual data, only the year was used.It’s also interesting to note that the station ID is different from the Climate ID even though Environment Canada defines “the climate ID is a 7 digit number assigned by the Meteorological Service of Canada to a site where official weather observations are taken, and serves as a permanent, unique identifier.” Perhaps there was a thought leader who was suffering from past trauma where a client’s definition of a “permanent unique identifier” didn’t match up with a relational databases’ definition of a unique identifier, and insisted on creating a lookup table for these different IDs. Again, I digress, back to downloading data.I wrote a bash while loop to download this data:#!/bin/shset -efor year in $(seq 2013 2021); do    curl &quot;https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&amp;stationID=51337&amp;Year=${year}&amp;timeframe=2&quot; &gt; victoria-weather-$year.csvdoneParsing the DataUsing the Standard csv.reader ParserPython offers a standard library for parsing .csv files, aptly named csv. The csv library is fairly low-level and provides a csv.reader which can be used to iterate over rows:import csvwith open(&#39;data/victoria-weather-2020.csv&#39;) as fp:    reader = csv.reader(fp)    for row in reader:        print(row)This will output something such as[&#39;\ufeff&quot;Longitude (x)&quot;&#39;, &#39;Latitude (y)&#39;, &#39;Station Name&#39;, &#39;Climate ID&#39;, &#39;Date/Time&#39;, &#39;Year&#39;, &#39;Month&#39;, &#39;Day&#39;, &#39;Data Quality&#39;, &#39;Max Temp (°C)&#39;, &#39;Max Temp Flag&#39;, &#39;Min Temp (°C)&#39;, &#39;Min Temp Flag&#39;, &#39;Mean Temp (°C)&#39;, &#39;Mean Temp Flag&#39;, &#39;Heat Deg Days (°C)&#39;, &#39;Heat Deg Days Flag&#39;, &#39;Cool Deg Days (°C)&#39;, &#39;Cool Deg Days Flag&#39;, &#39;Total Rain (mm)&#39;, &#39;Total Rain Flag&#39;, &#39;Total Snow (cm)&#39;, &#39;Total Snow Flag&#39;, &#39;Total Precip (mm)&#39;, &#39;Total Precip Flag&#39;, &#39;Snow on Grnd (cm)&#39;, &#39;Snow on Grnd Flag&#39;, &#39;Dir of Max Gust (10s deg)&#39;, &#39;Dir of Max Gust Flag&#39;, &#39;Spd of Max Gust (km/h)&#39;, &#39;Spd of Max Gust Flag&#39;][&#39;-123.43&#39;, &#39;48.65&#39;, &#39;VICTORIA INTL A&#39;, &#39;1018621&#39;, &#39;2020-01-01&#39;, &#39;2020&#39;, &#39;01&#39;, &#39;01&#39;, &#39;&#39;, &#39;12.9&#39;, &#39;&#39;, &#39;5.5&#39;, &#39;&#39;, &#39;9.2&#39;, &#39;&#39;, &#39;8.8&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;T&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;T&#39;, &#39;&#39;, &#39;&#39;, &#39;26&#39;, &#39;&#39;, &#39;59&#39;, &#39;&#39;][&#39;-123.43&#39;, &#39;48.65&#39;, &#39;VICTORIA INTL A&#39;, &#39;1018621&#39;, &#39;2020-01-02&#39;, &#39;2020&#39;, &#39;01&#39;, &#39;02&#39;, &#39;&#39;, &#39;6.0&#39;, &#39;&#39;, &#39;0.9&#39;, &#39;&#39;, &#39;3.5&#39;, &#39;&#39;, &#39;14.5&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;14.6&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;14.6&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;14&#39;, &#39;&#39;, &#39;45&#39;, &#39;&#39;]The downside of using the standard python csv.reader parser, is it simply returns all cells as strings, and doesn’t differentiate between cell headers and cell contents. Furthermore, the underlying data seems to have some sort of unicode character that’s not being correctly handled.Using the Standard csv.DictReader ParserThe csv library provides a csv.DictReader class which will use the first row as cell headers, and rather than returning the row as a list; instead it will return it as a dictionary:{&#39;\ufeff&quot;Longitude (x)&quot;&#39;: &#39;-123.43&#39;, &#39;Latitude (y)&#39;: &#39;48.65&#39;, &#39;Station Name&#39;: &#39;VICTORIA INTL A&#39;, &#39;Climate ID&#39;: &#39;1018621&#39;, &#39;Date/Time&#39;: &#39;2020-01-01&#39;, &#39;Year&#39;: &#39;2020&#39;, &#39;Month&#39;: &#39;01&#39;, &#39;Day&#39;: &#39;01&#39;, &#39;Data Quality&#39;: &#39;&#39;, &#39;Max Temp (°C)&#39;: &#39;12.9&#39;, &#39;Max Temp Flag&#39;: &#39;&#39;, &#39;Min Temp (°C)&#39;: &#39;5.5&#39;, &#39;Min Temp Flag&#39;: &#39;&#39;, &#39;Mean Temp (°C)&#39;: &#39;9.2&#39;, &#39;Mean Temp Flag&#39;: &#39;&#39;, &#39;Heat Deg Days (°C)&#39;: &#39;8.8&#39;, &#39;Heat Deg Days Flag&#39;: &#39;&#39;, &#39;Cool Deg Days (°C)&#39;: &#39;0.0&#39;, &#39;Cool Deg Days Flag&#39;: &#39;&#39;, &#39;Total Rain (mm)&#39;: &#39;0.0&#39;, &#39;Total Rain Flag&#39;: &#39;T&#39;, &#39;Total Snow (cm)&#39;: &#39;0.0&#39;, &#39;Total Snow Flag&#39;: &#39;&#39;, &#39;Total Precip (mm)&#39;: &#39;0.0&#39;, &#39;Total Precip Flag&#39;: &#39;T&#39;, &#39;Snow on Grnd (cm)&#39;: &#39;&#39;, &#39;Snow on Grnd Flag&#39;: &#39;&#39;, &#39;Dir of Max Gust (10s deg)&#39;: &#39;26&#39;, &#39;Dir of Max Gust Flag&#39;: &#39;&#39;, &#39;Spd of Max Gust (km/h)&#39;: &#39;59&#39;, &#39;Spd of Max Gust Flag&#39;: &#39;&#39;}However, the DictReader doesn’t parse the cell contents and returns everything simply as strings – leaving all type parsing to the user. Again we see the incorrectly handled unicode character appear – this time within the key of every row.Using the Pandas LibraryThe pandas library is a third-party python library which provides tools for data analysis and manipulation. We will be using the pandas.read_csv function to parse our data:import pandasweather = pandas.read_csv(&#39;data/victoria-weather-2020.csv&#39;)print(weather)This will produce output such as:     Longitude (x)  Latitude (y)     Station Name  Climate ID   Date/Time  Year  Month  Day  ...  Total Precip (mm)  Total Precip Flag Snow on Grnd (cm)  Snow on Grnd Flag Dir of Max Gust (10s deg)  Dir of Max Gust Flag Spd of Max Gust (km/h)  Spd of Max Gust Flag0          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-01  2020      1    1  ...                0.0                  T               NaN                NaN                      26.0                   NaN                   59.0                   NaN1          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-02  2020      1    2  ...               14.6                NaN               NaN                NaN                      14.0                   NaN                   45.0                   NaN2          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-03  2020      1    3  ...               11.2                NaN               NaN                NaN                      15.0                   NaN                   39.0                   NaN..             ...           ...              ...         ...         ...   ...    ...  ...  ...                ...                ...               ...                ...                       ...                   ...                    ...                   ...363        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-29  2020     12   29  ...                8.7                NaN               NaN                NaN                       NaN                     M                    NaN                     M364        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-30  2020     12   30  ...               20.4                NaN               NaN                NaN                      14.0                   NaN                   61.0                   NaN365        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-31  2020     12   31  ...                7.2                NaN               NaN                NaN                      14.0                   NaN                   33.0                   NaN[366 rows x 31 columns]Notice how the columns have been automatically parsed to an appropriate data type, as well as the column headers are detected. Row numbers are additionally displayed, as well as the data is displayed as a table. This is possible due to the fact that the read_csv function returns a pandas.core.frame.DataFrame data type which among other things, implements the str method which is used to render the string which is passed to the print function.Merging Multiple DatasetsMy dataset is split across multiple csv files, with each file containing a dataset for a specific year. My first task is to merge them together. All the datasets are located under the data directory, and are named victoria-weather-YYYY.csv (where YYYY is the year).Let’s write a function to parse all the data:import reimport osimport pandasdef get_data(weather_dir):    p = re.compile(&#39;victoria-weather-[0-9]+.csv&#39;)    data = []    for filename in sorted(os.listdir(weather_dir)):        if p.match(filename):            path = os.path.join(weather_dir, filename)            yearly_data = pandas.read_csv(path)            data.append(yearly_data)    return pandas.concat(data)weather = get_data(&#39;data&#39;)print(weather)This function 1) uses a regular expression to ensure we only parse files which match the expected form, which prevents our program from crashing if any other files existed in the directory, 2) parses each file separately using the read_csv function, 3) saves the returned data frame into the data list, then finally 4) concatenates the data using the concat function. This code should output a single data frame containing all the data spanning a decade:     Longitude (x)  Latitude (y)     Station Name  Climate ID   Date/Time  Year  Month  Day  Data Quality  ...  Total Snow Flag Total Precip (mm)  Total Precip Flag Snow on Grnd (cm)  Snow on Grnd Flag Dir of Max Gust (10s deg)  Dir of Max Gust Flag Spd of Max Gust (km/h)  Spd of Max Gust Flag0          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-01  2014      1    1           NaN  ...              NaN               1.6                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN1          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-02  2014      1    2           NaN  ...              NaN               6.6                NaN               NaN                NaN                      21.0                   NaN                     37                   NaN2          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-03  2014      1    3           NaN  ...              NaN               0.0                NaN               NaN                NaN                      31.0                   NaN                     41                   NaN3          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-04  2014      1    4           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN4          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-05  2014      1    5           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN..             ...           ...              ...         ...         ...   ...    ...  ...           ...  ...              ...               ...                ...               ...                ...                       ...                   ...                    ...                   ...198        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-18  2021      7   18           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    NaN                     M199        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-19  2021      7   19           NaN  ...              NaN               0.0                NaN               NaN                NaN                      25.0                   NaN                   37.0                   NaN200        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-20  2021      7   20           NaN  ...              NaN               0.0                NaN               NaN                NaN                      29.0                   NaN                   36.0                   NaN201        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-21  2021      7   21           NaN  ...              NaN               0.0                NaN               NaN                NaN                      28.0                   NaN                   33.0                   NaN202        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-22  2021      7   22           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                     M                    NaN                     M[2760 rows x 31 columns]Raindrops Keep Falling on my PlotsLet’s plot the rainfall! We will use the matplotlib library for visualizing this data.We can extract a single column of the data frame using the column name, e.g. weather[‘Total Precip (mm)’]. This will return a pandas.core.series.Series data type, which is similar to a list; however requires each element in the series to be the same data type. This allows pandas to keep all elements in contiguous memory, which allows faster SIMD-based operations.For another example of comparing generic data types against specific native types, checkout out our post on the various tricks that python’s timsort uses to achieve better performance.A pandas series can be converted into a python list using the .to_list() method; e.g. weather[‘Total Precip (mm)’].to_list()Plotting the Data InteractivelyHere’s a quick example of plotting this data interactively:import matplotlib.pyplot as pltrainfall = weather[&#39;Total Precip (mm)&#39;].to_list()plt.plot(rainfall)plt.show()This will display a new window, containing a plot of the data:Victoria BC daily precipitation interactive plotIt should be possible to omit the .to_list() call, which would then pass the pandas series data type directly to the matplotlib plot function rather than passing a standard python list; however, there’s a bug in matplotlib (or pandas), which produces the following erroneous plot:Notice how this plot has some bizarre lines that criss-cross the plot, and that the data points stop at roughly 350 rather than past 2500? At a quick glance, this might be an instance of this bug.Saving the Plot ProgrammaticallyLets revise the previous code to render the plot as a png instead of using an interactive window:import matplotlib.pyplot as plt# create a new figure that is 10x7 inches# which is rendered as 100 pixels per inch# (matplotlib incorrectly refers to this as dots-per-inch, which is a printer term)fig = plt.figure(figsize=(10.0, 7.0), dpi=100)# define axes on the figure to take up the entire figure canvasax = fig.add_axes([0, 0, 1, 1])# plot the rainfall amounts against the axesax.plot(rainfall)# label the axes and title the plotax.set_xlabel(&#39;days since start of dataset&#39;)ax.set_ylabel(&#39;precipitation (mm)&#39;)ax.set_title(&#39;Victoria BC daily precipitation&#39;)# save the plot to diskfig.savefig(&#39;daily-precipitation.png&#39;, bbox_inches=&#39;tight&#39;)Which will produce:Victoria BC daily precipitationFixing the X Axis Label to Display the DateThe previous plots didn’t make use of the Date/Time column from our weather data csv files; instead it was simply displaying the index of the list element. We need to instruct pandas to parse those columns as dates using the parse_dates field. We will additionally define a date parsing function yyyymmdd_parser which will be used to parse the date; without this function, pandas will attempt to guess the format of the date, which is a best-effort strategy and may not always work.import reimport osimport pandasimport datetimeimport matplotlib.pyplot as plt# Our new date parserdef yyyymmdd_parser(s):    return datetime.datetime.strptime(s, &#39;%Y-%m-%d&#39;)def get_data(weather_dir):    p = re.compile(&#39;victoria-weather-[0-9]+.csv&#39;)    data = []    for filename in sorted(os.listdir(weather_dir)):        if p.match(filename):            path = os.path.join(weather_dir, filename)            # We identify which column contains the date, along with the date parser to use.            yearly_data = pandas.read_csv(path, parse_dates=[&#39;Date/Time&#39;], date_parser=yyyymmdd_parser)            data.append(yearly_data)    return pandas.concat(data)weather = get_data(&#39;data&#39;)rainfall = weather[&#39;Total Precip (mm)&#39;].to_list()# We will convert all dates into the native python datetime format, which works# better with matplotlib.date = [x.to_pydatetime() for x in weather[&#39;Date/Time&#39;]]fig = plt.figure(figsize=(10.0, 7.0))ax = fig.add_axes([0,0,1,1])# We will pass in both the date and rainfall amounts which contain the x and y values respectivelyax.plot(date, rainfall)ax.set_xlabel(&#39;date&#39;)ax.set_ylabel(&#39;precipitation (mm)&#39;)ax.set_title(&#39;Victoria BC daily precipitation&#39;)fig.savefig(&#39;daily-precipitation-with-dates.png&#39;, bbox_inches=&#39;tight&#39;)Victoria BC daily precipitation with datesWhile it’s interesting to get this data plotted, it’s not obviously easy to compare one years data against another.Comparing Annual DataLet’s slice up the data and plot it against different years.Splitting up the Data by YearWe will create a new function that splits up the data by year, and calculates a new field that is days since January 1st of the current year:def get_days_since_jan1(date):    return date.timetuple().tm_yday - 1def split_data_by_year(weather):    yearly_rainfall = []    yearly_days_since_jan1 = []    current_year = None    by_year = []    for i, row in weather.iterrows():        date = row[&#39;Date/Time&#39;]        rainfall = row[&#39;Total Precip (mm)&#39;]        if current_year is None:            current_year = date.year        elif current_year != date.year:            by_year.append((current_year, pandas.DataFrame({                &#39;days_since_jan1&#39;: yearly_days_since_jan1,                &#39;rainfall&#39;: yearly_rainfall,                })))            yearly_days_since_jan1 = []            yearly_rainfall = []            current_year = date.year        yearly_rainfall.append(rainfall)        yearly_days_since_jan1.append(get_days_since_jan1(date))    if current_year is not None:        by_year.append((current_year, pandas.DataFrame({            &#39;days_since_jan1&#39;: yearly_days_since_jan1,            &#39;rainfall&#39;: yearly_rainfall,            })))    return by_yearrainfall_by_year = slice_data_by_year(weather)print(rainfall_by_year)This will then output something similar to:[(2014,      days_since_jan1  rainfall0                 0       1.61                 1       6.6..              ...       ...363             363       0.0364             364       0.0[365 rows x 2 columns]),(2015,      days_since_jan1  rainfall0                 0       0.01                 1       4.8..              ...       ...363             363       0.0364             364       0.0[366 rows x 2 columns]),...Plotting the Data by YearRather than call ax.plot a single time; in this example we will call it from inside a for loop once for each year in our data set. We pass the year as a label value, which will then be displayed on the legend.import matplotlib.pyplot as pltfig = plt.figure(figsize=(10.0, 7.0), dpi=100)ax = fig.add_axes([0, 0, 1, 1])for year, annual_data in rainfall_by_year:    days_since_jan1 = annual_data[&#39;days_since_jan1&#39;].to_list()    rainfall = annual_data[&#39;rainfall&#39;].to_list()    ax.plot(days_since_jan1, rainfall, label=year)# label the axes and title the plotax.set_xlabel(&#39;days since jan 1st&#39;)ax.set_ylabel(&#39;precipitation (mm)&#39;)ax.set_title(&#39;Victoria BC daily precipitation since Jan 1st&#39;)ax.legend()# save the plot to diskfig.savefig(&#39;daily-precipitation-by-year.png&#39;, bbox_inches=&#39;tight&#39;)This will produce the following plot:Victoria BC daily precipitation with datesWell that’s interesting, but still rather hard to compare one year against another. We can fix that by plotting the yearly cumulative sum.Plotting Cumulative Annual Rainfall by YearOne potential way to plot the cumulative annual rainfall would be to modify the split_data_by_year function to keep a yearly running total for the rainfall; however, pandas implements a cumsum function which can perform the calculation for us:import matplotlib.pyplot as pltfig = plt.figure(figsize=(10.0, 7.0), dpi=100)ax = fig.add_axes([0, 0, 1, 1])for year, annual_data in rainfall_by_year:    days_since_jan1 = annual_data[&#39;days_since_jan1&#39;].to_list()    rainfall = annual_data[&#39;rainfall&#39;].cumsum().to_list()    ax.plot(days_since_jan1, rainfall, label=year)# label the axes and title the plotax.set_xlabel(&#39;days since jan 1st&#39;)ax.set_ylabel(&#39;precipitation (mm)&#39;)ax.set_title(&#39;Victoria BC cumulative annual precipitation&#39;)ax.legend()# save the plot to diskfig.savefig(&#39;cumulative-annual-precipitation.png&#39;, bbox_inches=&#39;tight&#39;)Finally, a clear image starts to appear:Victoria BC cumulative annual precipitationAccounting for Missing DataIf you look closely at the previous plot, there’s a few gaps in the data. This occurred due to the fact that the initial data set contains an empty string &quot;&quot; in places where either no data is available, or where the data is zero. Since it’s not obvious which case applies, pandas will parse this empty string as nan (not-a-number).In our case, the Environment Canada data encodes no snow as &quot;&quot; rather than 0 cm. We will instruct pandas to fill in these gaps with a default value of 0, using the fillna() method:weather[&#39;Total Precip (mm)&#39;] = weather[&#39;Total Precip (mm)&#39;].fillna(0)weather[&#39;Total Snow (cm)&#39;] = weather[&#39;Total Snow (cm)&#39;].fillna(0)This will produce a plot without gaps:Victoria BC cumulative annual precipitationReordering the Legend and Fixing the X AxisThe previous plot is difficult to see which colours correspond to which years (especially hard if you are colour blind). We will re-order the legend from wettest to driest years, with 2021 being dead-last.To sort the data, we will create a new function get_total_rainfall, which returns a new value for python’s sorted function to use when sorting values. We return a tuple so that the year can be used to differentiate between cases where the annual precipitation is identical.Additionally, let’s fix the x-axis to display the name of the month, rather than an integer value.import matplotlibimport matplotlib.pyplot as pltfig = plt.figure(figsize=(10.0, 7.0), dpi=100)ax = fig.add_axes([0, 0, 1, 1])def get_total_rainfall(val):    year, annual_data = val    total_rainfall = annual_data[&#39;rainfall&#39;].cumsum().to_list()[-1]    return (total_rainfall, year)for year, annual_data in sorted(rainfall_by_year, key=get_total_rainfall, reverse=True):    days_since_jan1 = annual_data[&#39;days_since_jan1&#39;].to_list()    rainfall = annual_data[&#39;rainfall&#39;].cumsum().to_list()    ax.plot(days_since_jan1, rainfall, label=year)# format x axis values as month names rather than days since jan 1stdef format_days_since_jan1(days, pos=None):    date = datetime.date(2020, 1, 1) + datetime.timedelta(days)    return date.strftime(&#39;%b&#39;)ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(format_days_since_jan1))# label the axes and title the plotax.set_xlabel(&#39;calendar date&#39;)ax.set_ylabel(&#39;precipitation (mm)&#39;)ax.set_title(&#39;Victoria BC cumulative annual precipitation&#39;)ax.legend()# save the plot to diskfig.savefig(&#39;cumulative-annual-precipitation-sorted-legend.png&#39;, bbox_inches=&#39;tight&#39;)And here we have it, 2021 has been a really dry year here in Victoria:Victoria BC cumulative annual precipitation v2Accounting for SnowThe previous plots have an error – they were only plotting rainfall, and not accounting for snowfall. It’s difficult to directly convert snowfall into an equivalent amount of precipitation due to the variety of snow crystal sizes – some snow is wet, while other snow is fairly dry. On the west-coast (wet-coast as some call it); when we do get snow, it tends to be fairly wet. We will assume that 13mm of snow is equivalent to 1mm of rain 1.Let’s revise our split_data_by_year function to calculate this.def split_data_by_year(weather):    yearly_rainfall = []    yearly_days_since_jan1 = []    current_year = None    by_year = []    for i, row in weather.iterrows():        date = row[&#39;Date/Time&#39;]        rainfall = row[&#39;Total Precip (mm)&#39;]        # 1cm snow = 10mm snow; 13mm of snow = 1mm of rain        snowfall = row[&#39;Total Snow (cm)&#39;] * 10.0 / 13.0        rainfall += snowfall        if current_year is None:            current_year = date.year        elif current_year != date.year:            by_year.append((current_year, pandas.DataFrame({                &#39;days_since_jan1&#39;: yearly_days_since_jan1,                &#39;rainfall&#39;: yearly_rainfall,                })))            yearly_days_since_jan1 = []            yearly_rainfall = []            current_year = date.year        yearly_rainfall.append(rainfall)        yearly_days_since_jan1.append(get_days_since_jan1(date))    if current_year is not None:        by_year.append((current_year, pandas.DataFrame({            &#39;days_since_jan1&#39;: yearly_days_since_jan1,            &#39;rainfall&#39;: yearly_rainfall,            })))    return by_yearIf you look closely, once we adjust for snow, it turned out that 2017 was a wetter year compared to 2014:Victoria BC cumulative annual precipitation including snowNone of that however changes the fact that it’s been a very dry year, and my garden is browner than ever. On the other hand, my tomatoes have been loving the heat.If you would like to try generating the above graphs, all the code (and data) can be found under github.com/earthly/example-plotting-precipitation.While you’re here:Earthly is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.https://www.nssl.noaa.gov/education/svrwx101/winter/faq/↩︎">
+    <meta itemprop="datePublished" content="2021-08-18T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Plotting Precipitation with Python, Pandas and Matplotlib
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          16 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-18T00:00:00-04:00">August 18, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-5d6b0185c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-8935b6224.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-8935b6224.jpg" alt="Alex Couture-Beil %"></picture>
+
+          &nbsp;	&nbsp;
+          Alex Couture-Beil
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+        <h2 id="where-did-all-the-rain-go">Where Did All The Rain Go?</h2>
+<p>It’s been a really dry summer here in Victoria BC (and the rest of the province). I couldn’t remember the last time it had rained, which got me looking at historical weather data. Before I knew it, rather than simply look up how many days it’s been since it last rained (42 and counting!), I was plotting cumulative annual rainfall.</p>
+<h2 id="get-some-data">Get Some Data</h2>
+<p>I ended up on Environment Canada’s <a href="https://climate.weather.gc.ca/historical_data/search_historic_data_e.html">historic data search page</a>, and ended up with a table of daily weather recorded at Victoria International Airport, climate ID 1018621 (which is closer to Sidney BC, but I digress). On the right hand side of that page, there was an option to download the data as CSV. Upon clicking the <code>Download Data</code> button, my web browser was redirected to:</p>
+<pre><code>https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&amp;stationID=51337&amp;Year=2021&amp;Month=7&amp;Day=1&amp;time=&amp;timeframe=2&amp;submit=Download+Data</code></pre>
+<p>The website gave me an option to change the range of data to download; however if you squint enough, the above URL looks like an API. Furthermore, the month and day values didn’t seem to affect anything – since this was annual data, only the year was used.</p>
+<p>It’s also interesting to note that the <code>station ID</code> is different from the <code>Climate ID</code> even though Environment Canada defines “the climate ID is a 7 digit number assigned by the Meteorological Service of Canada to a site where official weather observations are taken, and serves as a permanent, unique identifier.” Perhaps there was a <a href="/blog/thought-leaders/">thought leader</a> who was suffering from past trauma where a client’s definition of a “permanent unique identifier” didn’t match up with a relational databases’ definition of a unique identifier, and insisted on creating a lookup table for these different IDs. Again, I digress, back to downloading data.</p>
+<p>I wrote a <a href="/blog/understanding-bash">bash</a> while loop to download this data:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/sh</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">set</span> <span class="at">-e</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 2013 2021<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="st">&quot;https://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&amp;stationID=51337&amp;Year=</span><span class="va">${year}</span><span class="st">&amp;timeframe=2&quot;</span> <span class="op">&gt;</span> victoria-weather-<span class="va">$year</span>.csv</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h2 id="parsing-the-data">Parsing the Data</h2>
+<h3 id="using-the-standard-csv.reader-parser">Using the Standard <code>csv.reader</code> Parser</h3>
+<p>Python offers a standard library for parsing <code>.csv</code> files, aptly named <code>csv</code>. The <code>csv</code> library is fairly low-level and provides a <code>csv.reader</code> which can be used to iterate over rows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;data/victoria-weather-2020.csv&#39;</span>) <span class="im">as</span> fp:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    reader <span class="op">=</span> csv.reader(fp)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> reader:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row)</span></code></pre></div>
+<p>This will output something such as</p>
+<pre><code>[&#39;\ufeff&quot;Longitude (x)&quot;&#39;, &#39;Latitude (y)&#39;, &#39;Station Name&#39;, &#39;Climate ID&#39;, &#39;Date/Time&#39;, &#39;Year&#39;, &#39;Month&#39;, &#39;Day&#39;, &#39;Data Quality&#39;, &#39;Max Temp (°C)&#39;, &#39;Max Temp Flag&#39;, &#39;Min Temp (°C)&#39;, &#39;Min Temp Flag&#39;, &#39;Mean Temp (°C)&#39;, &#39;Mean Temp Flag&#39;, &#39;Heat Deg Days (°C)&#39;, &#39;Heat Deg Days Flag&#39;, &#39;Cool Deg Days (°C)&#39;, &#39;Cool Deg Days Flag&#39;, &#39;Total Rain (mm)&#39;, &#39;Total Rain Flag&#39;, &#39;Total Snow (cm)&#39;, &#39;Total Snow Flag&#39;, &#39;Total Precip (mm)&#39;, &#39;Total Precip Flag&#39;, &#39;Snow on Grnd (cm)&#39;, &#39;Snow on Grnd Flag&#39;, &#39;Dir of Max Gust (10s deg)&#39;, &#39;Dir of Max Gust Flag&#39;, &#39;Spd of Max Gust (km/h)&#39;, &#39;Spd of Max Gust Flag&#39;]
+[&#39;-123.43&#39;, &#39;48.65&#39;, &#39;VICTORIA INTL A&#39;, &#39;1018621&#39;, &#39;2020-01-01&#39;, &#39;2020&#39;, &#39;01&#39;, &#39;01&#39;, &#39;&#39;, &#39;12.9&#39;, &#39;&#39;, &#39;5.5&#39;, &#39;&#39;, &#39;9.2&#39;, &#39;&#39;, &#39;8.8&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;T&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;T&#39;, &#39;&#39;, &#39;&#39;, &#39;26&#39;, &#39;&#39;, &#39;59&#39;, &#39;&#39;]
+[&#39;-123.43&#39;, &#39;48.65&#39;, &#39;VICTORIA INTL A&#39;, &#39;1018621&#39;, &#39;2020-01-02&#39;, &#39;2020&#39;, &#39;01&#39;, &#39;02&#39;, &#39;&#39;, &#39;6.0&#39;, &#39;&#39;, &#39;0.9&#39;, &#39;&#39;, &#39;3.5&#39;, &#39;&#39;, &#39;14.5&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;14.6&#39;, &#39;&#39;, &#39;0.0&#39;, &#39;&#39;, &#39;14.6&#39;, &#39;&#39;, &#39;&#39;, &#39;&#39;, &#39;14&#39;, &#39;&#39;, &#39;45&#39;, &#39;&#39;]</code></pre>
+<p>The downside of using the standard python <code>csv.reader</code> parser, is it simply returns all cells as strings, and doesn’t differentiate between cell headers and cell contents. Furthermore, the underlying data seems to have some sort of unicode character that’s not being correctly handled.</p>
+<h3 id="using-the-standard-csv.dictreader-parser">Using the Standard <code>csv.DictReader</code> Parser</h3>
+<p>The <code>csv</code> library provides a <code>csv.DictReader</code> class which will use the first row as cell headers, and rather than returning the row as a list; instead it will return it as a dictionary:</p>
+<pre><code>{&#39;\ufeff&quot;Longitude (x)&quot;&#39;: &#39;-123.43&#39;, &#39;Latitude (y)&#39;: &#39;48.65&#39;, &#39;Station Name&#39;: &#39;VICTORIA INTL A&#39;, &#39;Climate ID&#39;: &#39;1018621&#39;, &#39;Date/Time&#39;: &#39;2020-01-01&#39;, &#39;Year&#39;: &#39;2020&#39;, &#39;Month&#39;: &#39;01&#39;, &#39;Day&#39;: &#39;01&#39;, &#39;Data Quality&#39;: &#39;&#39;, &#39;Max Temp (°C)&#39;: &#39;12.9&#39;, &#39;Max Temp Flag&#39;: &#39;&#39;, &#39;Min Temp (°C)&#39;: &#39;5.5&#39;, &#39;Min Temp Flag&#39;: &#39;&#39;, &#39;Mean Temp (°C)&#39;: &#39;9.2&#39;, &#39;Mean Temp Flag&#39;: &#39;&#39;, &#39;Heat Deg Days (°C)&#39;: &#39;8.8&#39;, &#39;Heat Deg Days Flag&#39;: &#39;&#39;, &#39;Cool Deg Days (°C)&#39;: &#39;0.0&#39;, &#39;Cool Deg Days Flag&#39;: &#39;&#39;, &#39;Total Rain (mm)&#39;: &#39;0.0&#39;, &#39;Total Rain Flag&#39;: &#39;T&#39;, &#39;Total Snow (cm)&#39;: &#39;0.0&#39;, &#39;Total Snow Flag&#39;: &#39;&#39;, &#39;Total Precip (mm)&#39;: &#39;0.0&#39;, &#39;Total Precip Flag&#39;: &#39;T&#39;, &#39;Snow on Grnd (cm)&#39;: &#39;&#39;, &#39;Snow on Grnd Flag&#39;: &#39;&#39;, &#39;Dir of Max Gust (10s deg)&#39;: &#39;26&#39;, &#39;Dir of Max Gust Flag&#39;: &#39;&#39;, &#39;Spd of Max Gust (km/h)&#39;: &#39;59&#39;, &#39;Spd of Max Gust Flag&#39;: &#39;&#39;}</code></pre>
+<p>However, the <code>DictReader</code> doesn’t parse the cell contents and returns everything simply as strings – leaving all type parsing to the user. Again we see the incorrectly handled unicode character appear – this time within the key of every row.</p>
+<h3 id="using-the-pandas-library">Using the Pandas Library</h3>
+<p>The <code>pandas</code> library is a third-party python library which provides tools for data analysis and manipulation. We will be using the <code>pandas.read_csv</code> function to parse our data:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>weather <span class="op">=</span> pandas.read_csv(<span class="st">&#39;data/victoria-weather-2020.csv&#39;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weather)</span></code></pre></div>
+<p>This will produce output such as:</p>
+<pre><code>     Longitude (x)  Latitude (y)     Station Name  Climate ID   Date/Time  Year  Month  Day  ...  Total Precip (mm)  Total Precip Flag Snow on Grnd (cm)  Snow on Grnd Flag Dir of Max Gust (10s deg)  Dir of Max Gust Flag Spd of Max Gust (km/h)  Spd of Max Gust Flag
+0          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-01  2020      1    1  ...                0.0                  T               NaN                NaN                      26.0                   NaN                   59.0                   NaN
+1          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-02  2020      1    2  ...               14.6                NaN               NaN                NaN                      14.0                   NaN                   45.0                   NaN
+2          -123.43         48.65  VICTORIA INTL A     1018621  2020-01-03  2020      1    3  ...               11.2                NaN               NaN                NaN                      15.0                   NaN                   39.0                   NaN
+..             ...           ...              ...         ...         ...   ...    ...  ...  ...                ...                ...               ...                ...                       ...                   ...                    ...                   ...
+363        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-29  2020     12   29  ...                8.7                NaN               NaN                NaN                       NaN                     M                    NaN                     M
+364        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-30  2020     12   30  ...               20.4                NaN               NaN                NaN                      14.0                   NaN                   61.0                   NaN
+365        -123.43         48.65  VICTORIA INTL A     1018621  2020-12-31  2020     12   31  ...                7.2                NaN               NaN                NaN                      14.0                   NaN                   33.0                   NaN
+
+[366 rows x 31 columns]</code></pre>
+<p>Notice how the columns have been automatically parsed to an appropriate data type, as well as the column headers are detected. Row numbers are additionally displayed, as well as the data is displayed as a table. This is possible due to the fact that the <code>read_csv</code> function returns a <code>pandas.core.frame.DataFrame</code> data type which among other things, implements the <code>__str__</code> method which is used to render the string which is passed to the <code>print</code> function.</p>
+<h2 id="merging-multiple-datasets">Merging Multiple Datasets</h2>
+<p>My dataset is split across multiple <code>csv</code> files, with each file containing a dataset for a specific year. My first task is to merge them together. All the datasets are located under the <code>data</code> directory, and are named <code>victoria-weather-YYYY.csv</code> (where <code>YYYY</code> is the year).</p>
+<p>Let’s write a function to parse all the data:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(weather_dir):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> re.<span class="bu">compile</span>(<span class="st">&#39;victoria-weather-[0-9]+.csv&#39;</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> []</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> filename <span class="kw">in</span> <span class="bu">sorted</span>(os.listdir(weather_dir)):</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p.match(filename):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            path <span class="op">=</span> os.path.join(weather_dir, filename)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            yearly_data <span class="op">=</span> pandas.read_csv(path)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            data.append(yearly_data)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pandas.concat(data)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>weather <span class="op">=</span> get_data(<span class="st">&#39;data&#39;</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weather)</span></code></pre></div>
+<p>This function 1) uses a regular expression to ensure we only parse files which match the expected form, which prevents our program from crashing if any other files existed in the directory, 2) parses each file separately using the <code>read_csv</code> function, 3) saves the returned data frame into the <code>data</code> list, then finally 4) concatenates the data using the <code>concat</code> function. This code should output a single data frame containing all the data spanning a decade:</p>
+<pre><code>     Longitude (x)  Latitude (y)     Station Name  Climate ID   Date/Time  Year  Month  Day  Data Quality  ...  Total Snow Flag Total Precip (mm)  Total Precip Flag Snow on Grnd (cm)  Snow on Grnd Flag Dir of Max Gust (10s deg)  Dir of Max Gust Flag Spd of Max Gust (km/h)  Spd of Max Gust Flag
+0          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-01  2014      1    1           NaN  ...              NaN               1.6                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN
+1          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-02  2014      1    2           NaN  ...              NaN               6.6                NaN               NaN                NaN                      21.0                   NaN                     37                   NaN
+2          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-03  2014      1    3           NaN  ...              NaN               0.0                NaN               NaN                NaN                      31.0                   NaN                     41                   NaN
+3          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-04  2014      1    4           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN
+4          -123.43         48.65  VICTORIA INTL A     1018621  2014-01-05  2014      1    5           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    &lt;31                   NaN
+..             ...           ...              ...         ...         ...   ...    ...  ...           ...  ...              ...               ...                ...               ...                ...                       ...                   ...                    ...                   ...
+198        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-18  2021      7   18           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                   NaN                    NaN                     M
+199        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-19  2021      7   19           NaN  ...              NaN               0.0                NaN               NaN                NaN                      25.0                   NaN                   37.0                   NaN
+200        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-20  2021      7   20           NaN  ...              NaN               0.0                NaN               NaN                NaN                      29.0                   NaN                   36.0                   NaN
+201        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-21  2021      7   21           NaN  ...              NaN               0.0                NaN               NaN                NaN                      28.0                   NaN                   33.0                   NaN
+202        -123.43         48.65  VICTORIA INTL A     1018621  2021-07-22  2021      7   22           NaN  ...              NaN               0.0                NaN               NaN                NaN                       NaN                     M                    NaN                     M
+
+[2760 rows x 31 columns]</code></pre>
+<h2 id="raindrops-keep-falling-on-my-plots">Raindrops Keep Falling on my Plots</h2>
+<p>Let’s plot the rainfall! We will use the <code>matplotlib</code> library for visualizing this data.</p>
+<p>We can extract a single column of the data frame using the column name, e.g. <code>weather['Total Precip (mm)']</code>. This will return a <code>pandas.core.series.Series</code> data type, which is similar to a list; however requires each element in the series to be the same data type. This allows pandas to keep all elements in contiguous memory, which allows faster SIMD-based operations.</p>
+<p><em>For another example of comparing generic data types against specific native types, checkout out our post on the <a href="/blog/python-timsort-merge">various tricks</a> that python’s timsort uses to achieve better performance.</em></p>
+<p>A pandas series can be converted into a <a href="/blog/python-concatenate-lists">python list</a> using the <code>.to_list()</code> method; e.g. <code>weather['Total Precip (mm)'].to_list()</code></p>
+<h3 id="plotting-the-data-interactively">Plotting the Data Interactively</h3>
+<p>Here’s a quick example of plotting this data interactively:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>rainfall <span class="op">=</span> weather[<span class="st">&#39;Total Precip (mm)&#39;</span>].to_list()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.plot(rainfall)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p>This will display a new window, containing a plot of the data:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-bb671d45d.webp 660w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-7bc7f4e71.png 660w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-7bc7f4e71.png"></picture></p>
+<figcaption>
+Victoria BC daily precipitation interactive plot
+</figcaption>
+</div>
+<div class="notice--info">
+<p>It <em>should</em> be possible to omit the <code>.to_list()</code> call, which would then pass the pandas series data type directly to the matplotlib <code>plot</code> function rather than passing a standard python list; however, there’s a bug in matplotlib (or pandas), which produces the following erroneous plot:</p>
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-3a2b6a8f5.webp 660w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-5252d6866.png 660w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-5252d6866.png"></picture></p>
+<p>Notice how this plot has some bizarre lines that criss-cross the plot, and that the data points stop at roughly 350 rather than past 2500? At a quick glance, this might be an instance of <a href="https://github.com/matplotlib/matplotlib/issues/16266">this bug</a>.</p>
+</div>
+<h3 id="saving-the-plot-programmatically">Saving the Plot Programmatically</h3>
+<p>Lets revise the previous code to render the plot as a png instead of using an interactive window:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new figure that is 10x7 inches</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># which is rendered as 100 pixels per inch</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (matplotlib incorrectly refers to this as dots-per-inch, which is a printer term)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">10.0</span>, <span class="fl">7.0</span>), dpi<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># define axes on the figure to take up the entire figure canvas</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the rainfall amounts against the axes</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ax.plot(rainfall)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes and title the plot</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&#39;days since start of dataset&#39;</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&#39;precipitation (mm)&#39;</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&#39;Victoria BC daily precipitation&#39;</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot to disk</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;daily-precipitation.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
+<p>Which will produce:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-800-12093d32c.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-800-16e97b528.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-800-16e97b528.png"></picture></p>
+<figcaption>
+Victoria BC daily precipitation
+</figcaption>
+</div>
+<h3 id="fixing-the-x-axis-label-to-display-the-date">Fixing the X Axis Label to Display the Date</h3>
+<p>The previous plots didn’t make use of the <code>Date/Time</code> column from our weather data <code>csv</code> files; instead it was simply displaying the index of the list element. We need to instruct pandas to parse those columns as dates using the <code>parse_dates</code> field. We will additionally define a date parsing function <code>yyyymmdd_parser</code> which will be used to parse the date; without this function, pandas will attempt to guess the format of the date, which is a best-effort strategy and may not always work.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Our new date parser</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> yyyymmdd_parser(s):</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> datetime.datetime.strptime(s, <span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_data(weather_dir):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> re.<span class="bu">compile</span>(<span class="st">&#39;victoria-weather-[0-9]+.csv&#39;</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> []</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> filename <span class="kw">in</span> <span class="bu">sorted</span>(os.listdir(weather_dir)):</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> p.match(filename):</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>            path <span class="op">=</span> os.path.join(weather_dir, filename)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            <span class="co"># We identify which column contains the date, along with the date parser to use.</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            yearly_data <span class="op">=</span> pandas.read_csv(path, parse_dates<span class="op">=</span>[<span class="st">&#39;Date/Time&#39;</span>], date_parser<span class="op">=</span>yyyymmdd_parser)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            data.append(yearly_data)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pandas.concat(data)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>weather <span class="op">=</span> get_data(<span class="st">&#39;data&#39;</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>rainfall <span class="op">=</span> weather[<span class="st">&#39;Total Precip (mm)&#39;</span>].to_list()</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co"># We will convert all dates into the native python datetime format, which works</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co"># better with matplotlib.</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>date <span class="op">=</span> [x.to_pydatetime() <span class="cf">for</span> x <span class="kw">in</span> weather[<span class="st">&#39;Date/Time&#39;</span>]]</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">10.0</span>, <span class="fl">7.0</span>))</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co"># We will pass in both the date and rainfall amounts which contain the x and y values respectively</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>ax.plot(date, rainfall)</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&#39;date&#39;</span>)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&#39;precipitation (mm)&#39;</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&#39;Victoria BC daily precipitation&#39;</span>)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;daily-precipitation-with-dates.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-with-dates-800-8e46ac732.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-with-dates-800-d8ad2d229.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-with-dates-800-d8ad2d229.png"></picture></p>
+<figcaption>
+Victoria BC daily precipitation with dates
+</figcaption>
+</div>
+<p>While it’s interesting to get this data plotted, it’s not obviously easy to compare one years data against another.</p>
+<h2 id="comparing-annual-data">Comparing Annual Data</h2>
+<p>Let’s slice up the data and plot it against different years.</p>
+<h3 id="splitting-up-the-data-by-year">Splitting up the Data by Year</h3>
+<p>We will create a new function that splits up the data by year, and calculates a new field that is days since January 1st of the current year:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_days_since_jan1(date):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> date.timetuple().tm_yday <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_data_by_year(weather):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    yearly_rainfall <span class="op">=</span> []</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    yearly_days_since_jan1 <span class="op">=</span> []</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    current_year <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    by_year <span class="op">=</span> []</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, row <span class="kw">in</span> weather.iterrows():</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        date <span class="op">=</span> row[<span class="st">&#39;Date/Time&#39;</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        rainfall <span class="op">=</span> row[<span class="st">&#39;Total Precip (mm)&#39;</span>]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_year <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            current_year <span class="op">=</span> date.year</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> current_year <span class="op">!=</span> date.year:</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>            by_year.append((current_year, pandas.DataFrame({</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;days_since_jan1&#39;</span>: yearly_days_since_jan1,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;rainfall&#39;</span>: yearly_rainfall,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                })))</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>            yearly_days_since_jan1 <span class="op">=</span> []</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>            yearly_rainfall <span class="op">=</span> []</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>            current_year <span class="op">=</span> date.year</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        yearly_rainfall.append(rainfall)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>        yearly_days_since_jan1.append(get_days_since_jan1(date))</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> current_year <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        by_year.append((current_year, pandas.DataFrame({</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;days_since_jan1&#39;</span>: yearly_days_since_jan1,</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;rainfall&#39;</span>: yearly_rainfall,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>            })))</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> by_year</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>rainfall_by_year <span class="op">=</span> slice_data_by_year(weather)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rainfall_by_year)</span></code></pre></div>
+<p>This will then output something similar to:</p>
+<pre><code>[(2014,      days_since_jan1  rainfall
+0                 0       1.6
+1                 1       6.6
+..              ...       ...
+363             363       0.0
+364             364       0.0
+[365 rows x 2 columns]),
+
+(2015,      days_since_jan1  rainfall
+0                 0       0.0
+1                 1       4.8
+..              ...       ...
+363             363       0.0
+364             364       0.0
+[366 rows x 2 columns]),
+
+...</code></pre>
+<h3 id="plotting-the-data-by-year">Plotting the Data by Year</h3>
+<p>Rather than call <code>ax.plot</code> a single time; in this example we will call it from inside a for loop once for each year in our data set. We pass the year as a label value, which will then be displayed on the legend.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">10.0</span>, <span class="fl">7.0</span>), dpi<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, annual_data <span class="kw">in</span> rainfall_by_year:</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    days_since_jan1 <span class="op">=</span> annual_data[<span class="st">&#39;days_since_jan1&#39;</span>].to_list()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    rainfall <span class="op">=</span> annual_data[<span class="st">&#39;rainfall&#39;</span>].to_list()</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    ax.plot(days_since_jan1, rainfall, label<span class="op">=</span>year)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes and title the plot</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&#39;days since jan 1st&#39;</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&#39;precipitation (mm)&#39;</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&#39;Victoria BC daily precipitation since Jan 1st&#39;</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot to disk</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;daily-precipitation-by-year.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
+<p>This will produce the following plot:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-by-year-800-6e1e40fd1.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-by-year-800-d2636209c.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-by-year-800-d2636209c.png"></picture></p>
+<figcaption>
+Victoria BC daily precipitation with dates
+</figcaption>
+</div>
+<p>Well that’s interesting, but still rather hard to compare one year against another. We can fix that by plotting the yearly cumulative sum.</p>
+<h3 id="plotting-cumulative-annual-rainfall-by-year">Plotting Cumulative Annual Rainfall by Year</h3>
+<p>One potential way to plot the cumulative annual rainfall would be to modify the <code>split_data_by_year</code> function to keep a yearly running total for the rainfall; however, pandas implements a <code>cumsum</code> function which can perform the calculation for us:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">10.0</span>, <span class="fl">7.0</span>), dpi<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, annual_data <span class="kw">in</span> rainfall_by_year:</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    days_since_jan1 <span class="op">=</span> annual_data[<span class="st">&#39;days_since_jan1&#39;</span>].to_list()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    rainfall <span class="op">=</span> annual_data[<span class="st">&#39;rainfall&#39;</span>].cumsum().to_list()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    ax.plot(days_since_jan1, rainfall, label<span class="op">=</span>year)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes and title the plot</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&#39;days since jan 1st&#39;</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&#39;precipitation (mm)&#39;</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&#39;Victoria BC cumulative annual precipitation&#39;</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot to disk</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;cumulative-annual-precipitation.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
+<p>Finally, a clear image starts to appear:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-10424472a.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-42450ace6.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-42450ace6.png"></picture></p>
+<figcaption>
+Victoria BC cumulative annual precipitation
+</figcaption>
+</div>
+<h3 id="accounting-for-missing-data">Accounting for Missing Data</h3>
+<p>If you look closely at the previous plot, there’s a few gaps in the data. This occurred due to the fact that the initial data set contains an empty string <code>""</code> in places where either no data is available, or where the data is zero. Since it’s not obvious which case applies, pandas will parse this empty string as <code>nan</code> (not-a-number).</p>
+<p>In our case, the Environment Canada data encodes no snow as <code>""</code> rather than <code>0</code> cm. We will instruct pandas to fill in these gaps with a default value of <code>0</code>, using the <code>fillna()</code> method:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>weather[<span class="st">&#39;Total Precip (mm)&#39;</span>] <span class="op">=</span> weather[<span class="st">&#39;Total Precip (mm)&#39;</span>].fillna(<span class="dv">0</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>weather[<span class="st">&#39;Total Snow (cm)&#39;</span>] <span class="op">=</span> weather[<span class="st">&#39;Total Snow (cm)&#39;</span>].fillna(<span class="dv">0</span>)</span></code></pre></div>
+<p>This will produce a plot without gaps:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-no-gaps-800-60cdfabc8.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-no-gaps-800-d82f716e2.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-no-gaps-800-d82f716e2.png"></picture></p>
+<figcaption>
+Victoria BC cumulative annual precipitation
+</figcaption>
+</div>
+<h3 id="reordering-the-legend-and-fixing-the-x-axis">Reordering the Legend and Fixing the X Axis</h3>
+<p>The previous plot is difficult to see which colours correspond to which years (especially hard if you are colour blind). We will re-order the legend from wettest to driest years, with 2021 being dead-last.</p>
+<p>To sort the data, we will create a new function <code>get_total_rainfall</code>, which returns a new value for python’s <code>sorted</code> function to use when sorting values. We return a tuple so that the year can be used to differentiate between cases where the annual precipitation is identical.</p>
+<p>Additionally, let’s fix the x-axis to display the name of the month, rather than an integer value.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">10.0</span>, <span class="fl">7.0</span>), dpi<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_axes([<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_total_rainfall(val):</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    year, annual_data <span class="op">=</span> val</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    total_rainfall <span class="op">=</span> annual_data[<span class="st">&#39;rainfall&#39;</span>].cumsum().to_list()[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (total_rainfall, year)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, annual_data <span class="kw">in</span> <span class="bu">sorted</span>(rainfall_by_year, key<span class="op">=</span>get_total_rainfall, reverse<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    days_since_jan1 <span class="op">=</span> annual_data[<span class="st">&#39;days_since_jan1&#39;</span>].to_list()</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    rainfall <span class="op">=</span> annual_data[<span class="st">&#39;rainfall&#39;</span>].cumsum().to_list()</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(days_since_jan1, rainfall, label<span class="op">=</span>year)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co"># format x axis values as month names rather than days since jan 1st</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_days_since_jan1(days, pos<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    date <span class="op">=</span> datetime.date(<span class="dv">2020</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="op">+</span> datetime.timedelta(days)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> date.strftime(<span class="st">&#39;%b&#39;</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(format_days_since_jan1))</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes and title the plot</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&#39;calendar date&#39;</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&#39;precipitation (mm)&#39;</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">&#39;Victoria BC cumulative annual precipitation&#39;</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co"># save the plot to disk</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;cumulative-annual-precipitation-sorted-legend.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
+<p>And here we have it, 2021 has been a really dry year here in Victoria:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-sorted-legend-800-2250e68fc.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-sorted-legend-800-4f2dc358d.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-sorted-legend-800-4f2dc358d.png"></picture></p>
+<figcaption>
+Victoria BC cumulative annual precipitation v2
+</figcaption>
+</div>
+<h2 id="accounting-for-snow">Accounting for Snow</h2>
+<p>The previous plots have an error – they were only plotting rainfall, and not accounting for snowfall. It’s difficult to directly convert snowfall into an equivalent amount of precipitation due to the variety of snow crystal sizes – some snow is wet, while other snow is fairly dry. On the west-coast (wet-coast as some call it); when we do get snow, it tends to be fairly wet. We will assume that 13mm of snow is equivalent to 1mm of rain <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Let’s revise our <code>split_data_by_year</code> function to calculate this.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_data_by_year(weather):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    yearly_rainfall <span class="op">=</span> []</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    yearly_days_since_jan1 <span class="op">=</span> []</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    current_year <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    by_year <span class="op">=</span> []</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, row <span class="kw">in</span> weather.iterrows():</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        date <span class="op">=</span> row[<span class="st">&#39;Date/Time&#39;</span>]</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        rainfall <span class="op">=</span> row[<span class="st">&#39;Total Precip (mm)&#39;</span>]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1cm snow = 10mm snow; 13mm of snow = 1mm of rain</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        snowfall <span class="op">=</span> row[<span class="st">&#39;Total Snow (cm)&#39;</span>] <span class="op">*</span> <span class="fl">10.0</span> <span class="op">/</span> <span class="fl">13.0</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        rainfall <span class="op">+=</span> snowfall</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_year <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            current_year <span class="op">=</span> date.year</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> current_year <span class="op">!=</span> date.year:</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>            by_year.append((current_year, pandas.DataFrame({</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;days_since_jan1&#39;</span>: yearly_days_since_jan1,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">&#39;rainfall&#39;</span>: yearly_rainfall,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>                })))</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            yearly_days_since_jan1 <span class="op">=</span> []</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            yearly_rainfall <span class="op">=</span> []</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>            current_year <span class="op">=</span> date.year</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        yearly_rainfall.append(rainfall)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        yearly_days_since_jan1.append(get_days_since_jan1(date))</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> current_year <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        by_year.append((current_year, pandas.DataFrame({</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;days_since_jan1&#39;</span>: yearly_days_since_jan1,</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;rainfall&#39;</span>: yearly_rainfall,</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>            })))</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> by_year</span></code></pre></div>
+<p>If you look closely, once we adjust for snow, it turned out that 2017 was a wetter year compared to 2014:</p>
+<div class="wide">
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-e85637744.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-bc4754e2f.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-bc4754e2f.png"></picture></p>
+<figcaption>
+Victoria BC cumulative annual precipitation including snow
+</figcaption>
+</div>
+<p>None of that however changes the fact that it’s been a very dry year, and my garden is browner than ever. On the other hand, my tomatoes have been loving the heat.</p>
+<p>If you would like to try generating the above graphs, all the code (and data) can be found under <a href="https://github.com/earthly/example-plotting-precipitation">github.com/earthly/example-plotting-precipitation</a>.</p>
+<div class="notice--info notice--big">
+<p>
+<strong>While you’re here:</strong>
+</p>
+<p>
+<a href="https://earthly.dev/">Earthly</a> is a syntax for defining your build. It works with your existing build system. Get repeatable and understandable builds today.
+</p>
+</div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>https://www.nssl.noaa.gov/education/svrwx101/winter/faq/<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-5d6b0185c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/alexcouturebeil-240-8935b6224.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/alexcouturebeil-240-8935b6224.jpg" alt="Alex Couture-Beil %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <div class="author__name heading" itemprop="name">
+        Alex Couture-Beil
+    
+    
+      </div>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Alex enjoys writing code, growing vegetables, and the great outdoors.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+<p class="page__taxonomy">
+  <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i>Author:</strong>
+  <span itemprop="keywords">
+    <a href="/blog/authors/Alex/" class="page__taxonomy-item" rel="tag">Alex Couture-Beil</a>
+  </span>
+</p>
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-18T00:00:00-04:00">August 18, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/convert-to-from-json/" class="pagination--pager" title="How to Convert from JSON to CSV at The Command Line
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <div class="page__related-title heading">You may also enjoy</div>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/convert-to-from-json/header-600-e0b643a02.webp 600w, /blog/generated/assets/images/convert-to-from-json/header-800-e0b643a02.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/convert-to-from-json/header-600-27cd7a486.jpg 600w, /blog/generated/assets/images/convert-to-from-json/header-800-27cd7a486.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/convert-to-from-json/header-800-27cd7a486.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/convert-to-from-json/" rel="permalink">How to Convert from JSON to CSV at The Command Line
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+How do you convert JSON values to CSV and back at the command line? I’ve done this task on many occasions and been stung by the edge cases frequently enough...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-161d4ea73.webp 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-161d4ea73.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/idiots-and-maniacs/header-600-00dc94dde.jpg 600w, /blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/idiots-and-maniacs/header-800-00dc94dde.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/idiots-and-maniacs/" rel="permalink">Idiots And Maniacs
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Observability
+
+
+If you do software-as-a-service development and you have paying customers, you at some point learn about the need for operational monitoring...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+<script src="/blog/assets/js/externallinks.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
