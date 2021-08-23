@@ -53,7 +53,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-  <title>Frequently Asked Questions - Better Builds</title>
+  <title>Earthly BSL Frequently Asked Questions - Better Builds</title>
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Earthly - Better Builds" />
   <meta name="twitter:description" content="Build automation for the container era" />
@@ -241,12 +241,20 @@
         <article class="wrapper post">
 
   <header class="post-header">
-    <h1 class="post-title">Frequently Asked Questions</h1>
+    <h1 class="post-title">Earthly BSL Frequently Asked Questions</h1>
   </header>
 
   <div class="post-content">
     <!-- vale HouseStyle.H2 = NO -->
 <style>
+blockquote {
+    margin: 2em 1em 2em 0;
+    padding-left: 2em;
+    padding-right: 1em;
+    font-style: italic;
+    border-left: 0.25em solid #6f777d;
+}
+
 span.hide {
     display: none;
     white-space:nowrap;
@@ -258,73 +266,69 @@ h2:hover span {
 }
 </style>
 
-<h2 id="dockerfile">How is Earthly different from Dockerfiles?<span class="hide"><a href="#dockerfile">¶</a></span></h2>
+<h2 id="what">What is the BSL?<span class="hide"><a href="#what">¶</a></span></h2>
 
-<p><a href="https://docs.docker.com/engine/reference/builder/">Dockerfiles</a> were designed for specifying the make-up of Docker images and that’s where Dockerfiles stop. Earthly takes some key principles of Dockerfiles (like layer caching), but expands on the use-cases. For example, Earthly can output regular artifacts, run unit and integration tests, and create several Docker images at a time - all outside the scope of Dockerfiles.</p>
+<p>Business Source License is a source-available license created by MariaDB to “strike a balance between being able to run a financially viable software company while still supporting the original tenets of Open Source, such as empowering all software developers to be part of the innovation cycle”. Under BSL, the licensed code is not open-source in the spirit of The Open Source Definition, however, the code is available for free immediately and will become open-source after a set period of time. In Earthly’s case, the code automatically becomes open-source, under the <a href="https://github.com/earthly/earthly/blob/main/licenses/MPL2">Mozilla Public License Version 2.0</a>, after three years.</p>
 
-<p>Earthly introduces a richer target, artifact, and image <a href="https://docs.earthly.dev/guides/target-ref">referencing system</a>, allowing for better reuse in complex builds spanning a single large repository or multiple repositories. Because Dockerfiles are only meant to describe one image at a time, such features are outside the scope of applicability of Dockerfiles.</p>
+<h2 id="why">Why is Earthly Using the BSL?<span class="hide"><a href="#why">¶</a></span></h2>
 
-<h2 id="usedocker">Why not just use docker and bash/make/python/ruby/etc?<span class="hide"><a href="#usedocker">¶</a></span></h2>
+<p>We would like to provide Earthly to as many engineers as possible for as long as possible. In order to build a project that continues to evolve, grow, have strong community support, and continues to offer most of the value for free, we need a sustainable business model. We are taking steps to prevent anyone from taking advantage of Earthly in a way that could jeopardize our business model. <strong>We believe that our use of BSL changes nothing for the overwhelming majority of the Earthly user base.</strong></p>
 
-<p>Sure, you can do that. That’s how earthly started.</p>
+<p>Unless you are intending to take the Earthly source code, turn it into a competing CI or a build-service product which you commercialize, then the BSL license will not impact you in any way compared to an open-source license.</p>
 
-<p>Earthly grew out of a wrapper around Dockerfiles. As your project grows, your build and testing requirements will grow too. You might end up with multiple Dockerfiles, you might need to support running tests and builds on both Linux, MacOS, and Windows, you might run into parallelisation issues, you might need to scale across multiple repositories. Earthly grew out of all of these requirements and is supported by a growing user-base, which (most likely) offers a more battle-tested code-base than your custom in-house wrapper.</p>
+<p>You can continue to use Earthly, view its code and modify it for free. You may develop unrelated commercial products that are built with Earthly. And you may even build in-house build services or CIs using Earthly, as long as those are not offered commercially to third parties. However, you cannot build a commercial Earthly offering.</p>
 
-<p>Still think you should just write your own wrapper? We have some tips on our [blog(https://earthly.dev/blog/repeatable-builds-every-time/).</p>
+<p>Read more about our decision in <a href="https://earthly.dev/blog/every-open-core-company-should-be-a-source-available-company/">our announcement blog post</a>.</p>
 
-<h2 id="multistage">Is Earthly a way to define a Docker multi-stage build?<span class="hide"><a href="#multistage">¶</a></span></h2>
+<h2 id="os">How is BSL different from an open-source license?<span class="hide"><a href="#os">¶</a></span></h2>
 
-<p>Yes, that is one of its uses.</p>
+<p>In the case of Earthly, the BSL license is free and open just like an open-source license, with one key exception: you cannot build a commercial competitor to Earthly (such as a CI) using Earthly while the Earthly code you are using is subject to the BSL.</p>
 
-<p>Docker Multi-stage builds can get complex and hard to follow as they accumulate steps. The target syntax of earthly is easier to understand.</p>
+<p>After three years, Earthly becomes completely open-source, licensed under the <a href="(https://github.com/earthly/earthly/blob/main/licenses/MPL2)">Mozilla Public License Version 2.0</a> (MPL2).</p>
 
-<p>However Earthly is not only a tool for producing docker containers. Earthly is a tool for building cross platform build specifications. It can produce docker images but it can also be used to produce binary artifacts, to run tests, to lint code, and anything else you would normally do inside of build pipeline in Jenkins, GitHub Actions, Travis CI or your-continous-integration-system-of-choice.</p>
+<h2 id="grant">What is the Additional Use Grant?<span class="hide"><a href="#grant">¶</a></span></h2>
 
-<h2 id="ci">Can I use Earthly with my continuous integration system?<span class="hide"><a href="#ci">¶</a></span></h2>
+<p>We don’t intend to limit the use of Earthly in any way other than preventing a commercial competitor to ourselves. To enable this we have added the following Additional Use Grant into the BSL:</p>
 
-<p>Yes, if you install Earthly where your builds run, then you can use Earthly with your continuous integration system. We have documented integrations for some <a href="https://docs.earthly.dev/docs/ci-integration">popular CI systems</a> but it is likely that you will be able to get earthly working with your existing CI System. Hop in our <a href="/slack">Slack channel</a> and you may find others using your CI system of choice.</p>
+<blockquote>
+  <p>You may make use of the Licensed Work, provided that you may not use the Licensed Work for a Service Offering.</p>
 
-<h2 id="pl">Can I use Earthly with my programming language or command line build tools?<span class="hide"><a href="#pl">¶</a></span></h2>
+</blockquote>
 
-<p>Yes. If it’s possible to create a docker image with your programming language, compiler, and tools of choice installed then its possible to use these with Earthly.</p>
+<p>If your customers cannot change the build definition, artifacts or build secrets directly, then you are allowed to use Earthly for free for any application.</p>
 
-<p>Earthly is especially popular with those who need to work with several languages or tools in a single build pipeline. Earthly can act as a glue layer that holds the various tools together and provides caching and parallelism across them.</p>
+<h2 id="serviceoffering">What is a Service Offering?<span class="hide"><a href="#serviceoffering">¶</a></span></h2>
 
-<h2 id="build">Can Earthly build Dockerfiles?<span class="hide"><a href="#build">¶</a></span></h2>
+<p>As defined by Earthly’s Additional Use Grant:</p>
 
-<p>Yes! You can use the command <code class="language-plaintext highlighter-rouge">FROM DOCKERFILE</code> to inherit the commands in an existing Dockerfile.</p>
+<blockquote>
+  <p><em>A “Service Offering” is a commercial offering that allows end users or other third parties (other than your employees and contractors or a company that has contracted you to build code that incorporates the Licensed Work) to access the functionality of the Licensed Work by (i) issuing builds whose build steps are controlled by such third parties, (ii) by creating build secrets whose contents or metadata are controlled by such third parties, or (iii) by creating Artifacts whose contents or metadata are controlled by such third parties.</em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>build:
-  FROM DOCKERFILE .
-  SAVE IMAGE some-image:latest
-</code></pre></div></div>
+</blockquote>
 
-<p>You may also optionally port your Dockerfiles to Earthly entirely. Translating Dockerfiles to Earthfiles is usually a matter of copy-pasting and making minor adjustments. See the <a href="/get-earthly">getting started page</a> for some Earthfile examples.</p>
+<p>In other words, if your customers can change the build definition, artifacts or secrets used in a build directly, then it is considered a “Service Offering”. A common example of such an offering is a Continuous Integration (CI) system offered to customers commercially.</p>
 
-<h2 id="nix">How does Earthly compare to Nix?<span class="hide"><a href="#nix">¶</a></span></h2>
+<h2 id="production">Can I use Earthly in production?
+<span class="hide"><a href="#production">¶</a></span></h2>
 
-<p>Both <a href="https://nixos.org/">Nix</a> and Earthly are focusing on improving the way that software is built but we believe they have different goals.</p>
+<p>Yes, you can use BSL-licensed software in production according to the Additional Use Grant. The BSL and Earthly’s Additional Use Grant allows you to freely use Earthly in production as long as it is not a Service Offering.</p>
 
-<p>At a technical level, both Nix and Earthly use Linux namespaces to provide file system isolation. Earthly uses namespaces via Runc, using BuildKit whereas Nix uses them directly.</p>
+<h2 id="production2">What does “production” mean in the context of a build tool?
+<span class="hide"><a href="#production2">¶</a></span></h2>
 
-<p>At a higher level, though, Earthly is focused on providing an easy to write language for declaring all the steps of a complex build pipeline. This often includes things that may not be a good fix of the Nix build model, such as code linting, starting up and tearing down dependent services, making network calls and running integration tests.</p>
+<p>For Earthly, production is either an environment used to serve customers directly, or an environment that serves the engineering team directly. Because the CI serves the needs of the engineering team, Earthly running in CI is considered as running in production.</p>
 
-<h2 id="bazel">How is Earthly different from Bazel?<span class="hide"><a href="#bazel">¶</a></span></h2>
+<p>Using Earthly in CI is allowed for free, as long as the CI is not offered by you commercially to your customers.</p>
 
-<p><a href="https://bazel.build">Bazel</a> is a build tool developed by Google to optimize the speed, correctness, and reproducibility of their internal monorepo codebase. Earthly draws inspiration from some of the principles of Bazel (mainly the idea of repeatable builds), but it is different in a few key ways:</p>
+<h2 id="contractor">I am a software contractor. Can I use Earthly to build the code given that my client will also be able to change the build definition?<span class="hide"><a href="#contractor">¶</a></span></h2>
 
-<ul>
-  <li>Earthly does not replace language-specific tools, like Maven, Gradle, Webpack, etc. Instead, it leverages and integrates with them. Adopting Bazel usually means that all build files need to be completely rewritten. This is not the case with Earthly, as it mainly acts as the glue between builds.</li>
-  <li>The learning curve of Earthly is more accessible, especially if the user already has experience with Dockerfiles. Bazel, on the other hand, introduces some completely new concepts.</li>
-  <li>Bazel has a purely descriptive specification language. Earthly is a mix of descriptive and imperative language.</li>
-  <li>Bazel uses tight control of compiler tool chains to achieve true hermetic builds, whereas Earthly uses containers and well-defined inputs.</li>
-</ul>
+<p>Yes, you are allowed to use Earthly in this context. The Additional Use Grant includes an exception for software contractors that have been hired to build code for their clients.</p>
 
-<p>Overall, by letting you use your existing tool chain, Earthly has an easier adoption curve and is easier to use in non-mono repo settings. This does mean that its possible to do non-repeatable actions in Earthly, but practically at organization scales smaller than Google, we have not found this to be a problem and the ease of adoption out-weighs these concerns.</p>
+<h2 id="faq">FAQ Disclaimer<span class="hide"><a href="#faq">¶</a></span></h2>
 
-<h2 id="bsl">How is Earthly Licensed?<span class="hide"><a href="#bsl">¶</a></span></h2>
+<p>The explanations provided as part of this FAQ are not meant to replace or augment the terms of Earthly’s license. The FAQ is only provided as an informal explanation and is not legally binding. If Earthly’s license contradicts with this FAQ in any way, then Earthly’s license prevails.</p>
 
-<p>Earthly uses a source available <a href="https://github.com/earthly/earthly/blob/main/LICENSE">BSL license</a> that turns into a fully open-source license after a time delay. You can read about the change on <a href="https://earthly.dev/blog/every-open-core-company-should-be-a-source-available-company/">our blog</a>, read <a href="/bslfaq">our licensing FAQ</a>, or <a href="mailto:support@earthly.dev">email us</a> for licensing questions.</p>
+<p>Please see the <a href="https://github.com/earthly/earthly/blob/main/licenses/BSL">complete text of the Earthly license</a> on GitHub.</p>
 
 <!-- vale HouseStyle.H2 = YES -->
 <div class="color2">
