@@ -442,4 +442,10 @@ var store = [{
         "tags": [],
         "url": "/blog/plotting-rainfall-data-with-python-and-matplotlib/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "An Introduction to JQ",
+        "excerpt":"Background: Fingers, Head, and Google Whenever I reach a stopping point in my work, I use a bash alias called gwip1 to create a ‘work in progress’ commit. It happens without conscious thinking on my part. The same way my fingers know the vim key bindings, they know gwip. Other...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/jq-select/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
