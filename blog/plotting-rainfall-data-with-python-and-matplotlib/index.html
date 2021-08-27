@@ -375,14 +375,14 @@
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p>This will display a new window, containing a plot of the data:</p>
 <div class="wide">
-<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-bb671d45d.webp 660w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-7bc7f4e71.png 660w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-660-7bc7f4e71.png"></picture></p>
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-800-3d2425f6e.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-800-5649d96e7.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-800-5649d96e7.png"></picture></p>
 <figcaption>
 Victoria BC daily precipitation interactive plot
 </figcaption>
 </div>
 <div class="notice--info">
 <p>It <em>should</em> be possible to omit the <code>.to_list()</code> call, which would then pass the pandas series data type directly to the matplotlib <code>plot</code> function rather than passing a standard python list; however, there’s a bug in matplotlib (or pandas), which produces the following erroneous plot:</p>
-<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-3a2b6a8f5.webp 660w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-5252d6866.png 660w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-660-5252d6866.png"></picture></p>
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-800-f14fb3d01.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-800-653c105d4.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/daily-precipitation-interactive-bug-800-653c105d4.png"></picture></p>
 <p>Notice how this plot has some bizarre lines that criss-cross the plot, and that the data points stop at roughly 350 rather than past 2500? At a quick glance, this might be an instance of <a href="https://github.com/matplotlib/matplotlib/issues/16266">this bug</a>.</p>
 </div>
 <h3 id="saving-the-plot-programmatically">Saving the Plot Programmatically</h3>
@@ -572,7 +572,7 @@ Victoria BC daily precipitation with dates
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">&#39;cumulative-annual-precipitation.png&#39;</span>, bbox_inches<span class="op">=</span><span class="st">&#39;tight&#39;</span>)</span></code></pre></div>
 <p>Finally, a clear image starts to appear:</p>
 <div class="wide">
-<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-10424472a.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-42450ace6.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-42450ace6.png"></picture></p>
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-347ddf20b.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-1c7136b0c.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-800-1c7136b0c.png"></picture></p>
 <figcaption>
 Victoria BC cumulative annual precipitation
 </figcaption>
@@ -670,7 +670,7 @@ Victoria BC cumulative annual precipitation v2
 <span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> by_year</span></code></pre></div>
 <p>If you look closely, once we adjust for snow, it turned out that 2017 was a wetter year compared to 2014:</p>
 <div class="wide">
-<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-e85637744.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-bc4754e2f.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-bc4754e2f.png"></picture></p>
+<p><picture><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-0e67bb756.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-47f23e9bd.png 800w" type="image/png"><img src="/blog/generated/assets/images/plotting-rainfall-data-with-python-and-matplotlib/cumulative-annual-precipitation-with-snow-800-47f23e9bd.png"></picture></p>
 <figcaption>
 Victoria BC cumulative annual precipitation including snow
 </figcaption>
