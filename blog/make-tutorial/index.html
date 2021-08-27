@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<link rel="icon" type="image/png" href="/blog/assets/images/favicon.png">
+<!-- begin _includes/seo.html -->
+
+
+
+
+
+<title>Makefile Tutorials and Examples to Build From - Earthly Blog</title>
+<meta name="description" content="Building software is a multi-step process—installing or updating dependencies, compiling the source code, testing, installing, and so on. In any mo...">
+
+
+  <meta name="author" content="Aniket Bhattacharyea">
+  
+  <meta property="article:author" content="Aniket Bhattacharyea">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Earthly Blog">
+<meta property="og:title" content="Makefile Tutorials and Examples to Build From">
+<meta property="og:url" content="https://earthly.dev/blog/make-tutorial/">
+
+
+  <meta property="og:description" content="Building software is a multi-step process—installing or updating dependencies, compiling the source code, testing, installing, and so on. In any mo...">
+
+
+
+  <meta property="og:image" content="/blog/generated/assets/images/make-tutorial/header-800-512600ce7.jpg">
+
+
+
+  <meta name="twitter:site" content="@EarthlyTech">
+  <meta name="twitter:title" content="Makefile Tutorials and Examples to Build From">
+  <meta name="twitter:description" content="Building software is a multi-step process—installing or updating dependencies, compiling the source code, testing, installing, and so on. In any mo...">
+  <meta name="twitter:url" content="https://earthly.dev/blog/make-tutorial/">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://earthly.dev/blog/generated/assets/images/make-tutorial/header-800-512600ce7.jpg">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-09-02T00:00:00-04:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://earthly.dev/blog/make-tutorial/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Organization",
+      "url": "https://earthly.dev/blog/",
+      "logo": "/assets/images/logo-header.png"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/blog/feed.xml" type="application/atom+xml" rel="alternate" title="Earthly Blog Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/blog/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161831101-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-161831101-5');
+</script>
+  <!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '259843109045285');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=259843109045285&ev=PageView&noscript=1"
+    />
+</noscript>
+ <!-- End Facebook Pixel Code -->
+  <!-- Twitter universal website tag code -->
+<script>
+  !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+  },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='//static.ads-twitter.com/uwt.js',
+  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+  // Insert Twitter Pixel ID and Standard Event data below
+  twq('init','o5s6p');
+  twq('track','PageView');
+  </script>
+  <!-- End Twitter universal website tag code -->
+
+
+  </head>
+
+  <body class="layout--single">
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/blog/assets/images/white-logo.png" alt="Earthly"></a>
+        
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/blog/">Blog home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/articles/">Articles</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/news/">News</a>
+            </li><li class="masthead__menu-item">
+              <a href="/blog/categories/tutorials/">Tutorials</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/earthly/earthly">GitHub</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+  
+
+
+
+
+
+
+
+<div class="page__hero"
+  style=" background-image: url('');"
+>
+  
+      <picture class="page__hero-image"><source srcset="/blog/generated/assets/images/make-tutorial/header-400-dd5cddc17.webp 400w, /blog/generated/assets/images/make-tutorial/header-600-dd5cddc17.webp 600w, /blog/generated/assets/images/make-tutorial/header-800-dd5cddc17.webp 800w, /blog/generated/assets/images/make-tutorial/header-1000-dd5cddc17.webp 1000w, /blog/generated/assets/images/make-tutorial/header-1200-dd5cddc17.webp 1200w" type="image/webp"><source srcset="/blog/generated/assets/images/make-tutorial/header-400-dd5cddc17.png 400w, /blog/generated/assets/images/make-tutorial/header-600-dd5cddc17.png 600w, /blog/generated/assets/images/make-tutorial/header-800-dd5cddc17.png 800w, /blog/generated/assets/images/make-tutorial/header-1000-dd5cddc17.png 1000w, /blog/generated/assets/images/make-tutorial/header-1200-dd5cddc17.png 1200w" type="image/png"><img src="/blog/generated/assets/images/make-tutorial/header-800-dd5cddc17.jpg" alt="Makefile Tutorials and Examples to Build From"></picture>
+
+  
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar">
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Tutorials</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/make-tutorial/" class="active">Overview Tutorial</a></li>
+          
+            <li><a href="/blog/g++-makefile/">Creating a C++ / G++ Makefile</a></li>
+          
+            <li><a href="/blog/python-makefile/">Creating a Python Makefile</a></li>
+          
+            <li><a href="/blog/golang-makefile/">Creating a Golang Makefile</a></li>
+          
+            <li><a href="/blog/vscode-make/">Makefiles and VS Code</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Makefile Guides</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/blog/autoconf/">Using Autotools</a></li>
+          
+            <li><a href="/blog/make-flags">Understanding Makefile Flags</a></li>
+          
+            <li><a href="/blog/repeatable-builds-every-time/#tips-for-taming-makefiles-in-large-teams">Taming Large Makefiles</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Makefile Tutorials and Examples to Build From">
+    <meta itemprop="description" content="Building software is a multi-step process—installing or updating dependencies, compiling the source code, testing, installing, and so on. In any moderately sized project, you might find it difficult to perform all these steps manually. This is where make can help you.The make tool automates compilation of the software from the source code. It won’t repeat a step if none of its prerequisites has changed, thus saving you time and resources.In this article, you will learn how to write a simple Makefile and learn about important components of make, including variables, pattern rules, and virtual paths. You will also see some examples of using make with different technologies.The MakefileWhen you run make, it looks for a file named Makefile, or makefile in the same directory. The name Makefile is suggested so that it appears near other important files such as README.You can name your Makefile anything, but then you have to explicitly tell make which file to read:shellmake -f some_other_makefileThe Makefile should consist of one or more rules. Each rule describes a goal or a step in your build process, the prerequisites for that step, and recipes for how to execute it.The format for each rule is as follows:Makefiletarget1 [target2 ...]: [pre-req1 pre-req2 pre-req3 ...]    [recipes    ...]The parts in [] are optional. Each rule must have one or more targets, zero or more prerequisites, and zero or more recipes. The target is the file you want to be created in that rule. The prerequisites can be the name of an existing rule, or the name of a file in the same directory. The recipes are shell commands that need to be run in order to generate the target.When make executes a rule, it looks at the prerequisites. If all the prerequisites are older than the target file, it means that none of them has changed since the last time the rule was executed. So make does not execute the rule. If, however, any prerequisite is newer than the target, the recipes are executed.Here’s an example. Create a file named data.txt with the text hello world. You’ll use the wc command to calculate the number of characters, words, and lines and store it in a file named count.txt. In this simple demonstration, you have a dependency and a target that needs to be built from the dependency.First, let’s do it manually.shellwc -c data.txt &gt; count.txt # Count characterswc -w data.txt &gt;&gt; count.txt # Count wordswc -l data.txt &gt;&gt; count.txt # Count linesThis should create a file named count.txt with the following content:13 data.txt2 data.txt0 data.txtLet’s write the Makefile to automate this:Makefileall: count.txt count.txt: data.txt    wc -c data.txt &gt; count.txt # Count characters    wc -w data.txt &gt;&gt; count.txt # Count words    wc -l data.txt &gt;&gt; count.txt # Count linesThis Makefile has two targets. The first target is all, which acts like an overall build target. It is not necessary to have such a target, especially when our build has only one step, but it is a recommended practice.The all target depends on count.txt and has no recipe. This means that all will be prepared as soon as count.txt is prepared.The target count.txt depends on the file data.txt and the recipes list contains the commands you ran previously.Now, run make again from the terminal. You should see that make executes the commands listed and creates count.txt. If you run the make command again, you should see the output:make: Nothing to be done for &#39;all&#39;.Let’s break it down. When you run make without any argument, it runs the first target, which is all in this case. Since all depends on count.txt, that target is executed. The target count.txt depends on data.txt, so the commands are run and the file is generated.The next time you run make following the same sequence, make looks at count.txt and notices that count.txt is newer than data.txt, meaning the dependency has not been changed since the last time make was run, so it doesn’t do anything.Edit the data.txt file and change the text to hi world. Now when you run make, it runs the commands and updates count.txt. Since the dependency was changed, it rebuilt the target.You can also run a target directly by passing its name to the make command. Running make count.txt will run only the count.txt rule.Let’s add a rule to clean the project files. It is a recommended practice to have a clean rule to delete any generated files, effectively returning the project to the initial state. Add the following rule to your Makefile:Makefileclean:    rm count.txtThe clean rule doesn’t have a prerequisite. The targets without a prerequisite are considered to be older than their dependencies, and so they’re always run.Components of MakefileHere are some important components that can help you write more concise and simpler Makefiles.CommentsYou can have comments in Makefile that start with a # and last till the end of the line.Makefileall: count.txt # This is a comment...VariablesJust like regular programming languages, make supports using variables to avoid repetitions and keep the Makefile clean. Another advantage of variables is that the user can override them without needing to edit the Makefile manually.A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless it’s a single character variable. To set a variable, write a line starting with a variable name followed by =, := or ::=, followed by the value of the variable:MakefileTARGET = count.txtSOURCE = data.txtThe variables defined with = are called “recursively expanded variables,” and those defined with := and ::= are called “simply expanded variables.” There is a subtle difference between these two, which you can read about in the manual.You can reference these values in any of the targets, prerequisites, or recipes:MakefileTARGET = count.txtSOURCE = data.txtall: $(TARGET) $(TARGET): $(SOURCE)    wc -c $(SOURCE) &gt;  $(TARGET) # Count characters    wc -w $(SOURCE) &gt;&gt; $(TARGET) # Count words    wc -l $(SOURCE) &gt;&gt; $(TARGET) # Count linesclean:   rm $(TARGET)Here instead of hard-coding the target and source file names, we have used two variables, with default values of count.txt and data.txt. If you run the make command, it should work just like before. However, if you want to change the name of the target to, for example, newcount.txt, you can do so without changing the Makefile:shellmake TARGET=newcount.txtPassing TARGET=newcount.txt overrides the default value of $(TARGET)&lt;/code&gt; in the Makefile and so, instead of &lt;code&gt;count.txt&lt;/code&gt;, the file &lt;code&gt;newcount.txt&lt;/code&gt; is generated. Similarly, you can run &lt;code&gt;make TARGET=newcount.txt clean&lt;/code&gt; to clean this new file.&lt;/p&gt; &lt;p&gt;When &lt;code&gt;make&lt;/code&gt; is run, it also converts all available environment variables into make variables. So you can freely use any environment variable.&lt;/p&gt; &lt;h4 id=&quot;automatic-variables&quot;&gt;Automatic Variables&lt;/h4&gt; &lt;p&gt;There are some special variables called automatic variables. Their values are computed each time for every rule and are based on the target and prerequisite file names. Here are some of the most important automatic variables:&lt;/p&gt; &lt;ol type=&quot;1&quot;&gt; &lt;li&gt;**$@**: This is the target file name. If there is more than one target, this is whichever target caused the recipe to run. &lt; /strong &gt;  *  : Thisisthetargetfilenamewithouttheextension. &lt; /li &gt;  &lt; li &gt;  &lt; strong&gt;&lt;: This is the name of the first prerequisite.? &lt; /strong &gt;  : Thenamesofalltheprerequisitesthatarenewerthanthetarget, withspacesbetweenthem.Ifthetargetdoesnotexist, allprerequisiteswillbeincluded. &lt; /li &gt;  &lt; li &gt;  &lt; strong&gt;^: The names of all the prerequisites, with spaces between them and duplicates removed.$+: Same as $^, except it includes duplicates.There are other automatic variables. For a full list, see the manual.Using the automatic variables, we can simplify our Makefile a bit more:MakefileTARGET = count.txtSOURCE = data.txtall: $(TARGET) $(TARGET): $(SOURCE)   wc -c $&lt; &gt;  $@ # $&lt; matches the source file name, $@ matches the target file name    wc -w $&lt; &gt;&gt; $@   wc -l $&lt; &gt;&gt; $@clean:   rm $(TARGET)Virtual PathsOften you have files organized into directories. It is not always possible to write the entire file name every time. You can use VPATH to specify where make should search for targets and prerequisites.For example:MakefileVPATH = src includefoo.o: foo.cppHere make will search for foo.o and foo.cpp first in the current directory, and if not found will look inside the directories listed in VPATH. Thus if you have src/foo.cpp, instead of writing the whole path every time, you can use VPATH to tell make where to search for it.However, there is a slight issue. Usually the cpp files are stored under src, while the header files are stored under include. But in our previous example, make searches for foo.cpp in both of those directories. You can tell make that cpp files should be searched in src and headers should be searched in include. For that, vpath (note: lowercase) is used:Makefilevpath %.cpp srcvpath %.h includeThe % is like * of regex. It matches anything. The previous rule tells make to search for files ending in .cpp in src and files ending in .h in include.Pattern RulesA pattern rule contains the character % exactly once. The % matches any character. For example, %.cpp matches any files ending in .cpp, while a%b matches any file starting in a and ending in b and having anything in between, like axb or axyzb, but not ab. There should be at least one character to match %. The part that matches the % is called the stem.When used in a prerequisite, the % stands for the same stem that was matched by the % in the target. For example:Makefile%.o: %.cpp    ...This tells how to make x.o from x.cpp where x stands for anything, provided x.cpp should exist or can be made. So if you have a.cpp and b.cpp, that single rule can make both a.o and b.o.Phony TargetIn our Makefile, there are two “special” targets—all and clean. Since they do not have any prerequisite, and there are no files named all or clean in the project, they are always considered to be older than their dependencies and always executed.But if you create a file called all or clean in the directory, make will get confused. Since the all or clean file is there, and the targets have no prerequisites, they will be considered newer than their prerequisites. Therefore, the recipes will never be run. To fix this, you can declare the targets to be “phony”:Makefile.PHONY: all clean...For the full manual of make, read the make documentation.Examples of Using MakeHere are some tutorials and examples of using make for various languages and frameworks.Creating a G++ MakefileThis tutorial shows how to use make with g++ to compile C++. It also introduces variables and phony targets.Creating a Python MakefileThis article explains how to use make with Python. Even though Python does not require compilation, you can use make to automate the installation of dependencies and for testing and managing virtual environments.Creating a Golang MakefileThis tutorial explains using make with Golang—including automation for installing dependencies, running tests, and building binaries for different platforms.Makefile Support in Visual Studio CodeThis tutorial introduces official Makefile support for Visual Studio Code and explains how to install, activate, and configure the extension. The tutorial also demonstrates how to debug and build make targets straight from VS Code.Automation With MakefilesThis blog post demonstrates using R Markdown to create web pages from Markdown files in an R project. The post explains how to set up the Makefile and use variables, pattern rules, and phony targets.Using Make With Node.JSIn this tutorial, the author has explained the usage of make to automate the building, serving, and testing of a Node.js project.Using Make With TypeScriptThis article explains the basic mechanisms of make and shows how to write a Makefile to transpile TypeScript into JavaScript.Makefiles for FrontendThis is a tutorial on how to configure make for a frontend project. The author explains how to use make to automate the compilation of SCSS files and bundle JavaScript with Rollup.Taming Large MakefilesMakefiles are hard to scale to large files and large teams. This article has have tips for making this process easier.Makefiles for JavaThe author demonstrates a simple Makefile that can be used in a Java project for compiling Java files to JAR files.Using Autotools to Configure, Make, and Install a ProgramThis tutorial shows how to automate the writing of Makefiles by using Autotools.ConclusionThe make tool is a valuable one to master in software development. Using it can speed up your development and ensure an easier process overall. However, due to its feature-rich nature, make can be hard to master.If you’re familiar with Docker, consider using Earthly. Earthly combines the best aspects of make and Docker to give you an easy-to-understand and reproducible build with minimal effort.">
+    <meta itemprop="datePublished" content="2021-09-02T00:00:00-04:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Makefile Tutorials and Examples to Build From
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+        
+        &nbsp;	&nbsp;<i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-09-02T00:00:00-04:00">September 2, 2021</time>
+        
+
+      </span>
+    
+    <span>
+      
+      
+      
+      <div class="author__avatar_top">
+          <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/aniket-240-e5e4f940c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg" alt="Aniket Bhattacharyea %"></picture>
+
+          &nbsp;	&nbsp;
+          Aniket Bhattacharyea
+      </div>
+      
+    </span>
+  </p>
+
+
+        </header>
+      
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#the-makefile">The Makefile</a></li><li><a href="#components-of-makefile">Components of Makefile</a><ul><li><a href="#comments">Comments</a></li><li><a href="#variables">Variables</a><ul><li><a href="#automatic-variables">Automatic Variables</a></li></ul></li><li><a href="#virtual-paths">Virtual Paths</a></li><li><a href="#pattern-rules">Pattern Rules</a></li><li><a href="#phony-target">Phony Target</a></li></ul></li><li><a href="#examples-of-using-make">Examples of Using Make</a><ul><li><a href="#creating-a-g-makefile">Creating a G++ Makefile</a></li><li><a href="#creating-a-python-makefile">Creating a Python Makefile</a></li><li><a href="#creating-a-golang-makefile">Creating a Golang Makefile</a></li><li><a href="#makefile-support-in-visual-studio-code">Makefile Support in Visual Studio Code</a></li><li><a href="#automation-with-makefiles">Automation With Makefiles</a></li><li><a href="#using-make-with-node.js">Using Make With Node.JS</a></li><li><a href="#using-make-with-typescript">Using Make With TypeScript</a></li><li><a href="#makefiles-for-frontend">Makefiles for Frontend</a></li><li><a href="#taming-large-makefiles">Taming Large Makefiles</a></li><li><a href="#makefiles-for-java">Makefiles for Java</a></li><li><a href="#using-autotools-to-configure-make-and-install-a-program">Using Autotools to Configure, Make, and Install a Program</a></li></ul></li><li><a href="#conclusion">Conclusion</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Building software is a multi-step process—installing or updating dependencies, compiling the source code, testing, installing, and so on. In any moderately sized project, you might find it difficult to perform all these steps manually. This is where <code>make</code> can help you.</p>
+<p>The <code>make</code> tool automates compilation of the software from the source code. It won’t repeat a step if none of its prerequisites has changed, thus saving you time and resources.</p>
+<p>In this article, you will learn how to write a simple Makefile and learn about important components of <code>make</code>, including variables, pattern rules, and virtual paths. You will also see some examples of using <code>make</code> with different technologies.</p>
+<h2 id="the-makefile">The Makefile</h2>
+<p>When you run <code>make</code>, it looks for a file named <code>Makefile</code>, or <code>makefile</code> in the same directory. The name <code>Makefile</code> is suggested so that it appears near other important files such as <code>README</code>.</p>
+<p>You can name your Makefile anything, but then you have to explicitly tell <code>make</code> which file to read:</p>
+<pre><code>shell
+make -f some_other_makefile</code></pre>
+<p>The Makefile should consist of one or more rules. Each rule describes a goal or a step in your build process, the prerequisites for that step, and recipes for how to execute it.</p>
+<p>The format for each rule is as follows:</p>
+<pre><code>Makefile
+target1 [target2 ...]: [pre-req1 pre-req2 pre-req3 ...]
+    [recipes
+    ...]</code></pre>
+<p>The parts in <code>[]</code> are optional. Each rule must have one or more targets, zero or more prerequisites, and zero or more recipes. The <code>target</code> is the file you want to be created in that rule. The prerequisites can be the name of an existing rule, or the name of a file in the same directory. The recipes are shell commands that need to be run in order to generate the target.</p>
+<p>When <code>make</code> executes a rule, it looks at the prerequisites. If all the prerequisites are older than the target file, it means that none of them has changed since the last time the rule was executed. So <code>make</code> does not execute the rule. If, however, any prerequisite is newer than the target, the recipes are executed.</p>
+<p>Here’s an example. Create a file named <code>data.txt</code> with the text <code>hello world.</code> You’ll use the <code>wc</code> command to calculate the number of characters, words, and lines and store it in a file named <code>count.txt</code>. In this simple demonstration, you have a dependency and a target that needs to be built from the dependency.</p>
+<p>First, let’s do it manually.</p>
+<pre><code>shell
+wc -c data.txt &gt; count.txt # Count characters
+wc -w data.txt &gt;&gt; count.txt # Count words
+wc -l data.txt &gt;&gt; count.txt # Count lines</code></pre>
+<p>This should create a file named <code>count.txt</code> with the following content:</p>
+<pre><code>13 data.txt
+2 data.txt
+0 data.txt</code></pre>
+<p>Let’s write the Makefile to automate this:</p>
+<pre><code>Makefile
+all: count.txt 
+
+count.txt: data.txt
+    wc -c data.txt &gt; count.txt # Count characters
+    wc -w data.txt &gt;&gt; count.txt # Count words
+    wc -l data.txt &gt;&gt; count.txt # Count lines</code></pre>
+<p>This Makefile has two targets. The first target is <code>all</code>, which acts like an overall build target. It is not necessary to have such a target, especially when our build has only one step, but it is a recommended practice.</p>
+<p>The <code>all</code> target depends on <code>count.txt</code> and has no recipe. This means that <code>all</code> will be prepared as soon as <code>count.txt</code> is prepared.</p>
+<p>The target <code>count.txt</code> depends on the file <code>data.txt</code> and the recipes list contains the commands you ran previously.</p>
+<p>Now, run <code>make</code> again from the terminal. You should see that <code>make</code> executes the commands listed and creates <code>count.txt</code>. If you run the <code>make</code> command again, you should see the output:</p>
+<pre><code>make: Nothing to be done for &#39;all&#39;.</code></pre>
+<p>Let’s break it down. When you run <code>make</code> without any argument, it runs the first target, which is <code>all</code> in this case. Since <code>all</code> depends on <code>count.txt</code>, that target is executed. The target <code>count.txt</code> depends on <code>data.txt</code>, so the commands are run and the file is generated.</p>
+<p>The next time you run <code>make</code> following the same sequence, <code>make</code> looks at <code>count.txt</code> and notices that <code>count.txt</code> is newer than <code>data.txt</code>, meaning the dependency has not been changed since the last time <code>make</code> was run, so it doesn’t do anything.</p>
+<p>Edit the <code>data.txt</code> file and change the text to <code>hi world</code>. Now when you run <code>make</code>, it runs the commands and updates <code>count.txt</code>. Since the dependency was changed, it rebuilt the target.</p>
+<p>You can also run a target directly by passing its name to the <code>make</code> command. Running <code>make count.txt</code> will run only the <code>count.txt</code> rule.</p>
+<p>Let’s add a rule to clean the project files. It is a recommended practice to have a <code>clean</code> rule to delete any generated files, effectively returning the project to the initial state. Add the following rule to your Makefile:</p>
+<pre><code>Makefile
+clean:
+    rm count.txt</code></pre>
+<p>The <code>clean</code> rule doesn’t have a prerequisite. The targets without a prerequisite are considered to be older than their dependencies, and so they’re always run.</p>
+<h2 id="components-of-makefile">Components of Makefile</h2>
+<p>Here are some important components that can help you write more concise and simpler Makefiles.</p>
+<h3 id="comments">Comments</h3>
+<p>You can have comments in Makefile that start with a <code>#</code> and last till the end of the line.</p>
+<pre><code>Makefile
+all: count.txt # This is a comment
+...</code></pre>
+<h3 id="variables">Variables</h3>
+<p>Just like regular programming languages, <code>make</code> supports using variables to avoid repetitions and keep the Makefile clean. Another advantage of variables is that the user can override them without needing to edit the Makefile manually.</p>
+<p>A variable in Makefile starts with a $ and is enclosed in parentheses () or braces {}, unless it’s a single character variable. To set a variable, write a line starting with a variable name followed by <code>=</code>, <code>:=</code> or <code>::=</code>, followed by the value of the variable:</p>
+<pre><code>Makefile
+TARGET = count.txt
+SOURCE = data.txt</code></pre>
+<p>The variables defined with <code>=</code> are called “recursively expanded variables,” and those defined with <code>:=</code> and <code>::=</code> are called “simply expanded variables.” There is a subtle difference between these two, which you can read about in the <a href="https://www.gnu.org/software/make/manual/make.html#Flavors">manual</a>.</p>
+<p>You can reference these values in any of the targets, prerequisites, or recipes:</p>
+<pre><code>Makefile
+TARGET = count.txt
+SOURCE = data.txt
+
+all: $(TARGET) 
+
+$(TARGET): $(SOURCE)
+    wc -c $(SOURCE) &gt;  $(TARGET) # Count characters
+    wc -w $(SOURCE) &gt;&gt; $(TARGET) # Count words
+    wc -l $(SOURCE) &gt;&gt; $(TARGET) # Count lines
+
+clean:
+   rm $(TARGET)</code></pre>
+<p>Here instead of hard-coding the target and source file names, we have used two variables, with default values of <code>count.txt</code> and <code>data.txt</code>. If you run the <code>make</code> command, it should work just like before. However, if you want to change the name of the target to, for example, <code>newcount.txt</code>, you can do so without changing the Makefile:</p>
+<pre><code>shell
+make TARGET=newcount.txt</code></pre>
+<p>Passing <code>TARGET=newcount.txt</code> overrides the default value of <code>$(TARGET)</code> in the Makefile and so, instead of <code>count.txt</code>, the file <code>newcount.txt</code> is generated. Similarly, you can run <code>make TARGET=newcount.txt clean</code> to clean this new file.</p>
+<p>When <code>make</code> is run, it also converts all available environment variables into make variables. So you can freely use any environment variable.</p>
+<h4 id="automatic-variables">Automatic Variables</h4>
+<p>There are some special variables called automatic variables. Their values are computed each time for every rule and are based on the target and prerequisite file names. Here are some of the most important automatic variables:</p>
+<ol type="1">
+<li>**$<span class="citation" data-cites="*">@*</span>*: This is the target file name. If there is more than one target, this is whichever target caused the recipe to run.</li>
+<li><strong>$</strong>*: This is the target file name without the extension.</li>
+<li><strong>$&lt;</strong>: This is the name of the first prerequisite.</li>
+<li><strong>$?</strong>: The names of all the prerequisites that are newer than the target, with spaces between them. If the target does not exist, all prerequisites will be included.</li>
+<li><strong>$^</strong>: The names of all the prerequisites, with spaces between them and duplicates removed.</li>
+<li><strong>$+</strong>: Same as $^, except it includes duplicates.</li>
+</ol>
+<p>There are other automatic variables. For a full list, see <a href="https://www.gnu.org/software/make/manual/make.html#Automatic-Variables">the manual</a>.</p>
+<p>Using the automatic variables, we can simplify our Makefile a bit more:</p>
+<pre><code>Makefile
+TARGET = count.txt
+SOURCE = data.txt
+
+all: $(TARGET) 
+
+$(TARGET): $(SOURCE)
+   wc -c $&lt; &gt;  $@ # $&lt; matches the source file name, $@ matches the target file name 
+   wc -w $&lt; &gt;&gt; $@
+   wc -l $&lt; &gt;&gt; $@
+
+clean:
+   rm $(TARGET)</code></pre>
+<h3 id="virtual-paths">Virtual Paths</h3>
+<p>Often you have files organized into directories. It is not always possible to write the entire file name every time. You can use <code>VPATH</code> to specify where <code>make</code> should search for targets and prerequisites.</p>
+<p>For example:</p>
+<pre><code>Makefile
+VPATH = src include
+
+foo.o: foo.cpp</code></pre>
+<p>Here <code>make</code> will search for <code>foo.o</code> and <code>foo.cpp</code> first in the current directory, and if not found will look inside the directories listed in <code>VPATH</code>. Thus if you have <code>src/foo.cpp</code>, instead of writing the whole path every time, you can use <code>VPATH</code> to tell <code>make</code> where to search for it.</p>
+<p>However, there is a slight issue. Usually the <code>cpp</code> files are stored under <code>src</code>, while the header files are stored under <code>include</code>. But in our previous example, <code>make</code> searches for <code>foo.cpp</code> in both of those directories. You can tell <code>make</code> that <code>cpp</code> files should be searched in <code>src</code> and headers should be searched in <code>include</code>. For that, <code>vpath</code> (note: lowercase) is used:</p>
+<pre><code>Makefile
+vpath %.cpp src
+vpath %.h include</code></pre>
+<p>The <code>%</code> is like <code>*</code> of regex. It matches anything. The previous rule tells <code>make</code> to search for files ending in <code>.cpp</code> in <code>src</code> and files ending in <code>.h</code> in <code>include</code>.</p>
+<h3 id="pattern-rules">Pattern Rules</h3>
+<p>A pattern rule contains the character <code>%</code> exactly once. The <code>%</code> matches any character. For example, <code>%.cpp</code> matches any files ending in <code>.cpp</code>, while <code>a%b</code> matches any file starting in <code>a</code> and ending in <code>b</code> and having anything in between, like <code>axb</code> or <code>axyzb</code>, but not <code>ab</code>. There should be at least one character to match <code>%</code>. The part that matches the <code>%</code> is called the stem.</p>
+<p>When used in a prerequisite, the <code>%</code> stands for the same stem that was matched by the <code>%</code> in the target. For example:</p>
+<pre><code>Makefile
+%.o: %.cpp
+    ...</code></pre>
+<p>This tells how to make <code>x.o</code> from <code>x.cpp</code> where <code>x</code> stands for anything, provided <code>x.cpp</code> should exist or can be made. So if you have <code>a.cpp</code> and <code>b.cpp</code>, that single rule can make both <code>a.o</code> and <code>b.o</code>.</p>
+<h3 id="phony-target">Phony Target</h3>
+<p>In our Makefile, there are two “special” targets—<code>all</code> and <code>clean</code>. Since they do not have any prerequisite, and there are no files named <code>all</code> or <code>clean</code> in the project, they are always considered to be older than their dependencies and always executed.</p>
+<p>But if you create a file called <code>all</code> or <code>clean</code> in the directory, <code>make</code> will get confused. Since the <code>all</code> or <code>clean</code> file is there, and the targets have no prerequisites, they will be considered newer than their prerequisites. Therefore, the recipes will never be run. To fix this, you can declare the targets to be “phony”:</p>
+<pre><code>Makefile
+.PHONY: all clean
+
+...</code></pre>
+<p>For the full manual of <code>make</code>, read the <a href="https://www.gnu.org/software/make/manual/make.html"><code>make</code> documentation</a>.</p>
+<h2 id="examples-of-using-make">Examples of Using <code>Make</code></h2>
+<p>Here are some tutorials and examples of using <code>make</code> for various languages and frameworks.</p>
+<h3 id="creating-a-g-makefile"><a href="https://earthly.dev/blog/g++-makefile/">Creating a G++ Makefile</a></h3>
+<p>This tutorial shows how to use <code>make</code> with <code>g++</code> to compile C++. It also introduces variables and phony targets.</p>
+<h3 id="creating-a-python-makefile"><a href="https://earthly.dev/blog/python-makefile/">Creating a Python Makefile</a></h3>
+<p>This article explains how to use <code>make</code> with Python. Even though Python does not require compilation, you can use <code>make</code> to automate the installation of dependencies and for testing and managing virtual environments.</p>
+<h3 id="creating-a-golang-makefile"><a href="https://earthly.dev/blog/golang-makefile/">Creating a Golang Makefile</a></h3>
+<p>This tutorial explains using <code>make</code> with Golang—including automation for installing dependencies, running tests, and building binaries for different platforms.</p>
+<h3 id="makefile-support-in-visual-studio-code"><a href="https://earthly.dev/blog/vscode-make/">Makefile Support in Visual Studio Code</a></h3>
+<p>This tutorial introduces official Makefile support for Visual Studio Code and explains how to install, activate, and configure the extension. The tutorial also demonstrates how to debug and build <code>make</code> targets straight from VS Code.</p>
+<h3 id="automation-with-makefiles"><a href="https://monashbioinformaticsplatform.github.io/2017-11-16-open-science-training/topics/automation.html">Automation With Makefiles</a></h3>
+<p>This blog post demonstrates using <a href="https://rmarkdown.rstudio.com/">R Markdown</a> to create web pages from Markdown files in an R project. The post explains how to set up the Makefile and use variables, pattern rules, and phony targets.</p>
+<h3 id="using-make-with-node.js"><a href="https://lithic.tech/blog/2020-05/makefile-and-node">Using Make With Node.JS</a></h3>
+<p>In this tutorial, the author has explained the usage of <code>make</code> to automate the building, serving, and testing of a Node.js project.</p>
+<h3 id="using-make-with-typescript"><a href="https://blog.quenk.com/using-gnu-make-to-build-a-typescript-project/">Using Make With TypeScript</a></h3>
+<p>This article explains the basic mechanisms of <code>make</code> and shows how to write a Makefile to transpile TypeScript into JavaScript.</p>
+<h3 id="makefiles-for-frontend"><a href="https://medium.com/finn-no/makefiles-for-frontend-1779be46461b">Makefiles for Frontend</a></h3>
+<p>This is a tutorial on how to configure <code>make</code> for a frontend project. The author explains how to use <code>make</code> to automate the compilation of SCSS files and bundle JavaScript with Rollup.</p>
+<h3 id="taming-large-makefiles"><a href="https://earthly.dev/blog/repeatable-builds-every-time/#tips-for-taming-makefiles-in-large-teams">Taming Large Makefiles</a></h3>
+<p>Makefiles are hard to scale to large files and large teams. This article has have tips for making this process easier.</p>
+<h3 id="makefiles-for-java"><a href="https://dev.to/deciduously/quick-and-dirty-java-makefile-4njo">Makefiles for Java</a></h3>
+<p>The author demonstrates a simple Makefile that can be used in a Java project for compiling Java files to JAR files.</p>
+<h3 id="using-autotools-to-configure-make-and-install-a-program"><a href="https://earthly.dev/blog/autoconf/">Using Autotools to Configure, Make, and Install a Program</a></h3>
+<p>This tutorial shows how to automate the writing of Makefiles by using Autotools.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The <code>make</code> tool is a valuable one to master in software development. Using it can speed up your development and ensure an easier process overall. However, due to its feature-rich nature, <code>make</code> can be hard to master.</p>
+<p>If you’re familiar with Docker, consider using <a href="https://earthly.dev">Earthly</a>. Earthly combines the best aspects of <code>make</code> and Docker to give you an easy-to-understand and reproducible build with minimal effort.</p>
+
+        
+      </section>
+
+      
+
+
+<div itemscope itemtype="https://schema.org/Person">
+  
+    <div class="author__avatar">
+      
+        <picture class="image-author"><source srcset="/blog/generated/assets/images/authors/aniket-240-e5e4f940c.webp 240w" type="image/webp"><source srcset="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg 240w" type="image/jpeg"><img src="/blog/generated/assets/images/authors/aniket-240-20da2ef2f.jpg" alt="Aniket Bhattacharyea %"></picture>
+
+      
+    </div>
+  
+  <div class="author__content">
+    
+      <div class="author__name heading" itemprop="name">
+        Aniket Bhattacharyea
+    
+    
+      </div>
+    
+      <div class="author__bio" itemprop="description">
+        <p>Aniket is a student doing a Master’s in Mathematics and has a passion for computers and software.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <!-- <button class="btn btn--inverse">Follow</button> -->
+    <ul class="author__urls social-icons">
+      
+
+     
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+      <footer class="page__meta">
+        
+        
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/blog/categories/tutorials" class="page__taxonomy-item" rel="tag">Tutorials</a>
+    
+    </span>
+  </p>
+
+
+
+
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-09-02T00:00:00-04:00">September 2, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/blog/make-flags/" class="pagination--pager" title="Understanding and Using Makefile Flags
+">Previous</a>
+    
+    
+      <a href="/blog/10-continous-delivery/" class="pagination--pager" title="10+ Best Continuous Delivery Tools
+">Next</a>
+    
+  </nav>
+
+    </div>
+  </article>
+
+  
+  
+    <div class="page__related">
+      <div class="page__related-title heading">You may also enjoy</div>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/example/teaser-600-fc9eab451.webp 600w, /blog/generated/assets/images/example/teaser-800-fc9eab451.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/example/teaser-600-b449882ef.jpg 600w, /blog/generated/assets/images/example/teaser-800-b449882ef.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/example/teaser-800-b449882ef.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/example/" rel="permalink">Example Post
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+
+This post is in the future, and won’t show up in the published site
+
+
+Image without figure
+
+
+An image with the alt text hidden.
+
+
+
+
+
+An image with alt text...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+
+
+
+
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <picture><source srcset="/blog/generated/assets/images/10-continous-delivery/header-600-aae60f084.webp 600w, /blog/generated/assets/images/10-continous-delivery/header-800-aae60f084.webp 800w" type="image/webp"><source srcset="/blog/generated/assets/images/10-continous-delivery/header-600-495449b49.jpg 600w, /blog/generated/assets/images/10-continous-delivery/header-800-495449b49.jpg 800w" type="image/jpeg"><img src="/blog/generated/assets/images/10-continous-delivery/header-800-495449b49.jpg"></picture>
+
+      </div>
+    
+    
+    <div class="archive__item-title no_toc heading" itemprop="headline">
+    
+      
+      
+        <a href="/blog/10-continous-delivery/" rel="permalink">10+ Best Continuous Delivery Tools
+</a>
+      
+    
+    </div>
+    
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+Draft.dev Article Checklist
+
+
+
+ Add in Author page
+
+
+ Create header image in Canva
+
+
+ Optional: Find ways to break up content with quotes or images
+
+
+ Verif...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/earthlytech" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/earthly/earthly" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/blog/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 <a href="https://earthly.dev/">Earthly</a>. </div>
+
+      </footer>
+    </div>
+
+    <script src="/blog/assets/js/vendor/jquery/jquery-3.5.1.js"></script>
+<script src="/blog/assets/js/plugins/jquery.fitvids.js"></script>
+<script src="/blog/assets/js/plugins/smooth-scroll.js"></script>
+<script src="/blog/assets/js/plugins/gumshoe.js"></script>
+<script src="/blog/assets/js/plugins/jquery.magnific-popup.js"></script>
+<script src="/blog/assets/js/main.min.js"></script>
+<script src="/blog/assets/js/externallinks.js"></script>
+
+  <script> // minified version of https://earthly.dev/assets/js/analytics.js
+    function setCookie(e,t,r){var i="";if(r){var o=new Date;o.setTime(o.getTime()+24*r*60*60*1e3),i="; expires="+o.toUTCString()}document.cookie=e+"="+(t||"")+i+"; path=/"}function getCookie(e){for(var t=e+"=",r=document.cookie.split(";"),i=0;i<r.length;i++){for(var o=r[i];" "==o.charAt(0);)o=o.substring(1,o.length);if(0==o.indexOf(t))return o.substring(t.length,o.length)}return null}function uuidv4(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}function getAnalyticCookie(){cookieName="earthlyID";var e=getCookie(cookieName);return null==e&&(e=uuidv4()),setCookie(cookieName,e,36500),e}jQuery.ajax({type:"POST",url:"https://api.earthly.dev/analytics",data:JSON.stringify({key:"website",url:window.location.href,referrer:document.referrer,earthlyID:getAnalyticCookie()})});
+</script>
+
+
+
+
+  </body>
+</html>
