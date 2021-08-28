@@ -448,4 +448,22 @@ var store = [{
         "tags": [],
         "url": "/blog/jq-select/",
         "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Understanding and Using Makefile Flags",
+        "excerpt":"make is a commonplace utility in the development world. It automates the process of generating executables, documentations, and other non-source files from the source code by dividing the build process into separate interrelated steps. Using make eliminates the need for typing out long and complex commands to compile the source...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/make-flags/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "10+ Best Continuous Delivery Tools",
+        "excerpt":"Draft.dev Article Checklist Add in Author page Create header image in Canva Optional: Find ways to break up content with quotes or images Verify look of article locally Run mark down linter (earthly +blog-lint-apply) Add keywords for internal links to front-matter Run earthly +link-opportunity and find 1-5 places to incorporate...","categories": ["Tutorials"],
+        "tags": [],
+        "url": "/blog/10-continous-delivery/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
+      },{
+        "title": "Example Post",
+        "excerpt":"This post is in the future, and won’t show up in the published site Image without figure An image with the alt text hidden. An image with alt text printed below. some alt text Image with explicit figure Alex likes to draw and add a caption Image with implicit figure...","categories": ["News"],
+        "tags": [],
+        "url": "/blog/example/",
+        "teaser": "/blog/assets/images/default-teaser.jpg"
       }]
